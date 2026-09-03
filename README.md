@@ -1,5 +1,7 @@
 # 音击抽卡模拟器
 
+反馈或咨询：[GitHub Issues](https://github.com/DeepSeek-V4-Pro/ongeki_gacha/issues)
+
 一个基于 MaiBot 的本地娱乐抽卡模拟器，用于模拟音击卡牌收集与抽卡体验。
 
 常见命令：
