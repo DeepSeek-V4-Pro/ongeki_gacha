@@ -1,0 +1,22 @@
+[plugin]
+enabled = true
+config_version = "1.0.0"
+
+[assets]
+cards_dir = "D:/Tools/ONGEKI_unpack/output/cards_2690"
+card_info_json = "D:/Tools/ONGEKI_unpack/output/card_info_merged.json"
+
+[pool]
+weight_n = 1
+weight_r = 76
+weight_sr = 19
+weight_sr_plus = 1
+weight_ssr = 3
+
+[economy]
+cost_1 = 50
+cost_5 = 250
+cost_11 = 500
+min_reward = 400
+max_reward = 800
+tz_offset_hours = 8

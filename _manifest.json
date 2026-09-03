@@ -1,0 +1,49 @@
+{
+  "manifest_version": 2,
+  "version": "1.0.0",
+  "name": "ONGEKI 模拟抽卡",
+  "description": "基于本地 ONGEKI 1.50 卡面素材的全卡大混池模拟抽卡，支持每日签到、点数、1/5/11 连、SR 以上保底、卡册与概率展示。",
+  "author": {
+    "name": "DeepSeek-V4",
+    "url": "https://github.com/DeepSeek-V4-Pro"
+  },
+  "license": "GPL-v3.0-or-later",
+  "urls": {
+    "repository": "https://github.com/DeepSeek-V4-Pro",
+    "homepage": "https://github.com/DeepSeek-V4-Pro"
+  },
+  "changelog": "CHANGELOG.md",
+  "host_application": {
+    "min_version": "1.0.0",
+    "max_version": "1.99.99"
+  },
+  "sdk": {
+    "min_version": "2.0.0",
+    "max_version": "2.99.99"
+  },
+  "dependencies": [
+    {
+      "type": "python_package",
+      "name": "Pillow",
+      "version_spec": ">=11.3.0"
+    }
+  ],
+  "capabilities": [
+    "send.text",
+    "send.image"
+  ],
+  "i18n": {
+    "default_locale": "zh-CN",
+    "supported_locales": [
+      "zh-CN"
+    ]
+  },
+  "display": {
+    "icon": {
+      "type": "emoji",
+      "value": "🎴",
+      "background": "#1f2433"
+    }
+  },
+  "id": "deepseek-v4-pro.ongeki-gacha"
+}
