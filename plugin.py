@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 HELP_TEXT = (
     "ONGEKI 模拟抽卡（V1 全卡大混池）\n"
-    "/签到 每日领取 400～800 点\n"
+    "/签到 每日领取点数（测试期固定 100000 点）\n"
     "/抽卡 1 单抽（50 点）\n"
     "/抽卡 5 五连（250 点，含 SR 以上保底）\n"
     "/抽卡 11 十一连（500 点，含 SR 以上保底）\n"
@@ -173,7 +173,6 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 RenderCard(
                     card=card,
                     copies=commitment.copies,
-                    is_new=commitment.is_new,
                     is_kaika=commitment.is_kaika,
                     is_cho_kaika=commitment.is_cho_kaika,
                 )
@@ -267,13 +266,12 @@ class OngekiGachaPlugin(MaiBotPlugin):
             f"当前点数：{player.points}",
         ]
 
-        entry_by_rarity = sorted(
-            inventory,
-            key=lambda entry: (
-                RARITY_ORDER.get(self._cards.by_id.get(entry.card_id).rarity if self._cards.by_id.get(entry.card_id) else "", 99),
-                entry.card_id,
-            ),
-        )
+        def rarity_rank(entry: Any) -> tuple[int, int]:
+            card = self._cards.by_id.get(entry.card_id)
+            rank = RARITY_ORDER.get(card.rarity if card is not None else "", 99)
+            return rank, entry.card_id
+
+        entry_by_rarity = sorted(inventory, key=rarity_rank)
         preview_lines = []
         for entry in entry_by_rarity[:12]:
             card = self._cards.by_id.get(entry.card_id)

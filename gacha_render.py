@@ -33,7 +33,6 @@ class RenderCard:
 
     card: CardInfo
     copies: int
-    is_new: bool
     is_kaika: bool
     is_cho_kaika: bool
 
@@ -51,12 +50,12 @@ class GachaRenderer:
         if size in self._fonts:
             return self._fonts[size]
         candidates = (
-            (Path("C:/Windows/Fonts/msyhbd.ttc"), True),
-            (Path("C:/Windows/Fonts/msyh.ttc"), False),
-            (Path("C:/Windows/Fonts/simhei.ttf"), False),
+            Path("C:/Windows/Fonts/msyhbd.ttc"),
+            Path("C:/Windows/Fonts/msyh.ttc"),
+            Path("C:/Windows/Fonts/simhei.ttf"),
         )
         font = ImageFont.load_default()
-        for path, is_bold in candidates:
+        for path in candidates:
             if path.is_file():
                 try:
                     font = ImageFont.truetype(str(path), size=size)
@@ -180,8 +179,6 @@ class GachaRenderer:
         self,
         states: list[RenderCard],
         output_path: Path,
-        *,
-        footer_text: str = "",
     ) -> bytes:
         """将抽卡状态绘制成 PNG，并返回文件字节。"""
         if not states:
@@ -190,7 +187,6 @@ class GachaRenderer:
         margin = 16
         gap = 12
         header_height = 64
-        footer_height = 36
         card_w = 600 if len(states) == 1 else 330
         card_h = round(card_w * 1052 / 768)
 
@@ -209,7 +205,6 @@ class GachaRenderer:
             header_height
             + len(rows) * card_h
             + (len(rows) - 1) * gap
-            + footer_height
             + margin * 2
         )
         canvas = self._vertical_gradient(canvas_width, canvas_height)
@@ -217,9 +212,6 @@ class GachaRenderer:
 
         title_font = self._font(34)
         draw.text((margin + 4, 18), "ONGEKI 抽卡结果", fill="#2d3550", font=title_font)
-        if footer_text:
-            footer_font = self._font(20)
-            draw.text((margin + 4, canvas_height - footer_height + 6), footer_text, fill="#4a5370", font=footer_font)
 
         row_start_y = header_height + margin
         for row_index, row in enumerate(rows):
