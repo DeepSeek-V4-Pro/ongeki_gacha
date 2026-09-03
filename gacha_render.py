@@ -94,8 +94,8 @@ class GachaRenderer:
     def _vertical_gradient(width: int, height: int) -> Image.Image:
         image = Image.new("RGBA", (width, height))
         draw = ImageDraw.Draw(image)
-        top = (20, 22, 36, 255)
-        bottom = (34, 38, 60, 255)
+        top = (247, 250, 255, 255)
+        bottom = (220, 232, 248, 255)
         for y in range(height):
             ratio = y / max(height - 1, 1)
             color = tuple(int(top[i] + (bottom[i] - top[i]) * ratio) for i in range(4))
@@ -216,10 +216,10 @@ class GachaRenderer:
         draw = ImageDraw.Draw(canvas)
 
         title_font = self._font(34)
-        draw.text((margin + 4, 18), "ONGEKI 抽卡结果", fill="#ffffff", font=title_font)
+        draw.text((margin + 4, 18), "ONGEKI 抽卡结果", fill="#2d3550", font=title_font)
         if footer_text:
             footer_font = self._font(20)
-            draw.text((margin + 4, canvas_height - footer_height + 6), footer_text, fill="#d7d7e8", font=footer_font)
+            draw.text((margin + 4, canvas_height - footer_height + 6), footer_text, fill="#4a5370", font=footer_font)
 
         row_start_y = header_height + margin
         for row_index, row in enumerate(rows):
