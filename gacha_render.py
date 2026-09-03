@@ -176,30 +176,6 @@ class GachaRenderer:
             (card_x + card_w - mark_w - 8, card_y + 8),
         )
 
-    def _draw_badges(
-        self,
-        canvas: Image.Image,
-        card_x: int,
-        card_y: int,
-        card_w: int,
-        card_h: int,
-        copies: int,
-    ) -> None:
-        draw = ImageDraw.Draw(canvas)
-        if copies > 1:
-            font = self._font(max(18, int(card_w * 0.09)))
-            text = f"×{copies}"
-            bbox = draw.textbbox((0, 0), text, font=font)
-            text_w = bbox[2] - bbox[0]
-            text_h = bbox[3] - bbox[1]
-            x = card_x + 8
-            y = card_y + card_h - text_h - 10
-            draw.rectangle(
-                (x - 4, y - 4, x + text_w + 8, y + text_h + 6),
-                fill=(20, 22, 34, 210),
-            )
-            draw.text((x, y), text, fill="#ffd35c", font=font)
-
     def render(
         self,
         states: list[RenderCard],
@@ -272,7 +248,6 @@ class GachaRenderer:
                     state.card.rarity,
                     state.copies,
                 )
-                self._draw_badges(canvas, card_x, card_y, card_w, card_h, state.copies)
 
         output_path.parent.mkdir(parents=True, exist_ok=True)
         canvas.convert("RGB").save(output_path, format="PNG", optimize=True)
