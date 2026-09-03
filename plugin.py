@@ -10,8 +10,10 @@ from maibot_sdk import Command, MaiBotPlugin
 
 import asyncio
 import base64
+import json
 import logging
 import re
+import time
 
 from .config_model import OngekiGachaPluginConfig
 from .gacha_core import CardCollection, CardPool, RARITY_ORDER, load_cards, rarity_display
@@ -20,15 +22,17 @@ from .gacha_render import GachaRenderer, RenderCard
 
 
 logger = logging.getLogger(__name__)
+RENDER_CACHE_TTL_SECONDS = 24 * 60 * 60
 
 HELP_TEXT = (
-    "ONGEKI 模拟抽卡（V1 全卡大混池）\n"
-    "/签到 每日领取点数（测试期固定 100000 点）\n"
+    "音击抽卡模拟器（MaiBot 本地娱乐插件）\n"
+    "/签到 每日随机领取 400～800 点，可能有欧皇彩蛋\n"
     "/抽卡 1 单抽（50 点）\n"
-    "/抽卡 5 五连（250 点，含 SR 以上保底）\n"
-    "/抽卡 11 十一连（500 点，含 SR 以上保底）\n"
+    "/抽卡 5 五连（250 点，每用户每周首次含 SR 或以上保底）\n"
+    "/抽卡 11 十一连（500 点，含 SR 或以上保底）\n"
     "/点数 查看余额\n"
     "/卡册 查看收藏进度\n"
+    "/卡图 <ID> 查看已拥有卡牌的高清大图\n"
     "/概率 查看当前模拟权重\n"
     "/帮助 显示本帮助\n"
     "所有数据均为本地娱乐模拟，不代表 SEGA 官方概率。"
@@ -47,10 +51,13 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._pool: CardPool | None = None
         self._db: GachaDatabase | None = None
         self._renderer: GachaRenderer | None = None
+        self._cleanup_task: asyncio.Task | None = None
 
     async def on_load(self) -> None:
         """加载卡牌、初始化数据库和渲染器。"""
         self._initialize()
+        self._cleanup_render_cache()
+        self._cleanup_task = asyncio.create_task(self._daily_render_cache_cleanup_loop())
         self.ctx.logger.info("ONGEKI 模拟抽卡插件已加载")
 
     async def on_unload(self) -> None:
@@ -58,6 +65,13 @@ class OngekiGachaPlugin(MaiBotPlugin):
         if self._db is not None:
             self._db.close()
         self._db = None
+        if self._cleanup_task is not None:
+            self._cleanup_task.cancel()
+            try:
+                await self._cleanup_task
+            except asyncio.CancelledError:
+                pass
+            self._cleanup_task = None
 
     async def on_config_update(self, scope: str, config_data: dict[str, object], version: str) -> None:
         """配置热更新后提示重新加载，避免路径变化后仍使用旧资源。"""
@@ -68,8 +82,25 @@ class OngekiGachaPlugin(MaiBotPlugin):
 
     def _initialize(self) -> None:
         config = self.config
-        cards_dir = Path(config.assets.cards_dir).expanduser()
-        card_info_path = Path(config.assets.card_info_json).expanduser()
+        plugin_root = Path(__file__).resolve().parent
+        configured_cards_dir = Path(config.assets.cards_dir).expanduser()
+        configured_card_info_path = Path(config.assets.card_info_json).expanduser()
+        if not configured_cards_dir.is_absolute():
+            configured_cards_dir = plugin_root / configured_cards_dir
+        if not configured_card_info_path.is_absolute():
+            configured_card_info_path = plugin_root / configured_card_info_path
+        configured_cards_dir = configured_cards_dir.resolve()
+        configured_card_info_path = configured_card_info_path.resolve()
+
+        default_cards_dir = (plugin_root / "assets" / "card_data").resolve()
+        default_card_info_path = (default_cards_dir / "card_info_merged.json").resolve()
+
+        cards_dir, card_info_path = self._resolve_card_data_paths(
+            configured_cards_dir,
+            configured_card_info_path,
+            default_cards_dir,
+            default_card_info_path,
+        )
         cards = load_cards(card_info_path)
         pool = CardPool(
             cards,
@@ -87,6 +118,105 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._pool = pool
         self._db = database
         self._renderer = renderer
+
+    @classmethod
+    def _resolve_card_data_paths(
+        cls,
+        configured_cards_dir: Path,
+        configured_card_info_path: Path,
+        default_cards_dir: Path,
+        default_card_info_path: Path,
+    ) -> tuple[Path, Path]:
+        """Choose default card_data, or the user's manually configured path."""
+        configured_ready = cls._card_data_quick_ready(
+            configured_cards_dir,
+            configured_card_info_path,
+        )
+        configured_is_manual = configured_cards_dir != default_cards_dir
+
+        if configured_ready and configured_is_manual:
+            logger.info("使用手动配置的卡牌数据路径: %s", configured_cards_dir)
+            return configured_cards_dir, configured_card_info_path
+
+        default_ready = cls._card_data_quick_ready(
+            default_cards_dir,
+            default_card_info_path,
+        )
+        if default_ready:
+            if configured_ready and not configured_is_manual:
+                logger.info("使用默认卡牌数据目录: %s", default_cards_dir)
+            elif configured_is_manual:
+                logger.warning(
+                    "手动配置的卡牌数据不可用，回退到默认目录: %s",
+                    default_cards_dir,
+                )
+            return default_cards_dir, default_card_info_path
+
+        if configured_ready:
+            logger.info("使用可用的手动配置卡牌数据路径: %s", configured_cards_dir)
+            return configured_cards_dir, configured_card_info_path
+
+        raise FileNotFoundError(
+            "卡牌数据不可用。请先运行 sync_card_data.py，"
+            "或在配置 assets.cards_dir / assets.card_info_json 中填写有效绝对路径。"
+        )
+
+    @staticmethod
+    def _card_data_quick_ready(cards_dir: Path, card_info_path: Path) -> bool:
+        """Quick check: manifest files or JSON-referenced PNGs all exist."""
+        if not cards_dir.is_dir() or not card_info_path.is_file():
+            return False
+        manifest_path = cards_dir / "card_data_manifest.json"
+        if manifest_path.is_file():
+            try:
+                manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+                files = manifest.get("files") or []
+                if files and all(
+                    (cards_dir / str(item.get("name", ""))).is_file()
+                    for item in files
+                ):
+                    return True
+            except (OSError, ValueError, TypeError):
+                pass
+        try:
+            rows = json.loads(card_info_path.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            return False
+        for row in rows:
+            card_id = row.get("id")
+            image_file = str(
+                row.get("imageFile")
+                or (f"ui_card_{int(card_id):06d}.png" if card_id is not None else "")
+            )
+            if not image_file or not (cards_dir / image_file).is_file():
+                return False
+        return True
+
+    def _cleanup_render_cache(self) -> None:
+        """Delete temporary draw images older than one day."""
+        runtime_dir = self.ctx.paths.runtime_dir
+        if not runtime_dir.is_dir():
+            return
+        cutoff = time.time() - RENDER_CACHE_TTL_SECONDS
+        removed = []
+        for path in runtime_dir.glob("ongeki_draw_*.png"):
+            try:
+                if path.stat().st_mtime < cutoff:
+                    path.unlink()
+                    removed.append(str(path))
+            except OSError as exc:
+                logger.warning("清理抽卡临时图片失败 %s: %s", path, exc)
+        if removed:
+            logger.info("已清理 %d 张过期抽卡临时图片", len(removed))
+
+    async def _daily_render_cache_cleanup_loop(self) -> None:
+        """Run the daily cleanup loop until the plugin is unloaded."""
+        try:
+            while True:
+                await asyncio.sleep(RENDER_CACHE_TTL_SECONDS)
+                self._cleanup_render_cache()
+        except asyncio.CancelledError:
+            raise
 
     @staticmethod
     def _user_id(kwargs: dict[str, Any]) -> str:
@@ -107,6 +237,17 @@ class OngekiGachaPlugin(MaiBotPlugin):
         text = str(kwargs.get("text") or "")
         match = re.search(r"(?<!\d)(11|5|1)(?!\d)", text)
         return int(match.group(1)) if match is not None else 1
+
+    @staticmethod
+    def _parse_card_id(kwargs: dict[str, Any]) -> int | None:
+        groups = kwargs.get("matched_groups")
+        if isinstance(groups, dict):
+            raw_id = str(groups.get("card_id") or "").strip()
+            if raw_id.isdigit():
+                return int(raw_id)
+        text = str(kwargs.get("text") or "")
+        match = re.search(r"(?<!\d)(\d+)(?!\d)", text)
+        return int(match.group(1)) if match is not None else None
 
     def _cost(self, count: int) -> int:
         config = self.config.economy
@@ -158,7 +299,16 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 await self._send_text(stream_id, text)
                 return True, text, True
 
-            drawn_cards = self._pool.draw(count)
+            weekly_5_claimed = False
+            if count == 5:
+                weekly_5_claimed = self._db.claim_weekly_5_guarantee(
+                    user_id,
+                    tz_offset_hours=self.config.economy.tz_offset_hours,
+                )
+            drawn_cards = self._pool.draw(
+                count,
+                guarantee=(count == 11 or weekly_5_claimed),
+            )
             receipt = self._db.commit_draw(
                 user_id,
                 [(card.id, card.rarity) for card in drawn_cards],
@@ -178,14 +328,22 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 )
                 for card, commitment in zip(drawn_cards, receipt.commitments, strict=True)
             ]
-            summary = "\n".join(
-                [
-                    f"本次抽取：{count}连",
-                    f"稀有度：{self._rare_summary(drawn_cards)}",
-                    f"新卡：{sum(1 for item in receipt.commitments if item.is_new)} 张",
-                    f"剩余点数：{receipt.points}",
-                ]
-            )
+            summary_lines = [
+                f"本次抽取：{count}连",
+                f"稀有度：{self._rare_summary(drawn_cards)}",
+                f"新卡：{sum(1 for item in receipt.commitments if item.is_new)} 张",
+                f"剩余点数：{receipt.points}",
+            ]
+            if count == 5:
+                summary_lines.append(
+                    "本周 5 连保底："
+                    + (
+                        "已使用（本次包含 SR 或以上保底）"
+                        if weekly_5_claimed
+                        else "本周已使用，本次不再触发 SR 或以上保底"
+                    )
+                )
+            summary = "\n".join(summary_lines)
             output_path = self.ctx.paths.runtime_dir / f"ongeki_draw_{count}_{time_ns()}.png"
             try:
                 image_bytes = self._renderer.render(states, output_path)
@@ -214,7 +372,10 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 tz_offset_hours=config.tz_offset_hours,
             )
         if receipt.success:
-            text = f"签到成功！获得 {receipt.reward} 点，当前点数：{receipt.points}"
+            text = f"签到成功！获得 {receipt.reward} 点"
+            if receipt.bonus:
+                text += f"，额外获得 {receipt.bonus} 点；！！！超级欧皇，额外获取{receipt.bonus}！！！"
+            text += f"｜当前点数：{receipt.points}"
         else:
             text = receipt.error or "签到失败"
         await self._send_text(stream_id, text)
@@ -230,7 +391,80 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 await self._send_text(stream_id, text)
                 return True, text, True
             player = self._db.get_player(user_id)
-        text = f"当前点数：{player.points}｜累计签到 {player.total_checkins} 次｜累计抽卡 {player.total_pulls} 次"
+            weekly_5_available = self._db.weekly_5_guarantee_available(
+                user_id,
+                tz_offset_hours=self.config.economy.tz_offset_hours,
+            )
+        text = (
+            f"当前点数：{player.points}｜累计签到 {player.total_checkins} 次"
+            f"｜累计抽卡 {player.total_pulls} 次"
+            f"｜本周5连保底：{'可用' if weekly_5_available else '已使用'}"
+        )
+        await self._send_text(stream_id, text)
+        return True, text, True
+
+    @Command(
+        "ongeki_card_image",
+        description="查看已拥有的卡牌高清大图",
+        pattern=r"^/(?:卡图|卡面)\s+(?P<card_id>\d+)\s*$",
+        aliases=[
+            "/og卡图",
+            "/og 卡图",
+            "/og卡面",
+            "/og 卡面",
+            "/查看卡图",
+            "/查看卡面",
+        ],
+    )
+    async def handle_card_image(
+        self,
+        stream_id: str = "",
+        **kwargs: dict[str, Any],
+    ) -> tuple[bool, str, bool]:
+        """发送指定已拥有卡牌的高清原图。"""
+        user_id = self._user_id(kwargs)
+        card_id = self._parse_card_id(kwargs)
+        if card_id is None:
+            text = "用法：/卡图 <卡ID>，例如 /卡图 104490"
+            await self._send_text(stream_id, text)
+            return True, text, True
+
+        async with self._lock:
+            if self._db is None or self._cards is None:
+                text = "插件尚未初始化完成，请检查日志"
+                await self._send_text(stream_id, text)
+                return True, text, True
+
+            inventory = self._db.get_inventory(user_id)
+            owned = {entry.card_id for entry in inventory}
+            if card_id not in owned:
+                text = f"你还没有卡牌 ID {card_id}，无法查看高清大图"
+                await self._send_text(stream_id, text)
+                return True, text, True
+
+            card = self._cards.by_id.get(card_id)
+            if card is None:
+                text = f"卡牌 ID {card_id} 不存在"
+                await self._send_text(stream_id, text)
+                return True, text, True
+
+            card_path = Path(self.config.assets.cards_dir).expanduser() / card.image_file
+            if not card_path.is_file():
+                text = f"卡牌 ID {card_id} 的图片文件不存在：{card_path}"
+                self.ctx.logger.error(text)
+                await self._send_text(stream_id, text)
+                return True, text, True
+
+            try:
+                image_base64 = base64.b64encode(card_path.read_bytes()).decode("ascii")
+                await self.ctx.send.image(image_base64, stream_id)
+            except Exception as exc:
+                self.ctx.logger.error("卡牌图片发送失败: %s", exc, exc_info=True)
+                text = f"卡牌图片发送失败：{exc}"
+                await self._send_text(stream_id, text)
+                return True, text, True
+
+        text = f"已发送卡牌 ID {card_id}：{card.name}"
         await self._send_text(stream_id, text)
         return True, text, True
 
@@ -304,7 +538,8 @@ class OngekiGachaPlugin(MaiBotPlugin):
             percentage = weight / total_weight * 100
             lines.append(f"{rarity_display(rarity)}：{weight}（约 {percentage:.1f}%）")
         lines.append(f"消耗：1连 {config.economy.cost_1} / 5连 {config.economy.cost_5} / 11连 {config.economy.cost_11} 点")
-        lines.append("保底：5连、11连至少 1 张 SR / SR+ / SSR")
+        lines.append("保底：11连至少 1 张 SR 或以上；5连每用户每周首次至少 1 张 SR 或以上")
+        lines.append("5连保底重置：每周四 07:00（按配置时区）")
         text = "\n".join(lines)
         await self._send_text(stream_id, text)
         return True, text, True

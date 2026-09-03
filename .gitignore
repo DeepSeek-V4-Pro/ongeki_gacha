@@ -6,3 +6,5 @@ __pycache__/
 .venv/
 temp/
 data/
+assets/card_data/*.png
+assets/card_data/*.webp

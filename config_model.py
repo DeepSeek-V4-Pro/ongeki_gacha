@@ -24,12 +24,12 @@ class AssetsConfig(PluginConfigBase):
     __ui_order__ = 1
 
     cards_dir: str = Field(
-        default="D:/Tools/ONGEKI_unpack/output/cards_2690",
-        description="卡面 PNG 目录，包含 ui_card_*.png",
+        default="assets/card_data",
+        description="默认读取插件 assets/card_data；可手动填写绝对路径",
     )
     card_info_json: str = Field(
-        default="D:/Tools/ONGEKI_unpack/output/card_info_merged.json",
-        description="卡牌信息 JSON 文件",
+        default="assets/card_data/card_info_merged.json",
+        description="默认读取插件 assets/card_data；可手动填写绝对路径",
     )
 
 

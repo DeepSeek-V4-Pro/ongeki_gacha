@@ -18,12 +18,27 @@ RARITY_COLORS: dict[str, str] = {
     "SSR": "#ffd35c",
 }
 
+BRAND_TEXT = "O.N.G.E.K.I"
+BRAND_COLOR = (30, 60, 110, 255)
+POWERED_TEXT = "MaiBot"
+POWERED_COLOR = (75, 85, 110, 255)
+
 OVERLAY_FILES = {
     "star_filled": "UI_Card_star_00.webp",
     "star_empty": "UI_Card_star_01.webp",
     "max_mark": "UI_Card_max_00.webp",
     "kaika": "UI_CMN_PrintMark_01_kaika.webp",
     "cho_kaika": "UI_CMN_PrintMark_02_tyoukaika.webp",
+}
+
+# 网站补齐的 298 张卡没有透明外框；这里按稀有度选择一张同版本正常卡
+# 作为透明轮廓参考，避免这些卡在合成结果里比其他卡大一圈。
+CARD_ALPHA_REFERENCE_FILES = {
+    "N": "ui_card_100001.png",
+    "R": "ui_card_102469.png",
+    "SR": "ui_card_102415.png",
+    "SRPlus": "ui_card_102738.png",
+    "SSR": "ui_card_102049.png",
 }
 
 
@@ -45,6 +60,7 @@ class GachaRenderer:
         self._ui_dir = ui_dir
         self._fonts: dict[int, ImageFont.FreeTypeFont | ImageFont.ImageFont] = {}
         self._assets: dict[str, Image.Image] = {}
+        self._card_alpha_masks: dict[str, Image.Image] = {}
 
     def _font(self, size: int) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
         if size in self._fonts:
@@ -77,7 +93,21 @@ class GachaRenderer:
         path = self._cards_dir / card.image_file
         if path.is_file():
             with Image.open(path) as image:
-                return image.convert("RGBA")
+                image = image.convert("RGBA")
+            if image.getchannel("A").getextrema() == (255, 255):
+                mask = self._card_alpha_masks.get(card.rarity)
+                if mask is None:
+                    reference_name = CARD_ALPHA_REFERENCE_FILES.get(card.rarity, "ui_card_000001.png")
+                    reference_path = self._cards_dir / reference_name
+                    if not reference_path.is_file():
+                        reference_path = self._cards_dir / "ui_card_000001.png"
+                    if reference_path.is_file():
+                        with Image.open(reference_path) as reference:
+                            mask = reference.convert("RGBA").split()[3]
+                        self._card_alpha_masks[card.rarity] = mask
+                if mask is not None:
+                    image.putalpha(mask)
+            return image
 
         color = RARITY_COLORS.get(card.rarity, "#888888")
         image = Image.new("RGBA", (768, 1052), color)
@@ -94,7 +124,7 @@ class GachaRenderer:
         image = Image.new("RGBA", (width, height))
         draw = ImageDraw.Draw(image)
         top = (247, 250, 255, 255)
-        bottom = (220, 232, 248, 255)
+        bottom = (214, 228, 245, 255)
         for y in range(height):
             ratio = y / max(height - 1, 1)
             color = tuple(int(top[i] + (bottom[i] - top[i]) * ratio) for i in range(4))
@@ -193,7 +223,7 @@ class GachaRenderer:
         if len(states) == 1:
             rows = [states]
         elif len(states) == 5:
-            rows = [states]
+            rows = [states[:2], states[2:]]
         elif len(states) == 11:
             rows = [states[:4], states[4:8], states[8:]]
         else:
@@ -210,8 +240,21 @@ class GachaRenderer:
         canvas = self._vertical_gradient(canvas_width, canvas_height)
         draw = ImageDraw.Draw(canvas)
 
-        title_font = self._font(34)
-        draw.text((margin + 4, 18), "ONGEKI 抽卡结果", fill="#2d3550", font=title_font)
+        brand_font = self._font(26)
+        powered_font = self._font(15)
+        draw.text(
+            (margin + 8, 16),
+            BRAND_TEXT,
+            font=brand_font,
+            fill=BRAND_COLOR,
+        )
+        powered_width = draw.textlength(POWERED_TEXT, font=powered_font)
+        draw.text(
+            (canvas_width - margin - powered_width - 8, 24),
+            POWERED_TEXT,
+            font=powered_font,
+            fill=POWERED_COLOR,
+        )
 
         row_start_y = header_height + margin
         for row_index, row in enumerate(rows):
@@ -222,6 +265,11 @@ class GachaRenderer:
                 card_y = row_start_y + row_index * (card_h + gap)
                 card_image = self._resize(self._load_card(state.card), (card_w, card_h))
                 canvas.paste(card_image, (card_x, card_y), card_image)
+                draw.rectangle(
+                    (card_x - 1, card_y - 1, card_x + card_w, card_y + card_h),
+                    outline=(45, 55, 85, 235),
+                    width=2,
+                )
                 self._draw_growth_mark(
                     canvas,
                     card_x,

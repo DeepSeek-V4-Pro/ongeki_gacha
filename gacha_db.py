@@ -14,6 +14,13 @@ import threading
 
 from .gacha_core import derive_growth
 
+WEEKLY_RESET_DAY = 3  # 0=Monday, 3=Thursday
+WEEKLY_RESET_HOUR = 7
+CHECKIN_JACKPOT_PROBABILITY = 0.0000005  # 0.00005%
+CHECKIN_LUCKY_PROBABILITY = 0.0000095   # 0.00095%
+CHECKIN_JACKPOT_BONUS = 9999
+CHECKIN_LUCKY_BONUS = 999
+
 
 @dataclass(frozen=True)
 class PlayerState:
@@ -66,6 +73,7 @@ class CheckinReceipt:
     points: int
     date: str
     error: str = ""
+    bonus: int = 0
 
 
 class GachaDatabase:
@@ -94,6 +102,8 @@ class GachaDatabase:
                 last_checkin_date TEXT,
                 total_checkins   INTEGER NOT NULL DEFAULT 0,
                 total_pulls      INTEGER NOT NULL DEFAULT 0,
+                weekly_5_guarantee_week TEXT NOT NULL DEFAULT '',
+                weekly_5_guarantee_used INTEGER NOT NULL DEFAULT 0,
                 created_at       TEXT NOT NULL,
                 updated_at       TEXT NOT NULL
             );
@@ -132,6 +142,17 @@ class GachaDatabase:
             );
             """
         )
+        existing_columns = {row[1] for row in conn.execute("PRAGMA table_info(players)").fetchall()}
+        if "weekly_5_guarantee_week" not in existing_columns:
+            conn.execute(
+                "ALTER TABLE players "
+                "ADD COLUMN weekly_5_guarantee_week TEXT NOT NULL DEFAULT ''"
+            )
+        if "weekly_5_guarantee_used" not in existing_columns:
+            conn.execute(
+                "ALTER TABLE players "
+                "ADD COLUMN weekly_5_guarantee_used INTEGER NOT NULL DEFAULT 0"
+            )
         self._conn = conn
 
     def close(self) -> None:
@@ -149,6 +170,35 @@ class GachaDatabase:
         tz = timezone(timedelta(hours=int(offset_hours)))
         return datetime.now(tz).date().isoformat()
 
+    @staticmethod
+    def _weekly_5_key(offset_hours: int) -> str:
+        """Return the Thursday-07:00 reset key for the current week."""
+        tz = timezone(timedelta(hours=int(offset_hours)))
+        now = datetime.now(tz)
+        days_since_thursday = (now.weekday() - WEEKLY_RESET_DAY) % 7
+        reset_date = (now - timedelta(days=days_since_thursday)).date()
+        if days_since_thursday == 0 and now.hour < WEEKLY_RESET_HOUR:
+            reset_date -= timedelta(days=7)
+        return reset_date.isoformat()
+
+    @staticmethod
+    def _sync_weekly_5(
+        conn: sqlite3.Connection,
+        qq_id: str,
+        week_key: str,
+        now: str,
+    ) -> None:
+        conn.execute(
+            """
+            UPDATE players
+            SET weekly_5_guarantee_week = ?,
+                weekly_5_guarantee_used = 0,
+                updated_at = ?
+            WHERE qq_id = ? AND weekly_5_guarantee_week <> ?
+            """,
+            (week_key, now, qq_id, week_key),
+        )
+
     def _ensure_player(self, conn: sqlite3.Connection, qq_id: str) -> sqlite3.Row:
         now = self._now_iso()
         conn.execute(
@@ -162,6 +212,71 @@ class GachaDatabase:
         if row is None:
             raise RuntimeError(f"创建玩家失败: {qq_id}")
         return row
+
+    def weekly_5_guarantee_available(
+        self,
+        qq_id: str,
+        *,
+        tz_offset_hours: int,
+    ) -> bool:
+        """Whether this user may still use this week's 5-pull guarantee."""
+        week_key = self._weekly_5_key(tz_offset_hours)
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                self._ensure_player(conn, qq_id)
+                self._sync_weekly_5(conn, qq_id, week_key, self._now_iso())
+                row = conn.execute(
+                    "SELECT weekly_5_guarantee_used FROM players WHERE qq_id = ?",
+                    (qq_id,),
+                ).fetchone()
+                conn.execute("COMMIT")
+                return bool(row) and int(row["weekly_5_guarantee_used"]) == 0
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
+    def claim_weekly_5_guarantee(
+        self,
+        qq_id: str,
+        *,
+        tz_offset_hours: int,
+    ) -> bool:
+        """Atomically claim this week's single 5-pull guarantee right."""
+        week_key = self._weekly_5_key(tz_offset_hours)
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                self._ensure_player(conn, qq_id)
+                self._sync_weekly_5(conn, qq_id, week_key, self._now_iso())
+                row = conn.execute(
+                    "SELECT weekly_5_guarantee_used FROM players WHERE qq_id = ?",
+                    (qq_id,),
+                ).fetchone()
+                if row is None or int(row["weekly_5_guarantee_used"]) != 0:
+                    conn.execute("ROLLBACK")
+                    return False
+                conn.execute(
+                    """
+                    UPDATE players
+                    SET weekly_5_guarantee_week = ?,
+                        weekly_5_guarantee_used = 1,
+                        updated_at = ?
+                    WHERE qq_id = ?
+                    """,
+                    (week_key, self._now_iso(), qq_id),
+                )
+                conn.execute("COMMIT")
+                return True
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
 
     def _player_state(self, conn: sqlite3.Connection, qq_id: str) -> PlayerState:
         row = conn.execute("SELECT * FROM players WHERE qq_id = ?", (qq_id,)).fetchone()
@@ -226,6 +341,13 @@ class GachaDatabase:
                     )
 
                 reward = self._random.randint(min_reward, max_reward)
+                bonus = 0
+                roll = self._random.random()
+                if roll < CHECKIN_JACKPOT_PROBABILITY:
+                    bonus = CHECKIN_JACKPOT_BONUS
+                elif roll < CHECKIN_JACKPOT_PROBABILITY + CHECKIN_LUCKY_PROBABILITY:
+                    bonus = CHECKIN_LUCKY_BONUS
+                total_reward = reward + bonus
                 now = self._now_iso()
                 conn.execute(
                     """
@@ -236,11 +358,11 @@ class GachaDatabase:
                         updated_at = ?
                     WHERE qq_id = ?
                     """,
-                    (reward, today, now, qq_id),
+                    (total_reward, today, now, qq_id),
                 )
                 conn.execute(
                     "INSERT INTO checkins(qq_id, checkin_date, reward, created_at) VALUES(?, ?, ?, ?)",
-                    (qq_id, today, reward, now),
+                    (qq_id, today, total_reward, now),
                 )
                 conn.execute("COMMIT")
                 player = self._player_state(conn, qq_id)
@@ -249,6 +371,7 @@ class GachaDatabase:
                     reward=reward,
                     points=player.points,
                     date=today,
+                    bonus=bonus,
                 )
             except Exception:
                 conn.execute("ROLLBACK")

@@ -163,14 +163,14 @@ class CardPool:
         return random.choice(candidates)
 
     def draw(self, count: int, guarantee: bool = True) -> list[CardInfo]:
-        """抽取指定数量的卡牌，并应用 5/11 连 SR 以上保底。"""
+        """抽取指定数量的卡牌，并应用 5/11 连 SR 或以上保底。"""
         if count <= 0:
             raise ValueError("抽卡数量必须大于 0")
         results = [self._pick_card(self._weighted_rarity(self._rarity_weights)) for _ in range(count)]
 
         if guarantee and count in (5, 11) and not any(card.rarity in SR_OR_ABOVE for card in results):
             if not self._guarantee_weights:
-                raise RuntimeError("保底所需 SR/SR+/SSR 权重为空")
+                raise RuntimeError("保底所需 SR 或以上稀有度权重为空")
             guarantee_rarity = self._weighted_rarity(self._guarantee_weights)
             guarantee_candidates = self._guarantee_candidates.get(guarantee_rarity)
             if not guarantee_candidates:
@@ -187,5 +187,5 @@ class CardPool:
 
     @property
     def guarantee_weights(self) -> tuple[tuple[str, int], ...]:
-        """返回保底使用的 SR 以上稀有度权重。"""
+        """返回保底使用的 SR 或以上稀有度权重。"""
         return tuple(self._guarantee_weights)

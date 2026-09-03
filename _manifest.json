@@ -1,15 +1,15 @@
 {
   "manifest_version": 2,
   "version": "1.0.0",
-  "name": "ONGEKI 模拟抽卡",
-  "description": "基于本地 ONGEKI 1.50 卡面素材的全卡大混池模拟抽卡，支持每日签到、点数、1/5/11 连、SR 以上保底、卡册与概率展示。",
+  "name": "音击抽卡模拟器",
+  "description": "音击抽卡模拟器",
   "author": {
     "name": "DeepSeek-V4",
     "url": "https://github.com/DeepSeek-V4-Pro"
   },
-  "license": "GPL-v3.0-or-later",
+  "license": "AGPL-3.0-or-later",
   "urls": {
-    "repository": "https://github.com/DeepSeek-V4-Pro",
+    "repository": "https://github.com/DeepSeek-V4-Pro/ongeki_gacha",
     "homepage": "https://github.com/DeepSeek-V4-Pro"
   },
   "changelog": "CHANGELOG.md",
