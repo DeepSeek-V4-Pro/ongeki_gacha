@@ -255,7 +255,9 @@ class CardPool:
     @property
     def pool_name(self) -> str:
         if self._pool is None:
-            return "レギュラーガチャ（全卡池）"
+            return "常驻池（当前版本已有全部 R/SR/SSR）"
+        if self._pool.pool_id == "regular":
+            return "常驻池（当前版本已有全部 R/SR/SSR）"
         return self._pool.name
 
     @property

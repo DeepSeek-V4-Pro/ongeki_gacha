@@ -29,6 +29,13 @@ logger = logging.getLogger(__name__)
 RENDER_CACHE_TTL_SECONDS = 24 * 60 * 60
 POOL_IMAGE_CACHE_TTL_SECONDS = 7 * 24 * 60 * 60
 MAX_POOL_IMAGE_BYTES = 8 * 1024 * 1024
+POOL_KIND_LABELS = {
+    "regular": "常驻",
+    "limited": "限定",
+    "pickup": "UP",
+    "attribute": "属性",
+    "special": "特殊",
+}
 
 class OngekiGachaPlugin(MaiBotPlugin):
     """ONGEKI 模拟抽卡插件。"""
@@ -254,7 +261,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
         }
         return PoolEntry(
             pool_id="regular",
-            name="常驻ガチャ（一般卡池）",
+            name="常驻池（当前版本已有全部 R/SR/SSR）",
             kind="regular",
             cards=pool_cards,
         )
@@ -380,7 +387,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             "/签到　/抽卡　/点数\n"
             "/月卡　/卡册　/卡图\n"
             "/卡池　/天井　/概率\n"
-            "/规则　/帮助\n"
+            "/天井列表　/规则　/帮助\n"
             "详细用法发送 /规则"
         )
 
@@ -409,10 +416,12 @@ class OngekiGachaPlugin(MaiBotPlugin):
             "抽卡流程：先按稀有度权重，再在池内按卡权重抽取，UP 卡按配置倍率加权",
             "11 连必得 SR 或以上；5 连每用户每周首次触发一次 SR 或以上保底",
             "【卡池】",
-            "默认每 15 天轮换一个历史官方卡池；也可切换为按官方日期选池",
-            "常驻池包含普通卡和未进入活动池的卡，可用 /抽卡 常驻 单独抽取",
+            f"默认每 {self.config.pool.rotation_interval_days} 天轮换一个历史官方卡池；也可切换为按官方日期选池",
+            "活动池候选为当期版本已有全部 R/SR/SSR；官方公告未写 UP 时会显示 UP 卡：0 张，但仍抽取这些基础卡",
+            "常驻池包含当前版本已有的全部 R/SR/SSR 基础卡，可用 /抽卡 常驻 单独抽取",
             "【天井】",
             "抽卡每张 +1 点天井点；达到上限后可 /天井 <卡ID> 兑换当前池选择卡",
+            "/天井列表（或 /天井 列表）可查看当前池全部可选卡的 ID 与角色",
             "每个卡池只可兑换一次，兑换后清空该池天井点",
             "【月卡】",
             (
@@ -753,6 +762,18 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 parts.append(f"{label}×{counts[label]}")
         return " · ".join(parts) if parts else "无"
 
+    @staticmethod
+    def _card_display_name(card: CardInfo, limit: int | None = None) -> str:
+        """返回去掉开头【稀有度】标签后的卡名，避免列表里重复显示稀有度。"""
+        name = re.sub(r"^【[^】]+】\s*", "", card.name).strip() or card.name
+        return name if limit is None else name[:limit]
+
+    @staticmethod
+    def _pool_kind_label(kind: str) -> str:
+        """把排表里的内部类型转换为用户可读的中文标签。"""
+        normalized = str(kind or "").strip().lower()
+        return POOL_KIND_LABELS.get(normalized, str(kind or ""))
+
     # ==================== 命令 ====================
 
     @Command(
@@ -947,7 +968,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
                     else None
                 )
                 if bonus_card is not None:
-                    parts.append(f"签到彩蛋卡：{bonus_card.name}")
+                    parts.append(f"签到彩蛋卡：{self._card_display_name(bonus_card)}")
             text = "，".join(parts)
             text += f"｜当前点数：{final_points or receipt.points} 点"
         else:
@@ -1172,7 +1193,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 await self._send_text(stream_id, text)
                 return True, text, True
 
-        text = f"已发送卡牌 ID {card_id}：{card.name}"
+        text = f"已发送卡牌 ID {card_id}：{self._card_display_name(card)}"
         await self._send_text(stream_id, text)
         return True, text, True
 
@@ -1225,7 +1246,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             card = self._cards.by_id.get(entry.card_id)
             if card is None:
                 continue
-            short_name = card.name[:36]
+            short_name = self._card_display_name(card, 36)
             preview_lines.append(f"{rarity_display(card.rarity)} {short_name} ×{entry.copies}")
         if preview_lines:
             lines.append("部分收藏：")
@@ -1270,13 +1291,13 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 active = schedule.active_for(today)
                 if active is None:
                     lines = [
-                        "本期卡池：常驻/全卡基础池",
-                        "状态：当前没有官方活动池，使用版本全卡基础池",
+                        "本期卡池：常驻池（当前版本已有全部 R/SR/SSR）",
+                        "状态：当前没有官方活动池，使用常驻池",
                     ]
                 else:
                     lines = [
                         f"本期卡池：{active.name[:60]}",
-                        f"类型：{active.kind}",
+                        f"类型：{self._pool_kind_label(active.kind)}",
                         f"时间：{active.start_date} ～ {active.end_date}",
                     ]
             else:
@@ -1286,7 +1307,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
                     active = schedule.entries[index]
                     lines = [
                         f"本期卡池：{active.name[:60]}",
-                        f"类型：{active.kind}",
+                        f"类型：{self._pool_kind_label(active.kind)}",
                         (
                             f"时间：{active.start_date} ～ {active.end_date}"
                             if active.start_date and active.end_date
@@ -1321,7 +1342,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
                         if card is None:
                             continue
                         lines.append(
-                            f"{card.name[:38]}（ID {card.id}）"
+                            f"{self._card_display_name(card, 38)}（ID {card.id}）"
                         )
                     if action != "列表" and len(up_ssr) > len(preview):
                         lines.append("完整列表：/卡池 列表")
@@ -1345,22 +1366,31 @@ class OngekiGachaPlugin(MaiBotPlugin):
                         )
                     lines.append(f"你的天井：{ceiling_status}")
             if self._regular_pool is not None:
+                regular_pool_name = (
+                    self._regular_pool_instance.pool_name[:60]
+                    if self._regular_pool_instance is not None
+                    else self._regular_pool.name[:60]
+                )
                 lines.append(
-                    f"常驻池：{self._regular_pool.name[:60]}"
+                    f"常驻池：{regular_pool_name}"
                     f"（{len(self._regular_pool.cards)} 张，可 /抽卡 常驻 使用）"
                 )
             if self._pool is not None:
                 pool_up_text = f"UP 卡：{self._pool.featured_count} 张"
                 if self._pool.select_count:
                     pool_up_text += f"｜天井选择：{self._pool.select_count} 张"
-                lines.append(
-                    pool_up_text
-                    + (
-                        f"（权重 ×{self._pool.pickup_multiplier}）"
-                        if self._pool.featured_count
-                        else "（无 UP，全卡基础池）"
+                if self._pool.featured_count:
+                    lines.append(
+                        pool_up_text
+                        + f"（权重 ×{self._pool.pickup_multiplier}）"
                     )
-                )
+                else:
+                    lines.append(
+                        pool_up_text
+                        + "（本期无 UP，候选为当期版本已有全部 R/SR/SSR）"
+                    )
+                if self._pool.select_count:
+                    lines.append("天井选择 ID 与角色：/天井列表（或 /天井 列表）")
                 if self._pool.pool_select_points:
                     lines.append(f"天井：{self._pool.pool_select_points} 点")
             if action in {"列表", "下一期"} and index is not None:
@@ -1385,7 +1415,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             r"(?:\s+(?P<action>列表|查看))?"
             r"(?:\s+(?P<card_id>\d+))?\s*$"
         ),
-        aliases=["/og天井", "/og 天井", "/天井列表", "/兑换天井"],
+        aliases=["/og天井", "/og 天井", "/兑换天井"],
     )
     async def handle_ceiling(
         self,
@@ -1436,6 +1466,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
                     if max_points
                     else "当前卡池无天井",
                     f"可选卡数量：{len(selectable)}",
+                    "发送 /天井 <卡ID> 可兑换指定卡",
                 ]
                 for pool_card in selectable:
                     card = self._cards.by_id.get(pool_card.card_id)
@@ -1443,7 +1474,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
                         continue
                     lines.append(
                         f"{rarity_display(card.rarity)} "
-                        f"{card.name[:38]}（ID {card.id}）"
+                        f"{self._card_display_name(card, 38)}（ID {card.id}）"
                     )
                 text = "\n".join(lines)
             elif card_id is None:
@@ -1492,7 +1523,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
                             verb = "获得" if receipt.is_new else "重复获得"
                             text = (
                                 f"天井兑换成功！{verb} "
-                                f"{card.name[:40]}（ID {card.id}）\n"
+                                f"{self._card_display_name(card, 40)}（ID {card.id}）\n"
                                 f"当前持有：{receipt.copies} 张"
                             )
                         else:
@@ -1503,6 +1534,22 @@ class OngekiGachaPlugin(MaiBotPlugin):
             force_forward=(action == "列表"),
         )
         return True, text, True
+
+    @Command(
+        "ongeki_ceiling_list",
+        description="查看当前卡池天井选择卡列表",
+        pattern=r"^/(?:天井列表|天井 列表|天井选择列表|天井选择 列表)\s*$",
+        aliases=["/og天井列表", "/og 天井列表"],
+    )
+    async def handle_ceiling_list(
+        self,
+        stream_id: str = "",
+        **kwargs: dict[str, Any],
+    ) -> tuple[bool, str, bool]:
+        """独立入口：只查看当前池可选天井卡的 ID 与角色。"""
+        kwargs["matched_groups"] = {"action": "列表"}
+        kwargs.pop("stream_id", None)
+        return await self.handle_ceiling(stream_id, **kwargs)
 
     @Command("ongeki_odds", description="查看模拟器概率和保底规则", pattern=r"^/(?:概率|抽卡概率)\s*$", aliases=["/og概率", "/og 概率"])
     async def handle_odds(self, stream_id: str = "", **kwargs: dict[str, Any]) -> tuple[bool, str, bool]:
@@ -1516,20 +1563,23 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._sync_active_pool()
         if self._pool is None:
             return True, "插件尚未初始化完成，请检查日志", True
-        lines = [
-            "音击抽卡模拟器（本地娱乐参考值，非官方概率）",
-            f"当前卡池：{self._pool.pool_name[:60]}",
-            f"卡池类型：{self._pool.pool_kind}｜UP 卡：{self._pool.featured_count} 张"
+        pool_info = (
+            f"卡池类型：{self._pool_kind_label(self._pool.pool_kind)}｜UP 卡：{self._pool.featured_count} 张"
             + (
                 f"｜天井选择：{self._pool.select_count} 张"
                 if self._pool.select_count
                 else ""
             )
             + (
-                f"（权重 ×{self._pool.pickup_multiplier}）"
-                if self._pool.featured_count
-                else ""
-            ),
+                "（本期无 UP，候选为当期版本已有全部 R/SR/SSR）"
+                if not self._pool.featured_count
+                else f"（权重 ×{self._pool.pickup_multiplier}）"
+            )
+        )
+        lines = [
+            "音击抽卡模拟器（本地娱乐参考值，非官方概率）",
+            f"当前卡池：{self._pool.pool_name[:60]}",
+            pool_info,
             (
                 f"常驻池：{self._regular_pool_instance.pool_name[:60]}"
                 "（可 /抽卡 常驻 使用）"
@@ -1537,6 +1587,8 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 else "常驻池：未配置"
             ),
         ]
+        if self._pool.select_count:
+            lines.append("天井选择 ID 与角色：/天井列表（或 /天井 列表）")
         weights = self._pool.rarity_weights
         total_weight = sum(weight for _, weight in weights)
         for rarity, weight in weights:

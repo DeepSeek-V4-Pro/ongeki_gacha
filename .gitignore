@@ -8,3 +8,4 @@ temp/
 data/
 assets/card_data/*.png
 assets/card_data/*.webp
+assets/card_data/*.backup.*
