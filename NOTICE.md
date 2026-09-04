@@ -6,6 +6,12 @@
 
 相关上游项目以 GNU Affero General Public License v3 授权，完整文本见 [LICENSE](LICENSE)。如需使用、修改或分发相关部分，请遵守 AGPL-3.0 及上游项目的许可要求。
 
+## Artemis
+
+卡池权重和静态卡池定义参考了 Artemis 的 `titles/cm/cm_data/MU3/static_gachas.csv` 与 `static_gacha_cards.csv`。
+
+Artemis 以 GNU Affero General Public License v3 授权；本项目仅从公开数据中提取卡池排期与权重字段，不以复制其运行代码为目的。
+
 ## MaiBot / MaiBot SDK
 
 本项目作为 MaiBot 插件运行，需要外部提供 MaiBot SDK 和运行环境。SDK 及其依赖不属于本项目，请遵循其各自许可。

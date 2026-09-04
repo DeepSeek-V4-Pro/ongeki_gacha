@@ -9,6 +9,8 @@ from typing import Any, Iterable
 import json
 import random
 
+from .gacha_pools import PoolEntry
+
 RARITIES = ("N", "R", "SR", "SRPlus", "SSR")
 SR_OR_ABOVE = frozenset({"SR", "SRPlus", "SSR"})
 RARITY_ORDER = {"SSR": 0, "SRPlus": 1, "SR": 2, "R": 3, "N": 4}
@@ -68,7 +70,7 @@ def load_cards(json_path: Path) -> CardCollection:
     """读取卡牌信息 JSON，并过滤无图片的异常记录。"""
     if not json_path.is_file():
         raise FileNotFoundError(f"卡牌信息文件不存在: {json_path}")
-    with json_path.open("r", encoding="utf-8") as file_obj:
+    with json_path.open("r", encoding="utf-8-sig") as file_obj:
         raw_data = json.load(file_obj)
     if not isinstance(raw_data, list):
         raise ValueError("卡牌信息 JSON 顶层必须是数组")
@@ -111,7 +113,7 @@ def derive_growth(rarity: str, copies: int) -> tuple[int, bool, bool]:
 
 
 class CardPool:
-    """全卡大混池的两阶段抽取器。"""
+    """模拟抽卡池的两阶段抽取器。"""
 
     def __init__(
         self,
@@ -122,6 +124,9 @@ class CardPool:
         weight_sr: int,
         weight_sr_plus: int,
         weight_ssr: int,
+        pool: PoolEntry | None = None,
+        pickup_multiplier: int = 10,
+        strict_pool_cards: bool = False,
     ) -> None:
         raw_weights = {
             "N": weight_n,
@@ -131,25 +136,70 @@ class CardPool:
             "SSR": weight_ssr,
         }
         self._cards = cards
+        self._raw_weights = raw_weights
+        self._pool: PoolEntry | None = None
+        self._pickup_multiplier = max(int(pickup_multiplier), 1)
+        self._strict_pool_cards = bool(strict_pool_cards)
         self._rarity_weights: list[tuple[str, int]] = []
         self._candidates: dict[str, list[CardInfo]] = {}
+        self._candidate_weights: dict[str, list[int]] = {}
+        self.set_pool(pool)
+
+    def _effective_weight(self, card: CardInfo) -> int:
+        """Return the per-card weight inside the active pool."""
+        pool_card = self._pool.cards.get(card.id) if self._pool is not None else None
+        weight = int(pool_card.weight) if pool_card is not None else 1
+        if pool_card is not None and pool_card.is_pickup:
+            weight *= self._pickup_multiplier
+        return max(int(weight), 1)
+
+    def set_pool(self, pool: PoolEntry | None) -> None:
+        """Rebuild rarity/candidate tables for a pool definition."""
+        self._pool = pool
+        self._rarity_weights = []
+        self._candidates = {}
+        self._candidate_weights = {}
+        pool_card_ids = set(pool.cards) if pool is not None else set()
+
         for rarity in RARITIES:
-            weight = int(raw_weights.get(rarity, 0) or 0)
-            candidates = list(cards.by_rarity.get(rarity, ()))
-            if weight > 0 and candidates:
-                self._rarity_weights.append((rarity, weight))
-                self._candidates[rarity] = candidates
+            weight = int(self._raw_weights.get(rarity, 0) or 0)
+            if weight <= 0:
+                continue
+            candidates: list[CardInfo] = []
+            if self._strict_pool_cards and pool is not None:
+                candidates = [
+                    card
+                    for card in self._cards.by_rarity.get(rarity, ())
+                    if card.id in pool_card_ids
+                ]
+            else:
+                candidates = list(self._cards.by_rarity.get(rarity, ()))
+            if not candidates:
+                continue
+            self._rarity_weights.append((rarity, weight))
+            self._candidates[rarity] = candidates
+            self._candidate_weights[rarity] = [
+                self._effective_weight(card) for card in candidates
+            ]
+
         if not self._rarity_weights:
             raise ValueError("没有配置任何有效的稀有度权重或候选卡牌")
 
         self._guarantee_weights: list[tuple[str, int]] = []
         self._guarantee_candidates: dict[str, list[CardInfo]] = {}
+        self._guarantee_candidate_weights: dict[str, list[int]] = {}
         for rarity in ("SR", "SRPlus", "SSR"):
-            weight = int(raw_weights.get(rarity, 0) or 0)
-            candidates = list(cards.by_rarity.get(rarity, ()))
-            if weight > 0 and candidates:
-                self._guarantee_weights.append((rarity, weight))
-                self._guarantee_candidates[rarity] = candidates
+            weight = int(self._raw_weights.get(rarity, 0) or 0)
+            if weight <= 0:
+                continue
+            candidates = self._candidates.get(rarity, [])
+            if not candidates:
+                continue
+            self._guarantee_weights.append((rarity, weight))
+            self._guarantee_candidates[rarity] = candidates
+            self._guarantee_candidate_weights[rarity] = [
+                self._effective_weight(card) for card in candidates
+            ]
 
     def _weighted_rarity(self, pool: list[tuple[str, int]]) -> str:
         rarities = [rarity for rarity, _ in pool]
@@ -158,9 +208,10 @@ class CardPool:
 
     def _pick_card(self, rarity: str) -> CardInfo:
         candidates = self._candidates.get(rarity)
+        weights = self._candidate_weights.get(rarity)
         if not candidates:
             raise RuntimeError(f"稀有度 {rarity} 没有候选卡牌")
-        return random.choice(candidates)
+        return random.choices(candidates, weights=weights, k=1)[0]
 
     def draw(self, count: int, guarantee: bool = True) -> list[CardInfo]:
         """抽取指定数量的卡牌，并应用 5/11 连 SR 或以上保底。"""
@@ -173,9 +224,14 @@ class CardPool:
                 raise RuntimeError("保底所需 SR 或以上稀有度权重为空")
             guarantee_rarity = self._weighted_rarity(self._guarantee_weights)
             guarantee_candidates = self._guarantee_candidates.get(guarantee_rarity)
+            guarantee_weights = self._guarantee_candidate_weights.get(guarantee_rarity)
             if not guarantee_candidates:
                 raise RuntimeError(f"保底稀有度 {guarantee_rarity} 没有候选卡牌")
-            replacement = random.choice(guarantee_candidates)
+            replacement = random.choices(
+                guarantee_candidates,
+                weights=guarantee_weights,
+                k=1,
+            )[0]
             slot = random.randrange(len(results))
             results[slot] = replacement
         return results
@@ -189,3 +245,39 @@ class CardPool:
     def guarantee_weights(self) -> tuple[tuple[str, int], ...]:
         """返回保底使用的 SR 或以上稀有度权重。"""
         return tuple(self._guarantee_weights)
+
+    @property
+    def pool_id(self) -> str:
+        return self._pool.pool_id if self._pool is not None else "regular"
+
+    @property
+    def pool_name(self) -> str:
+        if self._pool is None:
+            return "レギュラーガチャ（全卡池）"
+        return self._pool.name
+
+    @property
+    def pool_kind(self) -> str:
+        return self._pool.kind if self._pool is not None else "regular"
+
+    @property
+    def pool_start_date(self) -> str:
+        return self._pool.start_date.isoformat() if self._pool and self._pool.start_date else ""
+
+    @property
+    def pool_end_date(self) -> str:
+        return self._pool.end_date.isoformat() if self._pool and self._pool.end_date else ""
+
+    @property
+    def pool_select_points(self) -> int | None:
+        return self._pool.select_points if self._pool is not None else None
+
+    @property
+    def featured_count(self) -> int:
+        if self._pool is None:
+            return 0
+        return sum(1 for card in self._pool.cards.values() if card.is_pickup)
+
+    @property
+    def pickup_multiplier(self) -> int:
+        return self._pickup_multiplier

@@ -27,8 +27,9 @@ from pathlib import Path
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_SOURCE_CARDS = Path(r"D:\Tools\ONGEKI_unpack\output\cards_2690")
-DEFAULT_SOURCE_JSON = Path(r"D:\Tools\ONGEKI_unpack\output\card_info_merged.json")
+WORKSPACE_ROOT = SCRIPT_DIR.parent
+DEFAULT_SOURCE_CARDS = WORKSPACE_ROOT / "output" / "cards_2690"
+DEFAULT_SOURCE_JSON = WORKSPACE_ROOT / "output" / "card_info_merged.json"
 DEFAULT_DEST = SCRIPT_DIR / "assets" / "card_data"
 JSON_NAME = "card_info_merged.json"
 MANIFEST_NAME = "card_data_manifest.json"
@@ -53,11 +54,18 @@ def image_names(json_path: Path) -> list[str]:
     rows = json.loads(json_path.read_text(encoding="utf-8-sig"))
     names: list[str] = []
     for row in rows:
+        if not isinstance(row, dict):
+            continue
+        if not bool(row.get("imagePresent", False)):
+            continue
         card_id = row.get("id")
-        name = str(
-            row.get("imageFile")
-            or (f"ui_card_{int(card_id):06d}.png" if card_id is not None else "")
-        )
+        if card_id is None:
+            continue
+        try:
+            normalized_id = int(card_id)
+        except (TypeError, ValueError):
+            continue
+        name = str(row.get("imageFile") or f"ui_card_{normalized_id:06d}.png")
         if name:
             names.append(name)
     return sorted(set(names))
