@@ -1277,6 +1277,23 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 else (schedule.entries[index] if index is not None else None)
             )
             image_url = shown_pool.image_url if shown_pool is not None else ""
+            if shown_pool is not None and self._cards is not None:
+                up_ssr = shown_pool.up_ssr_cards()
+                if up_ssr:
+                    lines.append(f"UP SSR：{len(up_ssr)} 张")
+                    if action == "列表":
+                        preview = up_ssr
+                    else:
+                        preview = up_ssr[:6]
+                    for pool_card in preview:
+                        card = self._cards.by_id.get(pool_card.card_id)
+                        if card is None:
+                            continue
+                        lines.append(
+                            f"{card.name[:38]}（ID {card.id}）"
+                        )
+                    if action != "列表" and len(up_ssr) > len(preview):
+                        lines.append("完整列表：/卡池 列表")
             if shown_pool is not None and self._db is not None:
                 state = self._db.get_pool_select_state(
                     user_id,

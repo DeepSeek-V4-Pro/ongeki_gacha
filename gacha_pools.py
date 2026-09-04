@@ -10,6 +10,14 @@ from typing import Any
 import json
 
 
+RARITY_ALIASES = {
+    "1": "N",
+    "2": "R",
+    "3": "SR",
+    "4": "SSR",
+}
+
+
 @dataclass(frozen=True)
 class PoolCard:
     """Per-card weight metadata inside a gacha pool."""
@@ -22,9 +30,10 @@ class PoolCard:
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "PoolCard":
+        raw_rarity = str(raw.get("rarity") or "")
         return cls(
             card_id=int(raw["card_id"]),
-            rarity=str(raw.get("rarity") or ""),
+            rarity=RARITY_ALIASES.get(raw_rarity, raw_rarity),
             weight=max(int(raw.get("weight") or 1), 1),
             is_pickup=bool(raw.get("is_pickup", False)),
             is_select=bool(raw.get("is_select", False)),
@@ -77,6 +86,17 @@ class PoolEntry:
         if self.start_date is None or self.end_date is None:
             return False
         return self.start_date <= day < self.end_date
+
+    def up_ssr_cards(self) -> list[PoolCard]:
+        """Return pickup SSR cards for this pool, sorted by card id."""
+        return sorted(
+            (
+                card
+                for card in self.cards.values()
+                if card.is_pickup and card.rarity == "SSR"
+            ),
+            key=lambda item: item.card_id,
+        )
 
 
 @dataclass(frozen=True)
