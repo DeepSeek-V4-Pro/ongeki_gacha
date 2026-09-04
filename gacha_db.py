@@ -89,6 +89,7 @@ class CheckinReceipt:
     weekly_reward: int = 0
     cycle_reward: int = 0
     monthly_reward: int = 0
+    non_gacha_card_id: int | None = None
 
 
 @dataclass(frozen=True)
@@ -719,6 +720,8 @@ class GachaDatabase:
         streak_cycle_days: int,
         streak_cycle_reward: int,
         monthly_daily_bonus: int,
+        non_gacha_card_ids: Iterable[tuple[int, str]] = (),
+        non_gacha_checkin_probability: float = 0.0,
         tz_offset_hours: int,
     ) -> CheckinReceipt:
         """执行每日签到，重复日期不会重复发放。"""
@@ -733,6 +736,8 @@ class GachaDatabase:
             or monthly_daily_bonus < 0
         ):
             raise ValueError("连续签到、卡池周期或月卡奖励配置非法")
+        if not 0.0 <= non_gacha_checkin_probability <= 1.0:
+            raise ValueError("非抽卡签到掉落概率必须在 0 到 1 之间")
         today = self._date_str(tz_offset_hours)
 
         with self._lock:
@@ -812,6 +817,47 @@ class GachaDatabase:
                     "INSERT INTO checkins(qq_id, checkin_date, reward, created_at) VALUES(?, ?, ?, ?)",
                     (qq_id, today, total_reward, now),
                 )
+                non_gacha_card_id: int | None = None
+                non_gacha_pool = list(non_gacha_card_ids or ())
+                if (
+                    non_gacha_pool
+                    and non_gacha_checkin_probability > 0
+                    and self._random.random() < non_gacha_checkin_probability
+                ):
+                    chosen_card_id, chosen_rarity = self._random.choice(non_gacha_pool)
+                    existing = conn.execute(
+                        "SELECT copies FROM inventory WHERE qq_id = ? AND card_id = ?",
+                        (qq_id, chosen_card_id),
+                    ).fetchone()
+                    previous_copies = int(existing["copies"]) if existing is not None else 0
+                    new_copies = previous_copies + 1
+                    _, is_kaika, is_cho_kaika = derive_growth(
+                        chosen_rarity,
+                        new_copies,
+                    )
+                    conn.execute(
+                        """
+                        INSERT INTO inventory(
+                            qq_id, card_id, copies, is_kaika, is_cho_kaika,
+                            first_obtained_at, last_obtained_at
+                        ) VALUES(?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT(qq_id, card_id) DO UPDATE SET
+                            copies = excluded.copies,
+                            is_kaika = excluded.is_kaika,
+                            is_cho_kaika = excluded.is_cho_kaika,
+                            last_obtained_at = excluded.last_obtained_at
+                        """,
+                        (
+                            qq_id,
+                            chosen_card_id,
+                            new_copies,
+                            int(is_kaika),
+                            int(is_cho_kaika),
+                            now,
+                            now,
+                        ),
+                    )
+                    non_gacha_card_id = chosen_card_id
                 conn.execute("COMMIT")
                 player = self._player_state(conn, qq_id)
                 return CheckinReceipt(
@@ -826,6 +872,7 @@ class GachaDatabase:
                     weekly_reward=weekly_reward,
                     cycle_reward=cycle_reward,
                     monthly_reward=monthly_reward,
+                    non_gacha_card_id=non_gacha_card_id,
                 )
             except Exception:
                 conn.execute("ROLLBACK")

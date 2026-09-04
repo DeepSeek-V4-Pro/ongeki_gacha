@@ -23,6 +23,10 @@ BRAND_COLOR = (30, 60, 110, 255)
 POWERED_TEXT = "MaiBot"
 POWERED_COLOR = (75, 85, 110, 255)
 
+INFO_FOOTER_HEIGHT_RATIO = 0.045
+INFO_FOOTER_FONT_RATIO = 0.030
+INFO_FOOTER_ALPHA = 128
+
 OVERLAY_FILES = {
     "star_filled": "UI_Card_star_00.webp",
     "star_empty": "UI_Card_star_01.webp",
@@ -66,6 +70,7 @@ class GachaRenderer:
         if size in self._fonts:
             return self._fonts[size]
         candidates = (
+            self._ui_dir / "SEGA_Humming_v2-B.ttf",
             Path("C:/Windows/Fonts/msyhbd.ttc"),
             Path("C:/Windows/Fonts/msyh.ttc"),
             Path("C:/Windows/Fonts/simhei.ttf"),
@@ -205,6 +210,52 @@ class GachaRenderer:
             (card_x + card_w - mark_w - 8, card_y + 8),
         )
 
+    def _draw_card_info_footer(
+        self,
+        canvas: Image.Image,
+        card_x: int,
+        card_y: int,
+        card_w: int,
+        card_h: int,
+        card: CardInfo,
+    ) -> None:
+        """Draw the RinNET-style ID/card-number footer on one result card."""
+        label = str(card.id)
+        card_number = str(card.card_number or "").strip()
+        if card_number:
+            label += " " + card_number
+        elif card.version:
+            label += " " + str(card.version)
+
+        font_size = max(8, round(card_w * INFO_FOOTER_FONT_RATIO))
+        font = self._font(font_size)
+        probe = ImageDraw.Draw(Image.new("RGBA", (1, 1)))
+        while font_size > 8 and probe.textlength(label, font=font) > card_w - 8:
+            font_size -= 1
+            font = self._font(font_size)
+
+        footer_h = max(
+            round(card_h * INFO_FOOTER_HEIGHT_RATIO),
+            round(font_size * 1.5),
+        )
+        overlay = Image.new("RGBA", (card_w, footer_h), (0, 0, 0, 0))
+        overlay_draw = ImageDraw.Draw(overlay)
+        overlay_draw.rectangle(
+            (0, 0, card_w - 1, footer_h - 1),
+            fill=(0, 0, 0, INFO_FOOTER_ALPHA),
+        )
+        overlay_draw.text(
+            (card_w / 2, footer_h / 2),
+            label,
+            font=font,
+            fill=(255, 255, 255, 255),
+            anchor="mm",
+        )
+        canvas.alpha_composite(
+            overlay,
+            (card_x, card_y + card_h - footer_h),
+        )
+
     def render(
         self,
         states: list[RenderCard],
@@ -287,6 +338,14 @@ class GachaRenderer:
                     card_h,
                     state.card.rarity,
                     state.copies,
+                )
+                self._draw_card_info_footer(
+                    canvas,
+                    card_x,
+                    card_y,
+                    card_w,
+                    card_h,
+                    state.card,
                 )
 
         output_path.parent.mkdir(parents=True, exist_ok=True)

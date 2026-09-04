@@ -40,10 +40,10 @@ class PoolConfig(PluginConfigBase):
     __ui_icon__ = "dices"
     __ui_order__ = 2
 
-    weight_n: int = Field(default=1, description="N 权重")
-    weight_r: int = Field(default=76, description="R 权重")
-    weight_sr: int = Field(default=19, description="SR 权重")
-    weight_sr_plus: int = Field(default=1, description="SR+ 权重")
+    weight_n: int = Field(default=0, description="N 权重（正式普通池不使用）")
+    weight_r: int = Field(default=77, description="R 权重（参照 Artemis 普通池）")
+    weight_sr: int = Field(default=20, description="SR 权重（参照 Artemis 普通池）")
+    weight_sr_plus: int = Field(default=0, description="SR+ 权重（正式普通池不使用）")
     weight_ssr: int = Field(default=3, description="SSR 权重")
     schedule_json: str = Field(
         default="assets/card_data/gacha_pools.json",
@@ -62,8 +62,8 @@ class PoolConfig(PluginConfigBase):
         description="UP 卡相对普通卡的权重倍率",
     )
     strict_pool_cards: bool = Field(
-        default=False,
-        description="True 时仅使用排表中的 UP/选择卡，False 时保留版本全卡基础池",
+        default=True,
+        description="按池子候选列表抽取；常驻池使用 regular_pool，活动池使用排表 cards",
     )
 
 
@@ -86,6 +86,10 @@ class EconomyConfig(PluginConfigBase):
     streak_weekly_reward: int = Field(default=500, description="每连续签到 7 天额外奖励点数")
     streak_cycle_days: int = Field(default=15, description="每连续签到多少天发放卡池周期奖励")
     streak_cycle_reward: int = Field(default=1000, description="卡池周期奖励点数")
+    non_gacha_checkin_probability: float = Field(
+        default=0.05,
+        description="每日签到随机获得非抽卡卡的概率（0～1）",
+    )
     savings_threshold_1: int = Field(default=1000, description="囤点奖励第 1 档门槛")
     savings_bonus_1: int = Field(default=100, description="囤点奖励第 1 档点数")
     savings_threshold_2: int = Field(default=3000, description="囤点奖励第 2 档门槛")

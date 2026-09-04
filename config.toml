@@ -7,16 +7,16 @@ cards_dir = "assets/card_data"
 card_info_json = "assets/card_data/card_info_merged.json"
 
 [pool]
-weight_n = 1
-weight_r = 76
-weight_sr = 19
-weight_sr_plus = 1
+weight_n = 0
+weight_r = 77
+weight_sr = 20
+weight_sr_plus = 0
 weight_ssr = 3
 schedule_json = "assets/card_data/gacha_pools.json"
 rotation_mode = "cycle"
 rotation_interval_days = 15
 pickup_multiplier = 10
-strict_pool_cards = false
+strict_pool_cards = true
 
 [economy]
 cost_1 = 50
@@ -30,6 +30,7 @@ streak_daily_max = 100
 streak_weekly_reward = 500
 streak_cycle_days = 15
 streak_cycle_reward = 1000
+non_gacha_checkin_probability = 0.05
 savings_threshold_1 = 1000
 savings_bonus_1 = 100
 savings_threshold_2 = 3000

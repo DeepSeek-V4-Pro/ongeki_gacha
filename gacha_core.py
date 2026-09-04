@@ -26,6 +26,7 @@ class CardInfo:
     image_file: str
     attribute: str = ""
     version: str = ""
+    card_number: str = ""
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "CardInfo":
@@ -40,6 +41,7 @@ class CardInfo:
             image_file=str(raw.get("imageFile") or f"ui_card_{int(card_id):06d}.png"),
             attribute=str(raw.get("attribute") or ""),
             version=str(raw.get("version") or ""),
+            card_number=str(raw.get("cardNumber") or ""),
         )
 
 
@@ -277,6 +279,13 @@ class CardPool:
         if self._pool is None:
             return 0
         return sum(1 for card in self._pool.cards.values() if card.is_pickup)
+
+    @property
+    def select_count(self) -> int:
+        """Return the number of cards selectable via the pool's ceiling."""
+        if self._pool is None:
+            return 0
+        return sum(1 for card in self._pool.cards.values() if card.is_select)
 
     @property
     def pickup_multiplier(self) -> int:

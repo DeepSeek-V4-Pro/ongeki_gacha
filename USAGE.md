@@ -6,6 +6,8 @@
 
 音击抽卡模拟器是一个 MaiBot 插件，用于在聊天环境中模拟音击卡牌抽卡、收藏和成长体验。
 
+抽卡结果图底部会按 RinNET 前端样式叠加一条黑色半透明信息条，显示卡牌数字 ID 和完整卡号（例如 `104490 [O.N.G.E.K.I.]1.50-E-0371`）；`/卡图` 发送的是原始高清卡面，不会叠加这条信息。
+
 ## 安装
 
 1. 将插件目录放入 MaiBot 的插件目录。
@@ -26,7 +28,7 @@ assets/card_data/
 
 - `card_info_merged.json`：卡牌元数据。
 - `card_data_manifest.json`：文件大小和 SHA-256 校验清单。
-- `gacha_pools.json`：官方 CARDMAKER 卡池排表（63 个池，2020-10～2026-07）。
+- `gacha_pools.json`：官方 CARDMAKER 卡池排表（63 个池，2020-10～2026-07），每个池由“当时版本已有全部 R/SR/SSR 基础卡 + 官方 UP/选择卡”组成，每张卡附带 `id / version / cardNumber`、UP/选择标记和非抽卡掉落池。
 - `ui_card_*.png`：卡面素材，通常不随代码仓库分发。
 
 可通过插件配置中的 `assets.cards_dir` 和 `assets.card_info_json` 切换到其他数据目录。
@@ -36,11 +38,12 @@ assets/card_data/
 
 - `[pool] rotation_mode = "cycle"`：按 `rotation_interval_days`（默认 15 天）循环使用 63 个历史官方卡池。
 - `[pool] rotation_mode = "official"`：按官方公告日期选池；若当天没有活动池则使用常驻/全卡基础池。
-- 每个池保留官方公布的卡牌、UP 列表、天井点数和卡内权重；UP 卡按 `pickup_multiplier`（默认 ×10）加权。
-- `strict_pool_cards = false` 表示仍保留版本全卡作为基础池；设为 `true` 后只抽排表中的 UP/选择卡。
+- 与原游戏卡牌机的规则一致：活动池不会只有公告列出的新卡/选择卡，而是按活动日期过滤出该版本已存在的全部 R/SR/SSR，再叠加上本期 UP 与天井选择卡；UP 卡按 `pickup_multiplier`（默认 ×10）加权。
+- `strict_pool_cards = true`：严格按池子候选卡列表抽取；排表 `cards` 已经包含“当时基础卡 + 本期官方宣传/选择卡”，不会把未在当期出现的未来版本卡混入。
 - 可通过 `/卡池` 查看当前池、历史轮替进度、天井信息，并同时发送 SEGA 官方活动图（网络不可用时只显示文字）。
 - `/卡池` 会展示当前池 UP SSR 角色预览；`/卡池 列表` 会以转发消息列出全部 UP SSR。
-- 常驻池包含普通池卡和未进入任何活动池的卡；可先 `/抽卡 常驻 <1/5/11>` 抽取，`/抽卡` 默认仍是当前轮替活动池。
+- 常驻池包含当前版本已有的全部 R/SR/SSR 基础卡（包括历史活动卡）；可先 `/抽卡 常驻 <1/5/11>` 抽取，`/抽卡` 默认仍是当前轮替活动池。
+- `gacha_pools.json` 的 `non_gacha_pool` 卡不会进入任何抽卡池，改为每日签到按概率随机掉落。
 - 天井按卡池独立累计：每次抽取一张卡 +1 点；达到 `select_points` 上限后可用 `/天井 <卡ID>` 兑换当前池的可选卡，每个池只能兑换一次。
 - `/天井 列表` 可查看当前池全部可选卡 ID；池轮换后旧池天井不会带入新池。
 - 帮助只保留命令列表；详细规则使用 `/规则` 转发查看，较长列表自动转为转发消息。
@@ -95,6 +98,7 @@ python sync_card_data.py `
 - 连续签到第 7 天、14 天、21 天等额外获得 500 点。
 - 连续签到第 15、30、45 天等同额外获得卡池周期奖励，默认 1000 点；第 15 天刚好对应一次 15 天猫池轮替。
 - 每日基础签到默认随机获得 100～250 点，平均约 175 点；连续签到、卡池周期、月卡、管理员发放等奖励在此基础上累加。
+- 每日签到有 `non_gacha_checkin_probability`（默认 5%）概率随机获得一张 `non_gacha_pool` 中的非抽卡卡。
 - 购买月卡消耗 1500 点，有效期 30 天，有效期内每日签到额外获得 100 点。
 - 月卡剩余不超过 3 天才能续费，购买后获得两次半价五连（默认 2 次）。
 - 点数达到 1000 / 3000 / 10000 时，签到或查看点数会自动领取 100 / 500 / 2000 点囤点奖励；每个档位只触发一次。
@@ -126,6 +130,7 @@ streak_daily_max = 100
 streak_weekly_reward = 500
 streak_cycle_days = 15
 streak_cycle_reward = 1000
+non_gacha_checkin_probability = 0.05
 savings_threshold_1 = 1000
 savings_bonus_1 = 100
 savings_threshold_2 = 3000
@@ -134,11 +139,16 @@ savings_threshold_3 = 10000
 savings_bonus_3 = 2000
 
 [pool]
+weight_n = 0
+weight_r = 77
+weight_sr = 20
+weight_sr_plus = 0
+weight_ssr = 3
 schedule_json = "assets/card_data/gacha_pools.json"
 rotation_mode = "cycle"
 rotation_interval_days = 15
 pickup_multiplier = 10
-strict_pool_cards = false
+strict_pool_cards = true
 
 [monthly_card]
 price = 1500

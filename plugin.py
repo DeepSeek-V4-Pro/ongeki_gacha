@@ -43,6 +43,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._regular_pool: PoolEntry | None = None
         self._regular_pool_instance: CardPool | None = None
         self._schedule: GachaSchedule | None = None
+        self._non_gacha_cards: tuple[CardInfo, ...] = ()
         self._db: GachaDatabase | None = None
         self._renderer: GachaRenderer | None = None
         self._cards_dir: Path | None = None
@@ -75,6 +76,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._regular_pool = None
         self._regular_pool_instance = None
         self._schedule = None
+        self._non_gacha_cards = ()
         self._renderer = None
 
     async def on_config_update(self, scope: str, config_data: dict[str, object], version: str) -> None:
@@ -105,6 +107,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             self._regular_pool = regular_pool
             self._regular_pool_instance = regular_pool_instance
             self._schedule = schedule
+            self._non_gacha_cards = self._non_gacha_cards_from_schedule(cards, schedule)
             self._renderer = renderer
         self.ctx.logger.info("ONGEKI 模拟抽卡配置已热更新")
 
@@ -129,6 +132,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._regular_pool = regular_pool
         self._regular_pool_instance = regular_pool_instance
         self._schedule = schedule
+        self._non_gacha_cards = self._non_gacha_cards_from_schedule(cards, schedule)
         self._db = database
         self._renderer = renderer
 
@@ -178,7 +182,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             weight_ssr=config.pool.weight_ssr,
             pool=active_pool,
             pickup_multiplier=config.pool.pickup_multiplier,
-            strict_pool_cards=config.pool.strict_pool_cards,
+            strict_pool_cards=config.pool.strict_pool_cards or active_pool is not None,
         )
         regular_pool = self._build_regular_pool(cards, schedule)
         regular_pool_instance = CardPool(
@@ -253,6 +257,20 @@ class OngekiGachaPlugin(MaiBotPlugin):
             name="常驻ガチャ（一般卡池）",
             kind="regular",
             cards=pool_cards,
+        )
+
+    @staticmethod
+    def _non_gacha_cards_from_schedule(
+        cards: CardCollection,
+        schedule: GachaSchedule,
+    ) -> tuple[CardInfo, ...]:
+        """提取排表中标记为非抽卡、可签到掉落的卡牌。"""
+        if schedule.non_gacha_pool is None:
+            return ()
+        return tuple(
+            cards.by_id[card_id]
+            for card_id in schedule.non_gacha_pool.cards
+            if card_id in cards.by_id
         )
 
     @classmethod
@@ -894,6 +912,11 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 streak_cycle_days=config.streak_cycle_days,
                 streak_cycle_reward=config.streak_cycle_reward,
                 monthly_daily_bonus=self.config.monthly_card.daily_bonus,
+                non_gacha_card_ids=[
+                    (card.id, card.rarity)
+                    for card in self._non_gacha_cards
+                ],
+                non_gacha_checkin_probability=config.non_gacha_checkin_probability,
                 tz_offset_hours=config.tz_offset_hours,
             )
             if receipt.success:
@@ -917,6 +940,14 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 parts.append(f"月卡每日奖励 +{receipt.monthly_reward} 点")
             if savings_bonus:
                 parts.append(f"囤点奖励 +{savings_bonus} 点")
+            if receipt.non_gacha_card_id:
+                bonus_card = (
+                    self._cards.by_id.get(receipt.non_gacha_card_id)
+                    if self._cards is not None
+                    else None
+                )
+                if bonus_card is not None:
+                    parts.append(f"签到彩蛋卡：{bonus_card.name}")
             text = "，".join(parts)
             text += f"｜当前点数：{final_points or receipt.points} 点"
         else:
@@ -1319,8 +1350,11 @@ class OngekiGachaPlugin(MaiBotPlugin):
                     f"（{len(self._regular_pool.cards)} 张，可 /抽卡 常驻 使用）"
                 )
             if self._pool is not None:
+                pool_up_text = f"UP 卡：{self._pool.featured_count} 张"
+                if self._pool.select_count:
+                    pool_up_text += f"｜天井选择：{self._pool.select_count} 张"
                 lines.append(
-                    f"UP/选择卡：{self._pool.featured_count} 张"
+                    pool_up_text
                     + (
                         f"（权重 ×{self._pool.pickup_multiplier}）"
                         if self._pool.featured_count
@@ -1486,6 +1520,11 @@ class OngekiGachaPlugin(MaiBotPlugin):
             "音击抽卡模拟器（本地娱乐参考值，非官方概率）",
             f"当前卡池：{self._pool.pool_name[:60]}",
             f"卡池类型：{self._pool.pool_kind}｜UP 卡：{self._pool.featured_count} 张"
+            + (
+                f"｜天井选择：{self._pool.select_count} 张"
+                if self._pool.select_count
+                else ""
+            )
             + (
                 f"（权重 ×{self._pool.pickup_multiplier}）"
                 if self._pool.featured_count

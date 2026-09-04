@@ -15,6 +15,7 @@ RARITY_ALIASES = {
     "2": "R",
     "3": "SR",
     "4": "SSR",
+    "SR+": "SRPlus",
 }
 
 
@@ -24,6 +25,8 @@ class PoolCard:
 
     card_id: int
     rarity: str = ""
+    version: str = ""
+    card_number: str = ""
     weight: int = 1
     is_pickup: bool = False
     is_select: bool = False
@@ -34,6 +37,8 @@ class PoolCard:
         return cls(
             card_id=int(raw["card_id"]),
             rarity=RARITY_ALIASES.get(raw_rarity, raw_rarity),
+            version=str(raw.get("version") or ""),
+            card_number=str(raw.get("cardNumber") or ""),
             weight=max(int(raw.get("weight") or 1), 1),
             is_pickup=bool(raw.get("is_pickup", False)),
             is_select=bool(raw.get("is_select", False)),
@@ -107,6 +112,7 @@ class GachaSchedule:
     default_pool_id: str = "regular"
     by_id: dict[str, PoolEntry] = field(default_factory=dict)
     regular_pool: PoolEntry | None = None
+    non_gacha_pool: PoolEntry | None = None
 
     def __post_init__(self) -> None:
         ordered = tuple(
@@ -139,9 +145,15 @@ class GachaSchedule:
         if not isinstance(rows, list):
             return cls()
         regular_raw = payload.get("regular_pool") if isinstance(payload, dict) else None
+        non_gacha_raw = payload.get("non_gacha_pool") if isinstance(payload, dict) else None
         regular_pool = (
             PoolEntry.from_dict(regular_raw)
             if isinstance(regular_raw, dict) and regular_raw.get("id")
+            else None
+        )
+        non_gacha_pool = (
+            PoolEntry.from_dict(non_gacha_raw)
+            if isinstance(non_gacha_raw, dict) and non_gacha_raw.get("id")
             else None
         )
         return cls(
@@ -152,6 +164,7 @@ class GachaSchedule:
             ),
             default_pool_id=str(payload.get("default_pool_id") or "regular"),
             regular_pool=regular_pool,
+            non_gacha_pool=non_gacha_pool,
         )
 
     def get(self, pool_id: str) -> PoolEntry | None:
