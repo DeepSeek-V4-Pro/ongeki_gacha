@@ -13,7 +13,7 @@ Options:
     --source-json     source card_info_merged.json
     --dest            destination directory (default: assets/card_data)
     --check           verify an existing data directory
-    --quick           check file existence only, skip SHA-256
+    --quick           check file existence and manifest coverage, skip SHA-256
     --dry-run         print planned actions without writing
 """
 
@@ -285,7 +285,11 @@ def main() -> int:
     )
     parser.add_argument("--dest", default=str(DEFAULT_DEST), help="目标数据目录")
     parser.add_argument("--check", action="store_true", help="校验已有数据目录")
-    parser.add_argument("--quick", action="store_true", help="只检查文件是否存在")
+    parser.add_argument(
+        "--quick",
+        action="store_true",
+        help="只检查文件存在与 manifest 覆盖，跳过 SHA-256",
+    )
     parser.add_argument("--dry-run", action="store_true", help="只打印计划操作，不写入")
     args = parser.parse_args()
 

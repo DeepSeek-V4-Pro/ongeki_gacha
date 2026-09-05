@@ -30,12 +30,13 @@ assets/card_data/
 其中包含：
 
 - `card_info_merged.json`：卡牌元数据。
-- `card_data_manifest.json`：文件大小和 SHA-256 校验清单。
+- `card_data_manifest.json`：卡面、卡牌 JSON 与 `gacha_pools.json` 的大小和 SHA-256 校验清单。
 - `gacha_pools.json`：官方 CARDMAKER 卡池排表（63 个池，2020-10～2026-07），每个池由“当期版本已有全部 R/SR/SSR 基础卡 + 官方 UP 标记与天井选择名单”组成，每张卡附带 `id / version / cardNumber`、UP/选择标记和非抽卡掉落池。
 - `ui_card_*.png`：卡面素材，通常不随代码仓库分发。
 
 可通过插件配置中的 `assets.cards_dir` 和 `assets.card_info_json` 切换到其他数据目录。
-通过配置界面修改后会立即热更新卡牌数据、概率、签到、月卡和管理员配置；直接编辑 `config.toml` 后需要重新加载插件。
+通过配置界面修改或直接编辑 `config.toml` 后，Runner 会自动触发热更新，
+刷新卡牌数据、概率、签到、月卡和管理员配置；热更新失败时会保留旧资源并输出日志。
 
 ## 卡池与轮替
 
@@ -72,7 +73,8 @@ python sync_card_data.py `
   --source-json ./path/to/card_info_merged.json
 ```
 
-`--check` 会校验文件大小与 SHA-256；`--quick` 只检查文件是否存在。
+`--check` 会校验卡面文件大小与 SHA-256，并检查 `card_info_merged.json`、
+`gacha_pools.json` 哈希、manifest 覆盖和重复项；`--quick` 只检查文件是否存在与清单覆盖。
 
 ## 命令
 
@@ -120,7 +122,8 @@ python sync_card_data.py `
 
 ## 配置项
 
-默认配置见 `config.toml`，所有数值均可在配置界面或文件中调整。
+默认配置由 `config_model.py` 定义，MaiBot Runner 首次加载时会在插件目录自动生成
+`config.toml`；所有数值均可在配置界面或生成后的文件中调整。
 
 ```toml
 [economy]
