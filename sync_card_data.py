@@ -9,6 +9,7 @@ Usage:
 
 Options:
     --source          source card PNG directory
+                      (default: plugin assets/card_data)
     --source-json     source card_info_merged.json
     --dest            destination directory (default: assets/card_data)
     --check           verify an existing data directory
@@ -27,12 +28,12 @@ from pathlib import Path
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-WORKSPACE_ROOT = SCRIPT_DIR.parent
-DEFAULT_SOURCE_CARDS = WORKSPACE_ROOT / "output" / "cards_2690"
-DEFAULT_SOURCE_JSON = WORKSPACE_ROOT / "output" / "card_info_merged.json"
+DEFAULT_SOURCE_CARDS = SCRIPT_DIR / "assets" / "card_data"
+DEFAULT_SOURCE_JSON = SCRIPT_DIR / "assets" / "card_data" / "card_info_merged.json"
 DEFAULT_DEST = SCRIPT_DIR / "assets" / "card_data"
 JSON_NAME = "card_info_merged.json"
 MANIFEST_NAME = "card_data_manifest.json"
+POOL_NAME = "gacha_pools.json"
 
 
 def resolve_path(value: str, base: Path) -> Path:
@@ -95,6 +96,18 @@ def check_dest(dest: Path, quick: bool) -> bool:
             print("FAIL: card_info_merged.json hash mismatch")
             return False
     files = manifest.get("files") or []
+    pool_meta = manifest.get("gacha_pool") or {}
+    pool_path = dest / POOL_NAME
+    if pool_meta and not pool_path.is_file():
+        print(f"FAIL: missing {POOL_NAME}")
+        return False
+    if not pool_meta and pool_path.is_file():
+        print(f"WARN: {POOL_NAME} exists but is not covered by {MANIFEST_NAME}")
+    elif pool_meta and not quick:
+        actual_pool_hash = sha256(pool_path)
+        if pool_meta.get("sha256") != actual_pool_hash:
+            print(f"FAIL: {POOL_NAME} hash mismatch")
+            return False
     checked = 0
     for item in files:
         name = str(item.get("name", ""))
@@ -188,6 +201,15 @@ def sync(
             "size": dest_json.stat().st_size,
             "sha256": json_hash,
         },
+        "gacha_pool": (
+            {
+                "name": POOL_NAME,
+                "size": (dest / POOL_NAME).stat().st_size,
+                "sha256": sha256(dest / POOL_NAME),
+            }
+            if (dest / POOL_NAME).is_file()
+            else {}
+        ),
         "files": files,
     }
     (dest / MANIFEST_NAME).write_text(
@@ -200,12 +222,20 @@ def sync(
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", default=str(DEFAULT_SOURCE_CARDS))
-    parser.add_argument("--source-json", default=str(DEFAULT_SOURCE_JSON))
-    parser.add_argument("--dest", default=str(DEFAULT_DEST))
-    parser.add_argument("--check", action="store_true")
-    parser.add_argument("--quick", action="store_true")
-    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--source",
+        default=str(DEFAULT_SOURCE_CARDS),
+        help="卡面 PNG 目录；默认使用插件自己的 assets/card_data",
+    )
+    parser.add_argument(
+        "--source-json",
+        default=str(DEFAULT_SOURCE_JSON),
+        help="卡牌信息 JSON；默认使用插件自己的 assets/card_data/card_info_merged.json",
+    )
+    parser.add_argument("--dest", default=str(DEFAULT_DEST), help="目标数据目录")
+    parser.add_argument("--check", action="store_true", help="校验已有数据目录")
+    parser.add_argument("--quick", action="store_true", help="只检查文件是否存在")
+    parser.add_argument("--dry-run", action="store_true", help="只打印计划操作，不写入")
     args = parser.parse_args()
 
     source_cards = resolve_path(args.source, SCRIPT_DIR)
@@ -214,6 +244,24 @@ def main() -> int:
 
     if args.check:
         return 0 if check_dest(dest, args.quick) else 1
+
+    if not source_cards.is_dir():
+        print(
+            f"FAIL: 默认/指定卡面目录不存在: {source_cards}\n"
+            "插件发布包不附带受版权保护的卡面。请将已有合法卡面放入 "
+            "assets/card_data/，或通过 --source 指定自己的素材目录；"
+            "具体说明见 CARD_ARTWORK_SOURCES.md。",
+            file=sys.stderr,
+        )
+        return 1
+    if not source_json.is_file():
+        print(
+            f"FAIL: 卡牌信息文件不存在: {source_json}\n"
+            "请使用 --source-json 指定已有的 card_info_merged.json。",
+            file=sys.stderr,
+        )
+        return 1
+
     return sync(source_cards, source_json, dest, dry_run=args.dry_run)
 
 

@@ -13456,5 +13456,10 @@
       "size": 1234380,
       "sha256": "15f5b06b52b6fbdf40e11b6535d2e39ef9f8781ec35f7634db228a91ec55c74b"
     }
-  ]
+  ],
+  "gacha_pool": {
+    "name": "gacha_pools.json",
+    "size": 17519883,
+    "sha256": "2377604f8679862b31c45c6cb015d5e54ea4cecbaaf2c6ef5ad2af3a75d8737f"
+  }
 }
