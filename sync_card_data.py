@@ -89,28 +89,79 @@ def check_dest(dest: Path, quick: bool) -> bool:
         return True
 
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(manifest, dict):
+        print("FAIL: card_data_manifest.json 顶层必须是对象")
+        return False
     json_meta = manifest.get("json") or {}
+    if not isinstance(json_meta, dict) or json_meta.get("name") != JSON_NAME:
+        print("FAIL: card_data_manifest.json 缺少或未登记 card_info_merged.json")
+        return False
     if not quick:
         actual_json_hash = sha256(json_path)
         if json_meta.get("sha256") != actual_json_hash:
             print("FAIL: card_info_merged.json hash mismatch")
             return False
     files = manifest.get("files") or []
+    if not isinstance(files, list):
+        print("FAIL: card_data_manifest.json 的 files 不是数组")
+        return False
+    expected_names = set(image_names(json_path))
+    if not expected_names:
+        print("FAIL: card_info_merged.json 中没有可校验的卡面记录")
+        return False
+    manifest_by_name: dict[str, dict] = {}
+    duplicate_names: list[str] = []
+    for item in files:
+        if not isinstance(item, dict):
+            print("FAIL: manifest 中存在非对象文件记录")
+            return False
+        name = str(item.get("name") or "")
+        if not name:
+            print("FAIL: manifest 中存在空文件记录名")
+            return False
+        if name in manifest_by_name:
+            duplicate_names.append(name)
+        manifest_by_name[name] = item
+    if duplicate_names:
+        print(f"FAIL: manifest 存在重复文件名，例如 {duplicate_names[:5]}")
+        return False
+    missing_from_manifest = sorted(expected_names - set(manifest_by_name))
+    extra_in_manifest = sorted(set(manifest_by_name) - expected_names)
+    if missing_from_manifest:
+        print(f"FAIL: manifest 缺少 {len(missing_from_manifest)} 个卡面记录，例如 {missing_from_manifest[:5]}")
+        return False
+    if extra_in_manifest:
+        print(f"FAIL: manifest 包含 {len(extra_in_manifest)} 个卡表外的文件，例如 {extra_in_manifest[:5]}")
+        return False
+    try:
+        manifest_count = int(manifest.get("count") or -1)
+    except (TypeError, ValueError):
+        manifest_count = -1
+    if len(files) != len(expected_names) or manifest_count != len(files):
+        print("FAIL: manifest count 与 files/卡表数量不一致")
+        return False
     pool_meta = manifest.get("gacha_pool") or {}
     pool_path = dest / POOL_NAME
     if pool_meta and not pool_path.is_file():
         print(f"FAIL: missing {POOL_NAME}")
         return False
+    if not pool_path.is_file():
+        print(f"FAIL: missing {POOL_NAME}")
+        return False
     if not pool_meta and pool_path.is_file():
-        print(f"WARN: {POOL_NAME} exists but is not covered by {MANIFEST_NAME}")
-    elif pool_meta and not quick:
+        print(f"FAIL: {POOL_NAME} 存在，但 {MANIFEST_NAME} 未登记其哈希")
+        return False
+    if pool_meta and (not isinstance(pool_meta, dict) or pool_meta.get("name") != POOL_NAME):
+        print(f"FAIL: {MANIFEST_NAME} 未正确登记 {POOL_NAME}")
+        return False
+    if pool_meta and not quick:
         actual_pool_hash = sha256(pool_path)
         if pool_meta.get("sha256") != actual_pool_hash:
             print(f"FAIL: {POOL_NAME} hash mismatch")
             return False
     checked = 0
-    for item in files:
-        name = str(item.get("name", ""))
+    for name in sorted(expected_names):
+        item = manifest_by_name[name]
         target = dest / name
         if not target.is_file():
             print(f"FAIL: missing {name}")

@@ -96,9 +96,14 @@ class GachaRenderer:
 
     def _load_card(self, card: CardInfo) -> Image.Image:
         path = self._cards_dir / card.image_file
+        image = None
         if path.is_file():
-            with Image.open(path) as image:
-                image = image.convert("RGBA")
+            try:
+                with Image.open(path) as image_file:
+                    image = image_file.convert("RGBA")
+            except (OSError, ValueError):
+                image = None
+        if image is not None:
             if image.getchannel("A").getextrema() == (255, 255):
                 mask = self._card_alpha_masks.get(card.rarity)
                 if mask is None:
@@ -111,6 +116,8 @@ class GachaRenderer:
                             mask = reference.convert("RGBA").split()[3]
                         self._card_alpha_masks[card.rarity] = mask
                 if mask is not None:
+                    if mask.size != image.size:
+                        mask = mask.resize(image.size, Image.Resampling.LANCZOS)
                     image.putalpha(mask)
             return image
 

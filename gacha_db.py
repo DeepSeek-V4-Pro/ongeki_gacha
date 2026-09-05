@@ -708,6 +708,48 @@ class GachaDatabase:
                 conn.execute("ROLLBACK")
                 raise
 
+    def rollback_draw_claims(
+        self,
+        qq_id: str,
+        *,
+        half_price: bool = False,
+        weekly: bool = False,
+    ) -> None:
+        """抽卡落地失败时恢复已预扣的半价次数和周保底资格。"""
+        if not half_price and not weekly:
+            return
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                if half_price:
+                    conn.execute(
+                        """
+                        UPDATE players
+                        SET half_price_5_pull_count = half_price_5_pull_count + 1,
+                            updated_at = ?
+                        WHERE qq_id = ?
+                        """,
+                        (now, qq_id),
+                    )
+                if weekly:
+                    conn.execute(
+                        """
+                        UPDATE players
+                        SET weekly_5_guarantee_used = 0,
+                            updated_at = ?
+                        WHERE qq_id = ?
+                        """,
+                        (now, qq_id),
+                    )
+                conn.execute("COMMIT")
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
     def daily_checkin(
         self,
         qq_id: str,
