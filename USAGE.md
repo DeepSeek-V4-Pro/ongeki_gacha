@@ -14,7 +14,9 @@
 2. 在插件管理界面加载或重启 MaiBot。
 3. 插件默认读取自身目录下的 `assets/card_data/`。
 
-如果卡面素材未随插件提供，请先运行数据同步脚本，或在插件配置中指定已有数据的绝对路径。
+如果卡面素材未随插件提供，请先用 `card_asset_tools.py scan` 检查本地素材、
+用 `card_asset_tools.py import` 接入，再运行数据同步脚本校验；
+也可以在插件配置中指定已有数据的绝对路径。
 
 卡面素材的来源、公开可查询方式和使用权限说明，请阅读
 [CARD_ARTWORK_SOURCES.md](CARD_ARTWORK_SOURCES.md)。
@@ -75,6 +77,38 @@ python sync_card_data.py `
 
 `--check` 会校验卡面文件大小与 SHA-256，并检查 `card_info_merged.json`、
 `gacha_pools.json` 哈希、manifest 覆盖和重复项；`--quick` 只检查文件是否存在与清单覆盖。
+
+### 卡面素材接入工具箱
+
+插件同时提供 `card_asset_tools.py`，用于处理用户自己已经取得的本地卡面素材。
+脚本不包含抓取、下载、解包或解密功能，也不会修改插件版本号：
+
+```powershell
+# 扫描素材目录并检查缺口
+python card_asset_tools.py scan --source .\素材目录
+
+# 从角色图层合成近似标准卡面
+python card_asset_tools.py compose `
+  --source .\角色图层 `
+  --layers .\通用图层 `
+  --out temp\card_art
+
+# 需要更接近上游排版时，用浏览器版合成（需 Playwright）
+python compose_card_art.py `
+  --chara-dir .\角色图层 `
+  --layers-dir .\通用图层 `
+  --out temp\card_art_browser
+
+# 将成品卡面接入插件数据目录
+python card_asset_tools.py import --source .\成品卡面
+
+# 校验接入结果
+python card_asset_tools.py verify
+```
+
+工具支持随机文件名映射（`--mapping`）、分批导入（默认保留已接入卡面）、
+独立素材目录（`--dest`）和只检查尺寸/缺失的快速校验。
+完整说明见 [CARD_ASSET_TOOLS.md](CARD_ASSET_TOOLS.md)。
 
 ## 命令
 
@@ -176,7 +210,9 @@ allow_local_operator = false
 
 ## 故障排查
 
-- 加载失败并提示数据不可用：运行 `sync_card_data.py`，或在配置中填写正确的绝对路径。
+- 加载失败并提示数据不可用：运行 `card_asset_tools.py scan` 检查素材，
+  用 `card_asset_tools.py import` 接入后运行 `sync_card_data.py`；
+  也可在配置中填写正确的绝对路径。
 - `/卡池` 显示空排表：确认 `assets/card_data/gacha_pools.json` 存在。
   插件发布包随附该排表；如果排表损坏或丢失，请重新获取插件包。
 - `/卡池` 显示 `UP 卡：0 张`：官方公告没有提供 UP 名单时属于正常；可发送 `/天井列表` 查看天井选择卡，发送 `/概率` 查看实际稀有度权重。

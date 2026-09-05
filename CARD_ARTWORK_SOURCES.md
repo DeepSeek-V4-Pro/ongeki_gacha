@@ -138,6 +138,34 @@ card_info_json = "./path/to/card_info_merged.json"
 - 仅用于个人本地研究、娱乐或已获授权的用途；
 - 发现无授权素材时应立即停止使用并联系权利人/维护者。
 
+### 3.4 使用素材接入工具箱
+
+拿到本地图片后，可使用插件内附的 `card_asset_tools.py` 完成识别、合成、导入和校验：
+
+```powershell
+# 扫描本地素材，查看成品/角色图层与缺口
+python card_asset_tools.py scan --source ./素材目录
+
+# 将成品卡面接入插件数据目录
+python card_asset_tools.py import --source ./成品卡面
+
+# 从角色图层合成（需提供通用图层）
+python card_asset_tools.py compose `
+  --source ./角色图层 `
+  --layers ./通用图层 `
+  --out temp/card_art
+
+# 校验接入结果
+python card_asset_tools.py verify
+```
+
+该脚本只处理用户已经取得的本地图片，不包含抓取、下载、解包或解密功能。
+支持文件名映射、分批导入和独立数据目录；详细说明见
+[CARD_ASSET_TOOLS.md](CARD_ASSET_TOOLS.md)。
+
+如果需要更接近上游图层/字体排版的合成结果，可改用浏览器版
+`compose_card_art.py`（需 Playwright，仍然不联网下载素材）。
+
 ---
 
 ## 4. 推荐的自行核对流程
@@ -145,9 +173,11 @@ card_info_json = "./path/to/card_info_merged.json"
 1. 在官方信息站查询活动日期、卡名、稀有度和卡池公告。
 2. 用官方宣传图确认卡面样式和活动主题。
 3. 如果自己拥有合法来源的本地包/更新包，扫描出对应 `Card.xml` 和角色图层。
-4. 使用 `sync_card_data.py --dry-run` 预览将同步多少张卡。
-5. 确认来源和权限后运行 `sync_card_data.py`。
-6. 插件发布包内运行 `sync_card_data.py --check` 做完整性校验。
+4. 使用 `card_asset_tools.py scan` 检查本地素材是否齐全。
+5. 使用 `card_asset_tools.py import` 接入成品或合成角色图层。
+6. 使用 `sync_card_data.py --dry-run` 预览将同步多少张卡。
+7. 确认来源和权限后运行 `sync_card_data.py`。
+8. 插件发布包内运行 `sync_card_data.py --check` 做完整性校验。
 
 ---
 
@@ -167,7 +197,9 @@ card_info_json = "./path/to/card_info_merged.json"
 
 ### 我已确认有权限，应该放哪些文件？
 
-卡面文件按以下命名放入 `assets/card_data/`：
+建议直接使用 `card_asset_tools.py import --source <素材目录>`，
+脚本会自动识别/重命名、转换尺寸、更新 `imagePresent` 并重建校验清单。
+也可以手动按以下命名放入 `assets/card_data/`：
 
 ```text
 ui_card_<6位ID>.png

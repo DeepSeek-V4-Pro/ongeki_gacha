@@ -36,7 +36,8 @@
 奖励采用“日常小额 + 7 天/15 天周期大额 + 月度加成 + 囤点档位”的结构，适合长期签到和攒够点数后再抽。
 
 详细说明：[USAGE.md](USAGE.md)  
-卡面获取方式：[CARD_ARTWORK_SOURCES.md](CARD_ARTWORK_SOURCES.md)
+卡面获取方式：[CARD_ARTWORK_SOURCES.md](CARD_ARTWORK_SOURCES.md)<br>
+素材接入工具：[CARD_ASSET_TOOLS.md](CARD_ASSET_TOOLS.md)<br>
 免责声明：[DISCLAIMER.md](DISCLAIMER.md)  
 第三方声明：[NOTICE.md](NOTICE.md)  
 更新日志：[CHANGELOG.md](CHANGELOG.md)  
