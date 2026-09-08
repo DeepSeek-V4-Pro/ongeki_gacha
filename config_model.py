@@ -14,7 +14,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.1.0", description="配置版本")
+    config_version: str = Field(default="1.2.0", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -89,10 +89,10 @@ class EconomyConfig(PluginConfigBase):
     min_reward: int = Field(default=100, ge=0, description="每日签到最低点数")
     max_reward: int = Field(default=250, ge=0, description="每日签到最高点数")
     tz_offset_hours: int = Field(
-        default=8,
+        default=0,
         ge=-12,
         le=14,
-        description="签到时区 UTC 偏移小时数",
+        description="保留字段，日期与任务重置固定使用国际时间 UTC",
     )
 
     streak_daily_step: int = Field(default=10, ge=0, description="连续签到每天递增额外点数")
@@ -112,6 +112,11 @@ class EconomyConfig(PluginConfigBase):
     savings_bonus_2: int = Field(default=500, ge=0, description="囤点奖励第 2 档点数")
     savings_threshold_3: int = Field(default=10000, ge=0, description="囤点奖励第 3 档门槛")
     savings_bonus_3: int = Field(default=2000, ge=0, description="囤点奖励第 3 档点数")
+    savings_bonus_reset_days: int = Field(
+        default=60,
+        ge=1,
+        description="囤点档位奖励重置周期（天）",
+    )
 
     @model_validator(mode="after")
     def _validate_ranges(self) -> "EconomyConfig":
@@ -120,6 +125,8 @@ class EconomyConfig(PluginConfigBase):
         thresholds = (self.savings_threshold_1, self.savings_threshold_2, self.savings_threshold_3)
         if thresholds != tuple(sorted(set(thresholds))):
             raise ValueError("囤点奖励门槛必须严格递增")
+        if self.savings_bonus_reset_days < 1:
+            raise ValueError("囤点奖励重置周期必须大于等于 1 天")
         return self
 
 
@@ -154,6 +161,55 @@ class AdminConfig(PluginConfigBase):
     )
 
 
+class TaskConfig(PluginConfigBase):
+    """随机任务配置。"""
+
+    __ui_label__ = "随机任务"
+    __ui_icon__ = "clipboard-check"
+    __ui_order__ = 6
+
+    enabled: bool = Field(default=True, description="是否启用随机任务")
+    normal_count: int = Field(default=5, ge=1, description="每日普通任务次数")
+    challenge_count: int = Field(default=3, ge=1, description="每日挑战任务次数")
+    challenge_min_level: float = Field(default=10.0, ge=1.0, description="挑战最低标级")
+    ultimate_min_level: float = Field(default=14.7, ge=1.0, description="终极最低定数")
+
+    normal_reward: int = Field(default=20, ge=0, description="普通任务奖励")
+    challenge_reward_s: int = Field(default=30, ge=0, description="挑战 S 奖励")
+    challenge_reward_ss: int = Field(default=40, ge=0, description="挑战 SS 奖励")
+    challenge_reward_sss: int = Field(default=50, ge=0, description="挑战 SSS/SSS+ 奖励")
+    ultimate_reward: int = Field(default=30000, ge=0, description="终极任务奖励")
+
+    exclude_special: bool = Field(
+        default=True,
+        description="排除 LUNATIC / 宴会场 / WORLD'S END 等特殊谱面",
+    )
+    require_photo: bool = Field(default=True, description="提交任务时是否要求图片")
+    auto_reset: bool = Field(default=True, description="每日 00:00 自动过期未完成任务")
+    catalog_cache_ttl: int = Field(default=3600, ge=60, description="曲库缓存秒数")
+
+    ongeki_source_url: str = Field(
+        default="https://dp4p6x0xfi5o9.cloudfront.net/ongeki",
+        description="音击 arcade-songs 数据源",
+    )
+    maimai_song_url: str = Field(
+        default="https://maimai.lxns.net/api/v0/maimai/song/list?version=25500&notes=false",
+        description="舞萌曲目接口",
+    )
+    chunithm_song_url: str = Field(
+        default="https://maimai.lxns.net/api/v0/chunithm/song/list?version=23000&notes=false",
+        description="中二曲目接口",
+    )
+    maimai_asset_url: str = Field(
+        default="https://assets2.lxns.net/maimai",
+        description="舞萌素材地址",
+    )
+    chunithm_asset_url: str = Field(
+        default="https://assets2.lxns.net/chunithm",
+        description="中二素材地址",
+    )
+
+
 class OngekiGachaPluginConfig(PluginConfigBase):
     """ONGEKI 模拟抽卡插件配置。"""
 
@@ -163,3 +219,4 @@ class OngekiGachaPluginConfig(PluginConfigBase):
     economy: EconomyConfig = Field(default_factory=EconomyConfig)
     monthly_card: MonthlyCardConfig = Field(default_factory=MonthlyCardConfig)
     admin: AdminConfig = Field(default_factory=AdminConfig)
+    task: TaskConfig = Field(default_factory=TaskConfig)

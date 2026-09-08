@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import Counter
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -23,6 +23,18 @@ from .gacha_core import CardCollection, CardInfo, CardPool, RARITY_ORDER, load_c
 from .gacha_db import GachaDatabase
 from .gacha_pools import GachaSchedule, PoolCard, PoolEntry
 from .gacha_render import GachaRenderer, RenderCard
+from .task_catalog import (
+    CatalogChart,
+    CatalogSong,
+    GAME_LABELS,
+    KIND_LABELS,
+    TaskSelection,
+    download_cover,
+    load_or_fetch_catalog,
+    pick_random_task,
+)
+from .task_render import TaskCardData, render_task_card
+from .task_commands import TaskCommandsMixin
 
 
 logger = logging.getLogger(__name__)
@@ -37,7 +49,7 @@ POOL_KIND_LABELS = {
     "special": "特殊",
 }
 
-class OngekiGachaPlugin(MaiBotPlugin):
+class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
     """ONGEKI 模拟抽卡插件。"""
 
     config_model = OngekiGachaPluginConfig
@@ -57,12 +69,20 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._card_info_path: Path | None = None
         self._cleanup_task: asyncio.Task | None = None
         self._pool_image_locks: dict[str, asyncio.Lock] = {}
+        self._task_catalog: list[CatalogSong] | None = None
+        self._task_catalog_lock = asyncio.Lock()
+        self._task_catalog_path: Path | None = None
+        self._task_reset_task: asyncio.Task | None = None
 
     async def on_load(self) -> None:
         """加载卡牌、初始化数据库和渲染器。"""
         self._initialize()
         self._cleanup_render_cache()
         self._cleanup_task = asyncio.create_task(self._daily_render_cache_cleanup_loop())
+        if self.config.task.enabled and self.config.task.auto_reset:
+            self._task_reset_task = asyncio.create_task(
+                self._daily_task_reset_loop()
+            )
         self.ctx.logger.info("ONGEKI 模拟抽卡插件已加载")
 
     async def on_unload(self) -> None:
@@ -77,6 +97,13 @@ class OngekiGachaPlugin(MaiBotPlugin):
             except asyncio.CancelledError:
                 pass
             self._cleanup_task = None
+        if self._task_reset_task is not None:
+            self._task_reset_task.cancel()
+            try:
+                await self._task_reset_task
+            except asyncio.CancelledError:
+                pass
+            self._task_reset_task = None
         self._cards_dir = None
         self._card_info_path = None
         self._cards = None
@@ -117,6 +144,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             self._schedule = schedule
             self._non_gacha_cards = self._non_gacha_cards_from_schedule(cards, schedule)
             self._renderer = renderer
+            self._task_catalog = None
         self.ctx.logger.info("ONGEKI 模拟抽卡配置已热更新")
 
     def _initialize(self) -> None:
@@ -131,6 +159,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             schedule,
         ) = self._build_runtime(self.config)
         db_path = self.ctx.paths.data_dir / "ongeki_gacha.db"
+        self._task_catalog_path = self.ctx.paths.data_dir / "task_catalog_merged.json"
         database = GachaDatabase(db_path)
         database.open()
         self._cards_dir = cards_dir
@@ -143,6 +172,8 @@ class OngekiGachaPlugin(MaiBotPlugin):
         self._non_gacha_cards = self._non_gacha_cards_from_schedule(cards, schedule)
         self._db = database
         self._renderer = renderer
+        self._ensure_rotation_epoch()
+        self._task_catalog = None
 
     def _build_runtime(
         self,
@@ -221,11 +252,33 @@ class OngekiGachaPlugin(MaiBotPlugin):
         raw = GachaDatabase.current_date_str(config.economy.tz_offset_hours)
         return date.fromisoformat(raw)
 
+    def _ensure_rotation_epoch(self) -> None:
+        if self._db is None:
+            return
+        if self._db.get_setting("pool_rotation_epoch"):
+            return
+        today = self._today(self.config)
+        self._db.set_setting("pool_rotation_epoch", today.isoformat())
+
+    def _get_rotation_epoch(self) -> date:
+        if self._db is None:
+            return date.min
+        raw = self._db.get_setting("pool_rotation_epoch")
+        if raw:
+            try:
+                return date.fromisoformat(raw)
+            except ValueError:
+                pass
+        today = self._today(self.config)
+        self._db.set_setting("pool_rotation_epoch", today.isoformat())
+        return today
+
     @classmethod
     def _schedule_pool(
         cls,
         schedule: GachaSchedule,
         config: OngekiGachaPluginConfig,
+        epoch: date | None = None,
     ) -> PoolEntry | None:
         """Select the active pool according to the configured rotation mode."""
         if not schedule.entries:
@@ -234,7 +287,11 @@ class OngekiGachaPlugin(MaiBotPlugin):
         today = cls._today(config)
         if mode == "official":
             return schedule.active_for(today)
-        return schedule.cycle_for(today, config.pool.rotation_interval_days)
+        return schedule.cycle_for(
+            today,
+            config.pool.rotation_interval_days,
+            epoch=epoch,
+        )
 
     @staticmethod
     def _build_regular_pool(
@@ -384,10 +441,11 @@ class OngekiGachaPlugin(MaiBotPlugin):
     def _help_text(self) -> str:
         """按当前配置生成 /帮助 返回文案。"""
         return (
-            "音击抽卡模拟器（MaiBot 本地娱乐插件）\n"
+            "音击抽卡模拟器\n"
             "/签到　/抽卡　/点数\n"
             "/月卡　/卡册　/卡图\n"
             "/卡池　/天井　/概率\n"
+            "/接任务 普通/挑战/终极 [音击/舞萌/中二]　/任务列表\n"
             "/天井列表　/规则　/帮助\n"
             "详细用法发送 /规则"
         )
@@ -410,7 +468,8 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 f"{economy.savings_threshold_2}/{economy.savings_threshold_3} "
                 f"点，对应奖励 "
                 f"{economy.savings_bonus_1}/{economy.savings_bonus_2}/"
-                f"{economy.savings_bonus_3} 点"
+                f"{economy.savings_bonus_3} 点；每 "
+                f"{economy.savings_bonus_reset_days} 天重置档位"
             ),
             "【抽卡】",
             f"消耗：1 连 {economy.cost_1} 点、5 连 {economy.cost_5} 点、11 连 {economy.cost_11} 点",
@@ -435,8 +494,19 @@ class OngekiGachaPlugin(MaiBotPlugin):
             ),
             "【管理员】",
             "管理员可通过 /奖励 @用户 <点数> [备注] 发放点数，发送记录会写入审计日志",
+            "【随机任务】",
+            "不指定游戏时默认三游戏全随机，也可 /接任务 <类型> <音击|舞萌|中二> 指定游戏",
+            "签到、任务、周保底与轮替均按国际时间 UTC 计算",
+            f"普通任务：每日 {self.config.task.normal_count} 次，任意难度，奖励 {self.config.task.normal_reward} 点",
+            f"挑战任务：每日 {self.config.task.challenge_count} 次，锁定 10+ 具体谱面，S 以上评级",
+            "挑战奖励：S 30 点、SS 40 点、SSS/SSS+ 50 点",
+            (
+                f"终极任务：14.7+ 超高难曲 SSS+ 评级，"
+                f"奖励 {self.config.task.ultimate_reward} 点；完成后该曲不再重复"
+            ),
+            "/任务完成 <任务ID> 需同时发送成绩照片，提交后请管理员审核",
+            "普通/挑战未完成任务将在每日 00:00 自动过期",
             "【说明】",
-            "所有点数、概率和奖励均为本地娱乐设定，不代表 SEGA 官方规则",
         ]
 
     @staticmethod
@@ -447,9 +517,9 @@ class OngekiGachaPlugin(MaiBotPlugin):
 
     @staticmethod
     def _timezone_label(offset_hours: int) -> str:
-        """把 UTC 偏移小时数显示为 UTC+8 等格式。"""
-        sign = "+" if offset_hours >= 0 else ""
-        return f"UTC{sign}{offset_hours}"
+        """把 UTC 偏移小时数显示为 UTC 或 UTC±N。"""
+        del offset_hours
+        return "UTC"
 
     @staticmethod
     def _monthly_card_action(kwargs: dict[str, Any]) -> str:
@@ -542,6 +612,230 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 return target_id
         return None
 
+    @staticmethod
+    def _has_photo(kwargs: dict[str, Any]) -> bool:
+        """判断消息是否包含图片段。"""
+        message = kwargs.get("message")
+        if not isinstance(message, dict):
+            return False
+        raw = message.get("raw_message")
+        if not isinstance(raw, list):
+            return False
+        for component in raw:
+            if not isinstance(component, dict):
+                continue
+            text_type = str(component.get("type") or "").strip().lower()
+            if text_type == "image":
+                return True
+            if any(
+                component.get(key)
+                for key in ("image_base64", "image_url", "url", "file", "path")
+            ):
+                return True
+        return False
+
+    @staticmethod
+    def _task_kind_from_kwargs(kwargs: dict[str, Any]) -> str:
+        groups = kwargs.get("matched_groups")
+        if isinstance(groups, dict):
+            raw = str(groups.get("kind") or "").strip()
+            mapping = {"普通": "normal", "挑战": "challenge", "终极": "ultimate"}
+            if raw in mapping:
+                return mapping[raw]
+        text = str(kwargs.get("text") or "")
+        if "终极" in text:
+            return "ultimate"
+        if "挑战" in text:
+            return "challenge"
+        return "normal"
+
+    @staticmethod
+    def _normalize_grade(raw: str) -> str:
+        value = str(raw or "").strip().upper().replace("＋", "+")
+        aliases = {
+            "普通": "普通",
+            "通过": "普通",
+            "OK": "普通",
+            "PASS": "普通",
+            "S": "S",
+            "SS": "SS",
+            "SSS": "SSS",
+            "SSS+": "SSS+",
+            "SSSP": "SSS+",
+            "拒绝": "拒绝",
+            "REJECT": "拒绝",
+            "NO": "拒绝",
+        }
+        return aliases.get(value, value)
+
+    def _task_reward(self, task_kind: str, grade: str = "") -> int:
+        config = self.config.task
+        if task_kind == "normal":
+            return config.normal_reward
+        if task_kind == "challenge":
+            grade = self._normalize_grade(grade or "S")
+            if grade in {"S", "普通"}:
+                return config.challenge_reward_s
+            if grade == "SS":
+                return config.challenge_reward_ss
+            if grade in {"SSS", "SSS+"}:
+                return config.challenge_reward_sss
+        if task_kind == "ultimate":
+            return config.ultimate_reward
+        return 0
+
+    @staticmethod
+    def _task_level_text(selection: TaskSelection) -> str:
+        if selection.chart is not None:
+            return (
+                f"{selection.chart.label.upper()} {selection.chart.level_display}"
+                f"（定数 {selection.chart.level_value:.1f}）"
+            )
+        return (
+            f"{selection.song.max_level_display}"
+            f" (定数 {selection.song.max_level_value:.1f})"
+        )
+
+    @staticmethod
+    def _task_requirement(selection: TaskSelection, task_kind: str) -> str:
+        if task_kind == "normal":
+            return "游玩任意难度"
+        if selection.chart is None:
+            return "S 及以上" if task_kind == "challenge" else "SSS+ 评级"
+        difficulty = selection.requirement
+        if task_kind == "challenge":
+            return f"{difficulty} · S 及以上"
+        return f"{difficulty} · SSS+ 评级"
+
+    def _task_sources(self) -> tuple[dict[str, str], dict[str, str]]:
+        task = self.config.task
+        sources = {
+            "ongeki": task.ongeki_source_url,
+            "maimai": task.maimai_song_url,
+            "chunithm": task.chunithm_song_url,
+        }
+        assets = {
+            "ongeki": task.ongeki_source_url,
+            "maimai": task.maimai_asset_url,
+            "chunithm": task.chunithm_asset_url,
+        }
+        return sources, assets
+
+    async def _get_task_catalog(self) -> list[CatalogSong] | None:
+        if self._task_catalog is not None:
+            return self._task_catalog
+        async with self._task_catalog_lock:
+            if self._task_catalog is not None:
+                return self._task_catalog
+            if self._task_catalog_path is None:
+                self._task_catalog_path = self.ctx.paths.data_dir / "task_catalog_merged.json"
+            sources, assets = self._task_sources()
+            try:
+                catalog = await asyncio.to_thread(
+                    load_or_fetch_catalog,
+                    self._task_catalog_path,
+                    ttl=self.config.task.catalog_cache_ttl,
+                    sources=sources,
+                    asset_bases=assets,
+                )
+            except Exception as exc:
+                self.ctx.logger.warning("获取任务曲库失败: %s", exc)
+                return None
+            self._task_catalog = catalog
+            return catalog
+
+    async def _render_task_card(
+        self,
+        task_id: int,
+        selection: TaskSelection,
+        task_kind: str,
+        user_id: str,
+    ) -> tuple[str | None, str, bool]:
+        """返回 (图片 base64, 文本信息, 卡片是否完整)。"""
+        chart = selection.chart
+        cover_path = None
+        cover_loaded = False
+        if selection.song.cover_url:
+            import hashlib
+
+            key = hashlib.sha1(
+                f"{selection.song.game}:{selection.song.song_id}".encode("utf-8")
+            ).hexdigest()[:16]
+            cover_path = self.ctx.paths.runtime_dir / "task_covers" / f"{key}.png"
+            if cover_path.is_file() and cover_path.stat().st_size > 0:
+                cover_loaded = True
+            else:
+                cover_urls = [selection.song.cover_url]
+                if selection.song.game in {"maimai", "chunithm"}:
+                    fallback = (
+                        selection.song.cover_url.replace(
+                            "assets.lxns.net",
+                            "assets2.lxns.net",
+                        )
+                        .replace(".png!webp", ".png")
+                    )
+                    if fallback not in cover_urls:
+                        cover_urls.append(fallback)
+                for cover_url in cover_urls:
+                    ok = await asyncio.to_thread(
+                        download_cover,
+                        cover_url,
+                        cover_path,
+                    )
+                    if ok:
+                        cover_loaded = True
+                        break
+                if not cover_loaded:
+                    cover_path = None
+
+        card_data = TaskCardData(
+            task_id=task_id,
+            kind=task_kind,
+            game=selection.song.game,
+            title=selection.song.title,
+            artist=selection.song.artist,
+            level=self._task_level_text(selection),
+            requirement=self._task_requirement(selection, task_kind),
+            reward=self._task_reward(task_kind),
+            user_id=user_id,
+            note="完成后请发送对应成绩截图",
+            cover_path=cover_path,
+        )
+        output_path = self.ctx.paths.runtime_dir / f"ongeki_task_{task_id}.png"
+        try:
+            await asyncio.to_thread(render_task_card, card_data, output_path)
+            image_base64 = base64.b64encode(output_path.read_bytes()).decode("ascii")
+        except Exception as exc:
+            self.ctx.logger.warning("任务卡渲染失败: %s", exc)
+            image_base64 = None
+        game_label = GAME_LABELS.get(selection.song.game, selection.song.game)
+        text = (
+            f"任务ID：#{task_id}\n"
+            f"类型：{KIND_LABELS.get(task_kind, task_kind)}\n"
+            f"游戏：{game_label}\n"
+            f"曲目：{selection.song.title} — {selection.song.artist}\n"
+            f"任务谱面：{self._task_level_text(selection)}\n"
+            f"要求：{self._task_requirement(selection, task_kind)}\n"
+            f"奖励：{self._task_reward(task_kind)} 点"
+        )
+        if selection.song.cover_url and not cover_loaded:
+            text += "\n（曲绘加载失败，任务信息已返回文字模式）"
+        elif image_base64 is None:
+            text += "\n（任务卡图片生成失败，已返回文字模式）"
+        complete = cover_loaded and image_base64 is not None
+        return image_base64, text, complete
+
+    @staticmethod
+    def _task_summary_line(task_id: int, selection: TaskSelection, task_kind: str) -> str:
+        kind_label = {"normal": "普通", "challenge": "挑战", "ultimate": "终极"}.get(
+            task_kind, task_kind
+        )
+        return (
+            f"#{task_id} [{kind_label}] "
+            f"{GAME_LABELS.get(selection.song.game, selection.song.game)} "
+            f"{selection.song.title}"
+        )
+
     def _cleanup_render_cache(self) -> None:
         """Delete temporary draw images older than one day."""
         runtime_dir = self.ctx.paths.runtime_dir
@@ -565,6 +859,39 @@ class OngekiGachaPlugin(MaiBotPlugin):
             while True:
                 await asyncio.sleep(RENDER_CACHE_TTL_SECONDS)
                 self._cleanup_render_cache()
+        except asyncio.CancelledError:
+            raise
+
+    async def _daily_task_reset_loop(self) -> None:
+        """每日 00:00 自动过期普通/挑战未完成任务。"""
+        try:
+            while True:
+                today = GachaDatabase.current_date_str(
+                    self.config.economy.tz_offset_hours
+                )
+                if self._db is not None:
+                    try:
+                        expired = self._db.expire_daily_tasks(today)
+                        if expired:
+                            self.ctx.logger.info(
+                                "每日任务自动过期：%d 条", expired
+                            )
+                        cleaned = self._db.cleanup_task_history(today)
+                        if cleaned:
+                            self.ctx.logger.info(
+                                "每日任务历史清理：%d 条", cleaned
+                            )
+                    except Exception as exc:
+                        self.ctx.logger.warning("每日任务清理失败: %s", exc)
+
+                now = datetime.now(timezone.utc)
+                next_day = now + timedelta(days=1)
+                next_midnight = next_day.replace(
+                    hour=0, minute=0, second=0, microsecond=0
+                )
+                await asyncio.sleep(
+                    max(1.0, (next_midnight - now).total_seconds())
+                )
         except asyncio.CancelledError:
             raise
 
@@ -636,7 +963,11 @@ class OngekiGachaPlugin(MaiBotPlugin):
         """Refresh the active pool when the calendar/rotation changes."""
         if self._pool is None or self._schedule is None:
             return
-        active = self._schedule_pool(self._schedule, self.config)
+        active = self._schedule_pool(
+            self._schedule,
+            self.config,
+            self._get_rotation_epoch(),
+        )
         if active is not None and active.pool_id == self._pool.pool_id:
             return
         self._pool.set_pool(active)
@@ -646,7 +977,9 @@ class OngekiGachaPlugin(MaiBotPlugin):
             return None
         interval = max(int(self.config.pool.rotation_interval_days), 1)
         today = self._today(self.config)
-        return (today.toordinal() // interval) % len(schedule.entries)
+        epoch = self._get_rotation_epoch()
+        elapsed_days = max((today - epoch).days, 0)
+        return (elapsed_days // interval) % len(schedule.entries)
 
     def _savings_thresholds(self) -> tuple[int, ...]:
         config = self.config.economy
@@ -994,6 +1327,8 @@ class OngekiGachaPlugin(MaiBotPlugin):
                     user_id,
                     thresholds=self._savings_thresholds(),
                     bonuses=self._savings_bonuses(),
+                    reset_days=config.savings_bonus_reset_days,
+                    tz_offset_hours=config.tz_offset_hours,
                 )
         if receipt.success:
             parts = [
@@ -1038,6 +1373,8 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 user_id,
                 thresholds=self._savings_thresholds(),
                 bonuses=self._savings_bonuses(),
+                reset_days=self.config.economy.savings_bonus_reset_days,
+                tz_offset_hours=self.config.economy.tz_offset_hours,
             )
             player = self._db.get_player(user_id)
             weekly_5_available = self._db.weekly_5_guarantee_available(
@@ -1054,6 +1391,20 @@ class OngekiGachaPlugin(MaiBotPlugin):
                 monthly_text = "月卡已过期"
             else:
                 monthly_text = "月卡未购买"
+            savings_reset_text = (
+                f"囤点重置：{self.config.economy.savings_bonus_reset_days} 天"
+            )
+            if player.savings_bonus_start_date:
+                try:
+                    start_day = date.fromisoformat(player.savings_bonus_start_date)
+                    current = self._today(self.config)
+                    next_reset = start_day + timedelta(
+                        days=self.config.economy.savings_bonus_reset_days
+                    )
+                    remaining_reset = max((next_reset - current).days, 0)
+                    savings_reset_text = f"囤点重置：{remaining_reset} 天后"
+                except ValueError:
+                    pass
         text = (
             f"当前点数：{player.points} 点｜累计签到：{player.total_checkins} 次"
             f"｜累计抽卡：{player.total_pulls} 次"
@@ -1061,6 +1412,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             f"｜{monthly_text}"
             f"｜月卡半价五连：{player.half_price_5_pull_count} 次"
             f"｜囤点档位：{player.savings_bonus_level}/3"
+            f"｜{savings_reset_text}"
             f"｜本周 5 连保底：{'可用' if weekly_5_available else '已使用'}"
         )
         if savings_bonus:
@@ -1228,7 +1580,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
 
             card_path = self._card_image_path(card)
             if not card_path.is_file():
-                text = f"卡牌 ID {card_id} 的图片文件不存在：{card_path}"
+                text = f"卡牌 ID {card_id} 的图片文件缺失，请联系管理员检查素材"
                 self.ctx.logger.error(text)
                 await self._send_text(stream_id, text)
                 return True, text, True
@@ -1266,7 +1618,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
         total_cards = len(self._cards.cards)
         unique = len(inventory)
         if unique == 0:
-            text = "卡册还是空的，先 /签到 再 /抽卡 吧！"
+            text = "卡册还是空的，先去 /签到 攒点，再 /抽卡 吧！"
             await self._send_text(stream_id, text)
             return True, text, True
 
@@ -1595,7 +1947,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
         kwargs.pop("stream_id", None)
         return await self.handle_ceiling(stream_id, **kwargs)
 
-    @Command("ongeki_odds", description="查看模拟器概率和保底规则", pattern=r"^/(?:概率|抽卡概率)\s*$", aliases=["/og概率", "/og 概率"])
+    @Command("ongeki_odds", description="查看抽卡概率与保底规则", pattern=r"^/(?:概率|抽卡概率)\s*$", aliases=["/og概率", "/og 概率"])
     async def handle_odds(self, stream_id: str = "", **kwargs: dict[str, Any]) -> tuple[bool, str, bool]:
         """显示当前模拟权重。"""
         del kwargs
@@ -1621,7 +1973,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
             )
         )
         lines = [
-            "音击抽卡模拟器（本地娱乐参考值，非官方概率）",
+            "音击抽卡模拟器 · 非官方概率",
             f"当前卡池：{self._pool.pool_name[:60]}",
             pool_info,
             (
@@ -1672,7 +2024,7 @@ class OngekiGachaPlugin(MaiBotPlugin):
         await self._send_forward(stream_id, self._rules_text())
         return True, "详细规则已发送", True
 
-    @Command("ongeki_help", description="显示插件帮助", pattern=r"^/(?:帮助|on帮助)\s*$", aliases=["/og帮助", "/og 帮助"])
+    @Command("ongeki_help", description="显示命令与玩法帮助", pattern=r"^/(?:帮助|on帮助)\s*$", aliases=["/og帮助", "/og 帮助"])
     async def handle_help(self, stream_id: str = "", **kwargs: dict[str, Any]) -> tuple[bool, str, bool]:
         """显示帮助信息。"""
         del kwargs

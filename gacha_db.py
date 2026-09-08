@@ -15,7 +15,7 @@ import threading
 from .gacha_core import derive_growth
 
 WEEKLY_RESET_DAY = 3  # 0=Monday, 3=Thursday
-WEEKLY_RESET_HOUR = 7
+WEEKLY_RESET_HOUR = 0
 CHECKIN_JACKPOT_PROBABILITY = 0.0000005  # 0.00005%
 CHECKIN_LUCKY_PROBABILITY = 0.0000095   # 0.00095%
 CHECKIN_JACKPOT_BONUS = 99999
@@ -36,6 +36,7 @@ class PlayerState:
     monthly_card_purchase_count: int = 0
     half_price_5_pull_count: int = 0
     savings_bonus_level: int = 0
+    savings_bonus_start_date: str = ""
 
 
 @dataclass(frozen=True)
@@ -111,6 +112,74 @@ class GrantReceipt:
     success: bool
     points: int
     error: str = ""
+
+
+@dataclass(frozen=True)
+class TaskRecord:
+    """一条随机任务记录。"""
+
+    id: int
+    qq_id: str
+    task_kind: str
+    game: str
+    song_id: str
+    song_title: str
+    artist: str
+    difficulty_index: int | None
+    difficulty_label: str
+    target_level: str
+    target_level_value: float
+    requirement_text: str
+    reward: int
+    cover_url: str
+    task_date: str
+    status: str
+    created_at: str
+    submitted_at: str | None
+    submitted_by: str
+    reviewed_by: str
+    reviewed_at: str | None
+    reviewed_grade: str
+    awarded: bool
+    note: str
+
+
+@dataclass(frozen=True)
+class TaskReceipt:
+    """接取/提交任务结果。"""
+
+    success: bool
+    error: str = ""
+    task_id: int = 0
+    task: TaskRecord | None = None
+
+
+@dataclass(frozen=True)
+class TaskReviewReceipt:
+    """审核任务结果。"""
+
+    success: bool
+    points: int = 0
+    grade: str = ""
+    error: str = ""
+
+
+@dataclass(frozen=True)
+class TaskResetReceipt:
+    """管理员重置任务结果。"""
+
+    success: bool
+    error: str = ""
+
+
+@dataclass(frozen=True)
+class UltimateProgress:
+    """用户终极任务进度。"""
+
+    stage: int
+    active_task_id: int | None
+    finished: bool
+    completed_at: str | None
 
 
 @dataclass(frozen=True)
@@ -234,6 +303,80 @@ class GachaDatabase:
                 created_at    TEXT NOT NULL,
                 FOREIGN KEY(target_id) REFERENCES players(qq_id)
             );
+
+            CREATE TABLE IF NOT EXISTS tasks (
+                id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+                qq_id               TEXT NOT NULL,
+                task_kind           TEXT NOT NULL,
+                game                TEXT NOT NULL,
+                song_id             TEXT NOT NULL,
+                song_title          TEXT NOT NULL,
+                artist              TEXT NOT NULL DEFAULT '',
+                difficulty_index    INTEGER,
+                difficulty_label    TEXT NOT NULL DEFAULT '',
+                target_level        TEXT NOT NULL DEFAULT '',
+                target_level_value  REAL NOT NULL DEFAULT 0,
+                requirement_text    TEXT NOT NULL DEFAULT '',
+                reward              INTEGER NOT NULL DEFAULT 0,
+                cover_url           TEXT NOT NULL DEFAULT '',
+                task_date           TEXT NOT NULL,
+                status              TEXT NOT NULL DEFAULT 'active',
+                created_at          TEXT NOT NULL,
+                submitted_at        TEXT,
+                submitted_by        TEXT NOT NULL DEFAULT '',
+                reviewed_by         TEXT NOT NULL DEFAULT '',
+                reviewed_at         TEXT,
+                reviewed_grade      TEXT NOT NULL DEFAULT '',
+                awarded             INTEGER NOT NULL DEFAULT 0,
+                note                TEXT NOT NULL DEFAULT '',
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS task_audit (
+                id          INTEGER PRIMARY KEY AUTOINCREMENT,
+                qq_id       TEXT NOT NULL,
+                task_id     INTEGER NOT NULL,
+                action      TEXT NOT NULL,
+                actor_id    TEXT NOT NULL,
+                grade       TEXT NOT NULL DEFAULT '',
+                points      INTEGER NOT NULL DEFAULT 0,
+                note        TEXT NOT NULL DEFAULT '',
+                created_at  TEXT NOT NULL,
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS daily_task_quota (
+                qq_id       TEXT NOT NULL,
+                task_date   TEXT NOT NULL,
+                task_kind   TEXT NOT NULL,
+                used_count  INTEGER NOT NULL DEFAULT 0,
+                PRIMARY KEY(qq_id, task_date, task_kind),
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS ultimate_completed_songs (
+                qq_id          TEXT NOT NULL,
+                game           TEXT NOT NULL,
+                song_id        TEXT NOT NULL,
+                completed_at   TEXT NOT NULL,
+                PRIMARY KEY(qq_id, game, song_id),
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS ultimate_progress (
+                qq_id           TEXT PRIMARY KEY,
+                stage           INTEGER NOT NULL DEFAULT 0,
+                active_task_id  INTEGER,
+                finished        INTEGER NOT NULL DEFAULT 0,
+                completed_at    TEXT,
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS app_settings (
+                key         TEXT PRIMARY KEY,
+                value       TEXT NOT NULL DEFAULT '',
+                updated_at  TEXT NOT NULL
+            );
             """
         )
         existing_columns = {row[1] for row in conn.execute("PRAGMA table_info(players)").fetchall()}
@@ -277,6 +420,11 @@ class GachaDatabase:
                 "ALTER TABLE players "
                 "ADD COLUMN savings_bonus_level INTEGER NOT NULL DEFAULT 0"
             )
+        if "savings_bonus_start_date" not in existing_columns:
+            conn.execute(
+                "ALTER TABLE players "
+                "ADD COLUMN savings_bonus_start_date TEXT NOT NULL DEFAULT ''"
+            )
         self._conn = conn
 
     def close(self) -> None:
@@ -288,13 +436,13 @@ class GachaDatabase:
 
     @staticmethod
     def _now_iso() -> str:
-        return datetime.now().astimezone().isoformat(timespec="seconds")
+        return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
     @staticmethod
     def current_date_str(offset_hours: int) -> str:
-        """返回配置时区下的当前日期字符串。"""
-        tz = timezone(timedelta(hours=int(offset_hours)))
-        return datetime.now(tz).date().isoformat()
+        """返回国际时间 UTC 日期；offset_hours 为兼容保留参数。"""
+        del offset_hours
+        return datetime.now(timezone.utc).date().isoformat()
 
     def _date_str(self, offset_hours: int) -> str:
         return self.current_date_str(offset_hours)
@@ -321,9 +469,9 @@ class GachaDatabase:
 
     @staticmethod
     def _weekly_5_key(offset_hours: int) -> str:
-        """Return the Thursday-07:00 reset key for the current week."""
-        tz = timezone(timedelta(hours=int(offset_hours)))
-        now = datetime.now(tz)
+        """Return the Thursday 00:00 UTC reset key for the current week."""
+        del offset_hours
+        now = datetime.now(timezone.utc)
         days_since_thursday = (now.weekday() - WEEKLY_RESET_DAY) % 7
         reset_date = (now - timedelta(days=days_since_thursday)).date()
         if days_since_thursday == 0 and now.hour < WEEKLY_RESET_HOUR:
@@ -442,6 +590,7 @@ class GachaDatabase:
             monthly_card_purchase_count=int(row["monthly_card_purchase_count"] or 0),
             half_price_5_pull_count=int(row["half_price_5_pull_count"] or 0),
             savings_bonus_level=int(row["savings_bonus_level"] or 0),
+            savings_bonus_start_date=str(row["savings_bonus_start_date"] or ""),
         )
 
     def get_player(self, qq_id: str) -> PlayerState:
@@ -509,8 +658,10 @@ class GachaDatabase:
         *,
         thresholds: Iterable[int],
         bonuses: Iterable[int],
+        reset_days: int = 60,
+        tz_offset_hours: int = 0,
     ) -> tuple[int, int]:
-        """Grant one-time rewards when a player crosses savings thresholds."""
+        """发放囤点档位奖励；超过重置周期后清空档位重新计算。"""
         threshold_list = [int(value) for value in thresholds]
         bonus_list = [int(value) for value in bonuses]
         if len(threshold_list) != len(bonus_list):
@@ -519,6 +670,8 @@ class GachaDatabase:
             raise ValueError("囤点奖励配置非法")
         if threshold_list != sorted(set(threshold_list)):
             raise ValueError("囤点奖励门槛必须递增")
+        if reset_days < 1:
+            raise ValueError("囤点奖励重置周期必须大于等于 1 天")
 
         with self._lock:
             if self._conn is None:
@@ -529,21 +682,38 @@ class GachaDatabase:
                 player_row = self._ensure_player(conn, qq_id)
                 points = int(player_row["points"] or 0)
                 level = int(player_row["savings_bonus_level"] or 0)
+                today = self.current_date_str(tz_offset_hours)
+                start_raw = str(player_row["savings_bonus_start_date"] or "")
+                reset = False
+                try:
+                    elapsed = (
+                        date.fromisoformat(today)
+                        - date.fromisoformat(start_raw)
+                    ).days if start_raw else reset_days
+                except ValueError:
+                    elapsed = reset_days
+                if not start_raw:
+                    start_raw = today
+                elif elapsed >= reset_days:
+                    level = 0
+                    start_raw = today
+                    reset = True
                 total_bonus = 0
                 while level < len(threshold_list) and points >= threshold_list[level]:
                     total_bonus += bonus_list[level]
                     points += bonus_list[level]
                     level += 1
-                if total_bonus:
+                if total_bonus or reset or not start_raw:
                     conn.execute(
                         """
                         UPDATE players
                         SET points = points + ?,
                             savings_bonus_level = ?,
+                            savings_bonus_start_date = ?,
                             updated_at = ?
                         WHERE qq_id = ?
                         """,
-                        (total_bonus, level, self._now_iso(), qq_id),
+                        (total_bonus, level, start_raw, self._now_iso(), qq_id),
                     )
                 conn.execute("COMMIT")
                 return total_bonus, points
@@ -718,13 +888,13 @@ class GachaDatabase:
         """抽卡落地失败时恢复已预扣的半价次数和周保底资格。"""
         if not half_price and not weekly:
             return
-        now = self._now_iso()
         with self._lock:
             if self._conn is None:
                 raise RuntimeError("数据库尚未打开")
             conn = self._conn
             conn.execute("BEGIN IMMEDIATE")
             try:
+                now = self._now_iso()
                 if half_price:
                     conn.execute(
                         """
@@ -1297,3 +1467,815 @@ class GachaDatabase:
                 )
                 for row in rows
             ]
+
+    # ==================== 随机任务 ====================
+
+    @staticmethod
+    def _task_from_row(row: sqlite3.Row) -> TaskRecord:
+        return TaskRecord(
+            id=int(row["id"]),
+            qq_id=str(row["qq_id"]),
+            task_kind=str(row["task_kind"]),
+            game=str(row["game"]),
+            song_id=str(row["song_id"]),
+            song_title=str(row["song_title"]),
+            artist=str(row["artist"] or ""),
+            difficulty_index=(
+                int(row["difficulty_index"])
+                if row["difficulty_index"] is not None
+                else None
+            ),
+            difficulty_label=str(row["difficulty_label"] or ""),
+            target_level=str(row["target_level"] or ""),
+            target_level_value=float(row["target_level_value"] or 0),
+            requirement_text=str(row["requirement_text"] or ""),
+            reward=int(row["reward"] or 0),
+            cover_url=str(row["cover_url"] or ""),
+            task_date=str(row["task_date"] or ""),
+            status=str(row["status"] or ""),
+            created_at=str(row["created_at"] or ""),
+            submitted_at=(str(row["submitted_at"]) if row["submitted_at"] else None),
+            submitted_by=str(row["submitted_by"] or ""),
+            reviewed_by=str(row["reviewed_by"] or ""),
+            reviewed_at=(str(row["reviewed_at"]) if row["reviewed_at"] else None),
+            reviewed_grade=str(row["reviewed_grade"] or ""),
+            awarded=bool(row["awarded"]),
+            note=str(row["note"] or ""),
+        )
+
+    @staticmethod
+    def _consume_task_quota(
+        conn: sqlite3.Connection,
+        qq_id: str,
+        task_kind: str,
+        limit: int,
+        task_date: str,
+        now: str,
+    ) -> bool:
+        conn.execute(
+            """
+            INSERT OR IGNORE INTO daily_task_quota(
+                qq_id, task_date, task_kind, used_count
+            ) VALUES(?, ?, ?, 0)
+            """,
+            (qq_id, task_date, task_kind),
+        )
+        row = conn.execute(
+            """
+            SELECT used_count
+            FROM daily_task_quota
+            WHERE qq_id = ? AND task_date = ? AND task_kind = ?
+            """,
+            (qq_id, task_date, task_kind),
+        ).fetchone()
+        used = int(row["used_count"]) if row is not None else 0
+        if used >= limit:
+            return False
+        conn.execute(
+            """
+            UPDATE daily_task_quota
+            SET used_count = used_count + 1
+            WHERE qq_id = ? AND task_date = ? AND task_kind = ?
+            """,
+            (qq_id, task_date, task_kind),
+        )
+        return True
+
+    @staticmethod
+    def _release_task_quota(
+        conn: sqlite3.Connection,
+        qq_id: str,
+        task_kind: str,
+        task_date: str,
+        today: str,
+    ) -> None:
+        if task_date != today:
+            return
+        conn.execute(
+            """
+            UPDATE daily_task_quota
+            SET used_count = MAX(used_count - 1, 0)
+            WHERE qq_id = ? AND task_date = ? AND task_kind = ?
+            """,
+            (qq_id, task_date, task_kind),
+        )
+
+    @staticmethod
+    def _audit_task(
+        conn: sqlite3.Connection,
+        qq_id: str,
+        task_id: int,
+        action: str,
+        actor_id: str,
+        *,
+        grade: str = "",
+        points: int = 0,
+        note: str = "",
+        now: str = "",
+    ) -> None:
+        conn.execute(
+            """
+            INSERT INTO task_audit(
+                qq_id, task_id, action, actor_id, grade, points, note, created_at
+            ) VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (qq_id, task_id, action, actor_id, grade, points, note, now),
+        )
+
+    def create_task(
+        self,
+        qq_id: str,
+        *,
+        task_kind: str,
+        game: str,
+        song_id: str,
+        song_title: str,
+        artist: str = "",
+        difficulty_index: int | None = None,
+        difficulty_label: str = "",
+        target_level: str = "",
+        target_level_value: float = 0.0,
+        requirement_text: str = "",
+        reward: int = 0,
+        cover_url: str = "",
+        note: str = "",
+        normal_limit: int = 5,
+        challenge_limit: int = 3,
+        tz_offset_hours: int = 0,
+    ) -> TaskReceipt:
+        """接取任务并记录每日配额。"""
+        if task_kind not in {"normal", "challenge", "ultimate"}:
+            return TaskReceipt(success=False, error="未知任务类型")
+        now = self._now_iso()
+        task_date = self.current_date_str(tz_offset_hours)
+
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                self._ensure_player(conn, qq_id)
+                if task_kind in {"normal", "challenge"}:
+                    limit = normal_limit if task_kind == "normal" else challenge_limit
+                    if not self._consume_task_quota(
+                        conn, qq_id, task_kind, limit, task_date, now
+                    ):
+                        conn.execute("ROLLBACK")
+                        return TaskReceipt(
+                            success=False,
+                            error=f"今日{task_kind}任务次数已用完",
+                        )
+
+                active_ultimate = 0
+                if task_kind == "ultimate":
+                    progress = conn.execute(
+                        "SELECT * FROM ultimate_progress WHERE qq_id = ?",
+                        (qq_id,),
+                    ).fetchone()
+                    if progress is not None and int(progress["finished"] or 0):
+                        conn.execute("ROLLBACK")
+                        return TaskReceipt(
+                            success=False,
+                            error="终极任务已完成，无法再次接取",
+                        )
+                    helper_task_id = (
+                        int(progress["active_task_id"])
+                        if progress is not None and progress["active_task_id"] is not None
+                        else None
+                    )
+                    if helper_task_id is not None:
+                        helper = conn.execute(
+                            "SELECT status FROM tasks WHERE id = ?",
+                            (helper_task_id,),
+                        ).fetchone()
+                        if helper is not None and str(helper["status"]) in {
+                            "active",
+                            "submitted",
+                        }:
+                            conn.execute("ROLLBACK")
+                            return TaskReceipt(
+                                success=False,
+                                error="已有未完成/待审核的终极任务",
+                            )
+                    active_ultimate = 1
+
+                cursor = conn.execute(
+                    """
+                    INSERT INTO tasks(
+                        qq_id, task_kind, game, song_id, song_title, artist,
+                        difficulty_index, difficulty_label, target_level,
+                        target_level_value, requirement_text, reward, cover_url,
+                        task_date, status, created_at, note
+                    ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?, ?)
+                    """,
+                    (
+                        qq_id,
+                        task_kind,
+                        game,
+                        song_id,
+                        song_title,
+                        artist,
+                        difficulty_index,
+                        difficulty_label,
+                        target_level,
+                        target_level_value,
+                        requirement_text,
+                        reward,
+                        cover_url,
+                        task_date,
+                        now,
+                        note,
+                    ),
+                )
+                task_id = int(cursor.lastrowid)
+                if active_ultimate:
+                    conn.execute(
+                        """
+                        INSERT INTO ultimate_progress(
+                            qq_id, stage, active_task_id, finished, completed_at
+                        ) VALUES(?, 0, ?, 0, NULL)
+                        ON CONFLICT(qq_id) DO UPDATE SET
+                            active_task_id = excluded.active_task_id,
+                            finished = 0,
+                            completed_at = NULL
+                        """,
+                        (qq_id, task_id),
+                    )
+                self._audit_task(
+                    conn,
+                    qq_id,
+                    task_id,
+                    "accept",
+                    qq_id,
+                    note=note,
+                    now=now,
+                )
+                conn.execute("COMMIT")
+                row = conn.execute(
+                    "SELECT * FROM tasks WHERE id = ?",
+                    (task_id,),
+                ).fetchone()
+                return TaskReceipt(
+                    success=True,
+                    task_id=task_id,
+                    task=self._task_from_row(row),
+                )
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
+    def get_task(self, task_id: int) -> TaskRecord | None:
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            row = self._conn.execute(
+                "SELECT * FROM tasks WHERE id = ?",
+                (task_id,),
+            ).fetchone()
+            return self._task_from_row(row) if row is not None else None
+
+    def list_tasks(
+        self,
+        qq_id: str,
+        *,
+        statuses: tuple[str, ...] | None = None,
+        limit: int = 100,
+    ) -> list[TaskRecord]:
+        if statuses is None:
+            statuses = ("active", "submitted", "approved", "rejected", "reset", "expired")
+        placeholders = ",".join("?" for _ in statuses)
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            rows = self._conn.execute(
+                f"""
+                SELECT * FROM tasks
+                WHERE qq_id = ? AND status IN ({placeholders})
+                ORDER BY id DESC
+                LIMIT ?
+                """,
+                (qq_id, *statuses, limit),
+            ).fetchall()
+            return [self._task_from_row(row) for row in rows]
+
+    def list_pending_tasks(self, limit: int = 100) -> list[TaskRecord]:
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            rows = self._conn.execute(
+                """
+                SELECT * FROM tasks
+                WHERE status = 'submitted'
+                ORDER BY submitted_at ASC
+                LIMIT ?
+                """,
+                (limit,),
+            ).fetchall()
+            return [self._task_from_row(row) for row in rows]
+
+    def submit_task(self, task_id: int, qq_id: str, *, note: str = "") -> TaskReceipt:
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                row = conn.execute(
+                    "SELECT * FROM tasks WHERE id = ?",
+                    (task_id,),
+                ).fetchone()
+                if row is None:
+                    conn.execute("ROLLBACK")
+                    return TaskReceipt(success=False, error="任务不存在")
+                if str(row["qq_id"]) != qq_id:
+                    conn.execute("ROLLBACK")
+                    return TaskReceipt(success=False, error="不能提交他人的任务")
+                if str(row["status"]) not in {"active", "rejected"}:
+                    conn.execute("ROLLBACK")
+                    return TaskReceipt(
+                        success=False,
+                        error="该任务当前不可提交",
+                    )
+                conn.execute(
+                    """
+                    UPDATE tasks
+                    SET status = 'submitted',
+                        submitted_at = ?,
+                        submitted_by = ?,
+                        note = ?
+                    WHERE id = ?
+                    """,
+                    (now, qq_id, note, task_id),
+                )
+                self._audit_task(
+                    conn,
+                    qq_id,
+                    task_id,
+                    "submit",
+                    qq_id,
+                    note=note,
+                    now=now,
+                )
+                conn.execute("COMMIT")
+                row = conn.execute(
+                    "SELECT * FROM tasks WHERE id = ?",
+                    (task_id,),
+                ).fetchone()
+                return TaskReceipt(
+                    success=True,
+                    task_id=task_id,
+                    task=self._task_from_row(row),
+                )
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
+    def approve_task(
+        self,
+        task_id: int,
+        admin_id: str,
+        *,
+        grade: str,
+        reward: int,
+    ) -> TaskReviewReceipt:
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                row = conn.execute(
+                    "SELECT * FROM tasks WHERE id = ?",
+                    (task_id,),
+                ).fetchone()
+                if row is None:
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="任务不存在")
+                if str(row["task_kind"]) == "ultimate":
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(
+                        success=False,
+                        error="终极任务请使用 /终极完成",
+                    )
+                if str(row["status"]) != "submitted":
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(
+                        success=False,
+                        error="任务尚未处于待审核状态",
+                    )
+                if int(row["awarded"] or 0):
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="任务奖励已发放")
+                qq_id = str(row["qq_id"])
+                conn.execute(
+                    """
+                    UPDATE tasks
+                    SET status = 'approved',
+                        reviewed_by = ?,
+                        reviewed_at = ?,
+                        reviewed_grade = ?,
+                        awarded = 1
+                    WHERE id = ?
+                    """,
+                    (admin_id, now, grade, task_id),
+                )
+                conn.execute(
+                    """
+                    UPDATE players
+                    SET points = points + ?,
+                        updated_at = ?
+                    WHERE qq_id = ?
+                    """,
+                    (reward, now, qq_id),
+                )
+                self._audit_task(
+                    conn,
+                    qq_id,
+                    task_id,
+                    "approve",
+                    admin_id,
+                    grade=grade,
+                    points=reward,
+                    now=now,
+                )
+                player = conn.execute(
+                    "SELECT points FROM players WHERE qq_id = ?",
+                    (qq_id,),
+                ).fetchone()
+                conn.execute("COMMIT")
+                return TaskReviewReceipt(
+                    success=True,
+                    points=int(player["points"]),
+                    grade=grade,
+                )
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
+    def reject_task(
+        self,
+        task_id: int,
+        admin_id: str,
+        *,
+        note: str = "",
+    ) -> TaskReviewReceipt:
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                row = conn.execute(
+                    "SELECT * FROM tasks WHERE id = ?",
+                    (task_id,),
+                ).fetchone()
+                if row is None:
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="任务不存在")
+                if str(row["status"]) != "submitted":
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(
+                        success=False,
+                        error="任务尚未处于待审核状态",
+                    )
+                conn.execute(
+                    """
+                    UPDATE tasks
+                    SET status = 'rejected',
+                        reviewed_by = ?,
+                        reviewed_at = ?,
+                        reviewed_grade = 'reject',
+                        note = ?
+                    WHERE id = ?
+                    """,
+                    (admin_id, now, note, task_id),
+                )
+                self._audit_task(
+                    conn,
+                    str(row["qq_id"]),
+                    task_id,
+                    "reject",
+                    admin_id,
+                    note=note,
+                    now=now,
+                )
+                conn.execute("COMMIT")
+                return TaskReviewReceipt(success=True)
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
+    def complete_ultimate(
+        self,
+        task_id: int,
+        admin_id: str,
+        *,
+        reward: int,
+        ultimate_total: int = 1,
+    ) -> TaskReviewReceipt:
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                row = conn.execute(
+                    "SELECT * FROM tasks WHERE id = ?",
+                    (task_id,),
+                ).fetchone()
+                if row is None:
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="任务不存在")
+                if str(row["task_kind"]) != "ultimate":
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="该任务不是终极任务")
+                if str(row["status"]) != "submitted":
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(
+                        success=False,
+                        error="任务尚未处于待审核状态",
+                    )
+                if int(row["awarded"] or 0):
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="任务奖励已发放")
+                qq_id = str(row["qq_id"])
+                game = str(row["game"])
+                song_id = str(row["song_id"])
+                conn.execute(
+                    """
+                    INSERT OR IGNORE INTO ultimate_completed_songs(
+                        qq_id, game, song_id, completed_at
+                    ) VALUES(?, ?, ?, ?)
+                    """,
+                    (qq_id, game, song_id, now),
+                )
+                conn.execute(
+                    """
+                    UPDATE tasks
+                    SET status = 'approved',
+                        reviewed_by = ?,
+                        reviewed_at = ?,
+                        reviewed_grade = 'SSS+',
+                        awarded = 1
+                    WHERE id = ?
+                    """,
+                    (admin_id, now, task_id),
+                )
+                conn.execute(
+                    """
+                    UPDATE players
+                    SET points = points + ?,
+                        updated_at = ?
+                    WHERE qq_id = ?
+                    """,
+                    (reward, now, qq_id),
+                )
+                progress = conn.execute(
+                    "SELECT * FROM ultimate_progress WHERE qq_id = ?",
+                    (qq_id,),
+                ).fetchone()
+                stage = int(progress["stage"] or 0) if progress is not None else 0
+                next_stage = stage + 1
+                finished = int(next_stage >= ultimate_total)
+                conn.execute(
+                    """
+                    INSERT INTO ultimate_progress(
+                        qq_id, stage, active_task_id, finished, completed_at
+                    ) VALUES(?, ?, NULL, ?, ?)
+                    ON CONFLICT(qq_id) DO UPDATE SET
+                        stage = excluded.stage,
+                        active_task_id = NULL,
+                        finished = excluded.finished,
+                        completed_at = excluded.completed_at
+                    """,
+                    (qq_id, next_stage, finished, now if finished else None),
+                )
+                self._audit_task(
+                    conn,
+                    qq_id,
+                    task_id,
+                    "ultimate_complete",
+                    admin_id,
+                    grade="SSS+",
+                    points=reward,
+                    now=now,
+                )
+                player = conn.execute(
+                    "SELECT points FROM players WHERE qq_id = ?",
+                    (qq_id,),
+                ).fetchone()
+                conn.execute("COMMIT")
+                return TaskReviewReceipt(
+                    success=True,
+                    points=int(player["points"]),
+                    grade="SSS+",
+                )
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
+    def reset_task(
+        self,
+        task_id: int,
+        admin_id: str,
+        *,
+        note: str = "",
+        today: str = "",
+    ) -> TaskResetReceipt:
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                row = conn.execute(
+                    "SELECT * FROM tasks WHERE id = ?",
+                    (task_id,),
+                ).fetchone()
+                if row is None:
+                    conn.execute("ROLLBACK")
+                    return TaskResetReceipt(success=False, error="任务不存在")
+                status = str(row["status"])
+                if status not in {"active", "submitted", "rejected"}:
+                    conn.execute("ROLLBACK")
+                    return TaskResetReceipt(
+                        success=False,
+                        error="只有未完成或待审核任务可以重置",
+                    )
+                qq_id = str(row["qq_id"])
+                task_kind = str(row["task_kind"])
+                if task_kind in {"normal", "challenge"}:
+                    self._release_task_quota(
+                        conn,
+                        qq_id,
+                        task_kind,
+                        str(row["task_date"] or ""),
+                        today,
+                    )
+                conn.execute(
+                    """
+                    UPDATE tasks
+                    SET status = 'reset',
+                        reviewed_by = ?,
+                        reviewed_at = ?,
+                        reviewed_grade = 'reset',
+                        note = ?
+                    WHERE id = ?
+                    """,
+                    (admin_id, now, note, task_id),
+                )
+                if task_kind == "ultimate":
+                    conn.execute(
+                        """
+                        UPDATE ultimate_progress
+                        SET active_task_id = NULL
+                        WHERE qq_id = ?
+                        """,
+                        (qq_id,),
+                    )
+                self._audit_task(
+                    conn,
+                    qq_id,
+                    task_id,
+                    "reset",
+                    admin_id,
+                    note=note,
+                    now=now,
+                )
+                conn.execute("COMMIT")
+                return TaskResetReceipt(success=True)
+            except Exception:
+                conn.execute("ROLLBACK")
+                raise
+
+    def get_ultimate_progress(self, qq_id: str) -> UltimateProgress:
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            row = self._conn.execute(
+                "SELECT * FROM ultimate_progress WHERE qq_id = ?",
+                (qq_id,),
+            ).fetchone()
+            if row is None:
+                return UltimateProgress(
+                    stage=0,
+                    active_task_id=None,
+                    finished=False,
+                    completed_at=None,
+                )
+            return UltimateProgress(
+                stage=int(row["stage"] or 0),
+                active_task_id=(
+                    int(row["active_task_id"])
+                    if row["active_task_id"] is not None
+                    else None
+                ),
+                finished=bool(row["finished"]),
+                completed_at=str(row["completed_at"]) if row["completed_at"] else None,
+            )
+
+    def get_ultimate_completed_keys(self, qq_id: str) -> set[str]:
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            rows = self._conn.execute(
+                """
+                SELECT game, song_id
+                FROM ultimate_completed_songs
+                WHERE qq_id = ?
+                """,
+                (qq_id,),
+            ).fetchall()
+            return {f"{row['game']}:{row['song_id']}" for row in rows}
+
+    def get_task_quota(
+        self,
+        qq_id: str,
+        *,
+        task_kind: str,
+        task_date: str,
+    ) -> int:
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            row = self._conn.execute(
+                """
+                SELECT used_count
+                FROM daily_task_quota
+                WHERE qq_id = ? AND task_date = ? AND task_kind = ?
+                """,
+                (qq_id, task_date, task_kind),
+            ).fetchone()
+            return int(row["used_count"]) if row is not None else 0
+
+    def expire_daily_tasks(self, today: str) -> int:
+        """自动过期指定日期前仍未完成的普通/挑战任务。
+
+        已提交待审核的任务不处理，避免管理员来不及审核。
+        """
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            cursor = self._conn.execute(
+                """
+                UPDATE tasks
+                SET status = 'expired',
+                    note = CASE
+                        WHEN note = '' THEN '每日任务自动过期'
+                        ELSE note || ' | 每日任务自动过期'
+                    END
+                WHERE task_kind IN ('normal', 'challenge')
+                  AND task_date < ?
+                  AND status IN ('active', 'rejected')
+                """,
+                (today,),
+            )
+            return cursor.rowcount
+
+    def cleanup_task_history(self, today: str) -> int:
+        """删除已过期且日期早于今天的任务记录，保留审计日志。"""
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            cursor = self._conn.execute(
+                """
+                DELETE FROM tasks
+                WHERE status = 'expired'
+                  AND task_date < ?
+                """,
+                (today,),
+            )
+            return cursor.rowcount
+
+    def get_setting(self, key: str) -> str:
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            row = self._conn.execute(
+                "SELECT value FROM app_settings WHERE key = ?",
+                (key,),
+            ).fetchone()
+            return str(row["value"]) if row is not None else ""
+
+    def set_setting(self, key: str, value: str) -> None:
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            self._conn.execute(
+                """
+                INSERT INTO app_settings(key, value, updated_at)
+                VALUES(?, ?, ?)
+                ON CONFLICT(key) DO UPDATE SET
+                    value = excluded.value,
+                    updated_at = excluded.updated_at
+                """,
+                (key, str(value or ""), now),
+            )

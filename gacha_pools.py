@@ -177,10 +177,17 @@ class GachaSchedule:
             return None
         return max(active, key=lambda item: item.start_date or date.min)
 
-    def cycle_for(self, day: date, interval_days: int = 7) -> PoolEntry | None:
+    def cycle_for(
+        self,
+        day: date,
+        interval_days: int = 7,
+        epoch: date | None = None,
+    ) -> PoolEntry | None:
         """Return a deterministic historical pool for a rotation interval."""
         if not self.entries:
             return None
         interval = max(int(interval_days), 1)
-        index = (day.toordinal() // interval) % len(self.entries)
+        base = epoch or date.min
+        elapsed_days = max((day - base).days, 0)
+        index = (elapsed_days // interval) % len(self.entries)
         return self.entries[index]
