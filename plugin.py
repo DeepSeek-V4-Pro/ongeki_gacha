@@ -1250,6 +1250,39 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
         else:
             await self._send_text(stream_id, text)
 
+    async def _send_checkin_bonus_card(
+        self,
+        stream_id: str,
+        card: CardInfo,
+        copies: int,
+        is_kaika: bool,
+        is_cho_kaika: bool,
+    ) -> None:
+        """渲染并发送签到彩蛋卡图片。"""
+        if self._renderer is None:
+            self.ctx.logger.warning("签到彩蛋卡图片未发送：渲染器尚未初始化")
+            return
+        output_path = (
+            self.ctx.paths.runtime_dir
+            / f"ongeki_checkin_{card.id}_{time_ns()}.png"
+        )
+        try:
+            state = RenderCard(
+                card=card,
+                copies=copies,
+                is_kaika=is_kaika,
+                is_cho_kaika=is_cho_kaika,
+            )
+            image_bytes = self._renderer.render([state], output_path)
+            image_base64 = base64.b64encode(image_bytes).decode("ascii")
+            await self.ctx.send.image(image_base64, stream_id)
+        except Exception as exc:
+            self.ctx.logger.error(
+                "签到彩蛋卡图片发送失败: %s",
+                exc,
+                exc_info=True,
+            )
+
     @staticmethod
     def _rare_summary(cards: list[CardInfo]) -> str:
         counts = Counter(rarity_display(card.rarity) for card in cards)
@@ -1516,6 +1549,13 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                 )
                 if bonus_card is not None:
                     parts.append(f"签到彩蛋卡：{self._card_display_name(bonus_card)}")
+                    await self._send_checkin_bonus_card(
+                        stream_id,
+                        bonus_card,
+                        receipt.non_gacha_copies,
+                        receipt.non_gacha_is_kaika,
+                        receipt.non_gacha_is_cho_kaika,
+                    )
             text = "，".join(parts)
             text += f"｜当前点数：{final_points or receipt.points} 点"
         else:

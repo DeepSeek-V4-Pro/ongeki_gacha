@@ -91,6 +91,9 @@ class CheckinReceipt:
     cycle_reward: int = 0
     monthly_reward: int = 0
     non_gacha_card_id: int | None = None
+    non_gacha_copies: int = 0
+    non_gacha_is_kaika: bool = False
+    non_gacha_is_cho_kaika: bool = False
 
 
 @dataclass(frozen=True)
@@ -1030,6 +1033,9 @@ class GachaDatabase:
                     (qq_id, today, total_reward, now),
                 )
                 non_gacha_card_id: int | None = None
+                non_gacha_copies = 0
+                non_gacha_is_kaika = False
+                non_gacha_is_cho_kaika = False
                 non_gacha_pool = list(non_gacha_card_ids or ())
                 if (
                     non_gacha_pool
@@ -1047,6 +1053,9 @@ class GachaDatabase:
                         chosen_rarity,
                         new_copies,
                     )
+                    non_gacha_copies = new_copies
+                    non_gacha_is_kaika = is_kaika
+                    non_gacha_is_cho_kaika = is_cho_kaika
                     conn.execute(
                         """
                         INSERT INTO inventory(
@@ -1085,6 +1094,9 @@ class GachaDatabase:
                     cycle_reward=cycle_reward,
                     monthly_reward=monthly_reward,
                     non_gacha_card_id=non_gacha_card_id,
+                    non_gacha_copies=non_gacha_copies,
+                    non_gacha_is_kaika=non_gacha_is_kaika,
+                    non_gacha_is_cho_kaika=non_gacha_is_cho_kaika,
                 )
             except Exception:
                 conn.execute("ROLLBACK")
