@@ -302,6 +302,30 @@ def _draw_info_row(
     draw.text((value_x, y - 1), value, font=value_font, fill=value_color)
 
 
+def _fit_text(
+    draw: ImageDraw.ImageDraw,
+    text: str,
+    font: ImageFont.FreeTypeFont | ImageFont.ImageFont,
+    max_width: float,
+    ellipsis: str = "…",
+) -> str:
+    """按可用像素宽度截断文本，超出部分用省略号代替。"""
+    if max_width <= 0 or draw.textlength(text, font=font) <= max_width:
+        return text
+    ellipsis_width = draw.textlength(ellipsis, font=font)
+    limit = max(max_width - ellipsis_width, 0.0)
+    kept = ""
+    width = 0.0
+    for char in text:
+        char_width = draw.textlength(char, font=font)
+        if width + char_width > limit:
+            break
+        kept += char
+        width += char_width
+    kept = kept.rstrip()
+    return f"{kept}{ellipsis}" if kept else ellipsis
+
+
 def render_task_card(data: TaskCardData, output_path: Path, size: tuple[int, int] = (1000, 620)) -> Path:
     """渲染任务卡并保存 PNG，返回输出路径。"""
     width, height = size
@@ -372,12 +396,24 @@ def render_task_card(data: TaskCardData, output_path: Path, size: tuple[int, int
 
     song_font = _font(31)
     song_y = info_y + 32
-    song_title = str(data.title or "未知曲目")
+    info_max_width = (card[2] - 30) - info_x
+    song_title = _fit_text(
+        draw,
+        str(data.title or "未知曲目"),
+        song_font,
+        info_max_width,
+    )
     draw.text((info_x, song_y), song_title, font=song_font, fill=TEXT_DARK)
 
     artist_font = _font(20)
     artist_y = song_y + 46
-    draw.text((info_x, artist_y), str(data.artist or "未知艺术家"), font=artist_font, fill=TEXT_MUTED)
+    artist_text = _fit_text(
+        draw,
+        str(data.artist or "未知艺术家"),
+        artist_font,
+        info_max_width,
+    )
+    draw.text((info_x, artist_y), artist_text, font=artist_font, fill=TEXT_MUTED)
 
     row_y = artist_y + 48
     level_label = "任务谱面" if str(data.kind or "").lower() != "normal" else "最高难度"

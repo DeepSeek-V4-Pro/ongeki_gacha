@@ -753,15 +753,10 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
     def _task_requirement(self, selection: TaskSelection, task_kind: str) -> str:
         if task_kind == "normal":
             return "游玩任意难度"
+        grade_text = "S 及以上" if task_kind == "challenge" else "SSS+ 评级"
         if selection.chart is None:
-            return "S 及以上" if task_kind == "challenge" else "SSS+ 评级"
-        difficulty = selection.requirement
-        if task_kind == "challenge":
-            return f"{difficulty} · S 及以上"
-        return (
-            f"{difficulty}（该谱面定数 {selection.chart.level_value:.1f}"
-            f" ≥ {self.config.task.ultimate_min_level:g}）· SSS+ 评级"
-        )
+            return grade_text
+        return f"{selection.requirement} · {grade_text}"
 
     def _task_sources(self) -> tuple[dict[str, str], dict[str, str]]:
         task = self.config.task

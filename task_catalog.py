@@ -845,10 +845,7 @@ def _example_report(kind: str, song: CatalogSong) -> dict[str, Any]:
     target = max(candidates, key=lambda item: item.level_value, default=None)
     if kind == "ultimate" and target is not None:
         difficulty_text = f"{target.label.upper()} {target.level_display}"
-        requirement = (
-            f"{difficulty_text}（该谱面定数 {target.level_value:.1f}"
-            " ≥ 14.7）· SSS+ 评级"
-        )
+        requirement = f"{difficulty_text} · SSS+ 评级"
     else:
         difficulty_text = ""
         requirement = "游玩任意难度"
