@@ -2239,20 +2239,86 @@ class GachaDatabase:
             )
             return cursor.rowcount
 
-    def cleanup_task_history(self, today: str) -> int:
-        """删除已过期且日期早于今天的任务记录，保留审计日志。"""
+    def cleanup_task_history(
+        self,
+        today: str,
+        *,
+        retention_days: int = 30,
+    ) -> int:
+        """清理已结束任务，保留最近 retention_days 天和全部待审核任务。"""
+        retention = max(int(retention_days or 0), 0)
+        cutoff = (
+            date.fromisoformat(today) - timedelta(days=retention)
+        ).isoformat()
         with self._lock:
             if self._conn is None:
                 raise RuntimeError("数据库尚未打开")
             cursor = self._conn.execute(
                 """
                 DELETE FROM tasks
-                WHERE status = 'expired'
-                  AND task_date < ?
+                WHERE status IN ('approved', 'rejected', 'reset', 'expired')
+                  AND COALESCE(reviewed_at, created_at) < ?
                 """,
-                (today,),
+                (cutoff,),
             )
             return cursor.rowcount
+
+    def cleanup_daily_task_quota(
+        self,
+        today: str,
+        *,
+        retention_days: int = 30,
+    ) -> int:
+        """清理 retention_days 天以前的每日任务配额记录。"""
+        retention = max(int(retention_days or 0), 0)
+        cutoff = (
+            date.fromisoformat(today) - timedelta(days=retention)
+        ).isoformat()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            cursor = self._conn.execute(
+                "DELETE FROM daily_task_quota WHERE task_date < ?",
+                (cutoff,),
+            )
+            return cursor.rowcount
+
+    def sync_time_based_state(
+        self,
+        *,
+        tz_offset_hours: int = 0,
+        savings_bonus_reset_days: int = 60,
+    ) -> tuple[int, int]:
+        """按真实日期同步所有玩家的周保底与囤点周期。"""
+        today = self.current_date_str(tz_offset_hours)
+        week_key = self._weekly_5_key(tz_offset_hours)
+        now = self._now_iso()
+        reset_offset = f"+{max(int(savings_bonus_reset_days or 60), 1)} days"
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            weekly = self._conn.execute(
+                """
+                UPDATE players
+                SET weekly_5_guarantee_week = ?,
+                    weekly_5_guarantee_used = 0,
+                    updated_at = ?
+                WHERE weekly_5_guarantee_week <> ?
+                """,
+                (week_key, now, week_key),
+            ).rowcount
+            savings = self._conn.execute(
+                """
+                UPDATE players
+                SET savings_bonus_level = 0,
+                    savings_bonus_start_date = ?,
+                    updated_at = ?
+                WHERE savings_bonus_start_date <> ''
+                  AND date(savings_bonus_start_date, ?) <= date(?)
+                """,
+                (today, now, reset_offset, today),
+            ).rowcount
+            return weekly, savings
 
     def get_setting(self, key: str) -> str:
         with self._lock:

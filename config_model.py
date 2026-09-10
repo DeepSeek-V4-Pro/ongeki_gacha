@@ -14,7 +14,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.2.0", description="配置版本")
+    config_version: str = Field(default="1.2.1", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -171,7 +171,11 @@ class TaskConfig(PluginConfigBase):
     enabled: bool = Field(default=True, description="是否启用随机任务")
     normal_count: int = Field(default=5, ge=1, description="每日普通任务次数")
     challenge_count: int = Field(default=3, ge=1, description="每日挑战任务次数")
-    challenge_min_level: float = Field(default=10.0, ge=1.0, description="挑战最低标级")
+    challenge_min_level: float = Field(
+        default=10.0,
+        ge=1.0,
+        description="挑战最低等级，默认 10 级或以上",
+    )
     ultimate_min_level: float = Field(default=14.7, ge=1.0, description="终极最低定数")
 
     normal_reward: int = Field(default=20, ge=0, description="普通任务奖励")
@@ -186,6 +190,15 @@ class TaskConfig(PluginConfigBase):
     )
     require_photo: bool = Field(default=True, description="提交任务时是否要求图片")
     auto_reset: bool = Field(default=True, description="每日 00:00 自动过期未完成任务")
+    auto_cleanup_history: bool = Field(
+        default=True,
+        description="每日自动清理已结束任务历史",
+    )
+    task_history_retention_days: int = Field(
+        default=30,
+        ge=1,
+        description="已结束任务自动保留天数",
+    )
     catalog_cache_ttl: int = Field(default=3600, ge=60, description="曲库缓存秒数")
 
     ongeki_source_url: str = Field(

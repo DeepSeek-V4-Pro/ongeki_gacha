@@ -71,6 +71,8 @@ class TaskCommandsMixin:
                 completed_keys=completed_keys,
                 excluded_keys=incomplete_keys,
                 game=game,
+                challenge_min_level=self.config.task.challenge_min_level,
+                ultimate_min_level=self.config.task.ultimate_min_level,
             )
             if selection is None:
                 if task_kind == "ultimate":
@@ -95,10 +97,20 @@ class TaskCommandsMixin:
                 song_title=selection.song.title,
                 artist=selection.song.artist,
                 difficulty_index=chart.index if chart is not None else None,
-                difficulty_label=chart.label if chart is not None else "",
-                target_level=chart.level_display if chart is not None else "",
+                difficulty_label=(
+                    chart.label
+                    if chart is not None
+                    else ""
+                ),
+                target_level=(
+                    chart.level_display
+                    if chart is not None
+                    else ""
+                ),
                 target_level_value=(
-                    chart.level_value if chart is not None else 0.0
+                    chart.level_value
+                    if chart is not None
+                    else 0.0
                 ),
                 requirement_text=self._task_requirement(selection, task_kind),
                 reward=reward,
@@ -448,6 +460,47 @@ class TaskCommandsMixin:
             "任务已重置，用户可重新接取"
             if receipt.success
             else (receipt.error or "重置失败")
+        )
+        await self._send_text(stream_id, text)
+        return True, text, True
+
+    @Command(
+        "ongeki_task_cleanup",
+        description="管理员清理已结束的历史任务",
+        pattern=r"^/(?:任务清理|清理任务)(?:\s+(?P<days>\d+))?\s*$",
+    )
+    async def handle_task_cleanup(
+        self,
+        stream_id: str = "",
+        matched_groups: dict = None,
+        **kwargs: dict[str, Any],
+    ) -> tuple[bool, str, bool]:
+        user_id = self._user_id(kwargs)
+        if not self._is_admin(user_id) or self._db is None:
+            text = "你不是管理员，或插件尚未初始化完成"
+            await self._send_text(stream_id, text)
+            return True, text, True
+        groups = matched_groups or {}
+        raw_days = str(groups.get("days") or "").strip()
+        if raw_days.isdigit() and int(raw_days) >= 0:
+            retention_days = int(raw_days)
+        else:
+            retention_days = self.config.task.task_history_retention_days
+        today = GachaDatabase.current_date_str(
+            self.config.economy.tz_offset_hours
+        )
+        cleaned_tasks = self._db.cleanup_task_history(
+            today,
+            retention_days=retention_days,
+        )
+        cleaned_quota = self._db.cleanup_daily_task_quota(
+            today,
+            retention_days=retention_days,
+        )
+        text = (
+            f"已清理 {cleaned_tasks} 条已结束任务、"
+            f"{cleaned_quota} 条旧每日配额。"
+            "待审核任务不会被清理。"
         )
         await self._send_text(stream_id, text)
         return True, text, True

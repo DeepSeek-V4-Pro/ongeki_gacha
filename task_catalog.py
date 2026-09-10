@@ -63,6 +63,7 @@ KIND_LABELS = {
     "ultimate": "终极任务",
 }
 
+
 DIFFICULTY_LABELS = {
     "ongeki": ("BASIC", "ADVANCED", "EXPERT", "MASTER", "LUNATIC"),
     "maimai": ("BASIC", "ADVANCED", "EXPERT", "MASTER", "REMASTER"),
@@ -126,6 +127,18 @@ class TaskSelection:
     chart: CatalogChart | None = None
 
     @property
+    def level_text(self) -> str:
+        if self.chart is not None:
+            return (
+                f"{self.chart.label.upper()} {self.chart.level_display}"
+                f"（定数 {self.chart.level_value:.1f}）"
+            )
+        return (
+            f"{self.song.max_level_display}"
+            f"（定数 {self.song.max_level_value:.1f}）"
+        )
+
+    @property
     def requirement(self) -> str:
         if self.chart is None:
             return "游玩任意难度"
@@ -145,6 +158,8 @@ def pick_random_task(
     completed_keys: Iterable[str] = (),
     excluded_keys: Iterable[str] = (),
     game: str | None = None,
+    challenge_min_level: float = 10.0,
+    ultimate_min_level: float = 14.7,
 ) -> TaskSelection | None:
     """从归一化曲库中随机挑选一张普通/挑战/终极任务。"""
     catalog = list(catalog)
@@ -163,21 +178,41 @@ def pick_random_task(
         return TaskSelection(song=random.SystemRandom().choice(candidates))
 
     if kind == "challenge":
+        threshold = max(float(challenge_min_level), 0.0)
         candidates = [
-            TaskSelection(song=song, chart=chart)
+            TaskSelection(
+                song=song,
+                chart=min(
+                    (
+                        chart
+                        for chart in song.charts
+                        if not chart.is_special
+                        and chart.level_value >= threshold
+                    ),
+                    key=lambda item: item.level_value,
+                ),
+            )
             for song in catalog
-            for chart in song.charts
-            if not chart.is_special
-            and chart.level_value >= 10.0
+            if not song.disabled
+            and not song.locked
+            and song.max_level_value >= threshold
             and song.key not in excluded
+            and any(
+                not chart.is_special and chart.level_value >= threshold
+                for chart in song.charts
+            )
         ]
+        if not candidates:
+            return None
+        return random.SystemRandom().choice(candidates)
     elif kind == "ultimate":
+        threshold = max(float(ultimate_min_level), 0.0)
         candidates = [
             TaskSelection(song=song, chart=chart)
             for song in catalog
             for chart in song.charts
             if not chart.is_special
-            and chart.level_value >= 14.7
+            and chart.level_value >= threshold
             and song.key not in completed
             and song.key not in excluded
         ]
@@ -613,37 +648,33 @@ def _render_example(
             for chart in song.charts
             if not chart.is_special and chart.level_value >= 10.0
         ]
-        target_chart = max(candidates, key=lambda item: item.level_value) if candidates else None
+        target_chart = (
+            min(candidates, key=lambda item: item.level_value)
+            if candidates
+            else None
+        )
     elif kind == "ultimate":
         candidates = [
             chart
             for chart in song.charts
-            if not chart.is_special and chart.level_value >= 14.7
+            if not chart.is_special
+            and chart.level_value >= 14.7
         ]
         target_chart = max(candidates, key=lambda item: item.level_value) if candidates else None
 
-    if target_chart is not None:
-        level_text = (
-            f"{target_chart.label.upper()} {target_chart.level_display}"
-            f"（定数 {target_chart.level_value:.1f}）"
-        )
+    if kind == "challenge":
+        selection = TaskSelection(song=song, chart=target_chart)
+    elif kind == "ultimate":
+        selection = TaskSelection(song=song, chart=target_chart)
     else:
-        level_text = f"{song.max_level_display} (定数 {song.max_level_value:.1f})"
-    if target_chart is not None:
-        max_difficulty_index = max(
-            (chart.index for chart in song.charts if not chart.is_special),
-            default=-1,
-        )
-        suffix = "" if target_chart.index >= max_difficulty_index else " 或以上"
-        difficulty_text = (
-            f"{target_chart.label.upper()} {target_chart.level_display}{suffix}"
-        )
-        if kind == "challenge":
-            requirement = f"{difficulty_text} · S 及以上"
-        else:
-            requirement = f"{difficulty_text} · SSS+ 评级"
+        selection = TaskSelection(song=song)
+    level_text = selection.level_text
+    if kind == "challenge":
+        requirement = f"{selection.requirement} · S 及以上"
+    elif kind == "ultimate":
+        requirement = f"{selection.requirement} · SSS+ 评级"
     else:
-        requirement = "游玩任意难度"
+        requirement = selection.requirement
     safe_song_id = hashlib.sha1(song.song_id.encode("utf-8")).hexdigest()[:10]
     cover_path = output_dir / "covers" / f"{song.game}_{safe_song_id}.png"
     download_cover(song.cover_url, cover_path)
@@ -757,8 +788,8 @@ def main() -> None:
     for game in ("ongeki", "maimai", "chunithm"):
         print(
             f"{GAME_LABELS[game]}：全量 {by_game[game]}，"
-            f"10+ {challenge_by_game[game]}，"
-            f"14.7+ {ultimate_by_game[game]}"
+            f"10级或以上 {challenge_by_game[game]}，"
+            f"定数14.7或以上 {ultimate_by_game[game]}"
         )
     print(f"挑战候选池：{len(challenge_pool)}")
     print(f"挑战谱面池：{len(challenge_chart_pool)}")
@@ -771,27 +802,56 @@ def main() -> None:
 
 
 def _example_report(kind: str, song: CatalogSong) -> dict[str, Any]:
+    if kind == "challenge":
+        threshold = 10.0
+        target = min(
+            (
+                chart
+                for chart in song.charts
+                if not chart.is_special and chart.level_value >= threshold
+            ),
+            key=lambda item: item.level_value,
+            default=None,
+        )
+        selection = TaskSelection(song=song, chart=target)
+        return {
+            "kind": kind,
+            "game": song.game,
+            "song_id": song.song_id,
+            "title": song.title,
+            "artist": song.artist,
+            "difficulty": (
+                f"{target.label.upper()} {target.level_display}"
+                if target is not None
+                else "10 级或以上"
+            ),
+            "difficulty_level": (
+                target.level_display if target is not None else "10 级"
+            ),
+            "difficulty_value": (
+                target.level_value if target is not None else threshold
+            ),
+            "requirement": f"{selection.requirement} · S 及以上",
+            "level": song.max_level_display,
+            "level_value": song.max_level_value,
+            "cover_url": song.cover_url,
+        }
+
     candidates = [
         chart
         for chart in song.charts
-        if not chart.is_special
-        and (
-            chart.level_value >= 10.0
-            if kind == "challenge"
-            else chart.level_value >= 14.7
-        )
+        if not chart.is_special and chart.level_value >= 14.7
     ]
     target = max(candidates, key=lambda item: item.level_value, default=None)
-    difficulty_text = ""
-    if target is not None:
-        max_difficulty_index = max(
-            (chart.index for chart in song.charts if not chart.is_special),
-            default=-1,
+    if kind == "ultimate" and target is not None:
+        difficulty_text = f"{target.label.upper()} {target.level_display}"
+        requirement = (
+            f"{difficulty_text}（该谱面定数 {target.level_value:.1f}"
+            " ≥ 14.7）· SSS+ 评级"
         )
-        suffix = "" if target.index >= max_difficulty_index else " 或以上"
-        difficulty_text = (
-            f"{target.label.upper()} {target.level_display}{suffix}"
-        )
+    else:
+        difficulty_text = ""
+        requirement = "游玩任意难度"
     return {
         "kind": kind,
         "game": song.game,
@@ -801,14 +861,7 @@ def _example_report(kind: str, song: CatalogSong) -> dict[str, Any]:
         "difficulty": target.label if target is not None else "",
         "difficulty_level": target.level_display if target is not None else "",
         "difficulty_value": target.level_value if target is not None else None,
-        "requirement": (
-            difficulty_text
-            + (
-                " · S 及以上"
-                if kind == "challenge"
-                else " · SSS+ 评级" if kind == "ultimate" else ""
-            )
-        ),
+        "requirement": requirement,
         "level": song.max_level_display,
         "level_value": song.max_level_value,
         "cover_url": song.cover_url,
