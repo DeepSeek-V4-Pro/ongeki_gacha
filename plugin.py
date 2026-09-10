@@ -35,6 +35,7 @@ from .task_catalog import (
 )
 from .task_render import TaskCardData, render_task_card
 from .task_commands import TaskCommandsMixin
+from .text_render import render_text_card
 
 
 logger = logging.getLogger(__name__)
@@ -541,7 +542,6 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             "管理员可通过 /奖励 @用户 <点数> [备注] 发放点数，发送记录会写入审计日志",
             "【随机任务】",
             "不指定游戏时默认三游戏全随机，也可 /接任务 <类型> <音击|舞萌|中二> 指定游戏",
-            "签到、任务、周保底与轮替均按国际时间 UTC 计算",
             f"普通任务：每日 {self.config.task.normal_count} 次，任意难度，奖励 {self.config.task.normal_reward} 点",
             (
                 f"挑战任务：每日 {self.config.task.challenge_count} 次，"
@@ -569,6 +569,8 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             ),
             "管理员可发送 /任务清理 [天数] 立即清理已结束任务，待审核任务不会被删除",
             "【说明】",
+            "签到、任务、周保底与轮替均按国际时间 UTC 计算",
+            "以上奖励与周期均可在插件配置中调整，详细说明见 USAGE.md",
         ]
 
     @staticmethod
@@ -888,21 +890,27 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
         )
 
     def _cleanup_render_cache(self) -> None:
-        """Delete temporary draw images older than one day."""
+        """Delete temporary draw/text/checkin/task images older than one day."""
         runtime_dir = self.ctx.paths.runtime_dir
         if not runtime_dir.is_dir():
             return
         cutoff = time.time() - RENDER_CACHE_TTL_SECONDS
         removed = []
-        for path in runtime_dir.glob("ongeki_draw_*.png"):
-            try:
-                if path.stat().st_mtime < cutoff:
-                    path.unlink()
-                    removed.append(str(path))
-            except OSError as exc:
-                logger.warning("清理抽卡临时图片失败 %s: %s", path, exc)
+        for pattern in (
+            "ongeki_draw_*.png",
+            "ongeki_text_*.png",
+            "ongeki_checkin_*.png",
+            "ongeki_task_*.png",
+        ):
+            for path in runtime_dir.glob(pattern):
+                try:
+                    if path.stat().st_mtime < cutoff:
+                        path.unlink()
+                        removed.append(str(path))
+                except OSError as exc:
+                    logger.warning("清理临时图片失败 %s: %s", path, exc)
         if removed:
-            logger.info("已清理 %d 张过期抽卡临时图片", len(removed))
+            logger.info("已清理 %d 张过期临时图片", len(removed))
 
     async def _daily_render_cache_cleanup_loop(self) -> None:
         """Run the daily cleanup loop until the plugin is unloaded."""
@@ -1207,6 +1215,40 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
     async def _send_text(self, stream_id: str, text: str) -> None:
         await self.ctx.send.text(text, stream_id)
 
+    async def _send_text_card(
+        self,
+        stream_id: str,
+        title: str,
+        lines: list[str],
+    ) -> bool:
+        """把长文本渲染成图片发送；成功返回 True。"""
+        if not any(str(line).strip() for line in lines):
+            return False
+        output_path = (
+            self.ctx.paths.runtime_dir / f"ongeki_text_{time_ns()}.png"
+        )
+        try:
+            paths = await asyncio.to_thread(
+                render_text_card,
+                title,
+                lines,
+                output_path,
+            )
+        except Exception as exc:
+            self.ctx.logger.warning("长文本图片渲染失败，回退文本发送: %s", exc)
+            return False
+        sent_any = False
+        for path in paths:
+            try:
+                image_base64 = base64.b64encode(
+                    path.read_bytes()
+                ).decode("ascii")
+                await self.ctx.send.image(image_base64, stream_id)
+                sent_any = True
+            except Exception as exc:
+                self.ctx.logger.warning("长文本图片发送失败: %s", exc)
+        return sent_any
+
     async def _send_forward(self, stream_id: str, lines: list[str]) -> None:
         """Send a long message as a merged forward message."""
         nodes = [
@@ -1233,14 +1275,17 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
         lines: list[str] | str,
         *,
         force_forward: bool = False,
+        title: str = "音击抽卡模拟器",
     ) -> None:
-        """Send short text normally and long content as a forward message."""
+        """短文本直接发送；长文本渲染为图片，失败时回退合并转发。"""
         if isinstance(lines, str):
             lines = lines.splitlines()
         text = "\n".join(lines).strip()
         if not text:
             return
         if force_forward or len(lines) > 8 or len(text) > 700:
+            if await self._send_text_card(stream_id, title, lines):
+                return
             await self._send_forward(stream_id, lines)
         else:
             await self._send_text(stream_id, text)
@@ -1851,7 +1896,11 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             lines.append("部分收藏：")
             lines.extend(preview_lines)
         text = "\n".join(lines)
-        await self._send_text(stream_id, text)
+        await self._send_lines(
+            stream_id,
+            text,
+            title="音击抽卡模拟器 · 卡册",
+        )
         return True, text, True
 
     @Command(
@@ -2006,7 +2055,11 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                     lines.append("未来轮替：" + "；".join(future))
             lines.append("排表来源：SEGA CARDMAKER 官方公告（2020-10～2026-07）+ Artemis 权重")
             text = "\n".join(lines)
-        await self._send_lines(stream_id, text)
+        await self._send_lines(
+            stream_id,
+            text,
+            title="音击抽卡模拟器 · 卡池",
+        )
         for image_url in dict.fromkeys(image_urls):
             await self._send_official_pool_image(stream_id, image_url)
         return True, text, True
@@ -2215,6 +2268,7 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             stream_id,
             text,
             force_forward=(action == "列表"),
+            title="音击抽卡模拟器 · 天井选择",
         )
         return True, text, True
 
@@ -2319,7 +2373,11 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             + "）"
         )
         text = "\n".join(lines)
-        await self._send_lines(stream_id, text)
+        await self._send_lines(
+            stream_id,
+            text,
+            title="音击抽卡模拟器 · 概率",
+        )
         return True, text, True
 
     @Command(
@@ -2333,9 +2391,14 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
         stream_id: str = "",
         **kwargs: dict[str, Any],
     ) -> tuple[bool, str, bool]:
-        """以转发消息形式发送详细规则。"""
+        """以图片卡片形式发送详细规则，失败时回退合并转发。"""
         del kwargs
-        await self._send_forward(stream_id, self._rules_text())
+        await self._send_lines(
+            stream_id,
+            self._rules_text(),
+            force_forward=True,
+            title="音击抽卡模拟器 · 规则",
+        )
         return True, "详细规则已发送", True
 
     @Command("ongeki_help", description="显示命令与玩法帮助", pattern=r"^/(?:帮助|on帮助)\s*$", aliases=["/og帮助", "/og 帮助"])

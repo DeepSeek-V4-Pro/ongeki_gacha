@@ -204,7 +204,11 @@ class TaskCommandsMixin:
         else:
             lines.append("")
             lines.append("暂无任务，发送 /接任务 普通 领取")
-        await self._send_lines(stream_id, lines)
+        await self._send_lines(
+            stream_id,
+            lines,
+            title="音击抽卡模拟器 · 任务列表",
+        )
         text = "\n".join(lines)
         return True, text, True
 
@@ -363,7 +367,11 @@ class TaskCommandsMixin:
                     f" | 接取人 {task.qq_id}"
                 )
             text = "\n".join(lines)
-        await self._send_lines(stream_id, text)
+        await self._send_lines(
+            stream_id,
+            text,
+            title="音击抽卡模拟器 · 待审核任务",
+        )
         return True, text, True
 
     @Command(
