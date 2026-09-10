@@ -52,7 +52,7 @@ class PoolConfig(PluginConfigBase):
     )
     rotation_mode: str = Field(
         default="cycle",
-        description="official=按官方日期选池；cycle=按间隔循环历史官方池",
+        description="official=按几月几日复现历史官方池（忽略年份）；cycle=按间隔循环历史官方池",
     )
     rotation_interval_days: int = Field(
         default=15,

@@ -310,7 +310,7 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
         mode = str(config.pool.rotation_mode or "cycle").strip().lower()
         today = cls._today(config)
         if mode == "official":
-            return schedule.active_for(today)
+            return schedule.active_for(today, ignore_year=True)
         return schedule.cycle_for(
             today,
             config.pool.rotation_interval_days,
@@ -329,7 +329,10 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             return ()
         mode = str(config.pool.rotation_mode or "cycle").strip().lower()
         if mode == "official":
-            return schedule.active_for_all(cls._today(config))
+            return schedule.active_for_all(
+                cls._today(config),
+                ignore_year=True,
+            )
         active = cls._schedule_pool(schedule, config, epoch=epoch)
         return (active,) if active is not None else ()
 
@@ -518,11 +521,13 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             "抽卡流程：先按稀有度权重，再在池内按卡权重抽取，UP 卡按配置倍率加权",
             "11 连必得 SR 或以上；5 连每用户每周首次触发一次 SR 或以上保底",
             "【卡池】",
-            f"默认每 {self.config.pool.rotation_interval_days} 天轮换一个历史官方卡池；也可切换为按官方日期选池",
+            f"默认每 {self.config.pool.rotation_interval_days} 天轮换一个历史官方卡池；"
+            "official 模拟模式按几月几日匹配历史官方池（忽略年份）",
             "official 模式可能同时启用多个官方卡池；默认抽最近开启的活动池，"
             "可用 /抽卡 <池ID> <数量> 指定其他启用池",
             "/卡池 会列出全部启用中的官方卡池，/天井列表 会列出全部启用池的天井状态",
-            "活动池候选为当期版本已有全部 R/SR/SSR；官方公告未写 UP 时会显示 UP 卡：0 张，但仍抽取这些基础卡",
+            "活动池候选为当期版本已有全部 R/SR/SSR；官方公告未写 UP 时会显示 "
+            "UP 卡：0 张，但仍会抽取当期版本的基础卡",
             "常驻池包含当前版本已有的全部 R/SR/SSR 基础卡，可用 /抽卡 常驻 单独抽取",
             "【天井】",
             "抽卡每张 +1 点天井点；达到上限后可 /天井 <卡ID> 兑换默认池的可选卡，"
@@ -1212,7 +1217,19 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             self.ctx.logger.warning("发送卡池官方图片失败 %s: %s", image_url, exc)
             return False
 
-    async def _send_text(self, stream_id: str, text: str) -> None:
+    async def _send_text(
+        self,
+        stream_id: str,
+        text: str,
+        *,
+        title: str = "音击抽卡模拟器",
+    ) -> None:
+        """统一指令回复：优先渲染分页图片，失败时回退纯文本。"""
+        lines = str(text or "").splitlines()
+        if not any(line.strip() for line in lines):
+            return
+        if await self._send_text_card(stream_id, title, lines):
+            return
         await self.ctx.send.text(text, stream_id)
 
     async def _send_text_card(
@@ -1277,18 +1294,16 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
         force_forward: bool = False,
         title: str = "音击抽卡模拟器",
     ) -> None:
-        """短文本直接发送；长文本渲染为图片，失败时回退合并转发。"""
+        """统一渲染为分页图片发送，失败时回退合并转发/纯文本。"""
+        del force_forward
         if isinstance(lines, str):
             lines = lines.splitlines()
         text = "\n".join(lines).strip()
         if not text:
             return
-        if force_forward or len(lines) > 8 or len(text) > 700:
-            if await self._send_text_card(stream_id, title, lines):
-                return
-            await self._send_forward(stream_id, lines)
-        else:
-            await self._send_text(stream_id, text)
+        if await self._send_text_card(stream_id, title, lines):
+            return
+        await self._send_forward(stream_id, lines)
 
     async def _send_checkin_bonus_card(
         self,
@@ -1336,7 +1351,15 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
     def _card_display_name(card: CardInfo, limit: int | None = None) -> str:
         """返回去掉开头【稀有度】标签后的卡名，避免列表里重复显示稀有度。"""
         name = re.sub(r"^【[^】]+】\s*", "", card.name).strip() or card.name
-        return name if limit is None else name[:limit]
+        return OngekiGachaPlugin._ellipsize(name, limit)
+
+    @staticmethod
+    def _ellipsize(text: str, limit: int | None = None) -> str:
+        """超长文本按字符数截断并追加省略号，避免排版截断不清。"""
+        value = str(text or "")
+        if limit is None or len(value) <= limit:
+            return value
+        return value[: max(limit - 1, 0)] + "…"
 
     @staticmethod
     def _pool_kind_label(kind: str) -> str:
@@ -1379,23 +1402,22 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                 return True, text, True
             self._sync_active_pool(pool_selector)
             draw_pool = self._regular_pool_instance if regular_draw else self._pool
+            if draw_pool is None and pool_selector:
+                active_names = "、".join(
+                    item.pool_id for item in self._active_pool_entries
+                )
+                text = (
+                    f"指定卡池 {pool_selector} 当前未启用；"
+                    f"当前启用：{active_names or '无'}"
+                )
+                await self._send_text(stream_id, text)
+                return True, text, True
             if draw_pool is None:
-                if not pool_selector:
-                    draw_pool = self._regular_pool_instance
-                if draw_pool is None:
-                    text = "当前没有可用卡池，请稍后重试"
-                    await self._send_text(stream_id, text)
-                    return True, text, True
-                if pool_selector:
-                    active_names = "、".join(
-                        item.pool_id for item in self._active_pool_entries
-                    )
-                    text = (
-                        f"指定卡池 {pool_selector} 当前未启用；"
-                        f"当前启用：{active_names or '无'}"
-                    )
-                    await self._send_text(stream_id, text)
-                    return True, text, True
+                draw_pool = self._regular_pool_instance
+            if draw_pool is None:
+                text = "当前没有可用卡池，请稍后重试"
+                await self._send_text(stream_id, text)
+                return True, text, True
 
             player = self._db.get_player(user_id)
             original_cost = cost
@@ -1480,8 +1502,13 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                 )
                 for card, commitment in zip(drawn_cards, receipt.commitments, strict=True)
             ]
+            pool_label = (
+                f"{draw_pool.pool_id}｜{self._ellipsize(draw_pool.pool_name, 60)}"
+                if draw_pool.pool_id != "regular"
+                else self._ellipsize(draw_pool.pool_name, 60)
+            )
             summary_lines = [
-                f"本次抽取：{count} 连｜卡池：{draw_pool.pool_name[:60]}",
+                f"本次抽取：{count} 连｜卡池：{pool_label}",
                 f"稀有度：{self._rare_summary(drawn_cards)}",
                 f"新卡：{sum(1 for item in receipt.commitments if item.is_new)} 张",
                 f"剩余点数：{receipt.points} 点",
@@ -1596,8 +1623,8 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                         receipt.non_gacha_is_kaika,
                         receipt.non_gacha_is_cho_kaika,
                     )
-            text = "，".join(parts)
-            text += f"｜当前点数：{final_points or receipt.points} 点"
+            parts.append(f"当前点数：{final_points or receipt.points} 点")
+            text = "｜".join(parts)
         else:
             text = receipt.error or "签到失败"
         await self._send_text(stream_id, text)
@@ -1932,51 +1959,76 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             shown_pool: PoolEntry | None = None
             index: int | None = None
 
-            def append_pool_details(entry: PoolEntry, *, detailed: bool) -> None:
-                lines.append(
-                    f"类型：{self._pool_kind_label(entry.kind)}｜"
-                    f"时间：{entry.start_date} ～ {entry.end_date}"
-                )
+            def up_ssr_lines(entry: PoolEntry) -> list[str]:
+                """Return the UP SSR character lines for one pool."""
+                result: list[str] = []
+                for pool_card in entry.up_ssr_cards():
+                    card = self._cards.by_id.get(pool_card.card_id)
+                    if card is not None:
+                        result.append(
+                            f"{self._card_display_name(card, 38)}"
+                            f"（ID {card.id}）"
+                        )
+                return result
+
+            def append_pool_details(
+                entry: PoolEntry,
+                *,
+                detailed: bool,
+                include_meta: bool = True,
+            ) -> None:
+                if detailed:
+                    # /卡池 列表只输出角色信息，不附带类型/时间与卡池公告图
+                    up_ssr = entry.up_ssr_cards()
+                    lines.append(f"UP SSR：{len(up_ssr)} 张")
+                    lines.extend(up_ssr_lines(entry))
+                    return
+                if include_meta:
+                    if mode == "official" and entry.start_date and entry.end_date:
+                        period = (
+                            f"{entry.start_date:%m-%d} ～ "
+                            f"{entry.end_date:%m-%d}"
+                        )
+                    else:
+                        period = f"{entry.start_date} ～ {entry.end_date}"
+                    lines.append(
+                        f"类型：{self._pool_kind_label(entry.kind)}｜"
+                        f"时间：{period}"
+                    )
                 if entry.image_url:
                     image_urls.append(entry.image_url)
                 up_ssr = entry.up_ssr_cards()
                 lines.append(
                     f"UP SSR：{len(up_ssr)} 张｜"
+                    f"UP 卡：{entry.featured_count} 张｜"
                     f"天井选择：{entry.select_count} 张"
                 )
-                if action == "列表" and up_ssr:
-                    for pool_card in up_ssr:
-                        card = self._cards.by_id.get(pool_card.card_id)
-                        if card is not None:
-                            lines.append(
-                                f"{self._card_display_name(card, 38)}"
-                                f"（ID {card.id}）"
-                            )
-                elif up_ssr:
-                    for pool_card in up_ssr[:6]:
-                        card = self._cards.by_id.get(pool_card.card_id)
-                        if card is not None:
-                            lines.append(
-                                f"{self._card_display_name(card, 38)}"
-                                f"（ID {card.id}）"
-                            )
-                    if len(up_ssr) > 6:
-                        lines.append("完整列表：/卡池 列表")
+                lines.extend(up_ssr_lines(entry)[:6])
+                if len(up_ssr) > 6:
+                    lines.append("完整列表：/卡池 列表")
 
             if mode == "official":
                 active_entries = self._active_pool_entries
                 if not active_entries:
                     lines = [
                         "本期卡池：常驻池（当前版本已有全部 R/SR/SSR）",
-                        "状态：当前没有官方活动池，使用常驻池",
+                        f"状态：今天 {today:%m-%d} 没有官方活动池，使用常驻池",
                     ]
                 else:
-                    lines.append(
-                        f"当前同时启用 {len(active_entries)} 个官方卡池："
-                    )
+                    if action == "列表":
+                        lines.append(
+                            f"今天 {today:%m-%d} 启用 "
+                            f"{len(active_entries)} 个官方卡池的 UP 角色："
+                        )
+                    else:
+                        lines.append(
+                            f"今天 {today:%m-%d} 同时启用 "
+                            f"{len(active_entries)} 个官方卡池："
+                        )
                     for order, entry in enumerate(active_entries, 1):
                         lines.append(
-                            f"{order}. {entry.pool_id}｜{entry.name[:60]}"
+                            f"{order}. {entry.pool_id}｜"
+                            f"{self._ellipsize(entry.name, 60)}"
                         )
                         append_pool_details(
                             entry,
@@ -1986,10 +2038,11 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                         active_entries,
                         key=lambda item: item.start_date or date.min,
                     )
-                    lines.append(
-                        f"默认抽卡：{default_entry.pool_id}"
-                        f"｜/抽卡 <池ID> <1/5/11> 可指定其他启用池"
-                    )
+                    if action != "列表":
+                        lines.append(
+                            f"默认抽卡：{default_entry.pool_id}"
+                            f"｜/抽卡 <池ID> <1/5/11> 可指定其他启用池"
+                        )
                     shown_pool = default_entry
             else:
                 index = self._cycle_index(schedule)
@@ -1997,71 +2050,114 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                     lines = ["卡池排表为空"]
                 else:
                     shown_pool = schedule.entries[index]
-                    lines = [
-                        f"本期卡池：{shown_pool.name[:60]}",
-                        f"类型：{self._pool_kind_label(shown_pool.kind)}",
-                        (
-                            f"时间：{shown_pool.start_date} ～ "
-                            f"{shown_pool.end_date}"
-                            if shown_pool.start_date and shown_pool.end_date
-                            else "时间：历史轮替周期"
-                        ),
-                        f"历史轮替：第 {index + 1}/{len(schedule.entries)} 期",
-                    ]
-                    rotation_day = today + timedelta(
-                        days=self.config.pool.rotation_interval_days
-                    )
-                    lines.append(
-                        f"下次轮替：约 {rotation_day.isoformat()}（每 "
-                        f"{self.config.pool.rotation_interval_days} 天）"
-                    )
-                    append_pool_details(shown_pool, detailed=action == "列表")
+                    if action == "列表":
+                        lines = [
+                            "本期卡池："
+                            f"{self._ellipsize(shown_pool.name, 60)}",
+                            f"UP SSR：{len(shown_pool.up_ssr_cards())} 张",
+                        ]
+                        lines.extend(up_ssr_lines(shown_pool))
+                    else:
+                        lines = [
+                            f"本期卡池："
+                            f"{self._ellipsize(shown_pool.name, 60)}",
+                            f"类型：{self._pool_kind_label(shown_pool.kind)}",
+                            (
+                                f"时间：{shown_pool.start_date} ～ "
+                                f"{shown_pool.end_date}"
+                                if shown_pool.start_date and shown_pool.end_date
+                                else "时间：历史轮替周期"
+                            ),
+                            f"历史轮替：第 {index + 1}/"
+                            f"{len(schedule.entries)} 期",
+                        ]
+                        rotation_day = today + timedelta(
+                            days=self.config.pool.rotation_interval_days
+                        )
+                        lines.append(
+                            f"下次轮替：约 {rotation_day.isoformat()}（每 "
+                            f"{self.config.pool.rotation_interval_days} 天）"
+                        )
+                        append_pool_details(
+                            shown_pool,
+                            detailed=False,
+                            include_meta=False,
+                        )
 
-            if shown_pool is not None and self._db is not None:
-                state = self._db.get_pool_select_state(
-                    user_id,
-                    shown_pool.pool_id,
+            if action != "列表" and self._db is not None:
+                ceiling_entries = (
+                    [
+                        entry
+                        for entry in active_entries
+                        if entry.select_points
+                    ]
+                    if mode == "official" and active_entries
+                    else ([shown_pool] if shown_pool is not None else [])
                 )
-                if state.max_select_points > 0:
+                for pool_entry in ceiling_entries:
+                    state = self._db.get_pool_select_state(
+                        user_id,
+                        pool_entry.pool_id,
+                    )
+                    max_points = max(
+                        int(pool_entry.select_points or 0),
+                        state.max_select_points,
+                    )
+                    if max_points <= 0:
+                        continue
                     if state.is_claimed:
                         ceiling_status = "本池已兑换"
                     elif state.is_ready:
+                        exchange_hint = (
+                            f"/天井池 {pool_entry.pool_id} <卡ID>"
+                            if len(ceiling_entries) > 1
+                            else "/天井 <卡ID>"
+                        )
                         ceiling_status = (
-                            f"已满 {state.select_points}/"
-                            f"{state.max_select_points}，可 /天井 <卡ID>"
+                            f"已满 {state.select_points}/{max_points}，"
+                            f"可 {exchange_hint}"
                         )
                     else:
                         ceiling_status = (
-                            f"{state.select_points}/"
-                            f"{state.max_select_points}"
+                            f"{state.select_points}/{max_points}"
                         )
-                    lines.append(f"你的天井：{ceiling_status}")
-            if self._regular_pool is not None:
+                    label = (
+                        f"你的天井 {pool_entry.pool_id}"
+                        if len(ceiling_entries) > 1
+                        else "你的天井"
+                    )
+                    lines.append(f"{label}：{ceiling_status}")
+            if action != "列表" and self._regular_pool is not None:
                 regular_pool_name = (
-                    self._regular_pool_instance.pool_name[:60]
+                    self._ellipsize(self._regular_pool_instance.pool_name, 60)
                     if self._regular_pool_instance is not None
-                    else self._regular_pool.name[:60]
+                    else self._ellipsize(self._regular_pool.name, 60)
                 )
                 lines.append(
                     f"常驻池：{regular_pool_name}"
                     f"（{len(self._regular_pool.cards)} 张，可 /抽卡 常驻 使用）"
                 )
-            if action in {"列表", "下一期"} and index is not None and mode != "official":
+            if action == "下一期" and index is not None and mode != "official":
                 future = []
-                for offset in range(1, 4 if action == "列表" else 2):
+                for offset in range(1, 2):
                     next_pool = schedule.entries[(index + offset) % len(schedule.entries)]
-                    future.append(f"{next_pool.name[:30]}")
+                    future.append(self._ellipsize(next_pool.name, 30))
                 if future:
                     lines.append("未来轮替：" + "；".join(future))
-            lines.append("排表来源：SEGA CARDMAKER 官方公告（2020-10～2026-07）+ Artemis 权重")
+            if action != "列表":
+                lines.append(
+                    "排表来源：SEGA CARDMAKER 官方公告"
+                    "（2020-10～2026-07）+ Artemis 权重"
+                )
             text = "\n".join(lines)
         await self._send_lines(
             stream_id,
             text,
             title="音击抽卡模拟器 · 卡池",
         )
-        for image_url in dict.fromkeys(image_urls):
-            await self._send_official_pool_image(stream_id, image_url)
+        if action != "列表":
+            for image_url in dict.fromkeys(image_urls):
+                await self._send_official_pool_image(stream_id, image_url)
         return True, text, True
 
     @Command(
@@ -2127,13 +2223,15 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                 lines: list[str] = [f"当前启用 {len(active_entries)} 个卡池："]
                 for entry in active_entries:
                     max_points, state, selectable, _ = entry_state(entry)
-                    lines.append(f"【{entry.pool_id}】{entry.name[:60]}")
+                    lines.append(
+                        f"【{entry.pool_id}】{self._ellipsize(entry.name, 60)}"
+                    )
                     if max_points <= 0:
                         lines.append("该池没有天井机制")
                         continue
                     lines.append(
-                        f"天井上限：{max_points} 点 | "
-                        f"进度：{state.select_points}/{max_points} | "
+                        f"天井上限：{max_points} 点｜"
+                        f"进度：{state.select_points}/{max_points}｜"
                         f"可选卡：{len(selectable)} 张"
                     )
                     for pool_card in selectable:
@@ -2163,107 +2261,137 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
                             f"{state.select_points}/{max_points}"
                         )
                     lines.append(
-                        f"{entry.pool_id}｜{entry.name[:40]}｜"
+                        f"{entry.pool_id}｜{self._ellipsize(entry.name, 40)}｜"
                         f"{status}｜可选 {len(selectable)} 张"
                     )
                 if len(lines) == 1:
                     text = "当前活动池都没有天井机制"
                 else:
-                    lines.append("发送 /天井 <卡ID> 兑换；若同一卡隶属于多个池，会提示选择")
+                    lines.append(
+                        "发送 /天井 <卡ID> 兑换；同一张卡属于多个池时，"
+                        "请用 /天井池 <池ID> <卡ID> 指定"
+                    )
                     text = "\n".join(lines)
             else:
-                matches: list[tuple[PoolEntry, int, object, list[object]]] = []
+                def selector_matches(pool_id: str, selector: str) -> bool:
+                    key = str(pool_id or "").lower()
+                    wanted = str(selector or "").strip().lower()
+                    return bool(wanted) and (
+                        key == wanted or key.endswith("-" + wanted)
+                    )
+
+                def exchange_text(pool: PoolEntry, max_points: int) -> str:
+                    card = self._cards.by_id.get(card_id)
+                    if card is None:
+                        return f"卡牌 ID {card_id} 不存在"
+                    receipt = self._db.claim_select_card(
+                        user_id,
+                        pool.pool_id,
+                        card_id,
+                        card.rarity,
+                        max_select_points=max_points,
+                    )
+                    if not receipt.success:
+                        return receipt.error or "天井兑换失败"
+                    verb = "获得" if receipt.is_new else "重复获得"
+                    return (
+                        f"天井兑换成功（{pool.pool_id}）！{verb} "
+                        f"{self._card_display_name(card, 40)}"
+                        f"（ID {card.id}）\n"
+                        f"当前持有：{receipt.copies} 张"
+                    )
+
+                matches: list[
+                    tuple[PoolEntry, int, object, list[object]]
+                ] = []
                 for entry in active_entries:
-                    max_points, state, selectable, select_ids = entry_state(entry)
+                    max_points, state, selectable, select_ids = entry_state(
+                        entry
+                    )
                     if card_id in select_ids and max_points > 0:
-                        matches.append((entry, max_points, state, selectable))
-                if not matches:
-                    text = f"卡牌 ID {card_id} 不在当前启用卡池的可选列表"
-                elif pool_selector:
-                    filtered = [
-                        item
-                        for item in matches
-                        if item[0].pool_id == pool_selector
-                        or item[0].pool_id.lower().endswith(
-                            "-" + pool_selector.lower()
+                        matches.append(
+                            (entry, max_points, state, selectable)
                         )
+
+                if pool_selector:
+                    selected_entries = [
+                        entry
+                        for entry in active_entries
+                        if selector_matches(entry.pool_id, pool_selector)
                     ]
-                    if not filtered:
+                    if not selected_entries:
+                        active_names = "、".join(
+                            entry.pool_id for entry in active_entries
+                        )
                         text = (
-                            f"卡牌 ID {card_id} 不在卡池 {pool_selector} 的"
-                            "当前可选列表"
+                            f"卡池 {pool_selector} 当前未启用；"
+                            f"当前启用：{active_names or '无'}"
                         )
                     else:
-                        matches = filtered
-                        pool, max_points, state, selectable = matches[0]
-                        if state.is_claimed:
-                            text = f"{pool.pool_id} 已经兑换过天井卡"
-                        elif not state.is_ready:
+                        target_pool = selected_entries[0]
+                        matched = next(
+                            (
+                                item
+                                for item in matches
+                                if item[0].pool_id == target_pool.pool_id
+                            ),
+                            None,
+                        )
+                        if matched is None:
+                            text = (
+                                f"卡牌 ID {card_id} 不在卡池 "
+                                f"{target_pool.pool_id} 的可选列表"
+                            )
+                        else:
+                            pool, max_points, state, _ = matched
+                            if state.is_claimed:
+                                text = f"{pool.pool_id} 已经兑换过天井卡"
+                            elif not state.is_ready:
+                                text = (
+                                    f"{pool.pool_id} 天井尚未满："
+                                    f"{state.select_points}/{max_points}"
+                                )
+                            else:
+                                text = exchange_text(pool, max_points)
+                elif not matches:
+                    text = f"卡牌 ID {card_id} 不在当前启用卡池的可选列表"
+                else:
+                    available = [
+                        item for item in matches if not item[2].is_claimed
+                    ]
+                    claimed = [
+                        item for item in matches if item[2].is_claimed
+                    ]
+                    if not available:
+                        names = "、".join(
+                            item[0].pool_id for item in claimed
+                        )
+                        text = (
+                            f"卡牌 ID {card_id} 所属的卡池都已兑换过"
+                            f"天井卡：{names}"
+                        )
+                    elif len(available) > 1:
+                        names = "、".join(
+                            item[0].pool_id for item in available
+                        )
+                        text = (
+                            f"卡牌 ID {card_id} 同时属于多个卡池："
+                            f"{names}；可使用 /天井池 <池ID> <卡ID> "
+                            "指定要兑换的池"
+                        )
+                        if claimed:
+                            text += "\n已兑换：" + "、".join(
+                                item[0].pool_id for item in claimed
+                            )
+                    else:
+                        pool, max_points, state, _ = available[0]
+                        if not state.is_ready:
                             text = (
                                 f"{pool.pool_id} 天井尚未满："
                                 f"{state.select_points}/{max_points}"
                             )
                         else:
-                            card = self._cards.by_id.get(card_id)
-                            if card is None:
-                                text = f"卡牌 ID {card_id} 不存在"
-                            else:
-                                receipt = self._db.claim_select_card(
-                                    user_id,
-                                    pool.pool_id,
-                                    card_id,
-                                    card.rarity,
-                                    max_select_points=max_points,
-                                )
-                                if receipt.success:
-                                    verb = "获得" if receipt.is_new else "重复获得"
-                                    text = (
-                                        f"天井兑换成功！{verb} "
-                                        f"{self._card_display_name(card, 40)}"
-                                        f"（ID {card.id}）\n"
-                                        f"当前持有：{receipt.copies} 张"
-                                    )
-                                else:
-                                    text = receipt.error or "天井兑换失败"
-                elif len(matches) > 1:
-                    names = "、".join(
-                        f"{entry.pool_id}" for entry, _, _, _ in matches
-                    )
-                    text = (
-                        f"卡牌 ID {card_id} 同时属于多个卡池：{names}；"
-                        "可使用 /天井池 <池ID> <卡ID> 指定要兑换的池"
-                    )
-                else:
-                    pool, max_points, state, selectable = matches[0]
-                    if state.is_claimed:
-                        text = f"{pool.pool_id} 已经兑换过天井卡"
-                    elif not state.is_ready:
-                        text = (
-                            f"{pool.pool_id} 天井尚未满："
-                            f"{state.select_points}/{max_points}"
-                        )
-                    else:
-                        card = self._cards.by_id.get(card_id)
-                        if card is None:
-                            text = f"卡牌 ID {card_id} 不存在"
-                        else:
-                            receipt = self._db.claim_select_card(
-                                user_id,
-                                pool.pool_id,
-                                card_id,
-                                card.rarity,
-                                max_select_points=max_points,
-                            )
-                            if receipt.success:
-                                verb = "获得" if receipt.is_new else "重复获得"
-                                text = (
-                                    f"天井兑换成功！{verb} "
-                                    f"{self._card_display_name(card, 40)}"
-                                    f"（ID {card.id}）\n"
-                                    f"当前持有：{receipt.copies} 张"
-                                )
-                            else:
-                                text = receipt.error or "天井兑换失败"
+                            text = exchange_text(pool, max_points)
         await self._send_lines(
             stream_id,
             text,
@@ -2326,7 +2454,7 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             )
             for entry in self._active_pool_entries:
                 lines.append(
-                    f"{entry.pool_id}｜{entry.name[:50]}｜"
+                    f"{entry.pool_id}｜{self._ellipsize(entry.name, 50)}｜"
                     f"{self._pool_kind_label(entry.kind)}｜"
                     f"UP 卡：{sum(1 for card in entry.cards.values() if card.is_pickup)} 张｜"
                     f"天井选择：{entry.select_count} 张"
@@ -2346,7 +2474,7 @@ class OngekiGachaPlugin(TaskCommandsMixin, MaiBotPlugin):
             await self._send_text(stream_id, "当前没有可用卡池")
             return True, "当前没有可用卡池", True
         lines.append(
-            f"常驻池：{self._regular_pool_instance.pool_name[:60]}"
+            f"常驻池：{self._ellipsize(self._regular_pool_instance.pool_name, 60)}"
             "（可 /抽卡 常驻 使用）"
             if self._regular_pool_instance is not None
             else "常驻池：未配置"

@@ -87,9 +87,25 @@ class PoolEntry:
             cards=cards,
         )
 
-    def is_active(self, day: date) -> bool:
+    def is_active(self, day: date, *, ignore_year: bool = False) -> bool:
+        """Return whether this pool is active on ``day``.
+
+        ``ignore_year`` implements official-mode simulation: only the
+        month/day is compared, so every year behaves like the year this
+        pool originally ran.  Ranges are kept half-open (end date
+        exclusive), matching ``is_active`` for exact years.
+        """
         if self.start_date is None or self.end_date is None:
             return False
+        if ignore_year:
+            target = (day.month, day.day)
+            start = (self.start_date.month, self.start_date.day)
+            end = (self.end_date.month, self.end_date.day)
+            if start <= end:
+                return start <= target < end
+            # Range crosses the year boundary (e.g. 12/17 ~ 1/15):
+            # actives are the late-year tail and the early-year head.
+            return target > start or target < end
         return self.start_date <= day < self.end_date
 
     @property
@@ -180,19 +196,33 @@ class GachaSchedule:
     def get(self, pool_id: str) -> PoolEntry | None:
         return self.by_id.get(pool_id)
 
-    def active_for(self, day: date) -> PoolEntry | None:
+    def active_for(
+        self,
+        day: date,
+        *,
+        ignore_year: bool = False,
+    ) -> PoolEntry | None:
         """Return the most recently started official pool active on ``day``."""
-        active = [entry for entry in self.entries if entry.is_active(day)]
+        active = [
+            entry
+            for entry in self.entries
+            if entry.is_active(day, ignore_year=ignore_year)
+        ]
         if not active:
             return None
         return max(active, key=lambda item: item.start_date or date.min)
 
-    def active_for_all(self, day: date) -> tuple[PoolEntry, ...]:
+    def active_for_all(
+        self,
+        day: date,
+        *,
+        ignore_year: bool = False,
+    ) -> tuple[PoolEntry, ...]:
         """Return every official pool active on ``day``."""
         return tuple(
             entry
             for entry in self.entries
-            if entry.is_active(day)
+            if entry.is_active(day, ignore_year=ignore_year)
         )
 
     def cycle_for(

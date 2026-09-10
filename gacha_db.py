@@ -1618,6 +1618,11 @@ class GachaDatabase:
         """接取任务并记录每日配额。"""
         if task_kind not in {"normal", "challenge", "ultimate"}:
             return TaskReceipt(success=False, error="未知任务类型")
+        kind_label = {
+            "normal": "普通",
+            "challenge": "挑战",
+            "ultimate": "终极",
+        }.get(task_kind, task_kind)
         now = self._now_iso()
         task_date = self.current_date_str(tz_offset_hours)
 
@@ -1636,7 +1641,7 @@ class GachaDatabase:
                         conn.execute("ROLLBACK")
                         return TaskReceipt(
                             success=False,
-                            error=f"今日{task_kind}任务次数已用完",
+                            error=f"今日{kind_label}任务次数已用完",
                         )
 
                 active_ultimate = 0
