@@ -10,6 +10,7 @@ import json
 import random
 
 from .gacha_pools import PoolEntry
+from .starter_cards import STARTER_CARD_IDS
 
 RARITIES = ("N", "R", "SR", "SRPlus", "SSR")
 SR_OR_ABOVE = frozenset({"SR", "SRPlus", "SSR"})
@@ -27,6 +28,8 @@ class CardInfo:
     attribute: str = ""
     version: str = ""
     card_number: str = ""
+    character_id: int | None = None
+    level_param: str = ""
 
     @classmethod
     def from_dict(cls, raw: dict[str, Any]) -> "CardInfo":
@@ -42,7 +45,20 @@ class CardInfo:
             attribute=str(raw.get("attribute") or ""),
             version=str(raw.get("version") or ""),
             card_number=str(raw.get("cardNumber") or ""),
+            character_id=_character_id(raw.get("charaId")),
+            level_param=str(raw.get("levelParam") or ""),
         )
+
+
+def _character_id(value: Any) -> int | None:
+    """缺失或非法归属保持未知，不影响卡牌收集。"""
+    if isinstance(value, bool) or not isinstance(value, (int, str)):
+        return None
+    try:
+        result = int(value)
+    except ValueError:
+        return None
+    return result if result > 0 else None
 
 
 @dataclass(frozen=True)
@@ -105,15 +121,6 @@ def max_detail_slots(rarity: str) -> int:
     return 11 if rarity == "N" else 5
 
 
-def derive_growth(rarity: str, copies: int) -> tuple[int, bool, bool]:
-    """根据持有数量推导星级、解花与超解花状态。"""
-    max_slots = max_detail_slots(rarity)
-    stars = min(max(copies, 0), max_slots)
-    is_kaika = copies >= max_slots + 1
-    is_cho_kaika = copies >= max_slots + 2
-    return stars, is_kaika, is_cho_kaika
-
-
 class CardPool:
     """模拟抽卡池的两阶段抽取器。"""
 
@@ -129,7 +136,9 @@ class CardPool:
         pool: PoolEntry | None = None,
         pickup_multiplier: int = 10,
         strict_pool_cards: bool = False,
+        rng: random.Random | None = None,
     ) -> None:
+        self._rng = rng if rng is not None else random
         raw_weights = {
             "N": weight_n,
             "R": weight_r,
@@ -176,6 +185,7 @@ class CardPool:
                 ]
             else:
                 candidates = list(self._cards.by_rarity.get(rarity, ()))
+            candidates = [card for card in candidates if card.id not in STARTER_CARD_IDS]
             if not candidates:
                 continue
             self._rarity_weights.append((rarity, weight))
@@ -206,14 +216,14 @@ class CardPool:
     def _weighted_rarity(self, pool: list[tuple[str, int]]) -> str:
         rarities = [rarity for rarity, _ in pool]
         weights = [weight for _, weight in pool]
-        return random.choices(rarities, weights=weights, k=1)[0]
+        return self._rng.choices(rarities, weights=weights, k=1)[0]
 
     def _pick_card(self, rarity: str) -> CardInfo:
         candidates = self._candidates.get(rarity)
         weights = self._candidate_weights.get(rarity)
         if not candidates:
             raise RuntimeError(f"稀有度 {rarity} 没有候选卡牌")
-        return random.choices(candidates, weights=weights, k=1)[0]
+        return self._rng.choices(candidates, weights=weights, k=1)[0]
 
     def draw(self, count: int, guarantee: bool = True) -> list[CardInfo]:
         """抽取指定数量的卡牌，并应用 5/11 连 SR 或以上保底。"""
@@ -229,12 +239,12 @@ class CardPool:
             guarantee_weights = self._guarantee_candidate_weights.get(guarantee_rarity)
             if not guarantee_candidates:
                 raise RuntimeError(f"保底稀有度 {guarantee_rarity} 没有候选卡牌")
-            replacement = random.choices(
+            replacement = self._rng.choices(
                 guarantee_candidates,
                 weights=guarantee_weights,
                 k=1,
             )[0]
-            slot = random.randrange(len(results))
+            slot = self._rng.randrange(len(results))
             results[slot] = replacement
         return results
 
@@ -259,18 +269,6 @@ class CardPool:
         if self._pool.pool_id == "regular":
             return "常驻池（当前版本已有全部 R/SR/SSR）"
         return self._pool.name
-
-    @property
-    def pool_kind(self) -> str:
-        return self._pool.kind if self._pool is not None else "regular"
-
-    @property
-    def pool_start_date(self) -> str:
-        return self._pool.start_date.isoformat() if self._pool and self._pool.start_date else ""
-
-    @property
-    def pool_end_date(self) -> str:
-        return self._pool.end_date.isoformat() if self._pool and self._pool.end_date else ""
 
     @property
     def pool_select_points(self) -> int | None:

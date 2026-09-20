@@ -1,0 +1,78 @@
+{
+  "version": "growth-balance-v7",
+  "curve_version": "affection-v2",
+  "status": "release",
+  "companion_points": 300,
+  "gift_points": {
+    "small": 300,
+    "medium": 1000,
+    "large": 10000
+  },
+  "monthly_event_days": 7,
+  "monthly_event_small_gift_days": [
+    1,
+    3
+  ],
+  "monthly_event_medium_gift_days": [
+    5
+  ],
+  "monthly_event_large_gift_days": [
+    7
+  ],
+  "monthly_event_fragments": 5,
+  "task_medium_gifts_daily_cap": 1,
+  "task_fragments_daily_cap": 2,
+  "task_fragments": {
+    "normal": 1,
+    "challenge": 1,
+    "advanced": 1,
+    "ultimate": 0
+  },
+  "gift_purchase": {
+    "small": {
+      "price": 150,
+      "weekly_cap": 10
+    },
+    "medium": {
+      "price": 500,
+      "weekly_cap": 3
+    }
+  },
+  "bloom_levels": [
+    100,
+    200
+  ],
+  "bloom_items": [
+    "bloom_ticket",
+    "flower_fragment"
+  ],
+  "bloom_costs": [
+    1,
+    90
+  ],
+  "bloom_ticket_source": {
+    "kind": "advanced",
+    "min_level": 13.5,
+    "grade": "SSS",
+    "cooldown_days": 15
+  },
+  "duplicate_fragments": {
+    "N": 1,
+    "R": 1,
+    "SR": 3,
+    "SRPlus": 4,
+    "SSR": 8
+  },
+  "overflow_fragments": {
+    "N": 2,
+    "R": 2,
+    "SR": 6,
+    "SRPlus": 8,
+    "SSR": 16
+  },
+  "task_medium_gift_sources": [
+    "challenge",
+    "advanced"
+  ],
+  "ultimate_large_gifts_lifetime_cap": 0
+}

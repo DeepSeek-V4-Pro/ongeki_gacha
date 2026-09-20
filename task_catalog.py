@@ -60,6 +60,7 @@ GAME_LABELS = {
 KIND_LABELS = {
     "normal": "普通任务",
     "challenge": "挑战任务",
+    "advanced": "高级挑战任务",
     "ultimate": "终极任务",
 }
 
@@ -141,7 +142,7 @@ class TaskSelection:
     @property
     def requirement(self) -> str:
         if self.chart is None:
-            return "游玩任意难度"
+            return "任意难度"
         max_difficulty_index = max(
             (item.index for item in self.song.charts if not item.is_special),
             default=-1,
@@ -159,9 +160,10 @@ def pick_random_task(
     excluded_keys: Iterable[str] = (),
     game: str | None = None,
     challenge_min_level: float = 10.0,
+    advanced_min_level: float = 12.7,
     ultimate_min_level: float = 14.7,
 ) -> TaskSelection | None:
-    """从归一化曲库中随机挑选一张普通/挑战/终极任务。"""
+    """从归一化曲库中随机挑选一张普通/挑战/高级挑战/终极任务。"""
     catalog = list(catalog)
     completed = set(completed_keys)
     excluded = set(excluded_keys)
@@ -177,8 +179,11 @@ def pick_random_task(
             return None
         return TaskSelection(song=random.SystemRandom().choice(candidates))
 
-    if kind == "challenge":
-        threshold = max(float(challenge_min_level), 0.0)
+    if kind in {"challenge", "advanced"}:
+        threshold = max(
+            float(challenge_min_level if kind == "challenge" else advanced_min_level),
+            0.0,
+        )
         candidates = [
             TaskSelection(
                 song=song,
@@ -214,7 +219,9 @@ def pick_random_task(
             if not chart.is_special
             and chart.level_value >= threshold
             and song.key not in completed
+            and f"{song.key}:{chart.index}" not in completed
             and song.key not in excluded
+            and f"{song.key}:{chart.index}" not in excluded
         ]
     else:
         raise ValueError(f"未知任务类型: {kind}")
@@ -640,13 +647,14 @@ def _render_example(
 ) -> Path | None:
     if song is None:
         return None
-    rewards = {"normal": 20, "challenge": 30, "ultimate": 30000}
+    rewards = {"normal": 35, "challenge": 60, "advanced": 105, "ultimate": 30000}
     target_chart: CatalogChart | None = None
-    if kind == "challenge":
+    if kind in {"challenge", "advanced"}:
+        threshold = 10.0 if kind == "challenge" else 12.7
         candidates = [
             chart
             for chart in song.charts
-            if not chart.is_special and chart.level_value >= 10.0
+            if not chart.is_special and chart.level_value >= threshold
         ]
         target_chart = (
             min(candidates, key=lambda item: item.level_value)
@@ -662,17 +670,15 @@ def _render_example(
         ]
         target_chart = max(candidates, key=lambda item: item.level_value) if candidates else None
 
-    if kind == "challenge":
-        selection = TaskSelection(song=song, chart=target_chart)
-    elif kind == "ultimate":
+    if kind in {"challenge", "advanced", "ultimate"}:
         selection = TaskSelection(song=song, chart=target_chart)
     else:
         selection = TaskSelection(song=song)
     level_text = selection.level_text
-    if kind == "challenge":
+    if kind in {"challenge", "advanced"}:
         requirement = f"{selection.requirement} · S 及以上"
     elif kind == "ultimate":
-        requirement = f"{selection.requirement} · SSS+ 评级"
+        requirement = f"{selection.requirement} · SSS+"
     else:
         requirement = selection.requirement
     safe_song_id = hashlib.sha1(song.song_id.encode("utf-8")).hexdigest()[:10]
@@ -717,6 +723,11 @@ def main() -> None:
         for song in catalog
         if song.max_level >= 10.0
     ]
+    advanced_pool = [
+        song
+        for song in catalog
+        if song.max_level_value >= 12.7
+    ]
     ultimate_pool = [
         song
         for song in catalog
@@ -727,6 +738,12 @@ def main() -> None:
         for song in catalog
         for chart in song.charts
         if not chart.is_special and chart.level_value >= 10.0
+    ]
+    advanced_chart_pool = [
+        (song, chart)
+        for song in catalog
+        for chart in song.charts
+        if not chart.is_special and chart.level_value >= 12.7
     ]
     ultimate_chart_pool = [
         (song, chart)
@@ -743,15 +760,20 @@ def main() -> None:
         game: sum(1 for song in challenge_pool if song.game == game)
         for game in ("ongeki", "maimai", "chunithm")
     }
+    advanced_by_game = {
+        game: sum(1 for song in advanced_pool if song.game == game)
+        for game in ("ongeki", "maimai", "chunithm")
+    }
     ultimate_by_game = {
         game: sum(1 for song in ultimate_pool if song.game == game)
         for game in ("ongeki", "maimai", "chunithm")
     }
 
-    # 普通：音击示例；挑战：舞萌示例；终极：中二示例
+    # 普通：音击示例；挑战/高级挑战：舞萌示例；终极：中二示例
     samples = [
         ("normal", _sample_song(catalog, "ongeki", lambda song: True)),
         ("challenge", _sample_song(catalog, "maimai", lambda song: song.max_level >= 10.0)),
+        ("advanced", _sample_song(catalog, "maimai", lambda song: song.max_level_value >= 12.7)),
         ("ultimate", _sample_song(catalog, "chunithm", lambda song: song.max_level_value >= 14.7)),
     ]
     rendered = []
@@ -768,6 +790,9 @@ def main() -> None:
         "challenge_pool": len(challenge_pool),
         "challenge_by_game": challenge_by_game,
         "challenge_chart_pool": len(challenge_chart_pool),
+        "advanced_pool": len(advanced_pool),
+        "advanced_by_game": advanced_by_game,
+        "advanced_chart_pool": len(advanced_chart_pool),
         "ultimate_pool": len(ultimate_pool),
         "ultimate_by_game": ultimate_by_game,
         "ultimate_chart_pool": len(ultimate_chart_pool),
@@ -789,10 +814,13 @@ def main() -> None:
         print(
             f"{GAME_LABELS[game]}：全量 {by_game[game]}，"
             f"10级或以上 {challenge_by_game[game]}，"
+            f"定数12.7或以上 {advanced_by_game[game]}，"
             f"定数14.7或以上 {ultimate_by_game[game]}"
         )
     print(f"挑战候选池：{len(challenge_pool)}")
     print(f"挑战谱面池：{len(challenge_chart_pool)}")
+    print(f"高级挑战候选池：{len(advanced_pool)}")
+    print(f"高级挑战谱面池：{len(advanced_chart_pool)}")
     print(f"终极候选池：{len(ultimate_pool)}")
     print(f"终极谱面池：{len(ultimate_chart_pool)}")
     print("示例任务卡：")
@@ -802,8 +830,8 @@ def main() -> None:
 
 
 def _example_report(kind: str, song: CatalogSong) -> dict[str, Any]:
-    if kind == "challenge":
-        threshold = 10.0
+    if kind in {"challenge", "advanced"}:
+        threshold = 10.0 if kind == "challenge" else 12.7
         target = min(
             (
                 chart
@@ -823,10 +851,10 @@ def _example_report(kind: str, song: CatalogSong) -> dict[str, Any]:
             "difficulty": (
                 f"{target.label.upper()} {target.level_display}"
                 if target is not None
-                else "10 级或以上"
+                else f"{threshold:g} 级或以上"
             ),
             "difficulty_level": (
-                target.level_display if target is not None else "10 级"
+                target.level_display if target is not None else f"{threshold:g} 级"
             ),
             "difficulty_value": (
                 target.level_value if target is not None else threshold
@@ -845,10 +873,10 @@ def _example_report(kind: str, song: CatalogSong) -> dict[str, Any]:
     target = max(candidates, key=lambda item: item.level_value, default=None)
     if kind == "ultimate" and target is not None:
         difficulty_text = f"{target.label.upper()} {target.level_display}"
-        requirement = f"{difficulty_text} · SSS+ 评级"
+        requirement = f"{difficulty_text} · SSS+"
     else:
         difficulty_text = ""
-        requirement = "游玩任意难度"
+        requirement = "任意难度"
     return {
         "kind": kind,
         "game": song.game,

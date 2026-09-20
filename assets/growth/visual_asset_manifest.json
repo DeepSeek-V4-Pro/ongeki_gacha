@@ -1,0 +1,2599 @@
+{
+  "version": "growth-assets-v2",
+  "assets": [
+    {
+      "key": "character_1000",
+      "path": "images/character_1000.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001000",
+      "extracted_source": "assets/ui_friendship_bt_001000/UI_Friendship_BT_001000_-8778801116046270025.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1000,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "34e400c3be5283eee2c1daf60e3240ecdccb0e8fde6511b3802b308e22ffb4e0",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1001",
+      "path": "images/character_1001.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001001",
+      "extracted_source": "assets/ui_friendship_bt_001001/UI_Friendship_BT_001001_-2256928389554078364.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1001,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "7fb2c8f6fabec34060bdf1dc7745cf3957943f21f1202549d9ed42e3006e69de",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1002",
+      "path": "images/character_1002.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001002",
+      "extracted_source": "assets/ui_friendship_bt_001002/UI_Friendship_BT_001002_9174852318721100708.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1002,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "92f45269cc9c51d26355de53e9c07b796d35a12bce2a07f44907451dc24c890b",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1003",
+      "path": "images/character_1003.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001003",
+      "extracted_source": "assets/ui_friendship_bt_001003/UI_Friendship_BT_001003_-726910229690834491.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1003,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "b1c8ab0e87c5b11455a11f4d06e6981717264bd56692fdb698ac5a21c4a4957a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1004",
+      "path": "images/character_1004.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001004",
+      "extracted_source": "assets/ui_friendship_bt_001004/UI_Friendship_BT_001004_6208122781260953130.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1004,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "99f8cd294e6b4452f86c614ed46866ac85ff98038d431657024ca7ba187e86bf",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1005",
+      "path": "images/character_1005.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001005",
+      "extracted_source": "assets/ui_friendship_bt_001005/UI_Friendship_BT_001005_7103983563622022546.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1005,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "43b723784be7868d3b031de018c1a4ed8994824d097a3543adde9f966aad1235",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1006",
+      "path": "images/character_1006.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001006",
+      "extracted_source": "assets/ui_friendship_bt_001006/UI_Friendship_BT_001006_-2693905719318364930.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1006,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "79ccc3f2b48365d8eab51c0abd797110754998defd729801ead55e316a6f5a3d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1007",
+      "path": "images/character_1007.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001007",
+      "extracted_source": "assets/ui_friendship_bt_001007/UI_Friendship_BT_001007_-6246219426701531056.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1007,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "a11c65192ca61ee61867a90f382057ce274ccaf8d049bda415864edb75d3d86b",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1008",
+      "path": "images/character_1008.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001008",
+      "extracted_source": "assets/ui_friendship_bt_001008/UI_Friendship_BT_001008_8388368622174427986.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1008,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "1715a4a2eb2f95b7ba98097f82fa063667684845726cf063913c6624fb5f3022",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1009",
+      "path": "images/character_1009.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001009",
+      "extracted_source": "assets/ui_friendship_bt_001009/UI_Friendship_BT_001009_4451933087124276966.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1009,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "c64d1fc0fcd9f6a5c079eb42c2acca160c4080f12c6eba06d99b397802614c5e",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1010",
+      "path": "images/character_1010.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001010",
+      "extracted_source": "assets/ui_friendship_bt_001010/UI_Friendship_BT_001010_3318226025407736332.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1010,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "d75d28de93f553338e7bd86bcb4dd778f38ad42121c5f08849eb3376be9c352f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1011",
+      "path": "images/character_1011.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001011",
+      "extracted_source": "assets/ui_friendship_bt_001011/UI_Friendship_BT_001011_-6402205003063393531.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1011,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "222305cbc2be572fba5702c632352f07ae4c2eebc409dcbe0efdad551c5dbb08",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1012",
+      "path": "images/character_1012.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001012",
+      "extracted_source": "assets/ui_friendship_bt_001012/UI_Friendship_BT_001012_-3989563150771323606.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1012,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "82d9b156533cf83d8f805b4a5c06f9707b333a053ed2cb7333242c09d9fb12ca",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1013",
+      "path": "images/character_1013.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001013",
+      "extracted_source": "assets/ui_friendship_bt_001013/UI_Friendship_BT_001013_-6113394584092419418.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1013,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "5f6bae318a110b9d24fe8f3bc261511e813d6ff2b0823d58bfec9b197bc5f753",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1014",
+      "path": "images/character_1014.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001014",
+      "extracted_source": "assets/ui_friendship_bt_001014/UI_Friendship_BT_001014_-7558944009266652878.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1014,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "50394a64b5b0af72f8d1006818d7609f19b8adb67ccebec65f3c27b0282ab0a1",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1015",
+      "path": "images/character_1015.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001015",
+      "extracted_source": "assets/ui_friendship_bt_001015/UI_Friendship_BT_001015_8904517334648715503.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1015,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "88abe069564e00bccb3dc72900077bef6f4c7a19bd005ed975e700a9478ab9c6",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "character_1016",
+      "path": "images/character_1016.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001016",
+      "extracted_source": "assets/ui_friendship_bt_001016/UI_Friendship_BT_001016_-4033667568829259086.png",
+      "purpose": "主角色列表与伙伴头像",
+      "dimensions": [
+        288,
+        368
+      ],
+      "alpha": true,
+      "character_id": 1016,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "1878939f4bdade24488b1f14d5ebf29629131bddcadd261f0d84b45af0b361d2",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "gift_small",
+      "path": "images/gift_small.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_intimateup_000001",
+      "extracted_source": "assets/ui_intimateup_000001/UI_IntimateUp_000001_-8935161835606564423.png",
+      "purpose": "礼物背包、赠礼回执",
+      "dimensions": [
+        280,
+        242
+      ],
+      "alpha": true,
+      "character_id": null,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "abc450a5dcb48bf3dbce24731cc94e1d055edeac1179f6e5a095ca3416f57923",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "gift_medium",
+      "path": "images/gift_medium.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_intimateup_000002",
+      "extracted_source": "assets/ui_intimateup_000002/UI_IntimateUp_000002_1887258373840327420.png",
+      "purpose": "礼物背包、赠礼回执",
+      "dimensions": [
+        280,
+        242
+      ],
+      "alpha": true,
+      "character_id": null,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "53e249fa1bc52c0be3208110eed64cf6f1cd4249deea6c16b3943ff5af291831",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "gift_large",
+      "path": "images/gift_large.png",
+      "game_source": "mu3_Data/StreamingAssets/assets/ui_intimateup_000003",
+      "extracted_source": "assets/ui_intimateup_000003/UI_IntimateUp_000003_-4158022686891950732.png",
+      "purpose": "礼物背包、赠礼回执",
+      "dimensions": [
+        280,
+        242
+      ],
+      "alpha": true,
+      "character_id": null,
+      "crop": "contain/full_image",
+      "fallback": "文字及统一占位图",
+      "sha256": "cd24b2d367519e1697df9d50acd66cdc302f4f31190d5093185a55ad8ab92003",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1000",
+      "path": "images/portrait_1000.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1010/image_normal.png",
+      "official_character_id": 1010,
+      "official_asset_id": 1010,
+      "character_id": 1000,
+      "name": "星咲 あかり",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        957,
+        1430
+      ],
+      "alpha": true,
+      "content_bounds": [
+        282,
+        113,
+        776,
+        1394
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "ba1bb55f60b006bd23d9a7901a3629f5468eb794c9c763b46f81c18a5ba2ec50",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1001",
+      "path": "images/portrait_1001.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1020/image_normal.png",
+      "official_character_id": 1020,
+      "official_asset_id": 1020,
+      "character_id": 1001,
+      "name": "藤沢 柚子",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        957,
+        1430
+      ],
+      "alpha": true,
+      "content_bounds": [
+        317,
+        108,
+        876,
+        1389
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "7680fd5c6df7ee61783b8917a68db7c5c34cb78895ec2e4a33142827bc95e90e",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1002",
+      "path": "images/portrait_1002.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1030/image_normal.png",
+      "official_character_id": 1030,
+      "official_asset_id": 1030,
+      "character_id": 1002,
+      "name": "三角 葵",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        957,
+        1430
+      ],
+      "alpha": true,
+      "content_bounds": [
+        231,
+        108,
+        727,
+        1430
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "a4dbcfe5da58e218ed411a75171cce494b5c895a8c914e3a54c483d2c9e4085a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1003",
+      "path": "images/portrait_1003.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1040/image_normal.png",
+      "official_character_id": 1040,
+      "official_asset_id": 1040,
+      "character_id": 1003,
+      "name": "高瀬 梨緒",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        1294,
+        1547
+      ],
+      "alpha": true,
+      "content_bounds": [
+        420,
+        219,
+        951,
+        1547
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "2f2c4c9429c8ad863f547d914ea86830245086295085fc6151757b72cbb05250",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1004",
+      "path": "images/portrait_1004.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1050/image_normal.png",
+      "official_character_id": 1050,
+      "official_asset_id": 1050,
+      "character_id": 1004,
+      "name": "結城 莉玖",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        1294,
+        1547
+      ],
+      "alpha": true,
+      "content_bounds": [
+        515,
+        258,
+        969,
+        1498
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "cc2cafd9ec977b180dc93401ac30da275a3dff52a3824f200099002224fb77f8",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1005",
+      "path": "images/portrait_1005.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1060/image_normal.png",
+      "official_character_id": 1060,
+      "official_asset_id": 1060,
+      "character_id": 1005,
+      "name": "藍原 椿",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        1294,
+        1547
+      ],
+      "alpha": true,
+      "content_bounds": [
+        521,
+        260,
+        869,
+        1521
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "e80bccb75887404a92b899a6f30279e5d7a492be313d6a353afda68f5e8009c9",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1007",
+      "path": "images/portrait_1007.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1070/image_normal.png",
+      "official_character_id": 1070,
+      "official_asset_id": 1070,
+      "character_id": 1007,
+      "name": "桜井 春菜",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        946,
+        1539
+      ],
+      "alpha": true,
+      "content_bounds": [
+        275,
+        176,
+        691,
+        1479
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "b89b723c5640b0f2515a1a177d0bcc887e651adbce3f40ff7b4050101a553ffd",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1006",
+      "path": "images/portrait_1006.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1080/image_normal.png",
+      "official_character_id": 1080,
+      "official_asset_id": 1080,
+      "character_id": 1006,
+      "name": "早乙女 彩華",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        946,
+        1539
+      ],
+      "alpha": true,
+      "content_bounds": [
+        283,
+        140,
+        758,
+        1539
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "13bdc8b4189b4f8b9fa0ee8cc73d76ba82576529384544f3b181e4b7038d1a3f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1008",
+      "path": "images/portrait_1008.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1110/image_normal.png",
+      "official_character_id": 1090,
+      "official_asset_id": 1110,
+      "character_id": 1008,
+      "name": "九條 楓",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        1192,
+        1411
+      ],
+      "alpha": true,
+      "content_bounds": [
+        333,
+        33,
+        875,
+        1410
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "e9610ba73fcac8031057fd264e1e480fa60cee3383ffff2fe74bfccfeee6dd80",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1009",
+      "path": "images/portrait_1009.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1100/image_normal.png",
+      "official_character_id": 1100,
+      "official_asset_id": 1100,
+      "character_id": 1009,
+      "name": "柏木 咲姫",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        953,
+        1594
+      ],
+      "alpha": true,
+      "content_bounds": [
+        93,
+        228,
+        724,
+        1594
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "210989715b4fd2c0f03261578528d496e726f360c4ea61f2f55853801247da44",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1010",
+      "path": "images/portrait_1010.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1090/image_normal.png",
+      "official_character_id": 1110,
+      "official_asset_id": 1090,
+      "character_id": 1010,
+      "name": "井之原 小星",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        953,
+        1594
+      ],
+      "alpha": true,
+      "content_bounds": [
+        255,
+        157,
+        716,
+        1465
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "b681e1b2b1e881b9d344ddd466e3594ff6112bd3646dd1660d1236fa0137841a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1011",
+      "path": "images/portrait_1011.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1120/image_normal.png",
+      "official_character_id": 1120,
+      "official_asset_id": 1120,
+      "character_id": 1011,
+      "name": "逢坂 茜",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        1192,
+        1411
+      ],
+      "alpha": true,
+      "content_bounds": [
+        152,
+        38,
+        1151,
+        1319
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "c8a84f627bf88bc14a6e2b7a7157a84744e653c4063c11fdbffe32f07c6530ca",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1012",
+      "path": "images/portrait_1012.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1130/image_normal.png",
+      "official_character_id": 1130,
+      "official_asset_id": 1130,
+      "character_id": 1012,
+      "name": "珠洲島 有栖",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        1192,
+        1411
+      ],
+      "alpha": true,
+      "content_bounds": [
+        333,
+        17,
+        809,
+        1253
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "1427071789f74796429eaf09da52be58b6ba44ebc881b198e5a1541c690a7a2a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1014",
+      "path": "images/portrait_1014.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1140/image_normal.png",
+      "official_character_id": 1140,
+      "official_asset_id": 1140,
+      "character_id": 1014,
+      "name": "日向 千夏",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        712,
+        1399
+      ],
+      "alpha": true,
+      "content_bounds": [
+        183,
+        96,
+        647,
+        1391
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "267c5f7caeec99a965e6b16c008a8e4e260cb8c4cd860fdcda529d4f807cb19b",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1015",
+      "path": "images/portrait_1015.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1160/image_normal.png",
+      "official_character_id": 1150,
+      "official_asset_id": 1160,
+      "character_id": 1015,
+      "name": "東雲 つむぎ",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        712,
+        1399
+      ],
+      "alpha": true,
+      "content_bounds": [
+        203,
+        163,
+        571,
+        1383
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "60d356c298c1b2214c10d27e75ec4151c2cb1cc6e48587b700787c8d8c06eaca",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1013",
+      "path": "images/portrait_1013.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1150/image_normal.png",
+      "official_character_id": 1160,
+      "official_asset_id": 1150,
+      "character_id": 1013,
+      "name": "柏木 美亜",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        712,
+        1399
+      ],
+      "alpha": true,
+      "content_bounds": [
+        193,
+        169,
+        533,
+        1335
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "6030d7589de6da075ce265e9083e6c798e2ddad0f1684c7b6acd2229b5fafe66",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "portrait_1016",
+      "path": "images/portrait_1016.png",
+      "source_url": "https://ongeki.sega.jp/assets/img/pages/character/1170/image_normal.png",
+      "official_character_id": 1170,
+      "official_asset_id": 1170,
+      "character_id": 1016,
+      "name": "皇城 セツナ",
+      "purpose": "好感页默认原始立绘",
+      "dimensions": [
+        1009,
+        1399
+      ],
+      "alpha": true,
+      "content_bounds": [
+        273,
+        53,
+        696,
+        1367
+      ],
+      "crop": "仅去透明边距，完整保留角色内容",
+      "fallback": "文字占位；不自动切换卡面",
+      "sha256": "476f159b287dfb8167c7eb1aafd362a7c2767ad44a4db4602cc876468e9edcf7",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_category",
+      "path": "images/ui_category.png",
+      "extracted_source": "ui/sharedassets14/UI_SLC_Cmu_CategoryBase_00_58.png",
+      "game_source": "mu3_Data/sharedassets14.assets",
+      "purpose": "原作好感界面组件：栏目、面板、量表、礼物按钮",
+      "dimensions": [
+        246,
+        98
+      ],
+      "crop": "完整图像；窄面板使用保留端帽的拉伸",
+      "sha256": "e3663e6c0444fb96c89c0d62f0c41a62ebee8505634aac01559d83ae40d1025f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "bloom_ticket",
+      "path": "images/bloom_ticket.png",
+      "extracted_source": "ui_extra/resources/UI_Item_OpenFlower_Ticket_00_946.png",
+      "game_source": "mu3_Data/resources.assets",
+      "purpose": "解花/超解花消耗物品与物品获得图",
+      "dimensions": [
+        392,
+        170
+      ],
+      "crop": "完整图像",
+      "sha256": "58de59e1f465a2113a41a4235526139c04bbdec31e939bf0ebb5e81bd63627c5",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_GaugeBase",
+      "path": "images/intimate/GaugeBase.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_942.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表低档心形底图",
+      "dimensions": [424, 410],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "c0c262d77c5d2828fb3bc05bf57a4170896a62dc62ce8f79e3419656e1a48633",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_GaugeBase_10",
+      "path": "images/intimate/GaugeBase_10.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_10_357.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表10档花环底图",
+      "dimensions": [424, 410],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "6681c13ca47e86c2aa685b4ed718afac894806101889c20349b8805445cbeb29",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_GaugeBase_Eff",
+      "path": "images/intimate/GaugeBase_Eff.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_Eff_655.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表高档光效叠层",
+      "dimensions": [424, 410],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "6e5b1bb89c7df2b14e92cb7249690ab8e9d742148633175c53f34e39d7e67625",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_GaugeBase_Rebirth",
+      "path": "images/intimate/GaugeBase_Rebirth.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_Rebirth_732.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表1-9档挡位标",
+      "dimensions": [68, 64],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "45b9950d82bf5d68221ffefebdfba62880fba319de851cbc6fda7ba4e673134d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_GaugeBase_Rebirth_10",
+      "path": "images/intimate/GaugeBase_Rebirth_10.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_Rebirth_10_992.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表1000级后（10档以上）挡位底图",
+      "dimensions": [68, 64],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "0684523e683fd9e26b8d234c2b63a8933d60c9fbe695bd1b6f7f15bd618a2df6",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_Gauge_Meter_Pink",
+      "path": "images/intimate/Gauge_Meter_Pink.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_Gauge_Meter_Pink_810.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表普通档粉色心形填充",
+      "dimensions": [142, 128],
+      "alpha": true,
+      "crop": "完整图像；按心形内腔裁切",
+      "sha256": "23298f7eb15f1bfa8f5e2810ea385885e304a5300c8292cbe7ed098060f033d8",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_Gauge_Meter_Yellow",
+      "path": "images/intimate/Gauge_Meter_Yellow.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_Gauge_Meter_Yellow_939.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表满档黄色心形填充",
+      "dimensions": [142, 128],
+      "alpha": true,
+      "crop": "完整图像；按心形内腔裁切",
+      "sha256": "2eac62b8a1d0f87a359ee29e33319227b94b02d766c2a14ed845e5b9569b5abc",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_Gauge_Finish",
+      "path": "images/intimate/Gauge_Finish.png",
+      "extracted_source": "ui_extra/sharedassets14/UI_SLC_Cmu_Friendship_Gauge_Finish_54.png",
+      "game_source": "mu3_Data/sharedassets14.assets",
+      "purpose": "好感上限到达横幅",
+      "dimensions": [246, 46],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "86cf70c6329a341da36e1ca1762697ccc97a7a2ca4144ab91c34716f4f5be825",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_Gauge_NameBase",
+      "path": "images/intimate/Gauge_NameBase.png",
+      "extracted_source": "ui_extra/sharedassets14/UI_SLC_Cmu_Friendship_Gauge_NameBase_46.png",
+      "game_source": "mu3_Data/sharedassets14.assets",
+      "purpose": "好感量表名称底板",
+      "dimensions": [240, 28],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "f79f2d0efc5ad86460997d40614403578adc29d48b33c164cf3ee336ae28e0b5",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_TextLevel",
+      "path": "images/intimate/TextLevel.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_TextLevel_912.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表等级文字",
+      "dimensions": [240, 124],
+      "alpha": true,
+      "crop": "完整图像",
+      "sha256": "1f6be115aea87a333c68bbce0b12ad40b886cf555a652ffedfd3cd41d8de8425",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_24pt_Friendship_Level",
+      "path": "images/intimate/24pt_Friendship_Level.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_NUM_24pt_Friendship_Level_816.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表小号数字图集",
+      "dimensions": [110, 118],
+      "alpha": true,
+      "crop": "完整图集",
+      "sha256": "59e2543497e817085259396f05933bc4e10f9ab5cb1385e9ef2297024ec54dc1",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "intimate_57pt_Friendship_Level",
+      "path": "images/intimate/57pt_Friendship_Level.png",
+      "extracted_source": "ui_extra/sharedassets11/UI_NUM_57pt_Friendship_Level_816.png",
+      "game_source": "mu3_Data/sharedassets11.assets",
+      "purpose": "好感量表大号数字图集",
+      "dimensions": [256, 276],
+      "alpha": true,
+      "crop": "完整图集",
+      "sha256": "5de6a1964eb4f5dea7112e0870f7bc064ee41deb14644e749be97161d5a40c22",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_rare_N",
+      "path": "images/card_reveal/rare_N.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_00_N.webp",
+      "purpose": "卡牌揭示：N 稀有度 Logo",
+      "dimensions": [208, 118],
+      "alpha": true,
+      "sha256": "aa048e0aa55edcb10f7e4dac8bd420de307b6fdbee74d0650dd6b716eb61a417",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_rare_R",
+      "path": "images/card_reveal/rare_R.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_01_R.webp",
+      "purpose": "卡牌揭示：R 稀有度 Logo",
+      "dimensions": [208, 118],
+      "alpha": true,
+      "sha256": "5729c3549fab498cd87d66e2076480170e20ae60344b5d64024058cff3a25aeb",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_rare_SR",
+      "path": "images/card_reveal/rare_SR.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_02_SR.webp",
+      "purpose": "卡牌揭示：SR 稀有度 Logo",
+      "dimensions": [208, 118],
+      "alpha": true,
+      "sha256": "9cc7f7f26345803c518c814ad4fe0fb2756e0ef169df5875a6bad475cb05d5e3",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_rare_SSR",
+      "path": "images/card_reveal/rare_SSR.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_03_SSR.webp",
+      "purpose": "卡牌揭示：SSR 稀有度 Logo",
+      "dimensions": [208, 118],
+      "alpha": true,
+      "sha256": "29da950732f6449595b02b71d16c00ce3691a4e649b34b75d3d197472514a4a1",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_rare_SRPlus",
+      "path": "images/card_reveal/rare_SRPlus.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_05_SRPlus.webp",
+      "purpose": "卡牌揭示：SR+ 稀有度 Logo",
+      "dimensions": [208, 118],
+      "alpha": true,
+      "sha256": "3735898233f171268e1f9d10e22c8bb60250c3047a5048e62c1763c9ff030b46",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_attr_Fire",
+      "path": "images/card_reveal/attr_Fire.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Attribute_00_Red.webp",
+      "purpose": "卡牌揭示：Fire 属性图标",
+      "dimensions": [130, 130],
+      "alpha": true,
+      "sha256": "3e052b43e9edbb28c16b77f0d5833052cf8d7325bf7e195adb969c866cc60726",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_attr_Aqua",
+      "path": "images/card_reveal/attr_Aqua.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Attribute_01_Bule.webp",
+      "purpose": "卡牌揭示：Aqua 属性图标",
+      "dimensions": [130, 130],
+      "alpha": true,
+      "sha256": "ed09a47e4151784e1680011707a9622b4a227a2abbe5c40755e70674232288a2",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_attr_Leaf",
+      "path": "images/card_reveal/attr_Leaf.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Attribute_02_Green.webp",
+      "purpose": "卡牌揭示：Leaf 属性图标",
+      "dimensions": [130, 130],
+      "alpha": true,
+      "sha256": "436976879bedcad537b8d7d371da8f9d61869a82ac8fc1b251c30c498a90fbce",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_frame_N",
+      "path": "images/card_reveal/frame_N.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_N_00.webp",
+      "purpose": "卡牌揭示：N 卡框",
+      "dimensions": [768, 1052],
+      "alpha": true,
+      "sha256": "549176aa3935d7b923f23e90b8b436cfbfc995c8c764e4f44d8af2011c90d0f3",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_frame_R",
+      "path": "images/card_reveal/frame_R.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_R_00.webp",
+      "purpose": "卡牌揭示：R 卡框",
+      "dimensions": [768, 1052],
+      "alpha": true,
+      "sha256": "cc0cd9d1a710cd2cdbcc785778de3c5f588398ace03894613af94b4a1a54738a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_frame_SR",
+      "path": "images/card_reveal/frame_SR.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_SR_00.webp",
+      "purpose": "卡牌揭示：SR 卡框",
+      "dimensions": [768, 1052],
+      "alpha": true,
+      "sha256": "7f5ec7caa69d6df74c792621a9c4544d817d1952e7bbf2eb8ab73a6f14dd5c0d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_frame_SRPlus",
+      "path": "images/card_reveal/frame_SRPlus.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_SRPlus_00.webp",
+      "purpose": "卡牌揭示：SR+ 卡框",
+      "dimensions": [768, 1052],
+      "alpha": true,
+      "sha256": "c7f38f2179693fc536efabe77b3cccced9b8d190e4cf2d27befda411bd2b21f6",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_reveal_frame_SSR",
+      "path": "images/card_reveal/frame_SSR.webp",
+      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_SSR_00.webp",
+      "purpose": "卡牌揭示：SSR 卡框",
+      "dimensions": [768, 1052],
+      "alpha": true,
+      "sha256": "21e61187bb21b9fdb8ea4da020a6654eb99cb0e6a4490a1a1c3f16eb6847c1ef",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_title_bg",
+      "path": "images/card_reveal/title_bg.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_Title_BG.png",
+      "purpose": "原作卡牌揭示：顶部标题底栏",
+      "dimensions": [1080, 109],
+      "alpha": true,
+      "sha256": "f049115f534c8a7939f30ec5b080f92a4a6d906dcb17936dcb33af71d3d1324a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_title_text",
+      "path": "images/card_reveal/title_text.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_Title.png",
+      "purpose": "原作卡牌揭示：CARD 标题字",
+      "dimensions": [224, 104],
+      "alpha": true,
+      "sha256": "03fcc74ef8d0b9f00bd33b2f073cb713d904e0839464e51d3598a67f391e6b28",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_class_N",
+      "path": "images/card_reveal/class_N.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_N.png",
+      "purpose": "原作卡牌揭示：N class",
+      "dimensions": [104, 149],
+      "alpha": true,
+      "sha256": "e034ae1ca27d9c6cc0b324642648cd58abdac2e20d6c2563d5dead353faf4d44",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_class_R",
+      "path": "images/card_reveal/class_R.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_R.png",
+      "purpose": "原作卡牌揭示：R class",
+      "dimensions": [105, 141],
+      "alpha": true,
+      "sha256": "9800a3e13e2f030d8c4168666a768c23679ae4bb45e6af45f2c80650845a903c",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_class_SR",
+      "path": "images/card_reveal/class_SR.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_SR.png",
+      "purpose": "原作卡牌揭示：SR class",
+      "dimensions": [188, 147],
+      "alpha": true,
+      "sha256": "946eccc1283e30d06dbd3cefaef72969082475195c33ec9d29aaac48103e8db8",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_class_SRPlus",
+      "path": "images/card_reveal/class_SRPlus.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_SRP_00.png",
+      "purpose": "原作卡牌揭示：SR+ class",
+      "dimensions": [213, 160],
+      "alpha": true,
+      "sha256": "50040708d5f43f88dfbf5cebf77ad1b737da2ee8383ec3aece2c17e5da3c300c",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_class_SSR",
+      "path": "images/card_reveal/class_SSR.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_SSR.png",
+      "purpose": "原作卡牌揭示：SSR class",
+      "dimensions": [247, 136],
+      "alpha": true,
+      "sha256": "dc6e195429e1164f88bc1e675a26b82638fbefa6e5984ae5b9d2fba9b06e3f62",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_new_banner",
+      "path": "images/card_reveal/new_banner.png",
+      "extracted_source": "../output/character_affection/card_get_ui/UI_CMN_CardGet_NEW.png",
+      "purpose": "原作卡牌揭示：NEW 横幅底",
+      "dimensions": [1080, 260],
+      "alpha": true,
+      "sha256": "f76917d237ad5c18752a158b63fce65f66a62314590f641cd54797053e1293f9",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_limit_bar",
+      "path": "images/card_reveal/limit_bar.png",
+      "extracted_source": "../output/character_affection/card_get_ui/UI_CMN_CardGet_LimitBreak_Right.png",
+      "purpose": "原作卡牌揭示：限界突破横幅底",
+      "dimensions": [533, 71],
+      "alpha": true,
+      "sha256": "8825ca147c57216a86496caeed24cff0e3e5e2f1261b5b25cc77aa83e393c527",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_limit_ribbon",
+      "path": "images/card_reveal/limit_ribbon.png",
+      "extracted_source": "../output/character_affection/card_get_ui/UI_CMN_CardGet_LimitBreak_Ribbon.png",
+      "purpose": "原作卡牌揭示：限界突破缎带",
+      "dimensions": [410, 82],
+      "alpha": true,
+      "sha256": "20d6cc52dafeb13e386836b455d7f986a2768e644cfc07c235d09062c1b5703a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_bg_card",
+      "path": "images/card_reveal/bg_card.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_Corridir.png",
+      "purpose": "原作卡牌揭示：卡面背景",
+      "dimensions": [515, 796],
+      "alpha": true,
+      "sha256": "84e23a41afbcb105758460392c1ff51e3ed392f83ee707db791a84e0fdfebfc9",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_line_N",
+      "path": "images/card_reveal/line_N.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_N_Line_00.png",
+      "purpose": "原作卡牌揭示：N 背景线",
+      "dimensions": [138, 1633],
+      "alpha": true,
+      "sha256": "0330b74e3d4d42f46e17232c350ab05aff568b64c2214e55d735f86a8061aef5",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_line_R",
+      "path": "images/card_reveal/line_R.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_R_Line_00.png",
+      "purpose": "原作卡牌揭示：R 背景线",
+      "dimensions": [138, 1633],
+      "alpha": true,
+      "sha256": "260b86c3af86888be069742727c567a3987602b0bf4f589303d7dd35a32358e1",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_line_SR",
+      "path": "images/card_reveal/line_SR.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_SR_Line_00.png",
+      "purpose": "原作卡牌揭示：SR 背景线",
+      "dimensions": [138, 1633],
+      "alpha": true,
+      "sha256": "e6fb72b4eedfdc203a3131ecfb858d3e55d83a0307b4a7e937930127d3ff1c7c",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "card_get_line_SSR",
+      "path": "images/card_reveal/line_SSR.png",
+      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_SSR_Line_00.png",
+      "purpose": "原作卡牌揭示：SSR 背景线",
+      "dimensions": [138, 1633],
+      "alpha": true,
+      "sha256": "f0ca07ec2ef07482e3de5c404b7a42ff66c4fb93a43a55bc6716eb59fcaf2772",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_background",
+      "path": "images/ui_background.png",
+      "extracted_source": "../all_ui_assets/adventuremap_bg/ui_adventuremap_bg_60001.png",
+      "game_source": "ui_adventuremap_bg_60001",
+      "purpose": "非抽卡页面原作背景",
+      "dimensions": [
+        1080,
+        1920
+      ],
+      "crop": "cover，居中裁切背景以适配页面",
+      "sha256": "6f42484c9db2d7b932efc6478241e9753c24deed6ebba4d945c016c64d312421",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_character_background",
+      "path": "images/ui_character_background.png",
+      "extracted_source": "upstream_ongeki_generic\\assets\\ongeki\\back_character.webp",
+      "purpose": "用户指定的游戏角色背景：仅好感和档案的立绘展示区域",
+      "dimensions": [
+        480,
+        453
+      ],
+      "crop": "人物区等比 cover，居中裁切；不作为整页背景",
+      "sha256": "e9dcc77a7d0196ed45abcdcf99c742e562746eeb1ac950a00cb69d8727a76919",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10001",
+      "path": "images/reward_plate_10001.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010001\\UI_UserPlate_010001_-5369211249917434348.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1000,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "8b46df9a0849b45bc8b1303ffdf67757378b99f00147f46ff4120f850a551d2c",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10001",
+      "path": "images/reward_plate_icon_10001.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010001\\UI_UserPlate_Icon_010001_-7922498118063821387.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1000,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "889486656caf084d0769b8fd5e36e9821c55a9312200ca24b4fefd5ecc85469f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10002",
+      "path": "images/reward_plate_10002.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010002\\UI_UserPlate_010002_5860157973671840705.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1000,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "9012e3ab4b61e55b663e807675bb2d5187cb2e6af0e3dab9ef1af25e6c105307",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10002",
+      "path": "images/reward_plate_icon_10002.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010002\\UI_UserPlate_Icon_010002_-7702671681013383054.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1000,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "145f7d3bc8f55e025173b3b74311b6e36e6c796edbae4d8475cd8fb6afef7e9d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10101",
+      "path": "images/reward_plate_10101.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010101\\UI_UserPlate_010101_-6196100754443929348.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1001,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "f272363056a02fe64c583bd52cc04e25ea0fea480f070218fe754a529aab364e",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10101",
+      "path": "images/reward_plate_icon_10101.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010101\\UI_UserPlate_Icon_010101_2652298653029664259.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1001,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "d490afac0f9904e91676a4c0418292ac9f1ee902ea3bbd1b27195139d2bb1c00",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10102",
+      "path": "images/reward_plate_10102.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010102\\UI_UserPlate_010102_5215762563948590328.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1001,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "e34911dc67f55612d772e1e9316623e7da7376729b4f3bf9ab86a28d31456a92",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10102",
+      "path": "images/reward_plate_icon_10102.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010102\\UI_UserPlate_Icon_010102_-2356536734849072503.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1001,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "7d0e20fcade30b989607f9f0db84aa4cf2ee97d8b83c520634821ce35f047bad",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10201",
+      "path": "images/reward_plate_10201.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010201\\UI_UserPlate_010201_8693158627354316491.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1002,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "70a05e6721466c9f4bbc17141adef963802af8758c14bc62f4938e0da918c9cf",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10201",
+      "path": "images/reward_plate_icon_10201.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010201\\UI_UserPlate_Icon_010201_2419449553555986190.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1002,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "48bc0429765d34fad1d1622691c67b621636bf7967776a0f20bae2961dd58757",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10202",
+      "path": "images/reward_plate_10202.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010202\\UI_UserPlate_010202_4870016573082204067.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1002,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "e3a20a809bd00253560143783d7c90468f37711f489de921fb85426fe6de3712",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10202",
+      "path": "images/reward_plate_icon_10202.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010202\\UI_UserPlate_Icon_010202_9134574657980792717.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1002,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "a708dc973a8aa42d834af96b752e3a3730a5e8598b29a5eedef1e21d3a18eae4",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10301",
+      "path": "images/reward_plate_10301.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010301\\UI_UserPlate_010301_-5109077201040578780.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1003,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "40893efc741a25f0d0b45af3552866add26934c774082db8366e1bf1f00524c5",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10301",
+      "path": "images/reward_plate_icon_10301.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010301\\UI_UserPlate_Icon_010301_-6379428488935729309.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1003,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "b0f4ee887f75caba4439eaa0346d5ab280760c7343a1a867bc19f265f1606d41",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10302",
+      "path": "images/reward_plate_10302.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010302\\UI_UserPlate_010302_4851936375547701840.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1003,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "73f9b8d65e572fe69acaa8414f635ec2873ae3aa2d68c5d57acd03799bec66fb",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10302",
+      "path": "images/reward_plate_icon_10302.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010302\\UI_UserPlate_Icon_010302_5699583392082407252.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1003,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "b29e811b00e09c6b7863ad0e2c684432f7e42affbc6d78cee17fc8aae3a6c26d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10401",
+      "path": "images/reward_plate_10401.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010401\\UI_UserPlate_010401_6660707487487686472.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1004,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "771f942b8e715e11559a395b5fb85d14fe336f44b56cd804e716840bb9f5600d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10401",
+      "path": "images/reward_plate_icon_10401.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010401\\UI_UserPlate_Icon_010401_-3664799574343367256.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1004,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "22f7eb4e3dbea1312a61d05ee38558baa58c756685b5564d502f704ff7447b49",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10402",
+      "path": "images/reward_plate_10402.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010402\\UI_UserPlate_010402_6273761030649634126.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1004,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "2302922e689cb6637941a5d98c4ceccec05f2dd12d383a40ac699a9424e5c41f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10402",
+      "path": "images/reward_plate_icon_10402.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010402\\UI_UserPlate_Icon_010402_-3124452634217891864.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1004,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "0a4a21cc9eeb2c5166e3c9c5d37665582fe770f204a1e039c50300cf7858ecca",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10501",
+      "path": "images/reward_plate_10501.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010501\\UI_UserPlate_010501_-4293906567052882592.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1005,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "b0cd64aa9f016468a5313916012f20fb77332b079591e5139e0f61711f28cac8",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10501",
+      "path": "images/reward_plate_icon_10501.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010501\\UI_UserPlate_Icon_010501_-2260004095439541723.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1005,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "83ff3eeef49fa81ba88bb795a85270eb57d48519125aca202905fa7affa0b290",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10502",
+      "path": "images/reward_plate_10502.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010502\\UI_UserPlate_010502_-6536774829224982303.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1005,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "ef58f15369bb6fddce3cfddf9d16efc384d403d532c8303faaf5d57a59f3b3b6",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10502",
+      "path": "images/reward_plate_icon_10502.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010502\\UI_UserPlate_Icon_010502_8662849648595231623.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1005,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "09bd3d44c09370cbb5ab21ec4da199cd0b15ac418c2ddd5e5b9c41fee122289e",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10601",
+      "path": "images/reward_plate_10601.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010601\\UI_UserPlate_010601_1279237447828550137.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1006,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "cb4c5c4ed817c1dc82fa719af4bd531a7dc031889fbac112cc35db0dea826847",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10601",
+      "path": "images/reward_plate_icon_10601.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010601\\UI_UserPlate_Icon_010601_7618299837280275008.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1006,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "6b964afefe23cb65bacb385b52fe7a22915ff59b1326021942aeb17c7eeda812",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10602",
+      "path": "images/reward_plate_10602.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010602\\UI_UserPlate_010602_1539561464240797078.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1006,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "1bc024f6c4c60ee5255a1e62f1f6ed55473cf9dadc9cbb3b52e4c085a6208573",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10602",
+      "path": "images/reward_plate_icon_10602.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010602\\UI_UserPlate_Icon_010602_-7073691688842749786.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1006,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "cfedd29b124a9e8f9d3652ee6662e038686b03f947ca60b096893bf6cab635c1",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10701",
+      "path": "images/reward_plate_10701.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010701\\UI_UserPlate_010701_5787894823424907535.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1007,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "51b8c7dccfcb0fad7dba060b26b6de6b914867735886a9d17e4ba2dbc63ca4db",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10701",
+      "path": "images/reward_plate_icon_10701.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010701\\UI_UserPlate_Icon_010701_-7032126329122715599.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1007,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "2a4f83a7826b85a23f3e13883c6d1fea88d208d37e699b4a5bc1b3e0709bb184",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10702",
+      "path": "images/reward_plate_10702.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010702\\UI_UserPlate_010702_4072064845279896331.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1007,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "132ceaddf1cffa3f41af756b360881425a9588437206ef409fc54239a7137963",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10702",
+      "path": "images/reward_plate_icon_10702.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010702\\UI_UserPlate_Icon_010702_-8486339207494848145.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1007,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "7128093605b7ef747b59f0fc8e6bf311f881108bd8679343f918e48fe785ee6f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10801",
+      "path": "images/reward_plate_10801.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010801\\UI_UserPlate_010801_9156975406422315448.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1008,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "ac86d5c143d0ab5b541af6f18658552e18cafa59363f617bf3c3815d89646c2d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10801",
+      "path": "images/reward_plate_icon_10801.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010801\\UI_UserPlate_Icon_010801_-7433275007407864067.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1008,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "8c58d22b23b4112010d7886155f3d543593676a734cc212d9d2f7be638bb13b2",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10802",
+      "path": "images/reward_plate_10802.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010802\\UI_UserPlate_010802_-8098338248746472136.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1008,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "293ee0f9e96815e128ea0e88bbe539ab4d106464e70f18f7b029d45c51bfbccc",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10802",
+      "path": "images/reward_plate_icon_10802.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010802\\UI_UserPlate_Icon_010802_5303157357054831440.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1008,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "a4d44e5c09eabca552cec1fe9c5c16300db7330ba2eee2b9531e74690d46780e",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10901",
+      "path": "images/reward_plate_10901.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010901\\UI_UserPlate_010901_-487155032437134541.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1009,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "e027d10ed9dd01e09eab6b486ce823cd0c46a5b186422e608beba31f3de9d277",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10901",
+      "path": "images/reward_plate_icon_10901.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010901\\UI_UserPlate_Icon_010901_5083195166008623673.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1009,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "32013b7210c17a98b5ad92287697542db2982da2a0c8b813b6425406142480a7",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_10902",
+      "path": "images/reward_plate_10902.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010902\\UI_UserPlate_010902_3446905757614515366.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1009,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "5a7acb74dbbf1926d247f83cf37a022a448ae3d9f2b47255335d3b021da82389",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_10902",
+      "path": "images/reward_plate_icon_10902.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010902\\UI_UserPlate_Icon_010902_4507275072257902074.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1009,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "b02783fd3cbf704e6413c4cd0077846c79889f26f48750654444f3793e0bd25a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11001",
+      "path": "images/reward_plate_11001.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011001\\UI_UserPlate_011001_8739143493184873353.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1010,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "8fe5e1db6d82a9b366512a2f215ebfe134d200d6e8d26f0b6981258dae8a747a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11001",
+      "path": "images/reward_plate_icon_11001.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011001\\UI_UserPlate_Icon_011001_-4486629006770544197.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1010,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "5e9b362f5f855af42eebeea6a7d99ab7c139d82137a47748122582a30d4b9b09",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11002",
+      "path": "images/reward_plate_11002.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011002\\UI_UserPlate_011002_-3854719985212970678.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1010,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "88a206f1b25fdc88f06860925808641be36a1dcba8e93e2ff83df83a60bb7b76",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11002",
+      "path": "images/reward_plate_icon_11002.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011002\\UI_UserPlate_Icon_011002_-3994423958673828117.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1010,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "57fdf4d469ac56c12898ec85bf90f2997ac6d7e187abf3964396583c7ae938e2",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11101",
+      "path": "images/reward_plate_11101.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011101\\UI_UserPlate_011101_7281591631083997308.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1011,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "997b9e852ee4cb8a8cf6bad6c384d39a09886c0cecee725197d6ac977ee1cde8",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11101",
+      "path": "images/reward_plate_icon_11101.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011101\\UI_UserPlate_Icon_011101_-300895012433447362.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1011,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "0fb74236e66fb73ac3f23a13b64f9f6a5a4a52005280738873880955b841d513",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11102",
+      "path": "images/reward_plate_11102.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011102\\UI_UserPlate_011102_-4399805889993528771.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1011,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "e6f1cbd822efa446f0478b770b312907e973736cfc7d790d4d77ecd14a357a0f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11102",
+      "path": "images/reward_plate_icon_11102.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011102\\UI_UserPlate_Icon_011102_6004217508371533502.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1011,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "74b92c774b4b76c5a5c4f7ba0fcf04d13e1a5db2480caf33d308ee38d1a719d9",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11201",
+      "path": "images/reward_plate_11201.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011201\\UI_UserPlate_011201_-6276231722927427804.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1012,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "48a3fcbb3dba7f30ab975a722040b8ca4dc0d6a9e663d18234b1d4c4a2fb0ef8",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11201",
+      "path": "images/reward_plate_icon_11201.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011201\\UI_UserPlate_Icon_011201_6785562042916901576.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1012,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "214190b3b520df6d815dae5f4e193ac53b4f5c14c18b456a0370e02eb4fcf2ed",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11202",
+      "path": "images/reward_plate_11202.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011202\\UI_UserPlate_011202_-5913846717127049679.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1012,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "cdceeae486ec3126de0b78032208cbaf0b25779c65f7de20a558c3e70a88607b",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11202",
+      "path": "images/reward_plate_icon_11202.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011202\\UI_UserPlate_Icon_011202_-5286241901266722404.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1012,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "feafb37e36022258ff7c17e02b32fbc3e5c29c682de0dcd2c610b07f528defb4",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11301",
+      "path": "images/reward_plate_11301.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011301\\UI_UserPlate_011301_-2523831318242905371.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1013,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "7e7fd4e7665ced442d44978228169f43dfd4d1f35518362a144d5e1c9807f006",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11301",
+      "path": "images/reward_plate_icon_11301.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011301\\UI_UserPlate_Icon_011301_-3728363192915567991.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1013,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "39237e0627fcb9dc0e48698b4b537ec155ac773bded948ebd50594ed6b296016",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11302",
+      "path": "images/reward_plate_11302.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011302\\UI_UserPlate_011302_-1909682882778507509.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1013,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "647d7270a6d2f11dbbbd406609c4c1258d4d54154ba6972cf02d3b876e1ea9d5",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11302",
+      "path": "images/reward_plate_icon_11302.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011302\\UI_UserPlate_Icon_011302_4245952355586884408.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1013,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "e0b57eed81ba1cd7c4bd42db11c42f816a37cf5ab8cff5541253c699e0d36861",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11401",
+      "path": "images/reward_plate_11401.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011401\\UI_UserPlate_011401_6026979148093435235.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1014,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "ad59242dd0a1a82f41c6d79d20eece010cd1f72fc7042b3b028b956432264403",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11401",
+      "path": "images/reward_plate_icon_11401.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011401\\UI_UserPlate_Icon_011401_-8398706925488407682.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1014,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "76b18c76c7ae3338ba165fb869347b27a8c201ec3a95d3c720344ed22c6d84bb",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11402",
+      "path": "images/reward_plate_11402.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011402\\UI_UserPlate_011402_154510553449237790.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1014,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "4d1fcbf743ceb2a812d7c4c1bc16e199314ed9a3996688796aef088e30e1d156",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11402",
+      "path": "images/reward_plate_icon_11402.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011402\\UI_UserPlate_Icon_011402_5413403323684594250.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1014,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "6e20bec7e616fcd657a61f1fec489e2b7b73dbe625539fca1b58521c15ecd463",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11501",
+      "path": "images/reward_plate_11501.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011501\\UI_UserPlate_011501_-8136840459114984160.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1015,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "01c201262183c515a65c42bd1885af8fab89d69f1e87e55e442cdb1d7f02f38f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11501",
+      "path": "images/reward_plate_icon_11501.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011501\\UI_UserPlate_Icon_011501_5762323461533869332.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1015,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "3498b0a82d816c4e7c6d4bd08c6042e7e5bfde26f31e5bc7f07e2333e73d3db6",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11502",
+      "path": "images/reward_plate_11502.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011502\\UI_UserPlate_011502_8629036751203297752.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1015,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "09290e13980e74cb9283ebf91a2f00205a5a334ff9959293598ce9bed1f9930f",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11502",
+      "path": "images/reward_plate_icon_11502.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011502\\UI_UserPlate_Icon_011502_-4762295382582960232.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1015,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "879781b5db4b8fe3e86a4f617736d77547b134ebdc67deb0ea89f6e382e83c01",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11601",
+      "path": "images/reward_plate_11601.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011601\\UI_UserPlate_011601_-5776511024483137817.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1016,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "ad0eae2e793a4e1d8640d543887d23d5a5bcc1cd08b596e5a7d9b6cb209f1875",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11601",
+      "path": "images/reward_plate_icon_11601.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011601\\UI_UserPlate_Icon_011601_-3300975141184275348.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1016,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "cee64ae5bee9423f51dba248f576d95144f411d9cdb2875b50ca15de1ec9cbf5",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_11602",
+      "path": "images/reward_plate_11602.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011602\\UI_UserPlate_011602_5073652384638487353.png",
+      "purpose": "名牌奖励图",
+      "character_id": 1016,
+      "dimensions": [
+        1080,
+        296
+      ],
+      "alpha": false,
+      "crop": "contain/full_image",
+      "sha256": "ccdb4e5f8bc028f001e9020a45d9233e7502025cc725c8461be4269f2e4079b6",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_plate_icon_11602",
+      "path": "images/reward_plate_icon_11602.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011602\\UI_UserPlate_Icon_011602_5034860508551531203.png",
+      "purpose": "名牌奖励图标",
+      "character_id": 1016,
+      "dimensions": [
+        260,
+        364
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "205c50702ea0fae3ee2a1aeeb18217fd97c09c1ab25c0b585509c63bc7f88575",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2000",
+      "path": "images/reward_attachment_2000.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002000\\UI_Attachment_002000_-580343095748069030.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1000,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "4bcc1c9f5c5c251bbd71282418883ec8b6c0988471da97c1d9e6b0a4ed2e15c6",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2001",
+      "path": "images/reward_attachment_2001.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002001\\UI_Attachment_002001_3305574316180772470.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1001,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "2c1ff962cbf9620cc79e15f59def94f2a797e349835b9b4bee6292946e1d411c",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2002",
+      "path": "images/reward_attachment_2002.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002002\\UI_Attachment_002002_-3971283207932170589.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1002,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "669f3384647ef2ccc66ee783e17a8779f083b46493f5bb10a1e4d85f3deee571",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2003",
+      "path": "images/reward_attachment_2003.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002003\\UI_Attachment_002003_8283042326255476459.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1003,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "d4d9cb4bed0902410779552ae48367c8ef3a65da042d73927f1def77d4b71d98",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2004",
+      "path": "images/reward_attachment_2004.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002004\\UI_Attachment_002004_1337710106493308101.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1004,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "69531acada17d120d6e86354fc1267a5bd2a276cd1b1a6ab1c89fab1677adb77",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2005",
+      "path": "images/reward_attachment_2005.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002005\\UI_Attachment_002005_-8042956307591002887.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1005,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "9f1870286944a2ab077ac96e90acef615b7f6611da2627509cb6b6c919608c71",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2006",
+      "path": "images/reward_attachment_2006.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002006\\UI_Attachment_002006_4080234372761521321.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1006,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "52f56d9841230eb3bf1513e59b804d3ba982566339b933043c2afd77c572be68",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2007",
+      "path": "images/reward_attachment_2007.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002007\\UI_Attachment_002007_3078032009470955704.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1007,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "c337f0bd05dd6810beb86e394d66866644e80b2748c28ea2d836c91a15e4a835",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2008",
+      "path": "images/reward_attachment_2008.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002008\\UI_Attachment_002008_-4890253299940055343.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1008,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "714b658de1aa7289667fed40453027dc500e0f10e2d13211b205fcab3f90040a",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2009",
+      "path": "images/reward_attachment_2009.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002009\\UI_Attachment_002009_-5372527877019975395.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1009,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "43be6a1e8a4a2f860fb5a88db70540261823c2b2318c87acdd530b3b622ee5bb",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2010",
+      "path": "images/reward_attachment_2010.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002010\\UI_Attachment_002010_5689916204378853210.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1010,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "f498404377f8a62c235b5d0e520b4888dcd290db50a989d5248aac977688e785",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2011",
+      "path": "images/reward_attachment_2011.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002011\\UI_Attachment_002011_1640358756282585928.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1011,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "dfa4754d13cd4eb0b04a8e18d0ae5da1a9c4dc2d1f6b4fca8ca7fc490c055253",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2012",
+      "path": "images/reward_attachment_2012.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002012\\UI_Attachment_002012_-6110615840029403352.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1012,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "5221c457c3897f5c3c32bc1fc2b457c19ac36f77110863e1494a32148b4c0e4d",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2013",
+      "path": "images/reward_attachment_2013.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002013\\UI_Attachment_002013_-1925180675826916685.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1013,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "d0e2e41e54c46c885b3070317ea445dceb27bd994fa34442eb4cadba0cd5d88b",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2014",
+      "path": "images/reward_attachment_2014.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002014\\UI_Attachment_002014_-6202117580382077774.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1014,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "99344132658ed3b130a47a86f2eff30578b06220bfcc3171115dff79abe1dac4",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2015",
+      "path": "images/reward_attachment_2015.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002015\\UI_Attachment_002015_5988077768716868469.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1015,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "16058c0a70e6724a60330049a1da433fe7108deb593c0149cfbf40422eb5c0cf",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "reward_attachment_2016",
+      "path": "images/reward_attachment_2016.png",
+      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002016\\UI_Attachment_002016_-3348953908015428893.png",
+      "purpose": "装饰奖励图",
+      "character_id": 1016,
+      "dimensions": [
+        348,
+        320
+      ],
+      "alpha": true,
+      "crop": "contain/full_image",
+      "sha256": "b62681f4e79570c14d76fb6d3a8d40744926274533d487e7618694d004c7fea4",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_title_0",
+      "path": "images/ui_title_0.png",
+      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_00_983.png",
+      "game_source": "resources.assets",
+      "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
+      "dimensions": [
+        392,
+        60
+      ],
+      "alpha": true,
+      "crop": "完整图像，面板按端帽拉伸",
+      "sha256": "5e078d78ee89e742b19aa0d83c3e3653318719bd58c3277f88eeabe8923d47db",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_title_1",
+      "path": "images/ui_title_1.png",
+      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_01_935.png",
+      "game_source": "resources.assets",
+      "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
+      "dimensions": [
+        392,
+        60
+      ],
+      "alpha": true,
+      "crop": "完整图像，面板按端帽拉伸",
+      "sha256": "b39001d33dfd816d4ba243d28bc4e052caa3f7d8d6159b563a3ac29b92283e90",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_title_2",
+      "path": "images/ui_title_2.png",
+      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_02_867.png",
+      "game_source": "resources.assets",
+      "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
+      "dimensions": [
+        392,
+        60
+      ],
+      "alpha": true,
+      "crop": "完整图像，面板按端帽拉伸",
+      "sha256": "78f23c38f2ff2d82ef4feccb379a1206f42177dbc7dc6513af20e1b3efc48d08",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_title_3",
+      "path": "images/ui_title_3.png",
+      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_03_1047.png",
+      "game_source": "resources.assets",
+      "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
+      "dimensions": [
+        392,
+        60
+      ],
+      "alpha": true,
+      "crop": "完整图像，面板按端帽拉伸",
+      "sha256": "7fb6a5473159066792debfa7972dac70bf6bc8d1ac4c27eb088582bee966b593",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    },
+    {
+      "key": "ui_title_4",
+      "path": "images/ui_title_4.png",
+      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_04_1055.png",
+      "game_source": "resources.assets",
+      "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
+      "dimensions": [
+        392,
+        58
+      ],
+      "alpha": true,
+      "crop": "完整图像，面板按端帽拉伸",
+      "sha256": "b2b60d6d8261dcbf46802a146b9b5e08dbd3eda92e3752d0ff2058c99931a476",
+      "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
+    }
+  ]
+}

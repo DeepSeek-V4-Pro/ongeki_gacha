@@ -1,0 +1,52 @@
+[
+  {
+    "file": "assets\\growth\\images\\bloom\\arrow.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_OpenFlower_Arrow_82.png",
+    "sha256": "ae18a402b0db9fe8612fb4e87349549b02e2a9c2d82ef3349a029615fc727d85"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\glow.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_OpenFlower_Common_Eff_00_97.png",
+    "sha256": "c17140be56089e530c263993cef0f5e12aae3ebc059d47d10ed7b24b2bc23112"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\petal.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_OpenFlower_Leaf_00_113.png",
+    "sha256": "7627ede11e0ae20220dda571b907645a99b1149f0a3c3263c1a16d23ba7311b1"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\kaika_0.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_OpenFlower_Text_00_92.png",
+    "sha256": "28abbb460a2ee72727e78d43983f79e06d6c7d63d246c71ec6eac7b878ebc456"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\kaika_1.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_OpenFlower_Text_01_100.png",
+    "sha256": "a17c2153d7d51ae723b25198d9f6bfb8262ed8cafb902f98dcf3a8b6a4165cbd"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\super_0.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_Super_OpenFlower_title_00_91.png",
+    "sha256": "4bb261a4e3d43d461569d2736c98d49f85669cd522513d719aecfbf765fc5565"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\super_1.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_Super_OpenFlower_title_01_108.png",
+    "sha256": "0e7f44b486e4be9f285a8503b473d833fff639fc6c48e7773866a5a989e8a83a"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\super_2.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_Super_OpenFlower_title_02_120.png",
+    "sha256": "d64ee3a9c2f550b32e56aad28f5d0210a7a7c2e364a60490196f7d3b4a863bd6"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\ribbon.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_OpenFlower_Window_01_128.png",
+    "sha256": "cd3588d426727527b73b596f830f8717cfa31f7c56569b10d19d066b7eca5b89"
+  },
+  {
+    "file": "assets\\growth\\images\\bloom\\rainbow.png",
+    "source": "D:\\Tools\\ONGEKI_unpack\\output\\character_affection\\layout\\sprites\\sharedassets15\\UI_CMU_Super_OpenFlower_result_BG_00_114.png",
+    "sha256": "6b77cb1c12f1b4a4f302bf8aeaaec95acaa4d693a169c30d41bedd7f037b6b65"
+  }
+]

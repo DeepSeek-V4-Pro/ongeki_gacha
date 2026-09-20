@@ -19,12 +19,14 @@ from PIL import Image, ImageDraw, ImageFilter, ImageFont
 KIND_COLORS: dict[str, tuple[int, int, int]] = {
     "normal": (122, 196, 174),
     "challenge": (116, 158, 232),
+    "advanced": (232, 150, 96),
     "ultimate": (171, 144, 226),
 }
 
 KIND_LABELS: dict[str, str] = {
     "normal": "普通任务",
     "challenge": "挑战任务",
+    "advanced": "高级挑战",
     "ultimate": "终极任务",
 }
 
@@ -444,7 +446,7 @@ def render_task_card(data: TaskCardData, output_path: Path, size: tuple[int, int
     brand_font = _font(16)
     draw.text(
         (card[2] - 30, card[3] - 42),
-        "MaiBot · 随机任务",
+        "音击抽卡模拟器 · 随机任务",
         font=brand_font,
         fill=(166, 156, 194),
         anchor="rm",

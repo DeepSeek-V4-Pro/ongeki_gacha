@@ -1,0 +1,5360 @@
+{
+  "version": "affection-v2",
+  "characters": [
+    {
+      "id": "1000",
+      "name": "星咲 あかり",
+      "birthday": "2018-07-26T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "ポップス"
+          },
+          {
+            "Profile": "歌うこと"
+          },
+          {
+            "Profile": "料理/ババ抜き"
+          },
+          {
+            "Profile": "食べ歩き"
+          },
+          {
+            "Profile": "裁縫/逆立ち"
+          },
+          {
+            "Profile": "お風呂でゆったり"
+          },
+          {
+            "Profile": "友達と遊びに出かける"
+          },
+          {
+            "Profile": "甘いものを思いっきり食べる"
+          },
+          {
+            "Profile": "絶対、大丈夫！"
+          },
+          {
+            "Profile": "子供の頃に見たプリメラのステージ。その時に受けた感動は、今もあかりを動かす原動力になっている。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "負けないよ！\n　　私はもっと先を目指すんだから！",
+        "FlavorText2": "遠慮はナシだよ！\n　　全力で楽しんじゃおう！",
+        "FlavorText3": "私が相手に……って、わわっ！\n　　転んじゃった♪",
+        "FlavorText4": "さぁ、行くよっ！\n　　レッツシュートッ！",
+        "FlavorText5": "なにか悩みごと？\n　　オンゲキで吹き飛ばしちゃおうよ！",
+        "FlavorText6": "わ～～い♪\n　　今日もオンゲキ嬉しいな♪"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10001",
+          "name": "星咲 あかり フレーバーボイス01",
+          "profile": "ポップス",
+          "reward_key": "1000:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10001",
+          "name": "星咲あかり推し",
+          "reward_key": "1000:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10002",
+          "name": "星咲 あかり フレーバーボイス02",
+          "profile": "歌うこと",
+          "reward_key": "1000:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10003",
+          "name": "星咲 あかり フレーバーボイス03",
+          "profile": "料理/ババ抜き",
+          "reward_key": "1000:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10001",
+          "name": "♥星咲 あかり♥",
+          "reward_key": "1000:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10004",
+          "name": "星咲 あかり フレーバーボイス04",
+          "profile": "食べ歩き",
+          "reward_key": "1000:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10005",
+          "name": "星咲 あかり フレーバーボイス05",
+          "profile": "裁縫/逆立ち",
+          "reward_key": "1000:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10006",
+          "name": "星咲 あかり フレーバーボイス06",
+          "profile": "お風呂でゆったり",
+          "reward_key": "1000:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10002",
+          "name": "お空のてっぺん目指してゴー！",
+          "reward_key": "1000:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10007",
+          "name": "星咲 あかり フレーバーボイス07",
+          "profile": "友達と遊びに出かける",
+          "reward_key": "1000:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10008",
+          "name": "星咲 あかり フレーバーボイス08",
+          "profile": "甘いものを思いっきり食べる",
+          "reward_key": "1000:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10003",
+          "name": "プリメラ原石ガール",
+          "reward_key": "1000:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10009",
+          "name": "星咲 あかり フレーバーボイス09",
+          "profile": "絶対、大丈夫！",
+          "reward_key": "1000:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10010",
+          "name": "星咲 あかり フレーバーボイス10",
+          "profile": "子供の頃に見たプリメラのステージ。その時に受けた感動は、今もあかりを動かす原動力になっている。",
+          "reward_key": "1000:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10004",
+          "name": "頑張り屋さんのNO.1サポーター",
+          "reward_key": "1000:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10005",
+          "name": "頑張り屋さんのNO.1サポーター・リーダー候補",
+          "reward_key": "1000:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100001",
+          "name": "【N】星咲 あかり",
+          "reward_key": "1000:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10006",
+          "name": "頑張り屋さんのNO.1サポーター・リーダー",
+          "reward_key": "1000:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10002",
+          "name": "♥♥♥星咲 あかり♥♥♥",
+          "reward_key": "1000:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10007",
+          "name": "あかりのフレー！フレー！応援団",
+          "reward_key": "1000:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10008",
+          "name": "星咲あかり推し",
+          "reward_key": "1000:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10009",
+          "name": "あかりとこれからもずっと一緒！",
+          "reward_key": "1000:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2000",
+          "name": "スペシャルオーラ（星咲 あかり）",
+          "reward_key": "1000:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1001",
+      "name": "藤沢 柚子",
+      "birthday": "2018-07-11T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "アイドルソング"
+          },
+          {
+            "Profile": "コンビニお菓子"
+          },
+          {
+            "Profile": "整理整頓/じっとしていること"
+          },
+          {
+            "Profile": "カワイイ手帳づくり"
+          },
+          {
+            "Profile": "福引きがよく当たる"
+          },
+          {
+            "Profile": "新発売のお菓子をチェック"
+          },
+          {
+            "Profile": "ふらふら近所をお散歩"
+          },
+          {
+            "Profile": "お菓子の大人買い"
+          },
+          {
+            "Profile": "☆HAPPY☆"
+          },
+          {
+            "Profile": "笑顔。どんなときも笑顔を忘れないようにと、毎朝、鏡の前で「にこーっ」と笑うことにしているらしい。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "柚子が勝ったら、\n　　お菓子ちょ～だいっ！",
+        "FlavorText2": "よーっし！\n　　負っけないぞ～！",
+        "FlavorText3": "柚子の魔法で\n　　笑顔になっちゃえ〜！",
+        "FlavorText4": "今日の飴ちゃんは……\n　　ハバネロたこ焼き味～♪",
+        "FlavorText5": "笑顔、忘れてるよ～？\n　　ほ～ら、スマイルスマイル～♪",
+        "FlavorText6": "柚子、飴ちゃん無くて\n　　やる気出～な～い〜！"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10101",
+          "name": "藤沢 柚子 フレーバーボイス01",
+          "profile": "アイドルソング",
+          "reward_key": "1001:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10101",
+          "name": "藤沢柚子推し",
+          "reward_key": "1001:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10102",
+          "name": "藤沢 柚子 フレーバーボイス02",
+          "profile": "コンビニお菓子",
+          "reward_key": "1001:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10103",
+          "name": "藤沢 柚子 フレーバーボイス03",
+          "profile": "整理整頓/じっとしていること",
+          "reward_key": "1001:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10101",
+          "name": "♥藤沢 柚子♥",
+          "reward_key": "1001:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10104",
+          "name": "藤沢 柚子 フレーバーボイス04",
+          "profile": "カワイイ手帳づくり",
+          "reward_key": "1001:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10105",
+          "name": "藤沢 柚子 フレーバーボイス05",
+          "profile": "福引きがよく当たる",
+          "reward_key": "1001:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10106",
+          "name": "藤沢 柚子 フレーバーボイス06",
+          "profile": "新発売のお菓子をチェック",
+          "reward_key": "1001:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10102",
+          "name": "アメちゃんどーぞ♪",
+          "reward_key": "1001:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10107",
+          "name": "藤沢 柚子 フレーバーボイス07",
+          "profile": "ふらふら近所をお散歩",
+          "reward_key": "1001:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10108",
+          "name": "藤沢 柚子 フレーバーボイス08",
+          "profile": "お菓子の大人買い",
+          "reward_key": "1001:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10103",
+          "name": "やめられないとまらない",
+          "reward_key": "1001:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10109",
+          "name": "藤沢 柚子 フレーバーボイス09",
+          "profile": "☆HAPPY☆",
+          "reward_key": "1001:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10110",
+          "name": "藤沢 柚子 フレーバーボイス10",
+          "profile": "笑顔。どんなときも笑顔を忘れないようにと、毎朝、鏡の前で「にこーっ」と笑うことにしているらしい。",
+          "reward_key": "1001:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10104",
+          "name": "柚子専属アメちゃん補充部隊",
+          "reward_key": "1001:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10105",
+          "name": "柚子専属アメちゃん補充部隊・上等兵",
+          "reward_key": "1001:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100010",
+          "name": "【N】藤沢 柚子",
+          "reward_key": "1001:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10106",
+          "name": "柚子専属アメちゃん補充部隊・隊長",
+          "reward_key": "1001:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10102",
+          "name": "♥♥♥藤沢 柚子♥♥♥",
+          "reward_key": "1001:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10107",
+          "name": "ハッピーな柚子の笑顔を守る会",
+          "reward_key": "1001:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10108",
+          "name": "藤沢柚子推し",
+          "reward_key": "1001:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10109",
+          "name": "柚子と一緒に☆はっぴっぴーす♪",
+          "reward_key": "1001:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2001",
+          "name": "スペシャルオーラ（藤沢 柚子）",
+          "reward_key": "1001:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1002",
+      "name": "三角 葵",
+      "birthday": "2018-07-16T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "洋楽"
+          },
+          {
+            "Profile": "コーヒー/クロスワード"
+          },
+          {
+            "Profile": "幽霊・お化け"
+          },
+          {
+            "Profile": "キャラグッズ集め"
+          },
+          {
+            "Profile": "速読/ペン回し"
+          },
+          {
+            "Profile": "寝る前のストレッチ"
+          },
+          {
+            "Profile": "お気に入りのカフェで読書"
+          },
+          {
+            "Profile": "ぬいぐるみをモフモフ"
+          },
+          {
+            "Profile": "継続は力なり"
+          },
+          {
+            "Profile": "部屋にあるカワイイ（本人談）ぬいぐるみ。なんとも形容しがたい見た目をしているともっぱらの噂。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "私だって、\n　　やるときはやるんだから…！",
+        "FlavorText2": "積み重ねた努力の成果\n　　ここで見せるよ！",
+        "FlavorText3": "ちゃんとできるかな\n　　うー、心配になってきた……",
+        "FlavorText4": "それじゃあ\n　　オンゲキ、始めようか",
+        "FlavorText5": "勉強は得意なんだけど、\n　　運動の方は昔から苦手で……",
+        "FlavorText6": "大丈夫\n　　焦らず、落ち着いて……"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10201",
+          "name": "三角 葵 フレーバーボイス01",
+          "profile": "洋楽",
+          "reward_key": "1002:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10201",
+          "name": "三角葵推し",
+          "reward_key": "1002:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10202",
+          "name": "三角 葵 フレーバーボイス02",
+          "profile": "コーヒー/クロスワード",
+          "reward_key": "1002:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10203",
+          "name": "三角 葵 フレーバーボイス03",
+          "profile": "幽霊・お化け",
+          "reward_key": "1002:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10201",
+          "name": "♥三角 葵♥",
+          "reward_key": "1002:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10204",
+          "name": "三角 葵 フレーバーボイス04",
+          "profile": "キャラグッズ集め",
+          "reward_key": "1002:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10205",
+          "name": "三角 葵 フレーバーボイス05",
+          "profile": "速読/ペン回し",
+          "reward_key": "1002:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10206",
+          "name": "三角 葵 フレーバーボイス06",
+          "profile": "寝る前のストレッチ",
+          "reward_key": "1002:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10202",
+          "name": "はぁ、散々だよ",
+          "reward_key": "1002:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10207",
+          "name": "三角 葵 フレーバーボイス07",
+          "profile": "お気に入りのカフェで読書",
+          "reward_key": "1002:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10208",
+          "name": "三角 葵 フレーバーボイス08",
+          "profile": "ぬいぐるみをモフモフ",
+          "reward_key": "1002:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10203",
+          "name": "業界屈指のツッコミ役",
+          "reward_key": "1002:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10209",
+          "name": "三角 葵 フレーバーボイス09",
+          "profile": "継続は力なり",
+          "reward_key": "1002:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10210",
+          "name": "三角 葵 フレーバーボイス10",
+          "profile": "部屋にあるカワイイ（本人談）ぬいぐるみ。なんとも形容しがたい見た目をしているともっぱらの噂。",
+          "reward_key": "1002:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10204",
+          "name": "ブサかわキャラハンターの相棒",
+          "reward_key": "1002:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10205",
+          "name": "ブサかわキャラハンターの戦友",
+          "reward_key": "1002:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100019",
+          "name": "【N】三角 葵",
+          "reward_key": "1002:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10206",
+          "name": "ブサかわキャラハンターの欠けた半身",
+          "reward_key": "1002:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10202",
+          "name": "♥♥♥三角 葵♥♥♥",
+          "reward_key": "1002:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10207",
+          "name": "振り回され系苦労人の息抜き相手",
+          "reward_key": "1002:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10208",
+          "name": "三角葵推し",
+          "reward_key": "1002:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10209",
+          "name": "葵と過ごす穏やかな日常",
+          "reward_key": "1002:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2002",
+          "name": "スペシャルオーラ（三角 葵）",
+          "reward_key": "1002:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1003",
+      "name": "高瀬 梨緒",
+      "birthday": "2018-01-25T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "EDM"
+          },
+          {
+            "Profile": "勝負ごと/メロンソーダ"
+          },
+          {
+            "Profile": "猫"
+          },
+          {
+            "Profile": "水泳/マウンテンバイク"
+          },
+          {
+            "Profile": "クレーンゲーム"
+          },
+          {
+            "Profile": "ゲームセンターに寄り道"
+          },
+          {
+            "Profile": "お家の手伝い"
+          },
+          {
+            "Profile": "身体を動かして汗をかく"
+          },
+          {
+            "Profile": "超絶最強"
+          },
+          {
+            "Profile": "友達みんな。なかなか素直になれず、態度には出せないこともあるが、本当は大切に思っている。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "ふっふーん！\n　　このスーパーワンダフル美少女が\n　　　　　　　　　　　　　相手よっ！",
+        "FlavorText2": "超絶最強のオンゲキを\n　　とことん見せてあげるんだから！",
+        "FlavorText3": "アンタの相手なんてテレビのチャンネルを\n　　変えるより簡単なんだからっ！",
+        "FlavorText4": "アンタに付き合ってあげるわ\n　　……し、仕方なくなんだからね！",
+        "FlavorText5": "あの恰好って結構恥ずかしいのよね\n　　ま、カッコいいからいいんだけど",
+        "FlavorText6": "さぁ、見せてみなさいっ！\n　　アンタの実力をね！"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10301",
+          "name": "高瀬 梨緒 フレーバーボイス01",
+          "profile": "EDM",
+          "reward_key": "1003:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10301",
+          "name": "高瀬梨緒推し",
+          "reward_key": "1003:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10302",
+          "name": "高瀬 梨緒 フレーバーボイス02",
+          "profile": "勝負ごと/メロンソーダ",
+          "reward_key": "1003:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10303",
+          "name": "高瀬 梨緒 フレーバーボイス03",
+          "profile": "猫",
+          "reward_key": "1003:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10301",
+          "name": "♥高瀬 梨緒♥",
+          "reward_key": "1003:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10304",
+          "name": "高瀬 梨緒 フレーバーボイス04",
+          "profile": "水泳/マウンテンバイク",
+          "reward_key": "1003:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10305",
+          "name": "高瀬 梨緒 フレーバーボイス05",
+          "profile": "クレーンゲーム",
+          "reward_key": "1003:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10306",
+          "name": "高瀬 梨緒 フレーバーボイス06",
+          "profile": "ゲームセンターに寄り道",
+          "reward_key": "1003:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10302",
+          "name": "ふふん♪",
+          "reward_key": "1003:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10307",
+          "name": "高瀬 梨緒 フレーバーボイス07",
+          "profile": "お家の手伝い",
+          "reward_key": "1003:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10308",
+          "name": "高瀬 梨緒 フレーバーボイス08",
+          "profile": "身体を動かして汗をかく",
+          "reward_key": "1003:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10303",
+          "name": "スーパーウルトラ美少女（仮）",
+          "reward_key": "1003:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10309",
+          "name": "高瀬 梨緒 フレーバーボイス09",
+          "profile": "超絶最強",
+          "reward_key": "1003:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10310",
+          "name": "高瀬 梨緒 フレーバーボイス10",
+          "profile": "友達みんな。なかなか素直になれず、態度には出せないこともあるが、本当は大切に思っている。",
+          "reward_key": "1003:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10304",
+          "name": "自称・超絶最強の永遠のライバル",
+          "reward_key": "1003:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10305",
+          "name": "自称・ハイパー美少女の永遠のライバル",
+          "reward_key": "1003:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100028",
+          "name": "【N】高瀬 梨緒",
+          "reward_key": "1003:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10306",
+          "name": "自称・超絶最強ギャラクティカ美少女の永遠のライバル",
+          "reward_key": "1003:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10302",
+          "name": "♥♥♥高瀬 梨緒♥♥♥",
+          "reward_key": "1003:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10307",
+          "name": "勝ち気娘のゲーセン仲間",
+          "reward_key": "1003:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10308",
+          "name": "高瀬梨緒推し",
+          "reward_key": "1003:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10309",
+          "name": "梨緒が二人きりだとデレるんだが",
+          "reward_key": "1003:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2003",
+          "name": "スペシャルオーラ（高瀬 梨緒）",
+          "reward_key": "1003:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1004",
+      "name": "結城 莉玖",
+      "birthday": "2018-05-05T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "ガールズロック"
+          },
+          {
+            "Profile": "ロックなもの/カレーライス"
+          },
+          {
+            "Profile": "勉強/熱いもの"
+          },
+          {
+            "Profile": "ギター"
+          },
+          {
+            "Profile": "目覚ましが鳴る前に起きる"
+          },
+          {
+            "Profile": "お風呂上りの牛乳"
+          },
+          {
+            "Profile": "近所のちびっ子たちと遊ぶ"
+          },
+          {
+            "Profile": "ギターを爆音で演奏"
+          },
+          {
+            "Profile": "ノーロック・ノーライフ"
+          },
+          {
+            "Profile": "白色のギターピック。憧れのガールズバンドのライブで手に入れた宝物。「ここぞ」という場面で使うらしい。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "よーし！　いっくぞー！\n　　がおーーーっ！",
+        "FlavorText2": "オレの全力ロック！\n　　おまえに響かせてやるぜ！",
+        "FlavorText3": "オレが相手なんて裁判だったな！\n　　……あ、違う！災難だったなっ！",
+        "FlavorText4": "とばしてくぜ！\n　　しっかりついて来いよな！",
+        "FlavorText5": "オレがギター弾けるのかって？\n　　ふっ……愚問だな！",
+        "FlavorText6": "ギターもオンゲキも\n　　トップまで駆け上がってやるぜ！"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10401",
+          "name": "結城 莉玖 フレーバーボイス01",
+          "profile": "ガールズロック",
+          "reward_key": "1004:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10401",
+          "name": "結城莉玖推し",
+          "reward_key": "1004:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10402",
+          "name": "結城 莉玖 フレーバーボイス02",
+          "profile": "ロックなもの/カレーライス",
+          "reward_key": "1004:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10403",
+          "name": "結城 莉玖 フレーバーボイス03",
+          "profile": "勉強/熱いもの",
+          "reward_key": "1004:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10401",
+          "name": "♥結城 莉玖♥",
+          "reward_key": "1004:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10404",
+          "name": "結城 莉玖 フレーバーボイス04",
+          "profile": "ギター",
+          "reward_key": "1004:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10405",
+          "name": "結城 莉玖 フレーバーボイス05",
+          "profile": "目覚ましが鳴る前に起きる",
+          "reward_key": "1004:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10406",
+          "name": "結城 莉玖 フレーバーボイス06",
+          "profile": "お風呂上りの牛乳",
+          "reward_key": "1004:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10402",
+          "name": "がおがおーっ！",
+          "reward_key": "1004:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10407",
+          "name": "結城 莉玖 フレーバーボイス07",
+          "profile": "近所のちびっ子たちと遊ぶ",
+          "reward_key": "1004:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10408",
+          "name": "結城 莉玖 フレーバーボイス08",
+          "profile": "ギターを爆音で演奏",
+          "reward_key": "1004:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10403",
+          "name": "愛すべきおバカ",
+          "reward_key": "1004:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10409",
+          "name": "結城 莉玖 フレーバーボイス09",
+          "profile": "ノーロック・ノーライフ",
+          "reward_key": "1004:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10410",
+          "name": "結城 莉玖 フレーバーボイス10",
+          "profile": "白色のギターピック。憧れのガールズバンドのライブで手に入れた宝物。「ここぞ」という場面で使うらしい。",
+          "reward_key": "1004:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10404",
+          "name": "ちびっ子モンスターのバンドヒーロー",
+          "reward_key": "1004:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10405",
+          "name": "ちびっ子モンスターのバンドヒーロー・全国ツアー",
+          "reward_key": "1004:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100035",
+          "name": "【N】結城 莉玖",
+          "reward_key": "1004:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10406",
+          "name": "ちびっ子モンスターのバンドヒーロー・世界ツアー",
+          "reward_key": "1004:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10402",
+          "name": "♥♥♥結城 莉玖♥♥♥",
+          "reward_key": "1004:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10407",
+          "name": "ロッキンガールのギター師匠",
+          "reward_key": "1004:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10408",
+          "name": "結城莉玖推し",
+          "reward_key": "1004:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10409",
+          "name": "莉玖とブドーカンLIVEで大暴れ！",
+          "reward_key": "1004:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2004",
+          "name": "スペシャルオーラ（結城 莉玖）",
+          "reward_key": "1004:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1005",
+      "name": "藍原 椿",
+      "birthday": "2018-12-31T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "ボカロ"
+          },
+          {
+            "Profile": "読書"
+          },
+          {
+            "Profile": "人ごみ"
+          },
+          {
+            "Profile": "ネット動画/珍しい飲み物探し"
+          },
+          {
+            "Profile": "口喧嘩/猫じゃらし"
+          },
+          {
+            "Profile": "莉玖をからかう"
+          },
+          {
+            "Profile": "動画サイトをだらだら見る"
+          },
+          {
+            "Profile": "プチプチをちまちま潰す"
+          },
+          {
+            "Profile": "ばーか"
+          },
+          {
+            "Profile": "愛用のマフラー。季節に関係なく身につけており、外した姿は幻とまで囁かれている。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "ふぅ、戦うのね\n　　それなら手加減はしないから",
+        "FlavorText2": "あまり興味はないのだけれど、\n　　暇つぶしぐらいにはなりそうね",
+        "FlavorText3": "ふふふ、\n　　少しだけ遊んであげる",
+        "FlavorText4": "私に勝てたらご褒美をあげるわ\n　　あら、\n　　　お仕置きの方が良かったかしら？",
+        "FlavorText5": "はい、たい焼きコーラ\n　　終わったら一緒に飲みましょう？",
+        "FlavorText6": "マフラーの秘密？\n　　ふふふ、\n　　　　話したら秘密にならないじゃない"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10501",
+          "name": "藍原 椿 フレーバーボイス01",
+          "profile": "ボカロ",
+          "reward_key": "1005:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10501",
+          "name": "藍原椿推し",
+          "reward_key": "1005:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10502",
+          "name": "藍原 椿 フレーバーボイス02",
+          "profile": "読書",
+          "reward_key": "1005:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10503",
+          "name": "藍原 椿 フレーバーボイス03",
+          "profile": "人ごみ",
+          "reward_key": "1005:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10501",
+          "name": "♥藍原 椿♥",
+          "reward_key": "1005:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10504",
+          "name": "藍原 椿 フレーバーボイス04",
+          "profile": "ネット動画/珍しい飲み物探し",
+          "reward_key": "1005:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10505",
+          "name": "藍原 椿 フレーバーボイス05",
+          "profile": "口喧嘩/猫じゃらし",
+          "reward_key": "1005:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10506",
+          "name": "藍原 椿 フレーバーボイス06",
+          "profile": "莉玖をからかう",
+          "reward_key": "1005:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10502",
+          "name": "ふふ、構って欲しいの？",
+          "reward_key": "1005:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10507",
+          "name": "藍原 椿 フレーバーボイス07",
+          "profile": "動画サイトをだらだら見る",
+          "reward_key": "1005:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10508",
+          "name": "藍原 椿 フレーバーボイス08",
+          "profile": "プチプチをちまちま潰す",
+          "reward_key": "1005:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10503",
+          "name": "我々の業界ではご褒美です",
+          "reward_key": "1005:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10509",
+          "name": "藍原 椿 フレーバーボイス09",
+          "profile": "ばーか",
+          "reward_key": "1005:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10510",
+          "name": "藍原 椿 フレーバーボイス10",
+          "profile": "愛用のマフラー。季節に関係なく身につけており、外した姿は幻とまで囁かれている。",
+          "reward_key": "1005:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10504",
+          "name": "Sっ気少女のお気に入り",
+          "reward_key": "1005:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10505",
+          "name": "Sっ気少女のお気に入り・蔑む視線",
+          "reward_key": "1005:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100042",
+          "name": "【N】藍原 椿",
+          "reward_key": "1005:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10506",
+          "name": "Sっ気少女のお気に入り・妖艶な微笑み",
+          "reward_key": "1005:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10502",
+          "name": "♥♥♥藍原 椿♥♥♥",
+          "reward_key": "1005:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10507",
+          "name": "ひねくれ才女のからかい相手",
+          "reward_key": "1005:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10508",
+          "name": "藍原椿推し",
+          "reward_key": "1005:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10509",
+          "name": "椿に生涯からかわれる権利",
+          "reward_key": "1005:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2005",
+          "name": "スペシャルオーラ（藍原 椿）",
+          "reward_key": "1005:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1006",
+      "name": "早乙女 彩華",
+      "birthday": "2018-02-14T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "ユーロビート"
+          },
+          {
+            "Profile": "ファッション"
+          },
+          {
+            "Profile": "お説教/ノリが悪い人"
+          },
+          {
+            "Profile": "エクササイズ/アクセサリー作り"
+          },
+          {
+            "Profile": "さくらんぼのヘタを口の中で結ぶ"
+          },
+          {
+            "Profile": "クラスのみんなとお喋り"
+          },
+          {
+            "Profile": "掛け持ちでアルバイト"
+          },
+          {
+            "Profile": "カラオケでアガる曲を熱唱"
+          },
+          {
+            "Profile": "オシャレは我慢"
+          },
+          {
+            "Profile": "小さい頃から着けているハート型のピアス。なにか願掛けをしているようだが、その内容は秘密とのこと。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "全力で来てよ！\n　　アタシもアゲてくからさ！",
+        "FlavorText2": "準備はOK？\n　　楽しいパーティーにしようよ！",
+        "FlavorText3": "アタシの華麗な銃捌き！\n　　いーっぱい見せたげる♪",
+        "FlavorText4": "ご褒美が欲しいって？\n　　ふふ、アタシに勝てたら考えたげる♪",
+        "FlavorText5": "どしたの？　ほれほれ～♪\n　　テンションちょー低いぞ～？",
+        "FlavorText6": "アタシのドレス、しっかり見てよね\n　　結構こだわりあるんだから♪"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10601",
+          "name": "早乙女 彩華 フレーバーボイス01",
+          "profile": "ユーロビート",
+          "reward_key": "1006:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10601",
+          "name": "早乙女彩華推し",
+          "reward_key": "1006:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10602",
+          "name": "早乙女 彩華 フレーバーボイス02",
+          "profile": "ファッション",
+          "reward_key": "1006:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10603",
+          "name": "早乙女 彩華 フレーバーボイス03",
+          "profile": "お説教/ノリが悪い人",
+          "reward_key": "1006:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10601",
+          "name": "♥早乙女 彩華♥",
+          "reward_key": "1006:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10604",
+          "name": "早乙女 彩華 フレーバーボイス04",
+          "profile": "エクササイズ/アクセサリー作り",
+          "reward_key": "1006:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10605",
+          "name": "早乙女 彩華 フレーバーボイス05",
+          "profile": "さくらんぼのヘタを口の中で結ぶ",
+          "reward_key": "1006:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10606",
+          "name": "早乙女 彩華 フレーバーボイス06",
+          "profile": "クラスのみんなとお喋り",
+          "reward_key": "1006:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10602",
+          "name": "ひ・み・つ♪",
+          "reward_key": "1006:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10607",
+          "name": "早乙女 彩華 フレーバーボイス07",
+          "profile": "掛け持ちでアルバイト",
+          "reward_key": "1006:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10608",
+          "name": "早乙女 彩華 フレーバーボイス08",
+          "profile": "カラオケでアガる曲を熱唱",
+          "reward_key": "1006:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10603",
+          "name": "巷で噂のバイト戦士",
+          "reward_key": "1006:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10609",
+          "name": "早乙女 彩華 フレーバーボイス09",
+          "profile": "オシャレは我慢",
+          "reward_key": "1006:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10610",
+          "name": "早乙女 彩華 フレーバーボイス10",
+          "profile": "小さい頃から着けているハート型のピアス。なにか願掛けをしているようだが、その内容は秘密とのこと。",
+          "reward_key": "1006:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10604",
+          "name": "純情ギャルの遊び友達",
+          "reward_key": "1006:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10605",
+          "name": "純情ギャルの遊び友達・馴染みの悪友",
+          "reward_key": "1006:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100055",
+          "name": "【N】早乙女 彩華",
+          "reward_key": "1006:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10606",
+          "name": "純情ギャルの遊び友達・ズッ友",
+          "reward_key": "1006:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10602",
+          "name": "♥♥♥早乙女 彩華♥♥♥",
+          "reward_key": "1006:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10607",
+          "name": "爆アゲ☆ウェイトレスの同僚",
+          "reward_key": "1006:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10608",
+          "name": "早乙女彩華推し",
+          "reward_key": "1006:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10609",
+          "name": "彩華が赤面する秘密の関係",
+          "reward_key": "1006:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2006",
+          "name": "スペシャルオーラ（早乙女 彩華）",
+          "reward_key": "1006:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1007",
+      "name": "桜井 春菜",
+      "birthday": "2018-06-12T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "ガーリーポップ"
+          },
+          {
+            "Profile": "料理/ドラマ鑑賞"
+          },
+          {
+            "Profile": "早口言葉"
+          },
+          {
+            "Profile": "お菓子作り/ハーブの栽培"
+          },
+          {
+            "Profile": "フラワーアレンジメント"
+          },
+          {
+            "Profile": "星座占いで運勢をチェック"
+          },
+          {
+            "Profile": "オリジナルのレシピ研究"
+          },
+          {
+            "Profile": "甘いお菓子とハーブティー"
+          },
+          {
+            "Profile": "カロリーOFF"
+          },
+          {
+            "Profile": "勇気の出るおまじない。不安に襲われた時に唱えると、不思議と気分が落ち着いてくるらしい。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "精いっぱいやるから！\n　　私の全力、受け止めてね！",
+        "FlavorText2": "よ、よーし！\n　　私だって頑張っちゃうんだから！",
+        "FlavorText3": "すーはー…\n　き、緊張してきちゃった……　",
+        "FlavorText4": "最近、ちょっとお腹が気になっちゃって……\n　　お、オンゲキがんばろ！",
+        "FlavorText5": "今日は占いが1位だったから\n　　なんか調子良いかも……！",
+        "FlavorText6": "おいでおいで～♪\n　　お姉ちゃんとい～っぱい\n　　　　　　　　　　オンゲキしよ♪"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10701",
+          "name": "桜井 春菜 フレーバーボイス01",
+          "profile": "ガーリーポップ",
+          "reward_key": "1007:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10701",
+          "name": "桜井春菜推し",
+          "reward_key": "1007:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10702",
+          "name": "桜井 春菜 フレーバーボイス02",
+          "profile": "料理/ドラマ鑑賞",
+          "reward_key": "1007:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10703",
+          "name": "桜井 春菜 フレーバーボイス03",
+          "profile": "早口言葉",
+          "reward_key": "1007:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10701",
+          "name": "♥桜井 春菜♥",
+          "reward_key": "1007:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10704",
+          "name": "桜井 春菜 フレーバーボイス04",
+          "profile": "お菓子作り/ハーブの栽培",
+          "reward_key": "1007:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10705",
+          "name": "桜井 春菜 フレーバーボイス05",
+          "profile": "フラワーアレンジメント",
+          "reward_key": "1007:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10706",
+          "name": "桜井 春菜 フレーバーボイス06",
+          "profile": "星座占いで運勢をチェック",
+          "reward_key": "1007:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10702",
+          "name": "はい、あーん♪",
+          "reward_key": "1007:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10707",
+          "name": "桜井 春菜 フレーバーボイス07",
+          "profile": "オリジナルのレシピ研究",
+          "reward_key": "1007:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10708",
+          "name": "桜井 春菜 フレーバーボイス08",
+          "profile": "甘いお菓子とハーブティー",
+          "reward_key": "1007:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10703",
+          "name": "混ぜるな危険",
+          "reward_key": "1007:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10709",
+          "name": "桜井 春菜 フレーバーボイス09",
+          "profile": "カロリーOFF",
+          "reward_key": "1007:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10710",
+          "name": "桜井 春菜 フレーバーボイス10",
+          "profile": "勇気の出るおまじない。不安に襲われた時に唱えると、不思議と気分が落ち着いてくるらしい。",
+          "reward_key": "1007:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10704",
+          "name": "春菜特製レシピの味見役",
+          "reward_key": "1007:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10705",
+          "name": "春菜特製レシピの味見役・腹八分目",
+          "reward_key": "1007:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100049",
+          "name": "【N】桜井 春菜",
+          "reward_key": "1007:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10706",
+          "name": "春菜特製レシピの味見役・おかわり",
+          "reward_key": "1007:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10702",
+          "name": "♥♥♥桜井 春菜♥♥♥",
+          "reward_key": "1007:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10707",
+          "name": "非公認・桜井春菜ファンクラブ会員",
+          "reward_key": "1007:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10708",
+          "name": "桜井春菜推し",
+          "reward_key": "1007:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10709",
+          "name": "春菜の膝枕で微睡む昼下がり",
+          "reward_key": "1007:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2007",
+          "name": "スペシャルオーラ（桜井 春菜）",
+          "reward_key": "1007:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1008",
+      "name": "九條 楓",
+      "birthday": "2018-10-01T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "演歌"
+          },
+          {
+            "Profile": "あんぱん"
+          },
+          {
+            "Profile": "機械/オシャレ"
+          },
+          {
+            "Profile": "武道全般"
+          },
+          {
+            "Profile": "そろばん/達筆な字を書くこと"
+          },
+          {
+            "Profile": "部屋の掃除"
+          },
+          {
+            "Profile": "自己研鑽"
+          },
+          {
+            "Profile": "瞑想に耽る"
+          },
+          {
+            "Profile": "十年一剣を磨く "
+          },
+          {
+            "Profile": "茜に褒めてもらった髪飾り。邪魔なだけだと思っていたが、その日を境に着けることが増えたらしい。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "九條楓……\n　　いざ、推して参ります！",
+        "FlavorText2": "正々堂々、\n　　悔い無き戦いを",
+        "FlavorText3": "一刀をもって\n　　全てを断ち切りましょう",
+        "FlavorText4": "私に挑むつもりですか？\n　　授業料は高くつきますよ",
+        "FlavorText5": "はて『爆アゲ』とは、\n　どのような揚げ物でしょうか\n　　美味しいものだと良いのですが",
+        "FlavorText6": "汚れたスマホを水洗いしたら、\n　　動かなくなってしまいました……"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10801",
+          "name": "九條 楓 フレーバーボイス01",
+          "profile": "演歌",
+          "reward_key": "1008:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10801",
+          "name": "九條楓推し",
+          "reward_key": "1008:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10802",
+          "name": "九條 楓 フレーバーボイス02",
+          "profile": "あんぱん",
+          "reward_key": "1008:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10803",
+          "name": "九條 楓 フレーバーボイス03",
+          "profile": "機械/オシャレ",
+          "reward_key": "1008:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10801",
+          "name": "♥九條 楓♥",
+          "reward_key": "1008:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10804",
+          "name": "九條 楓 フレーバーボイス04",
+          "profile": "武道全般",
+          "reward_key": "1008:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10805",
+          "name": "九條 楓 フレーバーボイス05",
+          "profile": "そろばん/達筆な字を書くこと",
+          "reward_key": "1008:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10806",
+          "name": "九條 楓 フレーバーボイス06",
+          "profile": "部屋の掃除",
+          "reward_key": "1008:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10802",
+          "name": "いざ、推して参ります",
+          "reward_key": "1008:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10807",
+          "name": "九條 楓 フレーバーボイス07",
+          "profile": "自己研鑽",
+          "reward_key": "1008:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10808",
+          "name": "九條 楓 フレーバーボイス08",
+          "profile": "瞑想に耽る",
+          "reward_key": "1008:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10803",
+          "name": "こしあん派",
+          "reward_key": "1008:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10809",
+          "name": "九條 楓 フレーバーボイス09",
+          "profile": "十年一剣を磨く ",
+          "reward_key": "1008:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10810",
+          "name": "九條 楓 フレーバーボイス10",
+          "profile": "茜に褒めてもらった髪飾り。邪魔なだけだと思っていたが、その日を境に着けることが増えたらしい。",
+          "reward_key": "1008:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10804",
+          "name": "メガネ師範の門下生",
+          "reward_key": "1008:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10805",
+          "name": "メガネ師範の門下生・期待の新人",
+          "reward_key": "1008:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100061",
+          "name": "【N】九條 楓",
+          "reward_key": "1008:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10806",
+          "name": "メガネ師範の門下生・有望株",
+          "reward_key": "1008:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10802",
+          "name": "♥♥♥九條 楓♥♥♥",
+          "reward_key": "1008:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10807",
+          "name": "堅物副会長の懐刀",
+          "reward_key": "1008:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10808",
+          "name": "九條楓推し",
+          "reward_key": "1008:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10809",
+          "name": "楓と重ねる心安らかな時間",
+          "reward_key": "1008:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2008",
+          "name": "スペシャルオーラ（九條 楓）",
+          "reward_key": "1008:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1009",
+      "name": "柏木 咲姫",
+      "birthday": "2018-03-03T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "アニソン"
+          },
+          {
+            "Profile": "努力すること/バウムクーヘン"
+          },
+          {
+            "Profile": "足がたくさんある虫"
+          },
+          {
+            "Profile": "コスプレ"
+          },
+          {
+            "Profile": "英会話/家事全般"
+          },
+          {
+            "Profile": "鏡の前でポーズの練習"
+          },
+          {
+            "Profile": "アニメの聖地めぐり"
+          },
+          {
+            "Profile": "アニメを観て思いっきり泣く"
+          },
+          {
+            "Profile": "清く、凛々しく、美しく"
+          },
+          {
+            "Profile": "昔からハマり続けているアニメ。たまに上映会を開いては、小星を朝まで付き合わせている。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "努力は裏切らないわ！\n　　私の実力、みせてあげる！",
+        "FlavorText2": "清く、凛々しく、美しく！\n　　正々堂々と戦いましょう！",
+        "FlavorText3": "しまったー！　録画忘れてた！\n　　悪いけど速攻でキメるわ！",
+        "FlavorText4": "ふふ、胸を貸してあげる\n　　全力で来てちょうだい",
+        "FlavorText5": "自然とコスができるだなんて\n　　オンゲキって最高ね！",
+        "FlavorText6": "あなたを倒すのは、この私よ！\n　　……一度言ってみたかったのよね、\n　　　　　　　　　　　　　この台詞"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10901",
+          "name": "柏木 咲姫 フレーバーボイス01",
+          "profile": "アニソン",
+          "reward_key": "1009:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10901",
+          "name": "柏木咲姫推し",
+          "reward_key": "1009:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10902",
+          "name": "柏木 咲姫 フレーバーボイス02",
+          "profile": "努力すること/バウムクーヘン",
+          "reward_key": "1009:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10903",
+          "name": "柏木 咲姫 フレーバーボイス03",
+          "profile": "足がたくさんある虫",
+          "reward_key": "1009:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10901",
+          "name": "♥柏木 咲姫♥",
+          "reward_key": "1009:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10904",
+          "name": "柏木 咲姫 フレーバーボイス04",
+          "profile": "コスプレ",
+          "reward_key": "1009:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10905",
+          "name": "柏木 咲姫 フレーバーボイス05",
+          "profile": "英会話/家事全般",
+          "reward_key": "1009:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10906",
+          "name": "柏木 咲姫 フレーバーボイス06",
+          "profile": "鏡の前でポーズの練習",
+          "reward_key": "1009:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10902",
+          "name": "い、いいい、今のは、その、ち、違うの！",
+          "reward_key": "1009:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10907",
+          "name": "柏木 咲姫 フレーバーボイス07",
+          "profile": "アニメの聖地めぐり",
+          "reward_key": "1009:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10908",
+          "name": "柏木 咲姫 フレーバーボイス08",
+          "profile": "アニメを観て思いっきり泣く",
+          "reward_key": "1009:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10903",
+          "name": "くっころプリンセス",
+          "reward_key": "1009:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10909",
+          "name": "柏木 咲姫 フレーバーボイス09",
+          "profile": "清く、凛々しく、美しく",
+          "reward_key": "1009:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "10910",
+          "name": "柏木 咲姫 フレーバーボイス10",
+          "profile": "昔からハマり続けているアニメ。たまに上映会を開いては、小星を朝まで付き合わせている。",
+          "reward_key": "1009:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10904",
+          "name": "人気レイヤーの敏腕マネージャー",
+          "reward_key": "1009:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10905",
+          "name": "人気レイヤーの敏腕マネージャー・新米",
+          "reward_key": "1009:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100073",
+          "name": "【N】柏木 咲姫",
+          "reward_key": "1009:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10906",
+          "name": "人気レイヤーの敏腕マネージャー・ベテラン",
+          "reward_key": "1009:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "10902",
+          "name": "♥♥♥柏木 咲姫♥♥♥",
+          "reward_key": "1009:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10907",
+          "name": "隠れオタクの同好の士",
+          "reward_key": "1009:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10908",
+          "name": "柏木咲姫推し",
+          "reward_key": "1009:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "10909",
+          "name": "咲姫と紡ぐ二人のこれから",
+          "reward_key": "1009:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2009",
+          "name": "スペシャルオーラ（柏木 咲姫）",
+          "reward_key": "1009:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1010",
+      "name": "井之原 小星",
+      "birthday": "2018-11-23T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "ゲームミュージック"
+          },
+          {
+            "Profile": "面倒くさくないこと"
+          },
+          {
+            "Profile": "面倒くさいこと"
+          },
+          {
+            "Profile": "オンラインゲーム"
+          },
+          {
+            "Profile": "目隠し将棋/道に迷わないこと"
+          },
+          {
+            "Profile": "二度寝"
+          },
+          {
+            "Profile": "部屋に引きこもってゲーム"
+          },
+          {
+            "Profile": "ひたすら寝る"
+          },
+          {
+            "Profile": "週休7日"
+          },
+          {
+            "Profile": "子どもの頃に友達と遊んだ対戦ゲーム。今ではランキングの常連で、名を知らぬものは居ないほどの腕前。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "小星があらわれた！\n　　ずがががーん！",
+        "FlavorText2": "頑張りたくないけど\n　　ちょっとだけ頑張るか……",
+        "FlavorText3": "ボク、これが終わったら\n　　思う存分布団で寝るんだ……",
+        "FlavorText4": "え！？これ終わったらゲームに\n　　付き合ってくれるってホント！？",
+        "FlavorText5": "ふわぁぁ～～\n　　早く終わらせてゲームしよ～っと",
+        "FlavorText6": "めんどーーい！\n　　誰か代わりに戦ってくれ～"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11001",
+          "name": "井之原 小星 フレーバーボイス01",
+          "profile": "ゲームミュージック",
+          "reward_key": "1010:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11001",
+          "name": "井之原小星推し",
+          "reward_key": "1010:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11002",
+          "name": "井之原 小星 フレーバーボイス02",
+          "profile": "面倒くさくないこと",
+          "reward_key": "1010:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11003",
+          "name": "井之原 小星 フレーバーボイス03",
+          "profile": "面倒くさいこと",
+          "reward_key": "1010:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11001",
+          "name": "♥井之原 小星♥",
+          "reward_key": "1010:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11004",
+          "name": "井之原 小星 フレーバーボイス04",
+          "profile": "オンラインゲーム",
+          "reward_key": "1010:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11005",
+          "name": "井之原 小星 フレーバーボイス05",
+          "profile": "目隠し将棋/道に迷わないこと",
+          "reward_key": "1010:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11006",
+          "name": "井之原 小星 フレーバーボイス06",
+          "profile": "二度寝",
+          "reward_key": "1010:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11002",
+          "name": "ボクの枕になっておくれ",
+          "reward_key": "1010:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11007",
+          "name": "井之原 小星 フレーバーボイス07",
+          "profile": "部屋に引きこもってゲーム",
+          "reward_key": "1010:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11008",
+          "name": "井之原 小星 フレーバーボイス08",
+          "profile": "ひたすら寝る",
+          "reward_key": "1010:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11003",
+          "name": "寝る子は育つ",
+          "reward_key": "1010:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11009",
+          "name": "井之原 小星 フレーバーボイス09",
+          "profile": "週休7日",
+          "reward_key": "1010:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11010",
+          "name": "井之原 小星 フレーバーボイス10",
+          "profile": "子どもの頃に友達と遊んだ対戦ゲーム。今ではランキングの常連で、名を知らぬものは居ないほどの腕前。",
+          "reward_key": "1010:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11004",
+          "name": "ぐーたらゲーマーのお世話係",
+          "reward_key": "1010:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11005",
+          "name": "ぐーたらゲーマーのお世話係・週5日",
+          "reward_key": "1010:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100067",
+          "name": "【N】井之原 小星",
+          "reward_key": "1010:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11006",
+          "name": "ぐーたらゲーマーのお世話係・年365日",
+          "reward_key": "1010:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11002",
+          "name": "♥♥♥井之原 小星♥♥♥",
+          "reward_key": "1010:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11007",
+          "name": "面倒くさがり屋の抱き枕役",
+          "reward_key": "1010:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11008",
+          "name": "井之原小星推し",
+          "reward_key": "1010:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11009",
+          "name": "小星とだらだらゲーム生活",
+          "reward_key": "1010:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2010",
+          "name": "スペシャルオーラ（井之原 小星）",
+          "reward_key": "1010:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1011",
+      "name": "逢坂 茜",
+      "birthday": "2018-04-01T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "メタル"
+          },
+          {
+            "Profile": "悪だくみ/高いところ"
+          },
+          {
+            "Profile": "注射"
+          },
+          {
+            "Profile": "世界征服"
+          },
+          {
+            "Profile": "麻雀/逃げ足が速い"
+          },
+          {
+            "Profile": "楽しい校則を考える"
+          },
+          {
+            "Profile": "サバイバルゲームで大暴れ"
+          },
+          {
+            "Profile": "生徒会室の模様替え"
+          },
+          {
+            "Profile": "World is Mine."
+          },
+          {
+            "Profile": "サンタクロースからもらった地球儀。実は、あまりにもくるくると回し過ぎて、一度壊している。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "くくくく\n　　この逢坂茜様が相手をしてやろう！",
+        "FlavorText2": "我が力！\n　　とくと目に焼き付けよっ！",
+        "FlavorText3": "もしも私に勝てたなら\n　　世界の半分をくれてやる！",
+        "FlavorText4": "この逢坂茜様と張り合うなど\n　　百億兆年早いわっ！",
+        "FlavorText5": "そうだ！　この勝負に負けたヤツは\n　　ネコ耳をつけるというのはどうだ？",
+        "FlavorText6": "はーっはっはっは！\n　　イッツ・ショーターイム"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11101",
+          "name": "逢坂 茜 フレーバーボイス01",
+          "profile": "メタル",
+          "reward_key": "1011:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11101",
+          "name": "逢坂茜推し",
+          "reward_key": "1011:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11102",
+          "name": "逢坂 茜 フレーバーボイス02",
+          "profile": "悪だくみ/高いところ",
+          "reward_key": "1011:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11103",
+          "name": "逢坂 茜 フレーバーボイス03",
+          "profile": "注射",
+          "reward_key": "1011:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11101",
+          "name": "♥逢坂 茜♥",
+          "reward_key": "1011:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11104",
+          "name": "逢坂 茜 フレーバーボイス04",
+          "profile": "世界征服",
+          "reward_key": "1011:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11105",
+          "name": "逢坂 茜 フレーバーボイス05",
+          "profile": "麻雀/逃げ足が速い",
+          "reward_key": "1011:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11106",
+          "name": "逢坂 茜 フレーバーボイス06",
+          "profile": "楽しい校則を考える",
+          "reward_key": "1011:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11102",
+          "name": "わーっはっはっは！",
+          "reward_key": "1011:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11107",
+          "name": "逢坂 茜 フレーバーボイス07",
+          "profile": "サバイバルゲームで大暴れ",
+          "reward_key": "1011:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11108",
+          "name": "逢坂 茜 フレーバーボイス08",
+          "profile": "生徒会室の模様替え",
+          "reward_key": "1011:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11103",
+          "name": "奏坂の赤き天災",
+          "reward_key": "1011:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11109",
+          "name": "逢坂 茜 フレーバーボイス09",
+          "profile": "World is Mine.",
+          "reward_key": "1011:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11110",
+          "name": "逢坂 茜 フレーバーボイス10",
+          "profile": "サンタクロースからもらった地球儀。実は、あまりにもくるくると回し過ぎて、一度壊している。",
+          "reward_key": "1011:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11104",
+          "name": "世界征服推進団体の幹部候補",
+          "reward_key": "1011:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11105",
+          "name": "世界征服推進団体の幹部代理",
+          "reward_key": "1011:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100079",
+          "name": "【N】逢坂 茜",
+          "reward_key": "1011:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11106",
+          "name": "世界征服推進団体の幹部",
+          "reward_key": "1011:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11102",
+          "name": "♥♥♥逢坂 茜♥♥♥",
+          "reward_key": "1011:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11107",
+          "name": "茜様直属いたずら実行部隊",
+          "reward_key": "1011:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11108",
+          "name": "逢坂茜推し",
+          "reward_key": "1011:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11109",
+          "name": "茜と共に世界を支配する者",
+          "reward_key": "1011:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2011",
+          "name": "スペシャルオーラ（逢坂 茜）",
+          "reward_key": "1011:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1012",
+      "name": "珠洲島 有栖",
+      "birthday": "2018-09-06T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "クラシック"
+          },
+          {
+            "Profile": "ぬいぐるみ/ファーストフード"
+          },
+          {
+            "Profile": "雨/夜更かし"
+          },
+          {
+            "Profile": "着ぐるみのコレクション"
+          },
+          {
+            "Profile": "バイオリン"
+          },
+          {
+            "Profile": "優雅なアフタヌーン・ティー"
+          },
+          {
+            "Profile": "動物園で動物と触れ合う"
+          },
+          {
+            "Profile": "愛犬と一緒にお散歩"
+          },
+          {
+            "Profile": "マシマシ"
+          },
+          {
+            "Profile": "子供向けの絵本。特に、クマが主人公の物語がお気に入りで、今でもたまに読み返している。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "ばっばーん\n　　全力でいく",
+        "FlavorText2": "ちからくらべ？\n　　相手しなくもない",
+        "FlavorText3": "ふわふわもふもふ\n　　着ぐるみぱわー",
+        "FlavorText4": "手加減はいらない\n　　ばっちこーい",
+        "FlavorText5": "オンゲキ、かなり強いらしい\n　　えっへん",
+        "FlavorText6": "……お腹減った\n　　ハンバーガーを要求する"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11201",
+          "name": "珠洲島 有栖 フレーバーボイス01",
+          "profile": "クラシック",
+          "reward_key": "1012:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11201",
+          "name": "珠洲島有栖推し",
+          "reward_key": "1012:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11202",
+          "name": "珠洲島 有栖 フレーバーボイス02",
+          "profile": "ぬいぐるみ/ファーストフード",
+          "reward_key": "1012:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11203",
+          "name": "珠洲島 有栖 フレーバーボイス03",
+          "profile": "雨/夜更かし",
+          "reward_key": "1012:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11201",
+          "name": "♥珠洲島 有栖♥",
+          "reward_key": "1012:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11204",
+          "name": "珠洲島 有栖 フレーバーボイス04",
+          "profile": "着ぐるみのコレクション",
+          "reward_key": "1012:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11205",
+          "name": "珠洲島 有栖 フレーバーボイス05",
+          "profile": "バイオリン",
+          "reward_key": "1012:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11206",
+          "name": "珠洲島 有栖 フレーバーボイス06",
+          "profile": "優雅なアフタヌーン・ティー",
+          "reward_key": "1012:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11202",
+          "name": "ん……",
+          "reward_key": "1012:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11207",
+          "name": "珠洲島 有栖 フレーバーボイス07",
+          "profile": "動物園で動物と触れ合う",
+          "reward_key": "1012:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11208",
+          "name": "珠洲島 有栖 フレーバーボイス08",
+          "profile": "愛犬と一緒にお散歩",
+          "reward_key": "1012:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11203",
+          "name": "中の人などいない、こともない",
+          "reward_key": "1012:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11209",
+          "name": "珠洲島 有栖 フレーバーボイス09",
+          "profile": "マシマシ",
+          "reward_key": "1012:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11210",
+          "name": "珠洲島 有栖 フレーバーボイス10",
+          "profile": "子供向けの絵本。特に、クマが主人公の物語がお気に入りで、今でもたまに読み返している。",
+          "reward_key": "1012:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11204",
+          "name": "不思議少女の着ぐるみフレンズ",
+          "reward_key": "1012:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11205",
+          "name": "不思議少女の着ぐるみフレンズ・気が合う仲",
+          "reward_key": "1012:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100085",
+          "name": "【N】珠洲島 有栖",
+          "reward_key": "1012:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11206",
+          "name": "不思議少女の着ぐるみフレンズ・ベストフレンド",
+          "reward_key": "1012:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11202",
+          "name": "♥♥♥珠洲島 有栖♥♥♥",
+          "reward_key": "1012:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11207",
+          "name": "ヘンテコお嬢様のお付き人",
+          "reward_key": "1012:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11208",
+          "name": "珠洲島有栖推し",
+          "reward_key": "1012:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11209",
+          "name": "有栖のお世話係に永久就職",
+          "reward_key": "1012:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2012",
+          "name": "スペシャルオーラ（珠洲島 有栖）",
+          "reward_key": "1012:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1013",
+      "name": "柏木 美亜",
+      "birthday": "2018-08-08T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "アイドルソング"
+          },
+          {
+            "Profile": "カワイイ女の子/フルーツ"
+          },
+          {
+            "Profile": "姉"
+          },
+          {
+            "Profile": "女の子ウォッチ/スナップ写真"
+          },
+          {
+            "Profile": "スリーサイズ当て"
+          },
+          {
+            "Profile": "友達と長電話"
+          },
+          {
+            "Profile": "美味しいもの探し"
+          },
+          {
+            "Profile": "美亜式マッサージ"
+          },
+          {
+            "Profile": "カワイイは正義！"
+          },
+          {
+            "Profile": "女の子の情報をメモってあるマル秘手帳。あまりにも内容が過激なので、人には見せられないらしい。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "そう、例えるならレモン！\n　　一緒にハジけちゃお！",
+        "FlavorText2": "にゃふふふふ♪\n　　さぁ、やさしく\n　　　　にゃふにゃふしてあ・げ・る♪",
+        "FlavorText3": "据え膳食わぬは美亜の恥っ！\n　　いざ、テイスティーング！",
+        "FlavorText4": "ちっちっち、\n　　甘く見てると火傷しちゃうよ！",
+        "FlavorText5": "美亜ちゃん準備オッケー！\n　　もう後悔しても遅いよ～？",
+        "FlavorText6": "きたーー！シャッターチャーーンス！\n　　にゃふふ、これで家宝がまた1枚……"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11301",
+          "name": "柏木 美亜 フレーバーボイス01",
+          "profile": "アイドルソング",
+          "reward_key": "1013:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11301",
+          "name": "柏木美亜推し",
+          "reward_key": "1013:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11302",
+          "name": "柏木 美亜 フレーバーボイス02",
+          "profile": "カワイイ女の子/フルーツ",
+          "reward_key": "1013:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11303",
+          "name": "柏木 美亜 フレーバーボイス03",
+          "profile": "姉",
+          "reward_key": "1013:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11301",
+          "name": "♥柏木 美亜♥",
+          "reward_key": "1013:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11304",
+          "name": "柏木 美亜 フレーバーボイス04",
+          "profile": "女の子ウォッチ/スナップ写真",
+          "reward_key": "1013:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11305",
+          "name": "柏木 美亜 フレーバーボイス05",
+          "profile": "スリーサイズ当て",
+          "reward_key": "1013:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11306",
+          "name": "柏木 美亜 フレーバーボイス06",
+          "profile": "友達と長電話",
+          "reward_key": "1013:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11302",
+          "name": "にゃふふふふ♪",
+          "reward_key": "1013:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11307",
+          "name": "柏木 美亜 フレーバーボイス07",
+          "profile": "美味しいもの探し",
+          "reward_key": "1013:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11308",
+          "name": "柏木 美亜 フレーバーボイス08",
+          "profile": "美亜式マッサージ",
+          "reward_key": "1013:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11303",
+          "name": "お巡りさん、この人です",
+          "reward_key": "1013:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11309",
+          "name": "柏木 美亜 フレーバーボイス09",
+          "profile": "カワイイは正義！",
+          "reward_key": "1013:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11310",
+          "name": "柏木 美亜 フレーバーボイス10",
+          "profile": "女の子の情報をメモってあるマル秘手帳。あまりにも内容が過激なので、人には見せられないらしい。",
+          "reward_key": "1013:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11304",
+          "name": "にゃんちゃんのフルーツ同盟",
+          "reward_key": "1013:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11305",
+          "name": "にゃんちゃんのフルーツ同盟・半熟",
+          "reward_key": "1013:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100208",
+          "name": "【N】柏木 美亜",
+          "reward_key": "1013:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11306",
+          "name": "にゃんちゃんのフルーツ同盟・完熟",
+          "reward_key": "1013:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11302",
+          "name": "♥♥♥柏木 美亜♥♥♥",
+          "reward_key": "1013:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11307",
+          "name": "にゃふにゃふガールの同好の士",
+          "reward_key": "1013:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11308",
+          "name": "柏木美亜推し",
+          "reward_key": "1013:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11309",
+          "name": "美亜と営むニャーベラスな日々",
+          "reward_key": "1013:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2013",
+          "name": "スペシャルオーラ（柏木 美亜）",
+          "reward_key": "1013:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1014",
+      "name": "日向 千夏",
+      "birthday": "2018-08-22T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "ヒーローソング"
+          },
+          {
+            "Profile": "ハンバーグ/外で遊ぶこと"
+          },
+          {
+            "Profile": "かみなり"
+          },
+          {
+            "Profile": "時代劇を見ること"
+          },
+          {
+            "Profile": "木登り/人見知りしない"
+          },
+          {
+            "Profile": "毎朝、家族を起こす"
+          },
+          {
+            "Profile": "アウトドア全般"
+          },
+          {
+            "Profile": "ぎゅっと抱きつく"
+          },
+          {
+            "Profile": "たいへんよくできました"
+          },
+          {
+            "Profile": "キャンプで見た星空。その日以来、月に居るというウサギを、望遠鏡で探し続けているらしい。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "張り切っていくぞー！\n　　えいえいおー！",
+        "FlavorText2": "ねぇねぇ千夏とオンゲキしよっ！\n　　ねぇ、しよっ！しよ～っ！",
+        "FlavorText3": "全力全開っ！\n　　はいぱー千夏あたーっくっ！",
+        "FlavorText4": "千夏、頑張るから\n　　いーーっぱい見ててね♪",
+        "FlavorText5": "ぎゅーーーっ！\n　　えへへっ、オンゲキ前の充電中♪",
+        "FlavorText6": "むむ、ターゲット発見！\n　　千夏☆みさいる、ロックオン！"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11401",
+          "name": "日向 千夏 フレーバーボイス01",
+          "profile": "ヒーローソング",
+          "reward_key": "1014:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11401",
+          "name": "日向千夏推し",
+          "reward_key": "1014:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11402",
+          "name": "日向 千夏 フレーバーボイス02",
+          "profile": "ハンバーグ/外で遊ぶこと",
+          "reward_key": "1014:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11403",
+          "name": "日向 千夏 フレーバーボイス03",
+          "profile": "かみなり",
+          "reward_key": "1014:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11401",
+          "name": "♥日向 千夏♥",
+          "reward_key": "1014:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11404",
+          "name": "日向 千夏 フレーバーボイス04",
+          "profile": "時代劇を見ること",
+          "reward_key": "1014:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11405",
+          "name": "日向 千夏 フレーバーボイス05",
+          "profile": "木登り/人見知りしない",
+          "reward_key": "1014:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11406",
+          "name": "日向 千夏 フレーバーボイス06",
+          "profile": "毎朝、家族を起こす",
+          "reward_key": "1014:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11402",
+          "name": "ぎゅーーーー！",
+          "reward_key": "1014:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11407",
+          "name": "日向 千夏 フレーバーボイス07",
+          "profile": "アウトドア全般",
+          "reward_key": "1014:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11408",
+          "name": "日向 千夏 フレーバーボイス08",
+          "profile": "ぎゅっと抱きつく",
+          "reward_key": "1014:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11403",
+          "name": "守りたい、この笑顔",
+          "reward_key": "1014:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11409",
+          "name": "日向 千夏 フレーバーボイス09",
+          "profile": "たいへんよくできました",
+          "reward_key": "1014:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11410",
+          "name": "日向 千夏 フレーバーボイス10",
+          "profile": "キャンプで見た星空。その日以来、月に居るというウサギを、望遠鏡で探し続けているらしい。",
+          "reward_key": "1014:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11404",
+          "name": "向日葵少女のご近所さん",
+          "reward_key": "1014:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11405",
+          "name": "向日葵少女のご近所さん・顔なじみ",
+          "reward_key": "1014:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100451",
+          "name": "【N】日向 千夏",
+          "reward_key": "1014:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11406",
+          "name": "向日葵少女のご近所さん・仲良し",
+          "reward_key": "1014:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11402",
+          "name": "♥♥♥日向 千夏♥♥♥",
+          "reward_key": "1014:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11407",
+          "name": "千夏☆ミサイルのロックオン対象",
+          "reward_key": "1014:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11408",
+          "name": "日向千夏推し",
+          "reward_key": "1014:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11409",
+          "name": "千夏と毎日ぎゅーーってしよ？",
+          "reward_key": "1014:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2014",
+          "name": "スペシャルオーラ（日向 千夏）",
+          "reward_key": "1014:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1015",
+      "name": "東雲 つむぎ",
+      "birthday": "2018-10-27T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "テクノポップ"
+          },
+          {
+            "Profile": "パンケーキ/テレビ番組"
+          },
+          {
+            "Profile": "子ども扱いする人"
+          },
+          {
+            "Profile": "アクアリウム"
+          },
+          {
+            "Profile": "ピアノ/旅行の計画作り"
+          },
+          {
+            "Profile": "日記を書くこと"
+          },
+          {
+            "Profile": "水族館にお出かけ"
+          },
+          {
+            "Profile": "好きなだけ夜更かしをする"
+          },
+          {
+            "Profile": "大人"
+          },
+          {
+            "Profile": "子どものころに縁日でとった金魚たち。一匹一匹に名前を付け、今も自宅で大切に育てている。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "こんなところで負けません\n　　私、立派な大人ですから",
+        "FlavorText2": "冷静に油断せず……\n　　全力で行きます",
+        "FlavorText3": "子供扱いしてると\n　　痛い目見ますよ……！",
+        "FlavorText4": "準備はバッチリです\n　　たくさん練習しましたから",
+        "FlavorText5": "こっちをジロジロ見ないで下さい\n　　防犯ブザーを鳴らしますよ",
+        "FlavorText6": "え、パンケーキ！？\n　　……そ、そんなものでは\n　　　　　　　　　懐柔されません！"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11501",
+          "name": "東雲 つむぎ フレーバーボイス01",
+          "profile": "テクノポップ",
+          "reward_key": "1015:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11501",
+          "name": "東雲つむぎ推し",
+          "reward_key": "1015:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11502",
+          "name": "東雲 つむぎ フレーバーボイス02",
+          "profile": "パンケーキ/テレビ番組",
+          "reward_key": "1015:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11503",
+          "name": "東雲 つむぎ フレーバーボイス03",
+          "profile": "子ども扱いする人",
+          "reward_key": "1015:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11501",
+          "name": "♥東雲 つむぎ♥",
+          "reward_key": "1015:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11504",
+          "name": "東雲 つむぎ フレーバーボイス04",
+          "profile": "アクアリウム",
+          "reward_key": "1015:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11505",
+          "name": "東雲 つむぎ フレーバーボイス05",
+          "profile": "ピアノ/旅行の計画作り",
+          "reward_key": "1015:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11506",
+          "name": "東雲 つむぎ フレーバーボイス06",
+          "profile": "日記を書くこと",
+          "reward_key": "1015:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11502",
+          "name": "子ども扱い禁止です！",
+          "reward_key": "1015:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11507",
+          "name": "東雲 つむぎ フレーバーボイス07",
+          "profile": "水族館にお出かけ",
+          "reward_key": "1015:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11508",
+          "name": "東雲 つむぎ フレーバーボイス08",
+          "profile": "好きなだけ夜更かしをする",
+          "reward_key": "1015:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11503",
+          "name": "見た目は子ども、中身も子ども",
+          "reward_key": "1015:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11509",
+          "name": "東雲 つむぎ フレーバーボイス09",
+          "profile": "大人",
+          "reward_key": "1015:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11510",
+          "name": "東雲 つむぎ フレーバーボイス10",
+          "profile": "子どものころに縁日でとった金魚たち。一匹一匹に名前を付け、今も自宅で大切に育てている。",
+          "reward_key": "1015:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11504",
+          "name": "ツンツン娘の防犯ブザー担当",
+          "reward_key": "1015:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11505",
+          "name": "ツンツン娘の防犯ブザー担当・80dB",
+          "reward_key": "1015:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "100452",
+          "name": "【N】東雲 つむぎ",
+          "reward_key": "1015:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11506",
+          "name": "ツンツン娘の防犯ブザー担当・120dB",
+          "reward_key": "1015:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11502",
+          "name": "♥♥♥東雲 つむぎ♥♥♥",
+          "reward_key": "1015:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11507",
+          "name": "背伸びっ子の成長を見守り隊",
+          "reward_key": "1015:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11508",
+          "name": "東雲つむぎ推し",
+          "reward_key": "1015:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11509",
+          "name": "つむぎと二人で大人の階段を",
+          "reward_key": "1015:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2015",
+          "name": "スペシャルオーラ（東雲 つむぎ）",
+          "reward_key": "1015:1000:1"
+        }
+      ]
+    },
+    {
+      "id": "1016",
+      "name": "皇城 セツナ",
+      "birthday": "2018-12-06T00:00:00",
+      "profile": {
+        "ProfileString": [
+          {
+            "Profile": "クラシック"
+          },
+          {
+            "Profile": "チョコミント"
+          },
+          {
+            "Profile": "暇な時間/身体に悪そうな食べ物"
+          },
+          {
+            "Profile": "チェス"
+          },
+          {
+            "Profile": "乗馬/バイオリン"
+          },
+          {
+            "Profile": "ランニングと読書"
+          },
+          {
+            "Profile": "美術・芸術の鑑賞"
+          },
+          {
+            "Profile": "冷たいシャワーを浴びる"
+          },
+          {
+            "Profile": "ノブレス・オブリージュ"
+          },
+          {
+            "Profile": "少し古びた懐中時計。その文字盤を見つめるセツナの瞳が、心なしか優しく見えるのは気のせいだろうか。"
+          }
+        ]
+      },
+      "flavor_text": {
+        "FlavorText": "全力で来い\n　　力の差を思い知らせてやる",
+        "FlavorText2": "あまり弱い者いじめは\n　　好きではないのだがな",
+        "FlavorText3": "その身に刻むがいい\n　　我がオンゲキの力を！",
+        "FlavorText4": "力を持つ者には\n　　相応の責任が伴うと知れ",
+        "FlavorText5": "これで……\n　　チェックメイトだ",
+        "FlavorText6": "逃げ出さなかったことは\n　　誉めてやろう"
+      },
+      "rewards": [
+        {
+          "level": 10,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11601",
+          "name": "皇城 セツナ フレーバーボイス01",
+          "profile": "クラシック",
+          "reward_key": "1016:10:0"
+        },
+        {
+          "level": 20,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11601",
+          "name": "皇城セツナ推し",
+          "reward_key": "1016:20:0"
+        },
+        {
+          "level": 50,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:50:0"
+        },
+        {
+          "level": 70,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11602",
+          "name": "皇城 セツナ フレーバーボイス02",
+          "profile": "チョコミント",
+          "reward_key": "1016:70:0"
+        },
+        {
+          "level": 90,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11603",
+          "name": "皇城 セツナ フレーバーボイス03",
+          "profile": "暇な時間/身体に悪そうな食べ物",
+          "reward_key": "1016:90:0"
+        },
+        {
+          "level": 100,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:100:0"
+        },
+        {
+          "level": 100,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11601",
+          "name": "♥皇城 セツナ♥",
+          "reward_key": "1016:100:1"
+        },
+        {
+          "level": 120,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11604",
+          "name": "皇城 セツナ フレーバーボイス04",
+          "profile": "チェス",
+          "reward_key": "1016:120:0"
+        },
+        {
+          "level": 140,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11605",
+          "name": "皇城 セツナ フレーバーボイス05",
+          "profile": "乗馬/バイオリン",
+          "reward_key": "1016:140:0"
+        },
+        {
+          "level": 150,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:150:0"
+        },
+        {
+          "level": 180,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11606",
+          "name": "皇城 セツナ フレーバーボイス06",
+          "profile": "ランニングと読書",
+          "reward_key": "1016:180:0"
+        },
+        {
+          "level": 200,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:200:0"
+        },
+        {
+          "level": 200,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11602",
+          "name": "負のオンゲキ",
+          "reward_key": "1016:200:1"
+        },
+        {
+          "level": 230,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11607",
+          "name": "皇城 セツナ フレーバーボイス07",
+          "profile": "美術・芸術の鑑賞",
+          "reward_key": "1016:230:0"
+        },
+        {
+          "level": 250,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:250:0"
+        },
+        {
+          "level": 270,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11608",
+          "name": "皇城 セツナ フレーバーボイス08",
+          "profile": "冷たいシャワーを浴びる",
+          "reward_key": "1016:270:0"
+        },
+        {
+          "level": 300,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:300:0"
+        },
+        {
+          "level": 300,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11603",
+          "name": "孤高の変革者",
+          "reward_key": "1016:300:1"
+        },
+        {
+          "level": 330,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11609",
+          "name": "皇城 セツナ フレーバーボイス09",
+          "profile": "ノブレス・オブリージュ",
+          "reward_key": "1016:330:0"
+        },
+        {
+          "level": 350,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:350:0"
+        },
+        {
+          "level": 370,
+          "kind": "ProfileVoice",
+          "kind_zh": "语音/档案",
+          "id": "11610",
+          "name": "皇城 セツナ フレーバーボイス10",
+          "profile": "少し古びた懐中時計。その文字盤を見つめるセツナの瞳が、心なしか優しく見えるのは気のせいだろうか。",
+          "reward_key": "1016:370:0"
+        },
+        {
+          "level": 400,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:400:0"
+        },
+        {
+          "level": 400,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11604",
+          "name": "エリート娘の頼れるパートナー",
+          "reward_key": "1016:400:1"
+        },
+        {
+          "level": 500,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:500:0"
+        },
+        {
+          "level": 500,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11605",
+          "name": "エリート娘の頼れるパートナー・雑用係",
+          "reward_key": "1016:500:1"
+        },
+        {
+          "level": 600,
+          "kind": "NormalCard",
+          "kind_zh": "N卡",
+          "id": "101563",
+          "name": "【N】皇城 セツナ",
+          "reward_key": "1016:600:0"
+        },
+        {
+          "level": 600,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11606",
+          "name": "エリート娘の頼れるパートナー・相談役",
+          "reward_key": "1016:600:1"
+        },
+        {
+          "level": 700,
+          "kind": "NamePlate",
+          "kind_zh": "名牌",
+          "id": "11602",
+          "name": "♥♥♥皇城 セツナ♥♥♥",
+          "reward_key": "1016:700:0"
+        },
+        {
+          "level": 800,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11607",
+          "name": "一匹オオカミ少女の宿り木",
+          "reward_key": "1016:800:0"
+        },
+        {
+          "level": 900,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11608",
+          "name": "皇城セツナ推し",
+          "reward_key": "1016:900:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Trophy",
+          "kind_zh": "称号",
+          "id": "11609",
+          "name": "セツナと共に覇道を歩む者",
+          "reward_key": "1016:1000:0"
+        },
+        {
+          "level": 1000,
+          "kind": "Attachment",
+          "kind_zh": "装饰品",
+          "id": "2016",
+          "name": "スペシャルオーラ（皇城 セツナ）",
+          "reward_key": "1016:1000:1"
+        }
+      ]
+    }
+  ]
+}

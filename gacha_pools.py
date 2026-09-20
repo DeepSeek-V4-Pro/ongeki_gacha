@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 import json
+from .starter_cards import STARTER_CARD_IDS
 
 
 RARITY_ALIASES = {
@@ -66,7 +67,7 @@ class PoolEntry:
         cards_data = raw.get("cards") or []
         cards = {
             int(item["card_id"]): PoolCard.from_dict(item)
-            for item in cards_data
+            for item in cards_data if int(item["card_id"]) not in STARTER_CARD_IDS
             if item.get("card_id") is not None
         }
         start = datetime.fromisoformat(start).date() if start else None

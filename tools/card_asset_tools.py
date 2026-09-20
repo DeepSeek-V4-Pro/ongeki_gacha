@@ -13,10 +13,10 @@
 
 用法示例:
 
-    python card_asset_tools.py scan --source ./cards --report temp/scan.json
-    python card_asset_tools.py compose --source ./layers --layers ./ui --out temp/card_art
-    python card_asset_tools.py import --source ./cards
-    python card_asset_tools.py verify
+    python tools/card_asset_tools.py scan --source ./cards --report temp/scan.json
+    python tools/card_asset_tools.py compose --source ./layers --layers ./ui --out temp/card_art
+    python tools/card_asset_tools.py import --source ./cards
+    python tools/card_asset_tools.py verify
 
 更接近上游图层/字体排版的浏览器合成请使用 compose_card_art.py。
 """
@@ -37,7 +37,7 @@ from typing import Any, Iterable
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 
-SCRIPT_DIR = Path(__file__).resolve().parent
+SCRIPT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_DATA_DIR = SCRIPT_DIR / "assets" / "card_data"
 DEFAULT_INFO = DEFAULT_DATA_DIR / "card_info_merged.json"
 DEFAULT_POOLS = DEFAULT_DATA_DIR / "gacha_pools.json"

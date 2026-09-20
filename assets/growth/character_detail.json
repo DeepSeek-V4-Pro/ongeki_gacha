@@ -1,0 +1,140 @@
+{
+  "characters": {
+    "1000": {
+      "school": "奏坂学園",
+      "grade": "高校2年生",
+      "birthday": "7月26日",
+      "zodiac": "しし座",
+      "blood": "O",
+      "height": "157cm"
+    },
+    "1001": {
+      "school": "奏坂学園",
+      "grade": "高校2年生",
+      "birthday": "7月11日",
+      "zodiac": "かに座",
+      "blood": "B",
+      "height": "155cm"
+    },
+    "1002": {
+      "school": "奏坂学園",
+      "grade": "高校2年生",
+      "birthday": "7月16日",
+      "zodiac": "かに座",
+      "blood": "A",
+      "height": "161cm"
+    },
+    "1003": {
+      "school": "奏坂学園",
+      "grade": "高校2年生",
+      "birthday": "1月25日",
+      "zodiac": "みずがめ座",
+      "blood": "A",
+      "height": "157cm"
+    },
+    "1004": {
+      "school": "奏坂学園",
+      "grade": "高校1年生",
+      "birthday": "5月5日",
+      "zodiac": "おうし座",
+      "blood": "B",
+      "height": "149cm"
+    },
+    "1005": {
+      "school": "奏坂学園",
+      "grade": "高校1年生",
+      "birthday": "12月31日",
+      "zodiac": "やぎ座",
+      "blood": "AB",
+      "height": "153cm"
+    },
+    "1006": {
+      "school": "奏坂学園",
+      "grade": "高校3年生",
+      "birthday": "2月14日",
+      "zodiac": "みずがめ座",
+      "blood": "O",
+      "height": "163cm"
+    },
+    "1007": {
+      "school": "奏坂学園",
+      "grade": "高校2年生",
+      "birthday": "6月12日",
+      "zodiac": "ふたご座",
+      "blood": "O",
+      "height": "158cm"
+    },
+    "1008": {
+      "school": "奏坂学園",
+      "grade": "高校3年生",
+      "birthday": "10月1日",
+      "zodiac": "てんびん座",
+      "blood": "A",
+      "height": "167cm"
+    },
+    "1009": {
+      "school": "奏坂学園",
+      "grade": "高校3年生",
+      "birthday": "3月3日",
+      "zodiac": "うお座",
+      "blood": "A",
+      "height": "166cm"
+    },
+    "1010": {
+      "school": "奏坂学園",
+      "grade": "高校1年生",
+      "birthday": "11月23日",
+      "zodiac": "さそり座",
+      "blood": "O",
+      "height": "152cm"
+    },
+    "1011": {
+      "school": "奏坂学園",
+      "grade": "高校3年生",
+      "birthday": "4月1日",
+      "zodiac": "おひつじ座",
+      "blood": "B",
+      "height": "155cm"
+    },
+    "1012": {
+      "school": "奏坂学園",
+      "grade": "高校1年生",
+      "birthday": "9月6日",
+      "zodiac": "おとめ座",
+      "blood": "AB",
+      "height": "147cm"
+    },
+    "1013": {
+      "school": "奏坂学園",
+      "grade": "中学2年生",
+      "birthday": "8月8日",
+      "zodiac": "しし座",
+      "blood": "O",
+      "height": "148cm"
+    },
+    "1014": {
+      "school": "奏坂学園",
+      "grade": "中学2年生",
+      "birthday": "8月22日",
+      "zodiac": "しし座",
+      "blood": "B",
+      "height": "147cm"
+    },
+    "1015": {
+      "school": "奏坂学園",
+      "grade": "中学2年生",
+      "birthday": "10月27日",
+      "zodiac": "さそり座",
+      "blood": "A",
+      "height": "144cm"
+    },
+    "1016": {
+      "school": "奏坂学園",
+      "grade": "高校3年生",
+      "birthday": "12月6日",
+      "zodiac": "いて座",
+      "blood": "AB",
+      "height": "163cm"
+    }
+  }
+}

@@ -12,7 +12,7 @@
 
 用法示例:
 
-    python compose_card_art.py `
+    python tools/compose_card_art.py `
       --chara-dir ./card-chara-p `
       --layers-dir ./general-layers `
       --info assets/card_data/card_info_merged.json `
@@ -61,7 +61,7 @@ GRADE_CODES = {
 def resolve_path(value: str, base: Path | None = None) -> Path:
     path = Path(value).expanduser()
     if not path.is_absolute():
-        path = base / path if base is not None else Path(__file__).resolve().parent / path
+        path = base / path if base is not None else Path(__file__).resolve().parents[1] / path
     return path.resolve()
 
 
@@ -220,7 +220,7 @@ def font_path_for(layer_roots: list[Path], explicit: Path | None) -> Path | None
             candidate = root / name
             if candidate.is_file():
                 return candidate
-    fallback = Path(__file__).resolve().parent / "assets" / "ui" / "SEGA_Humming_v2-B.ttf"
+    fallback = Path(__file__).resolve().parents[1] / "assets" / "ui" / "SEGA_Humming_v2-B.ttf"
     if fallback.is_file():
         return fallback.resolve()
     return None

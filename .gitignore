@@ -7,6 +7,31 @@ __pycache__/
 .venv/
 temp/
 data/
+
+# 素材不进上传列表：仓库与发布包只带代码、文档、工具和 JSON 索引。
+# 玩家用自己的合法素材，通过 tools/ 下的接入工具补齐本地 assets/。
 assets/card_data/*.png
 assets/card_data/*.webp
+assets/card_data/*.jpg
 assets/card_data/*.backup.*
+assets/ui/*.webp
+assets/ui/*.png
+assets/ui/*.ttf
+assets/ui/*.otf
+assets/fonts/*.otf
+assets/fonts/*.ttf
+assets/fonts/*.ttc
+assets/growth/**/*.png
+assets/growth/**/*.webp
+assets/growth/**/*.jpg
+assets/growth/**/*.wav
+assets/growth/**/*.mp3
+assets/growth/**/*.ogg
+
+# 本地预览、检查日志和发布构建产物
+/artifacts/
+/dist/
+
+# 维护、发布与数值推演文档只留在本地，不进仓库与发布包。
+# 用户可见的说明放在根目录 README / USAGE / ASSETS / CHANGELOG / DISCLAIMER / NOTICE。
+/dev-docs/

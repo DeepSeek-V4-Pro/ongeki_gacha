@@ -2,10 +2,10 @@
 """Sync ONGEKI card JSON/PNG data into the plugin's default data directory.
 
 Usage:
-    python sync_card_data.py --dry-run
-    python sync_card_data.py
-    python sync_card_data.py --check
-    python sync_card_data.py --check --quick
+    python tools/sync_card_data.py --dry-run
+    python tools/sync_card_data.py
+    python tools/sync_card_data.py --check
+    python tools/sync_card_data.py --check --quick
 
 Options:
     --source          source card PNG directory
@@ -27,7 +27,7 @@ import sys
 from pathlib import Path
 
 
-SCRIPT_DIR = Path(__file__).resolve().parent
+SCRIPT_DIR = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE_CARDS = SCRIPT_DIR / "assets" / "card_data"
 DEFAULT_SOURCE_JSON = SCRIPT_DIR / "assets" / "card_data" / "card_info_merged.json"
 DEFAULT_DEST = SCRIPT_DIR / "assets" / "card_data"
@@ -305,7 +305,7 @@ def main() -> int:
             f"FAIL: 默认/指定卡面目录不存在: {source_cards}\n"
             "插件发布包不附带受版权保护的卡面。请将已有合法卡面放入 "
             "assets/card_data/，或通过 --source 指定自己的素材目录；"
-            "具体说明见 CARD_ARTWORK_SOURCES.md。",
+            "具体说明见 ASSETS.md。",
             file=sys.stderr,
         )
         return 1

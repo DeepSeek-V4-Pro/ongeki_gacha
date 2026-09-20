@@ -12,13 +12,25 @@ from .gacha_db import GachaDatabase
 from .task_catalog import GAME_LABELS, pick_random_task
 
 
+def _growth_reward_text(medium_gifts: int, large_gifts: int, fragments: int) -> str:
+    """只列实际发放的养成物品；全为 0 时返回空串。"""
+    parts = []
+    if medium_gifts:
+        parts.append(f"中礼物 ×{medium_gifts}")
+    if large_gifts:
+        parts.append(f"大礼物 ×{large_gifts}")
+    if fragments:
+        parts.append(f"花之碎片 +{fragments}")
+    return f"\n养成奖励：{'，'.join(parts)}" if parts else ""
+
+
 class TaskCommandsMixin:
     """随机任务命令。"""
 
     @Command(
         "ongeki_task_accept",
         description="接取音游随机任务",
-    pattern=r"^/(?:接任务|领取任务|任务)\s+(?P<kind>普通|挑战|终极)(?:\s+(?P<game>\S+))?\s*$",
+    pattern=r"^/接任务\s+(?P<kind>高级挑战|普通|挑战|终极)(?:\s+(?P<game>\S+))?\s*$",
     )
     async def handle_task_accept(
         self,
@@ -36,7 +48,7 @@ class TaskCommandsMixin:
 
         async with self._lock:
             if self._db is None:
-                text = "插件尚未初始化完成，请检查日志"
+                text = "插件未就绪，请稍后重试"
                 await self._send_text(stream_id, text)
                 return True, text, True
             catalog = await self._get_task_catalog()
@@ -55,10 +67,6 @@ class TaskCommandsMixin:
             completed_keys: set[str] = set()
             if task_kind == "ultimate":
                 progress = self._db.get_ultimate_progress(user_id)
-                if progress.finished:
-                    text = "终极任务已完成，无法再次接取"
-                    await self._send_text(stream_id, text)
-                    return True, text, True
                 if progress.active_task_id is not None:
                     text = "已有未完成或待审核的终极任务"
                     await self._send_text(stream_id, text)
@@ -72,14 +80,16 @@ class TaskCommandsMixin:
                 excluded_keys=incomplete_keys,
                 game=game,
                 challenge_min_level=self.config.task.challenge_min_level,
+                advanced_min_level=self.config.task.advanced_min_level,
                 ultimate_min_level=self.config.task.ultimate_min_level,
             )
             if selection is None:
                 if task_kind == "ultimate":
+                    self._db.set_ultimate_finished(user_id, True)
                     reason = (
-                        "该游戏终极候选曲目已全部完成"
+                        "该游戏终极曲目已全部完成"
                         if game
-                        else "终极候选曲目已全部完成"
+                        else "终极曲目已全部完成"
                     )
                 else:
                     reason = "该游戏候选任务不足" if game else "候选任务不足"
@@ -117,6 +127,7 @@ class TaskCommandsMixin:
                 cover_url=selection.song.cover_url,
                 normal_limit=task_config.normal_count,
                 challenge_limit=task_config.challenge_count,
+                advanced_limit=task_config.advanced_count,
                 tz_offset_hours=self.config.economy.tz_offset_hours,
             )
             if not receipt.success:
@@ -145,7 +156,7 @@ class TaskCommandsMixin:
     @Command(
         "ongeki_task_list",
         description="查看随机任务列表",
-        pattern=r"^/(?:任务列表|我的任务)\s*$",
+        pattern=r"^/任务列表\s*$",
     )
     async def handle_task_list(
         self,
@@ -158,7 +169,7 @@ class TaskCommandsMixin:
             await self._send_text(stream_id, text)
             return True, text, True
         if self._db is None:
-            text = "插件尚未初始化完成，请检查日志"
+            text = "插件未就绪，请稍后重试"
             await self._send_text(stream_id, text)
             return True, text, True
         today = GachaDatabase.current_date_str(
@@ -174,10 +185,19 @@ class TaskCommandsMixin:
             task_kind="challenge",
             task_date=today,
         )
+        advanced_used = self._db.get_task_quota(
+            user_id,
+            task_kind="advanced",
+            task_date=today,
+        )
         lines = [
             "【随机任务】",
-            f"今日普通任务剩余：{max(self.config.task.normal_count - normal_used, 0)}/{self.config.task.normal_count}",
-            f"今日挑战任务剩余：{max(self.config.task.challenge_count - challenge_used, 0)}/{self.config.task.challenge_count}",
+            f"普通 {max(self.config.task.normal_count - normal_used, 0)}"
+            f"/{self.config.task.normal_count}"
+            f"｜挑战 {max(self.config.task.challenge_count - challenge_used, 0)}"
+            f"/{self.config.task.challenge_count}"
+            f"｜高级挑战 {max(self.config.task.advanced_count - advanced_used, 0)}"
+            f"/{self.config.task.advanced_count}",
         ]
         status_labels = {
             "active": "待完成",
@@ -198,25 +218,22 @@ class TaskCommandsMixin:
                 game_name = GAME_LABELS.get(task.game, task.game)
                 status = status_labels.get(task.status, task.status)
                 lines.append(
-                    f"#{task.id} [{game_name}] {task.song_title} "
-                    f"| {task.requirement_text} | {status}"
+                    f"#{task.id} [{game_name}] {self._ellipsize(task.song_title, 16)}"
+                    f"｜{task.requirement_text}｜{status}"
                 )
         else:
             lines.append("")
             lines.append("暂无任务，发送 /接任务 普通 领取")
-        await self._send_lines(
-            stream_id,
-            lines,
-            title="音击抽卡模拟器 · 任务列表",
-        )
+        lines.append("/接任务 普通|挑战|高级挑战｜成绩图 + /任务完成 <ID>")
         text = "\n".join(lines)
+        await self._send_text(stream_id, text, title="音击抽卡模拟器 · 任务列表")
         return True, text, True
 
     @Command(
         "ongeki_task_submit",
         description="提交任务完成照片",
         pattern=(
-            r"^/(?:任务完成|提交任务|完成任务)\s+"
+            r"^/任务完成\s+"
             r"(?P<task_id>\d+)(?:\s+(?P<note>.+))?\s*$"
         ),
     )
@@ -234,20 +251,20 @@ class TaskCommandsMixin:
             task_id = 0
         note = str(groups.get("note") or "").strip()
         if task_id <= 0:
-            text = "用法：/任务完成 <任务ID>，并附带成绩照片"
+            text = "用法 图片 + /任务完成 <ID>"
             await self._send_text(stream_id, text)
             return True, text, True
         if self.config.task.require_photo and not self._has_photo(kwargs):
-            text = "请随任务完成指令一起发送成绩照片"
+            text = "请附成绩图：图片 + /任务完成 <ID>"
             await self._send_text(stream_id, text)
             return True, text, True
         if self._db is None:
-            text = "插件尚未初始化完成，请检查日志"
+            text = "插件未就绪，请稍后重试"
             await self._send_text(stream_id, text)
             return True, text, True
         task = self._db.get_task(task_id)
         if task is None or task.qq_id != user_id:
-            text = "未找到该任务，或该任务不属于你"
+            text = "未找到该任务或不属于你"
             await self._send_text(stream_id, text)
             return True, text, True
         receipt = self._db.submit_task(task_id, user_id, note=note)
@@ -256,14 +273,14 @@ class TaskCommandsMixin:
             await self._send_text(stream_id, text)
             return True, text, True
         lines = [
-            f"任务 #{task_id} 已提交，请管理员审核。",
-            f"接取人：{user_id}",
-            f"游戏：{GAME_LABELS.get(task.game, task.game)}",
-            f"曲目：{task.song_title} — {task.artist}",
-            f"要求：{task.requirement_text}",
+            f"任务 #{task_id} 已提交待审核｜{user_id}",
+            f"{GAME_LABELS.get(task.game, task.game)}"
+            f"｜{self._ellipsize(task.song_title, 20)}"
+            f"｜{task.requirement_text}",
         ]
         if note:
-            lines.append(f"备注：{note}")
+            lines.append(f"备注 {note}")
+        lines.append(f"管理员 /任务审核 {task_id} S|SS|SSS|SSS+")
         text = "\n".join(lines)
         await self._send_text(stream_id, text)
         return True, text, True
@@ -272,7 +289,7 @@ class TaskCommandsMixin:
         "ongeki_task_review",
         description="管理员审核随机任务",
         pattern=(
-            r"^/(?:任务审核|审核任务)\s+(?P<task_id>\d+)\s+"
+            r"^/任务审核\s+(?P<task_id>\d+)\s+"
             r"(?P<grade>普通|S|SS|SSS|SSS\+|SSS＋|拒绝|通过)"
             r"(?:\s+(?P<note>.+))?\s*$"
         ),
@@ -285,7 +302,7 @@ class TaskCommandsMixin:
     ) -> tuple[bool, str, bool]:
         user_id = self._user_id(kwargs)
         if not self._is_admin(user_id):
-            text = "你不是管理员，无法审核任务"
+            text = "仅管理员可审核任务"
             await self._send_text(stream_id, text)
             return True, text, True
         groups = matched_groups or {}
@@ -301,11 +318,11 @@ class TaskCommandsMixin:
             return True, text, True
         task = self._db.get_task(task_id)
         if task is None:
-            text = "任务不存在"
+            text = "任务不存在｜可用 /任务审核列表 查看待审核任务"
             await self._send_text(stream_id, text)
             return True, text, True
         if task.task_kind == "ultimate":
-            text = "终极任务请使用 /终极完成"
+            text = "终极任务请用 /终极完成"
             await self._send_text(stream_id, text)
             return True, text, True
         if grade == "拒绝":
@@ -320,7 +337,8 @@ class TaskCommandsMixin:
                 return True, text, True
             grade = "普通"
         elif grade not in {"S", "SS", "SSS", "SSS+"}:
-            text = "挑战任务请选择 S / SS / SSS / SSS+"
+            label = "高级挑战" if task.task_kind == "advanced" else "挑战"
+            text = f"{label}任务请选择 S / SS / SSS / SSS+"
             await self._send_text(stream_id, text)
             return True, text, True
         reward = self._task_reward(task.task_kind, grade)
@@ -332,9 +350,29 @@ class TaskCommandsMixin:
         )
         if receipt.success:
             text = (
-                f"任务 #{task_id} 审核通过：{grade} 档，"
-                f"已发放 {reward} 点，当前点数 {receipt.points}"
+                f"#{task_id} 审核通过 {grade}"
+                f"｜已发放 {reward} 点（当前 {receipt.points}）"
             )
+            if receipt.bloom_tickets:
+                text += f"｜解花券 +{receipt.bloom_tickets}"
+            elif receipt.cooldown_text:
+                text += f"｜{receipt.cooldown_text}"
+            if self.config.growth.enabled:
+                text += _growth_reward_text(
+                    receipt.medium_gifts, receipt.large_gifts, receipt.growth_fragments
+                )
+                await self._send_item_gain_card(
+                    stream_id,
+                    task.qq_id,
+                    {
+                        "gift_medium": receipt.medium_gifts,
+                        "gift_large": receipt.large_gifts,
+                        "flower_fragment": receipt.growth_fragments,
+                        "bloom_ticket": receipt.bloom_tickets,
+                    },
+                    title="任务奖励物品",
+                    subtitle=f"任务 #{task_id} · {grade} 档",
+                )
         else:
             text = receipt.error or "审核失败"
         await self._send_text(stream_id, text)
@@ -343,7 +381,7 @@ class TaskCommandsMixin:
     @Command(
         "ongeki_task_pending",
         description="管理员查看待审核任务",
-        pattern=r"^/(?:任务审核列表|待审任务|待审核列表)\s*$",
+        pattern=r"^/任务审核列表\s*$",
     )
     async def handle_task_pending(
         self,
@@ -352,7 +390,7 @@ class TaskCommandsMixin:
     ) -> tuple[bool, str, bool]:
         user_id = self._user_id(kwargs)
         if not self._is_admin(user_id) or self._db is None:
-            text = "你不是管理员，或插件尚未初始化完成"
+            text = "仅管理员可操作（或插件未就绪）"
             await self._send_text(stream_id, text)
             return True, text, True
         tasks = self._db.list_pending_tasks()
@@ -363,22 +401,19 @@ class TaskCommandsMixin:
             for task in tasks:
                 lines.append(
                     f"#{task.id} | {GAME_LABELS.get(task.game, task.game)}"
-                    f" | {task.song_title} | {task.requirement_text}"
-                    f" | 接取人 {task.qq_id}"
+                    f"｜{self._ellipsize(task.song_title, 16)}"
+                    f"｜{task.requirement_text}"
+                    f"｜接取人 {task.qq_id}"
                 )
             text = "\n".join(lines)
-        await self._send_lines(
-            stream_id,
-            text,
-            title="音击抽卡模拟器 · 待审核任务",
-        )
+        await self._send_text(stream_id, text, title="音击抽卡模拟器 · 待审核任务")
         return True, text, True
 
     @Command(
         "ongeki_ultimate_complete",
         description="管理员确认终极任务完成",
         pattern=(
-            r"^/(?:终极完成|终极确认|终极审核)\s+"
+            r"^/终极完成\s+"
             r"(?:(?P<target_at>@\S+)|(?P<target_id>\d+))\s+"
             r"(?P<task_id>\d+)(?:\s+(?P<note>.+))?\s*$"
         ),
@@ -391,7 +426,7 @@ class TaskCommandsMixin:
     ) -> tuple[bool, str, bool]:
         user_id = self._user_id(kwargs)
         if not self._is_admin(user_id) or self._db is None:
-            text = "你不是管理员，无法确认终极任务"
+            text = "仅管理员可确认终极任务"
             await self._send_text(stream_id, text)
             return True, text, True
         groups = matched_groups or {}
@@ -402,37 +437,55 @@ class TaskCommandsMixin:
             task_id = 0
         note = str(groups.get("note") or "").strip()
         if not target_id or task_id <= 0:
-            text = "用法：/终极完成 <用户> <任务ID> [备注]"
+            text = "用法 /终极完成 <QQ号> <任务ID>（ID 见 /任务列表）"
             await self._send_text(stream_id, text)
             return True, text, True
         task = self._db.get_task(task_id)
         if task is None:
-            text = "任务不存在"
+            text = "任务不存在｜可用 /任务审核列表 查看待审核任务"
             await self._send_text(stream_id, text)
             return True, text, True
         if task.task_kind != "ultimate" or task.qq_id != target_id:
-            text = "该任务不是目标用户的终极任务"
+            text = (
+                "该任务不是该用户的终极任务"
+                "（/终极完成 <QQ号> <任务ID>，ID 见 /任务列表）"
+            )
             await self._send_text(stream_id, text)
             return True, text, True
         receipt = self._db.complete_ultimate(
             task_id,
             user_id,
             reward=self.config.task.ultimate_reward,
-            ultimate_total=1,
         )
         text = (
-            f"终极任务 #{task_id} 已完成，已发放 "
-            f"{self.config.task.ultimate_reward} 点，当前点数 {receipt.points}"
+            f"终极任务 #{task_id} 完成"
+            f"｜已发放 {self.config.task.ultimate_reward} 点"
+            f"（当前 {receipt.points}）"
             if receipt.success
             else (receipt.error or "确认失败")
         )
+        if receipt.success and self.config.growth.enabled:
+            text += _growth_reward_text(
+                receipt.medium_gifts, receipt.large_gifts, receipt.growth_fragments
+            )
+            await self._send_item_gain_card(
+                stream_id,
+                target_id,
+                {
+                    "gift_medium": receipt.medium_gifts,
+                    "gift_large": receipt.large_gifts,
+                    "flower_fragment": receipt.growth_fragments,
+                },
+                title="终极任务奖励物品",
+                subtitle=f"任务 #{task_id}",
+            )
         await self._send_text(stream_id, text)
         return True, text, True
 
     @Command(
         "ongeki_task_reset",
         description="管理员隐藏任务重置",
-        pattern=r"^/(?:任务重置|重置任务)\s+(?P<task_id>\d+)(?:\s+(?P<note>.+))?\s*$",
+        pattern=r"^/任务重置\s+(?P<task_id>\d+)(?:\s+(?P<note>.+))?\s*$",
     )
     async def handle_task_reset(
         self,
@@ -442,7 +495,7 @@ class TaskCommandsMixin:
     ) -> tuple[bool, str, bool]:
         user_id = self._user_id(kwargs)
         if not self._is_admin(user_id) or self._db is None:
-            text = "你不是管理员，无法重置任务"
+            text = "仅管理员可重置任务"
             await self._send_text(stream_id, text)
             return True, text, True
         groups = matched_groups or {}
@@ -465,7 +518,7 @@ class TaskCommandsMixin:
             today=today,
         )
         text = (
-            "任务已重置，用户可重新接取"
+            f"任务 #{task_id} 已重置，次数已返还"
             if receipt.success
             else (receipt.error or "重置失败")
         )
@@ -475,7 +528,7 @@ class TaskCommandsMixin:
     @Command(
         "ongeki_task_cleanup",
         description="管理员清理已结束的历史任务",
-        pattern=r"^/(?:任务清理|清理任务)(?:\s+(?P<days>\d+))?\s*$",
+        pattern=r"^/任务清理(?:\s+(?P<days>\d+))?\s*$",
     )
     async def handle_task_cleanup(
         self,
@@ -485,7 +538,7 @@ class TaskCommandsMixin:
     ) -> tuple[bool, str, bool]:
         user_id = self._user_id(kwargs)
         if not self._is_admin(user_id) or self._db is None:
-            text = "你不是管理员，或插件尚未初始化完成"
+            text = "仅管理员可操作（或插件未就绪）"
             await self._send_text(stream_id, text)
             return True, text, True
         groups = matched_groups or {}
@@ -506,9 +559,9 @@ class TaskCommandsMixin:
             retention_days=retention_days,
         )
         text = (
-            f"已清理 {cleaned_tasks} 条已结束任务、"
-            f"{cleaned_quota} 条旧每日配额。"
-            "待审核任务不会被清理。"
+            f"已清理 {cleaned_tasks} 条历史任务、"
+            f"{cleaned_quota} 条每日配额（待审核保留）"
+            
         )
         await self._send_text(stream_id, text)
         return True, text, True

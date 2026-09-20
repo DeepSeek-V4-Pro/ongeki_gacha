@@ -20,7 +20,7 @@ RARITY_COLORS: dict[str, str] = {
 
 BRAND_TEXT = "O.N.G.E.K.I"
 BRAND_COLOR = (30, 60, 110, 255)
-POWERED_TEXT = "MaiBot"
+POWERED_TEXT = ""
 POWERED_COLOR = (75, 85, 110, 255)
 
 INFO_FOOTER_HEIGHT_RATIO = 0.045
@@ -165,11 +165,10 @@ class GachaRenderer:
     ) -> None:
         max_slots = max_detail_slots(rarity)
         stars = min(max(copies, 0), max_slots)
-        star_size = max(8, int(card_h * 0.047))
+        star_size = max(8, int(card_w * 0.047))
         gap = max(1, int(star_size * 0.10))
-        total_width = max_slots * star_size + (max_slots - 1) * gap
-        x = card_x + (card_w - total_width) // 2
-        y = card_y + int(card_h * 0.75)
+        x = card_x + round(card_w * 0.21)
+        y = card_y + round(card_h * 0.758)
         filled = self._asset("star_filled")
         empty = self._asset("star_empty")
         for index in range(max_slots):
@@ -179,17 +178,6 @@ class GachaRenderer:
                 asset,
                 (star_size, star_size),
                 (x + index * (star_size + gap), y),
-            )
-
-        if stars >= max_slots:
-            max_mark = self._asset("max_mark")
-            mark_height = max(8, int(star_size * 0.70))
-            mark_width = int(mark_height * 108 / 34)
-            self._paste_scaled(
-                canvas,
-                max_mark,
-                (mark_width, mark_height),
-                (card_x + (card_w - mark_width) // 2, y + star_size + 2),
             )
 
     def _draw_growth_mark(
@@ -208,13 +196,17 @@ class GachaRenderer:
             mark = self._asset("cho_kaika")
         else:
             mark = self._asset("kaika")
-        mark_h = max(10, int(card_h * 0.12))
-        mark_w = int(mark_h * 174 / 152)
+        # 两种素材的透明边距差异很大，先裁到可见轮廓，再统一到接近属性圆标的高度。
+        bounds = mark.getchannel('A').getbbox() or (0, 0, mark.width, mark.height)
+        mark = mark.crop(bounds)
+        mark_h = max(12, round(card_w * 0.20))
+        mark_w = round(mark_h * mark.width / mark.height)
+        mark_x = card_x + round(card_w * 0.09 - mark_w / 2)
         self._paste_scaled(
             canvas,
             mark,
             (mark_w, mark_h),
-            (card_x + card_w - mark_w - 8, card_y + 8),
+            (mark_x, card_y + round(card_h * 0.16)),
         )
 
     def _draw_card_info_footer(
@@ -306,13 +298,14 @@ class GachaRenderer:
             font=brand_font,
             fill=BRAND_COLOR,
         )
-        powered_width = draw.textlength(POWERED_TEXT, font=powered_font)
-        draw.text(
-            (canvas_width - margin - powered_width - 8, 24),
-            POWERED_TEXT,
-            font=powered_font,
-            fill=POWERED_COLOR,
-        )
+        if POWERED_TEXT:
+            powered_width = draw.textlength(POWERED_TEXT, font=powered_font)
+            draw.text(
+                (canvas_width - margin - powered_width - 8, 24),
+                POWERED_TEXT,
+                font=powered_font,
+                fill=POWERED_COLOR,
+            )
 
         row_start_y = header_height + margin
         for row_index, row in enumerate(rows):
