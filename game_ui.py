@@ -103,11 +103,11 @@ def draw_digits(image, xy, text, atlas='57pt_Friendship_Level', height=60, gap=2
 def heart(image, box, ratio, *, level=0, tier=0, meter=None, finish=False):
     """按原作坐标拼装后整体缩放，数字始终位于心内，挡位贴合左上缘。
 
-    量表分档：普通档 GaugeBase，10 档 GaugeBase_10，1000 级后叠加
+    量表分档：Lv1000 前 GaugeBase，之后 GaugeBase_10，并叠加
     GaugeBase_Rebirth_10 挡位底图；填充使用原作 Pink/Yellow 心形素材。
     """
-    local_level = level % 100
-    decorated = local_level >= 10 or tier >= 10
+    # GaugeBase_10 是千级段装饰，不能用两位显示数字的十位判断。
+    decorated = tier >= 10
     base = _intimate('GaugeBase_10' if decorated else 'GaugeBase') or _intimate('GaugeBase')
     if base is None:
         return

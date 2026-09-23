@@ -57,7 +57,7 @@ def describe_receipt(
     if action == "伙伴":
         cid = result["character_id"]
         name = catalog.characters[cid]['name']
-        return f"当前伙伴：{name}\n/陪伴 涨好感｜/好感 {name} 看进度"
+        return f"当前伙伴：{name}\n发送 /陪伴 提升好感｜/好感 {name} 查看进度"
     if action in {"陪伴", "送礼"}:
         display = catalog.characters[result['character_id']]['name']
         lines = [
@@ -82,11 +82,11 @@ def describe_receipt(
             result.get("completed_at") or "", tz_offset_hours
         )
         if result.get("already_completed"):
-            return f"{title} 已完成{label}｜{completed or '旧版本继承'}"
+            return f"{title} 已{label}｜完成时间：{completed or '旧版本继承'}"
         lines = [
             f"{label}成功：{title}",
-            f"{result.get('item_label','解花券')} -{result['spent']}"
-            f"（余 {result.get('remaining',0)}）｜完成 {completed}",
+            f"消耗{result.get('item_label','解花券')} {result['spent']} 个"
+            f"（剩余 {result.get('remaining',0)} 个）｜完成时间：{completed}",
         ]
         if result["stage"] == 1:
             lines.append(f"/超解花 {result['card_id']} 继续超解花")
@@ -95,8 +95,8 @@ def describe_receipt(
         size = '小' if result['size'] == 'small' else '中'
         return (
             f"已购买 {result['label']} ×{result['quantity']}"
-            f"｜-{result['price']} 点（余 {result['points']}）"
-            f"\n本周剩 {result['weekly_cap'] - result['weekly_used']} 份"
+            f"｜消耗 {result['price']} 点（剩余 {result['points']} 点）"
+            f"\n本周还可购买 {result['weekly_cap'] - result['weekly_used']} 份"
             f"｜/送礼 <角色姓名> {size} 1"
         )
     kind={'Trophy':'称号','NamePlate':'名牌','Attachment':'装饰'}.get(result['cosmetic_type'],result['cosmetic_type'])
@@ -168,9 +168,9 @@ class GrowthCommandsMixin:
                 args=arguments(self._growth.catalog,'角色语音',raw)
                 if user=='unknown':raise ValueError('无法识别账号')
                 if args==['分类']:
-                    text='【自动回应】小礼物/中·大礼物/好感升级\n'
-                    text+='【手动播放】每角色 10 条档案语音（共用冷却）\n'
-                    text+='获得好感自动发｜列表 /角色语音 星咲 あかり'
+                    text='【自动回应】赠送礼物或提升好感等级后自动播放\n'
+                    text+='【手动播放】每名角色有 10 条档案语音，与自动回应共用冷却\n'
+                    text+='查看语音列表：/角色语音 星咲 あかり'
                 elif len(args)==2:
                     result=await self._voice.play(user,int(args[0]),int(args[1]),request_identity(kwargs,stream_id),stream_id)
                     if result['success']:return True,'角色语音已发送',True
@@ -191,7 +191,7 @@ class GrowthCommandsMixin:
                         if row['reward_key'] not in claimed:
                             status='未解锁'
                         elif row.get('listening_review')!='verified':
-                            status='素材校验未通过'
+                            status='语音资源待验收'
                         else:
                             status='已解锁'
                         lines.append(f"{number:02d} · Lv{row['unlock_level']} · {status}")
@@ -432,7 +432,7 @@ class GrowthCommandsMixin:
             cid = int(args[0])
             card = catalog.cards.by_id.get(cid)
             if card is None:
-                return "卡ID不存在｜可用 /卡册 <角色姓名> 1 查看已拥有的卡ID"
+                return "卡ID不存在｜发送 /卡册 <角色姓名> 1 查看卡ID"
             row = inventory.get(cid, {})
             stage = row.get("bloom_stage", 0)
             current = row.get("copies", 0)
@@ -446,7 +446,7 @@ class GrowthCommandsMixin:
                 f"｜解花券 {items.get('bloom_ticket',0)}",
             ]
             if mapping["bloom_policy"] == "blocked_unmapped":
-                lines.append("暂缺角色映射，新解花已阻断")
+                lines.append("暂缺角色归属信息，当前无法解花")
             elif stage < 2:
                 maximum = max_detail_slots(card.rarity)
                 if mapping["bloom_policy"] == "main_affection":

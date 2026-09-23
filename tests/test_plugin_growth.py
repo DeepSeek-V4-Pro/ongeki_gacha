@@ -119,7 +119,7 @@ class PluginGrowthTests(unittest.IsolatedAsyncioTestCase):
         self.plugin._db._conn.execute("UPDATE players SET points=? WHERE qq_id='user'",(plan['price'],))
         bought=await self.dispatch('/礼物 购买 小 1','buy-gift')
         self.assertIn('已购买',bought[1])
-        self.assertIn('-'+str(plan['price'])+' 点',bought[1])
+        self.assertIn('消耗 '+str(plan['price'])+' 点',bought[1])
         self.assertEqual(self.plugin._db.get_player('user').points,0)
         items={r['item_id']:r['quantity'] for r in self.plugin._growth.snapshot('user')['player_items']}
         self.assertEqual(items['gift_small'],1)

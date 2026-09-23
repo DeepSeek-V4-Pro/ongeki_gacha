@@ -717,7 +717,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             ),
             "旧版解花阶段继承；好感奖励自动领取，奖励N卡不产生重复碎片",
             "每月1-7日为签到活动：第1、3天小礼物，第5天中礼物，第7天大礼物，其余活动日发花之碎片；活动之外的签到不发养成物品",
-            f"活动周碎片已下调为每日 {self.config.growth.monthly_event_fragments}；"
+            f"签到活动日的碎片奖励为每次 {self.config.growth.monthly_event_fragments}；"
             f"任务审核每次1碎片，每天合计最多{self.config.growth.task_fragments_daily_cap}；"
             "好感节点发的N卡不产生碎片",
             "小礼物与中礼物可用点数购买（每周限量，见 /礼物），"
@@ -824,7 +824,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
 
     @staticmethod
     def _monthly_card_remaining_days(expires_at: str, tz_offset_hours: int) -> int:
-        """按配置时区计算月卡剩余天数。"""
+        """按统一的 UTC 日期计算月卡剩余天数。"""
         today = GachaDatabase.current_date_str(tz_offset_hours)
         return GachaDatabase.monthly_card_remaining_days(expires_at, today)
 
@@ -1028,7 +1028,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             and selection.chart.level_value
             >= float(self.config.growth.bloom_ticket_source_min_level)
         ):
-            requirement += "；SSS+可获解花券"
+            requirement += f"；{self.config.growth.bloom_ticket_source_grade} 及以上可获解花券"
         return requirement
 
     def _task_sources(self) -> tuple[dict[str, str], dict[str, str]]:
@@ -1568,13 +1568,14 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         is_new: bool = False,
     ) -> None:
         """渲染并发送签到彩蛋卡的揭示图。"""
-        del is_kaika, is_cho_kaika
         await self._send_card_reveal(
             stream_id,
             card,
             copies,
             mode="new" if is_new or copies <= 1 else "star_up",
             before_copies=max(0, int(copies) - 1),
+            is_kaika=is_kaika,
+            is_cho_kaika=is_cho_kaika,
         )
 
     async def _send_card_reveal(
@@ -1585,6 +1586,8 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         *,
         mode: str = "new",
         before_copies: int = 0,
+        is_kaika: bool = False,
+        is_cho_kaika: bool = False,
     ) -> bool:
         """发送原作风格卡牌揭示图；返回已确认发送的状态。"""
         if self._renderer is None or not self._render_ready:
@@ -1610,6 +1613,8 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
                 output_path,
                 mode=mode,
                 before_copies=before_copies,
+                is_kaika=is_kaika,
+                is_cho_kaika=is_cho_kaika,
                 character_name=character_name,
             )
             image_base64 = base64.b64encode(image_bytes).decode("ascii")
@@ -1643,7 +1648,9 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
                     continue
                 sent = await self._send_card_reveal(stream_id, card, event['after_copies'],
                     mode='new' if event['before_copies'] <= 0 else 'star_up',
-                    before_copies=event['before_copies'])
+                    before_copies=event['before_copies'],
+                    is_kaika=event['is_kaika'],
+                    is_cho_kaika=event['is_cho_kaika'])
                 if not sent:
                     break
                 await asyncio.to_thread(self._db.ack_card_reveal, user_id, event['id'])
@@ -1919,6 +1926,8 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
                         commitment.copies,
                         mode="new" if commitment.is_new else "star_up",
                         before_copies=0 if commitment.is_new else max(0, commitment.copies - 1),
+                        is_kaika=commitment.is_kaika,
+                        is_cho_kaika=commitment.is_cho_kaika,
                     )
 
         await self._send_text(stream_id, summary)

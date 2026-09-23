@@ -103,8 +103,10 @@ def render_affection(catalog, cid, points, portrait, output, *, partner=False, u
     details=flavor_rows(character,claimed)
     detail_height=FLAVOR_HEIGHT+112 if details else 0
     height=1200+detail_height
+    # 浅色角色（春菜、咲姫、有栖）的原色作顶边会接近白底，使用同色深档。
+    accent=t.theme_for(cid)['deep']
     image,draw,y=canvas(height,"角色好感",f"{character['name']}" + (" · 当前伙伴" if partner else ""),
-                        accent=t.PINK,character=cid)
+                        accent=accent,character=cid)
     attachment=equipped['Attachment']
     if attachment:reward_art(image,attachment,(916,22,1040,154))
     else:original_asset(image,f'character_{cid}',(920,30,1032,150))
@@ -128,7 +130,7 @@ def render_affection(catalog, cid, points, portrait, output, *, partner=False, u
     text_block(draw,(568,606),f"累计 {points} 点",416,size=36,bold=True)
     detail=('好感 99 / 99 已满（累计仍增加）'
             if level>=MAX_AFFECTION_LEVEL else f"本级 {current} / {need}")
-    text_block(draw,(568,660),detail,416,size=30,fill=t.PINK)
+    text_block(draw,(568,660),detail,416,size=30,fill=accent)
     game_ui.progress_bar(image,(568,698,984,704),ratio,cid)
     copies=next((r['copies'] for r in snapshot.get('inventory',[]) if r['card_id']==STARTER_CARDS[cid]),1)
     text_block(draw,(568,712),f"搜集进度 · {min(copies,11)} / 11",416,size=28,fill=t.MUTED)

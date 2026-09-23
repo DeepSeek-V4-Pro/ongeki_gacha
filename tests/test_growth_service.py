@@ -31,6 +31,21 @@ class GrowthServiceTests(unittest.TestCase):
         self.db.close()
         self.temp.cleanup()
 
+    def test_pending_reveal_keeps_bloom_state_at_grant(self):
+        from ..starter_cards import STARTER_CARDS
+        card_id = STARTER_CARDS[1000]
+        self.service.ensure_starter_card('u', 1000)
+        self.db._conn.execute(
+            "UPDATE inventory SET bloom_stage=1,is_kaika=1 WHERE qq_id='u' AND card_id=?",
+            (card_id,),
+        )
+        self.db._conn.execute('BEGIN IMMEDIATE')
+        self.db._grant_card(self.db._conn, 'u', card_id, 'N', 'now', source='affection_reward')
+        self.db._conn.execute('COMMIT')
+        rows = self.db.list_pending_card_reveals('u')
+        self.assertTrue(any(row['after_copies'] == 2 and row['is_kaika']
+                            and not row['is_cho_kaika'] for row in rows))
+
     def test_curve_upgrade_backs_up_already_migrated_database(self):
         import sqlite3
         self.service.snapshot('u')

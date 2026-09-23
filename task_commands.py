@@ -223,8 +223,8 @@ class TaskCommandsMixin:
                 )
         else:
             lines.append("")
-            lines.append("暂无任务，发送 /接任务 普通 领取")
-        lines.append("/接任务 普通|挑战|高级挑战｜成绩图 + /任务完成 <ID>")
+            lines.append("暂无任务。发送 /接任务 普通 领取任务")
+        lines.append("接取：/接任务 普通|挑战|高级挑战｜提交：发送成绩图及 /任务完成 <ID>")
         text = "\n".join(lines)
         await self._send_text(stream_id, text, title="音击抽卡模拟器 · 任务列表")
         return True, text, True
@@ -251,11 +251,11 @@ class TaskCommandsMixin:
             task_id = 0
         note = str(groups.get("note") or "").strip()
         if task_id <= 0:
-            text = "用法 图片 + /任务完成 <ID>"
+            text = "用法：发送成绩图及 /任务完成 <ID>"
             await self._send_text(stream_id, text)
             return True, text, True
         if self.config.task.require_photo and not self._has_photo(kwargs):
-            text = "请附成绩图：图片 + /任务完成 <ID>"
+            text = "请在发送 /任务完成 <ID> 时附上成绩图"
             await self._send_text(stream_id, text)
             return True, text, True
         if self._db is None:
@@ -273,7 +273,7 @@ class TaskCommandsMixin:
             await self._send_text(stream_id, text)
             return True, text, True
         lines = [
-            f"任务 #{task_id} 已提交待审核｜{user_id}",
+            f"任务 #{task_id} 已提交，等待管理员审核｜账号 {user_id}",
             f"{GAME_LABELS.get(task.game, task.game)}"
             f"｜{self._ellipsize(task.song_title, 20)}"
             f"｜{task.requirement_text}",

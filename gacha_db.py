@@ -426,6 +426,8 @@ class GachaDatabase:
                 card_id       INTEGER NOT NULL,
                 before_copies INTEGER NOT NULL DEFAULT 0,
                 after_copies  INTEGER NOT NULL DEFAULT 0,
+                is_kaika     INTEGER NOT NULL DEFAULT 0,
+                is_cho_kaika INTEGER NOT NULL DEFAULT 0,
                 created_at    TEXT NOT NULL
             );
 
@@ -526,6 +528,11 @@ class GachaDatabase:
                 "ALTER TABLE players "
                 "ADD COLUMN savings_bonus_start_date TEXT NOT NULL DEFAULT ''"
             )
+        reveal_columns = {row[1] for row in conn.execute("PRAGMA table_info(pending_card_reveals)")}
+        if "is_kaika" not in reveal_columns:
+            conn.execute("ALTER TABLE pending_card_reveals ADD COLUMN is_kaika INTEGER NOT NULL DEFAULT 0")
+        if "is_cho_kaika" not in reveal_columns:
+            conn.execute("ALTER TABLE pending_card_reveals ADD COLUMN is_cho_kaika INTEGER NOT NULL DEFAULT 0")
         self._conn = conn
 
     def initialize_growth(self, cards: CardCollection, *, enabled: bool = False, rules: dict | None = None) -> dict:
@@ -592,9 +599,10 @@ class GachaDatabase:
         if announce and source == "affection_reward" and card_id in STARTER_CARD_IDS:
             conn.execute(
                 """INSERT INTO pending_card_reveals(
-                       qq_id, card_id, before_copies, after_copies, created_at
-                   ) VALUES(?,?,?,?,?)""",
-                (qq_id, card_id, previous, previous + 1, now),
+                       qq_id, card_id, before_copies, after_copies,
+                       is_kaika, is_cho_kaika, created_at
+                   ) VALUES(?,?,?,?,?,?,?)""",
+                (qq_id, card_id, previous, previous + 1, int(stage>=1), int(stage==2), now),
             )
         return DrawCommitment(card_id, row is None, previous+1, stage>=1, stage==2, fragments)
 
@@ -2823,7 +2831,7 @@ class GachaDatabase:
             if self._conn is None:
                 raise RuntimeError("数据库尚未打开")
             rows = self._conn.execute(
-                """SELECT id, card_id, before_copies, after_copies
+                """SELECT id, card_id, before_copies, after_copies, is_kaika, is_cho_kaika
                    FROM pending_card_reveals
                    WHERE qq_id = ?
                    ORDER BY id ASC""",
@@ -2835,6 +2843,8 @@ class GachaDatabase:
                     "card_id": int(row["card_id"]),
                     "before_copies": int(row["before_copies"]),
                     "after_copies": int(row["after_copies"]),
+                    "is_kaika": bool(row["is_kaika"]),
+                    "is_cho_kaika": bool(row["is_cho_kaika"]),
                 }
                 for row in rows
             ]

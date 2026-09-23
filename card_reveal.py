@@ -1,8 +1,8 @@
 """原作风格卡牌获得/突破揭示图。
 
 还原卡牌揭示的版式：稀有度标题、卡面、NEW CARD/STAR UP 横幅、
-角色与卡名、属性、限界突破星级和 MAX Lv。
-按需求不展示技能与攻击力。
+角色与卡名、属性、限界突破星级、MAX Lv 和 MAX 攻击力。
+技能数据暂不展示。
 """
 from __future__ import annotations
 
@@ -116,15 +116,43 @@ def _outlined_text(
     draw.text(xy, text, font=font, fill=fill, anchor=anchor)
 
 
-def _max_level(card: CardInfo) -> str:
-    for part in str(card.level_param or "").split(","):
-        try:
-            value = int(part.strip())
-        except ValueError:
-            continue
-        if value > 0:
-            return str(value)
-    return {"N": "50", "R": "50", "SR": "55", "SRPlus": "53", "SSR": "60"}.get(card.rarity, "-")
+def _max_level(card: CardInfo, copies: int, *, is_kaika: bool = False,
+               is_cho_kaika: bool = False) -> str:
+    """未解花时上限为 Lv10；解花后按持有星数提升至 Lv50–100。"""
+    if not (is_kaika or is_cho_kaika):
+        return "10"
+    slots = max_detail_slots(card.rarity)
+    stars = max(1, min(int(copies), slots))
+    return str(50 + 5 * (stars - 1))
+
+
+def _max_attack(card: CardInfo, copies: int, *, is_kaika: bool = False,
+                is_cho_kaika: bool = False) -> str:
+    """从 LevelParam 的 Lv1/Lv50/突破锚点求当前等级上限的攻击力。"""
+    try:
+        values = [int(part.strip()) for part in card.level_param.split(',')]
+        if len(values) < 6 or any(value <= 0 for value in values[:6]):
+            return "-"
+    except ValueError:
+        return "-"
+    if not (is_kaika or is_cho_kaika):
+        # Lv1 到 Lv50 线性增长；原作 Lv10 样例 50→222 得到 81。
+        return str(values[0] + (values[1] - values[0]) * 9 // 49)
+    level = int(_max_level(card, copies, is_kaika=True))
+    if is_cho_kaika and len(values) >= 10 and values[9] > 0:
+        return str(values[9])
+    anchors = {50: values[1], 55: values[2], 60: values[3],
+               65: values[4], 70: values[5]}
+    if card.rarity == 'N' and len(values) >= 9:
+        anchors.update({80: values[6], 90: values[7], 100: values[8]})
+    if level in anchors and anchors[level] > 0:
+        return str(anchors[level])
+    lower = max((key for key in anchors if key < level and anchors[key] > 0), default=None)
+    upper = min((key for key in anchors if key > level and anchors[key] > 0), default=None)
+    if lower is None or upper is None:
+        return "-"
+    return str(anchors[lower] + (anchors[upper] - anchors[lower]) *
+               (level - lower) // (upper - lower))
 
 
 def _fit(image: Image.Image, size: tuple[int, int]) -> Image.Image:
@@ -177,6 +205,8 @@ def render_card_reveal(
     *,
     mode: str = "new",
     before_copies: int = 0,
+    is_kaika: bool = False,
+    is_cho_kaika: bool = False,
     character_name: str = "",
     asset_dir: Path | None = None,
 ) -> bytes:
@@ -274,8 +304,8 @@ def render_card_reveal(
     draw.text((834,415), name, font=_font(renderer,name_size), fill='#25222b',anchor='mm')
 
     # 独立的限界突破缎带和数值底板，不再把整列包进圆角卡片。
-    draw.rectangle((590, 542, 990, 690), fill=(61,43,20,65))
-    draw.rectangle((584, 534, 984, 682), fill='#f9f7fc')
+    draw.rectangle((590, 542, 990, 721), fill=(61,43,20,65))
+    draw.rectangle((584, 534, 984, 713), fill='#f9f7fc')
     draw.polygon([(552,551),(584,551),(584,608),(552,608),(565,579)], fill='#d7a600')
     draw.polygon([(984,551),(1016,551),(1003,579),(1016,608),(984,608)], fill='#d7a600')
     draw.polygon([(574,532),(774,522),(994,532),(994,606),(774,596),(574,606)], fill='#f4cc00')
@@ -296,10 +326,14 @@ def render_card_reveal(
         draw.polygon(points, fill='#ffe879' if index < stars else '#241c11', outline='#795009')
     draw.polygon([(616,623),(729,623),(739,648),(626,648)],fill='#f3cc00')
     draw.text((677,635),'MAX Lv.',font=_font(renderer,20),fill='#34302b',anchor='mm')
-    draw.text((858,635),_max_level(card),font=_font(renderer,28),fill='#34302b',anchor='mm')
-    draw.line((626,651,950,651),fill='#d7c36e',width=1)
+    draw.text((858,635),_max_level(card, copies, is_kaika=is_kaika,
+                                  is_cho_kaika=is_cho_kaika),font=_font(renderer,28),fill='#34302b',anchor='mm')
+    draw.line((626,654,950,654),fill='#d7c36e',width=1)
+    draw.text((677,678),'MAX 攻击力',font=_font(renderer,20),fill='#34302b',anchor='mm')
+    draw.text((858,678),_max_attack(card, copies, is_kaika=is_kaika,
+                                   is_cho_kaika=is_cho_kaika),font=_font(renderer,28),fill='#34302b',anchor='mm')
     if mode == 'star_up':
-        draw.text((784,715),f"{max(0,int(before_copies))} → {int(copies)} 星",
+        draw.text((784,747),f"{max(0,int(before_copies))} → {int(copies)} 星",
                   font=_font(renderer,23),fill='#604113',anchor='mm')
     footer = f"ID {card.id}" + (f"  {card.card_number}" if card.card_number else '')
     draw.text((width-40,height-28),footer,font=_font(renderer,16),fill='#f2e7cb',anchor='rm')
