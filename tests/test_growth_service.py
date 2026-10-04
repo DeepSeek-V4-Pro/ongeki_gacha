@@ -10,6 +10,10 @@ from ..growth_catalog import GrowthCatalog
 from ..growth_migration import change_item
 from ..growth_service import GrowthService
 
+CHECKIN_ARGS = dict(min_reward=100, max_reward=100, streak_daily_step=10,
+                    streak_daily_max=100, streak_weekly_reward=500, streak_cycle_days=15,
+                    streak_cycle_reward=1000, monthly_daily_bonus=100, tz_offset_hours=0)
+
 
 class GrowthServiceTests(unittest.TestCase):
     @classmethod
@@ -110,20 +114,20 @@ class GrowthServiceTests(unittest.TestCase):
         self.assertIsNone(self.service.automatic_voice_event('u','failed-auto'))
 
     def test_no_automatic_bloom_and_all_sources(self):
-        # 5 张满星内的重复各给基础碎片（SSR 8），超出满星的两张各给 16
+        # 首张不发碎片，4 张满星内的重复各给 4，超出满星的两张各给 8。
         receipt = self.own(copies=7)
-        self.assertEqual(sum(c.fragments for c in receipt.commitments), 64)
-        self.assertEqual(self.quantity(), 64)
+        self.assertEqual(sum(c.fragments for c in receipt.commitments), 32)
+        self.assertEqual(self.quantity(), 32)
         self.assertEqual(next(r for r in self.db.get_inventory("u") if r.card_id == self.card.id).bloom_stage, 0)
         self.db.commit_draw("u", [(self.card.id, "SSR")], cost=0, pool_id="test", max_select_points=1)
         claim = self.db.claim_select_card("u", "test", self.card.id, "SSR", max_select_points=1)
-        self.assertEqual(claim.fragments, 16)
+        self.assertEqual(claim.fragments, 8)
         self.assertFalse(claim.is_kaika)
-        self.assertEqual(self.quantity(), 96)
+        self.assertEqual(self.quantity(), 48)
 
     def test_bloom_replay_and_concurrency(self):
         self.own()
-        self.assertEqual(self.quantity(), 32)
+        self.assertEqual(self.quantity(), 16)
         self.points(self.catalog.thresholds[100])
         self.set_item(5, "bloom_ticket")
         with ThreadPoolExecutor(2) as pool:
@@ -138,7 +142,7 @@ class GrowthServiceTests(unittest.TestCase):
         self.assertEqual(self.quantity("flower_fragment"), 30)
         self.own(copies=1)
         self.assertEqual(next(r for r in self.db.get_inventory("u") if r.card_id == self.card.id).bloom_stage, 2)
-        self.assertEqual(self.quantity(), 46)
+        self.assertEqual(self.quantity(), 38)
 
     def test_bloom_stage1_does_not_require_full_stars(self):
         """解花不要求满星，只要求角色好感Lv100＋1张解花券。"""
@@ -260,24 +264,59 @@ class GrowthServiceTests(unittest.TestCase):
         args = dict(min_reward=100,max_reward=100,streak_daily_step=10,streak_daily_max=100,
                     streak_weekly_reward=500,streak_cycle_days=15,streak_cycle_reward=1000,
                     monthly_daily_bonus=100,tz_offset_hours=0)
-        with patch.object(self.db, "current_date_str", return_value="2026-09-01"):
-            receipt = self.db.daily_checkin("u", **args)
-        self.assertEqual((receipt.small_gifts,receipt.medium_gifts,receipt.large_gifts,receipt.growth_fragments),
-                         (1,0,0,0))
-        with patch.object(self.db, "current_date_str", return_value="2026-09-01"):
-            self.assertFalse(self.db.daily_checkin("u", **args).success)
-        conn = self.db._conn
-        conn.execute("BEGIN IMMEDIATE")
-        # 09-01 已由上面的签到发过，这里覆盖活动周其余日期与活动外的安静日
-        event_days = {"2026-09-02":(0,0,5,0),"2026-09-03":(1,0,0,0),
-                      "2026-09-05":(0,1,0,0),"2026-09-07":(0,0,0,1),"2026-09-08":(0,0,0,0)}
-        for day, expected in event_days.items():
-            self.assertEqual(self.db._award_growth_daily(conn,"u",day,"checkin",day,"now"), expected)
-        conn.commit()
-        self.assertEqual(self.quantity("gift_small"), 2)
-        self.assertEqual(self.quantity("gift_medium"), 1)
-        self.assertEqual(self.quantity("gift_large"), 1)
-        self.assertEqual(self.quantity(), 5)
+        # 小、中、碎片、大、券；覆盖完整周期和第11日边界。
+        rewards = [(1,0,0,0,1),(0,0,2,0,0),(1,0,0,0,0),(0,1,0,0,0),
+                   (0,0,0,1,0),(1,0,0,0,0),(0,0,2,0,0),(0,1,0,0,0),
+                   (1,0,0,0,0),(0,0,0,1,0),(0,0,0,0,0)]
+        for day, expected in enumerate(rewards, 1):
+            with self.subTest(day=day), patch.object(
+                self.db, "current_date_str", return_value=f"2026-09-{day:02d}"
+            ):
+                receipt = self.db.daily_checkin("u", **args)
+                self.assertTrue(receipt.success)
+                self.assertEqual((receipt.small_gifts,receipt.medium_gifts,receipt.growth_fragments,
+                                  receipt.large_gifts,receipt.bloom_tickets), expected)
+                self.assertFalse(self.db.daily_checkin("u", **args).success)
+        self.assertEqual(self.quantity("gift_small"), 4)
+        self.assertEqual(self.quantity("gift_medium"), 2)
+        self.assertEqual(self.quantity("gift_large"), 2)
+        self.assertEqual(self.quantity("bloom_ticket"), 1)
+        self.assertEqual(self.quantity(), 4)
+
+    def test_monthly_checkin_ticket_rollback_restart_and_next_month(self):
+        args = CHECKIN_ARGS
+        original = change_item
+        def fail_after_ticket(conn, qq_id, item, amount):
+            original(conn, qq_id, item, amount)
+            if item == 'bloom_ticket':
+                raise RuntimeError('interrupted after ticket')
+        self.db.get_player('u')
+        self.set_item(13)
+        with patch.object(self.db, 'current_date_str', return_value='2026-12-01'):
+            with patch('ongeki_gacha.gacha_db.change_item', side_effect=fail_after_ticket):
+                with self.assertRaises(RuntimeError):
+                    self.db.daily_checkin('u', **args)
+            self.assertEqual(self.db.get_player('u').points, 0)
+            self.assertEqual(self.quantity('gift_small'), 0)
+            self.assertEqual(self.quantity('bloom_ticket'), 0)
+            self.assertEqual(self.quantity(), 13)
+            self.assertEqual(self.db.daily_checkin('u', **args).bloom_tickets, 1)
+        self.db.close()
+        self.db.open()
+        self.db.initialize_growth(self.cards, enabled=True, rules=self.catalog.rules)
+        with patch.object(self.db, 'current_date_str', return_value='2026-12-01'):
+            self.assertFalse(self.db.daily_checkin('u', **args).success)
+        with patch.object(self.db, 'current_date_str', return_value='2027-01-01'):
+            self.assertEqual(self.db.daily_checkin('u', **args).bloom_tickets, 1)
+        self.assertEqual(self.quantity('bloom_ticket'), 2)
+        self.assertEqual(self.quantity(), 13)
+
+    def test_missed_first_day_does_not_make_up_ticket(self):
+        with patch.object(self.db, 'current_date_str', return_value='2026-09-02'):
+            receipt = self.db.daily_checkin('u', **CHECKIN_ARGS)
+        self.assertEqual(receipt.bloom_tickets, 0)
+        self.assertEqual(receipt.growth_fragments, 2)
+        self.assertEqual(self.quantity('bloom_ticket'), 0)
 
     def test_balanced_task_items_daily_caps_and_rollback(self):
         self.own();baseline=self.quantity();conn=self.db._conn
@@ -286,22 +325,74 @@ class GrowthServiceTests(unittest.TestCase):
         challenge=self.db._award_growth_daily(conn,'u','2026-09-13','challenge','c','now')
         advanced=self.db._award_growth_daily(conn,'u','2026-09-13','advanced','a','now')
         ultimate=self.db._award_growth_daily(conn,'u','2026-09-13','ultimate','u','now')
-        self.assertEqual(normal,(0,0,1,0))
-        self.assertEqual(challenge,(0,1,1,0))
-        self.assertEqual(advanced,(0,0,0,0))
-        self.assertEqual(ultimate,(0,0,0,0))
+        self.assertEqual(normal,(1,0,0,0,0))
+        self.assertEqual(challenge,(0,1,1,0,0))
+        self.assertEqual(advanced,(0,1,0,0,0))
+        self.assertEqual(ultimate,(0,0,0,0,0))
         conn.rollback()
         self.assertEqual(self.quantity(),baseline)
         conn.execute('BEGIN IMMEDIATE')
-        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','challenge','c1','now'),(0,1,1,0))
-        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','advanced','a1','now'),(0,0,1,0))
-        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','challenge','c2','now'),(0,0,0,0))
-        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','advanced','a2','now'),(0,0,0,0))
-        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-10-13','advanced','a3','now'),(0,1,1,0))
+        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','challenge','c1','now'),(0,1,1,0,0))
+        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','advanced','a1','now'),(0,1,0,0,0))
+        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','challenge','c2','now'),(0,1,0,0,0))
+        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-09-13','advanced','a2','now'),(0,0,0,0,0))
+        self.assertEqual(self.db._award_growth_daily(conn,'u','2026-10-13','advanced','a3','now'),(0,1,1,0,0))
         conn.commit()
-        self.assertEqual(self.quantity(),baseline+3)
-        self.assertEqual(self.quantity('gift_medium'),2)
+        self.assertEqual(self.quantity(),baseline+2)
+        self.assertEqual(self.quantity('gift_medium'),4)
         self.assertEqual(self.quantity('gift_large'),0)
+
+    def test_task_small_gift_cap_replay_and_next_day(self):
+        self.db.get_player('u')
+        conn = self.db._conn
+        conn.execute('BEGIN IMMEDIATE')
+        for event in ('n1', 'n2', 'n3'):
+            self.assertEqual(self.db._award_growth_daily(conn, 'u', '2026-09-13', 'normal', event, 'now'),
+                             (1,0,0,0,0))
+        self.assertEqual(self.db._award_growth_daily(conn, 'u', '2026-09-13', 'normal', 'n1', 'now'), (0,0,0,0,0))
+        self.assertEqual(self.db._award_growth_daily(conn, 'u', '2026-09-13', 'normal', 'n4', 'now'), (0,0,0,0,0))
+        self.assertEqual(self.db._award_growth_daily(conn, 'u', '2026-09-14', 'normal', 'n5', 'now'), (1,0,0,0,0))
+        conn.commit()
+        self.assertEqual(self.quantity('gift_small'), 4)
+        self.assertEqual(self.quantity(), 0)
+
+    def test_fragment_exchange_unlimited_replay_restart_and_invalid_quantity(self):
+        self.db.get_player('u')
+        self.set_item(2436)
+        first = self.service.exchange_large_gift('u', 101, 'exchange-101')
+        self.assertTrue(first['success'])
+        self.assertEqual((first['price'], first['remaining']), (1212, 1224))
+        self.assertEqual(first, self.service.exchange_large_gift('u', 101, 'exchange-101'))
+        self.assertFalse(self.service.exchange_large_gift('u', 1, 'exchange-101')['success'])
+        second = self.service.exchange_large_gift('u', 102, 'exchange-102')
+        self.assertTrue(second['success'])
+        self.assertEqual(self.quantity(), 0)
+        self.assertEqual(self.quantity('gift_large'), 203)
+        self.db.close(); self.db.open()
+        self.db.initialize_growth(self.cards, enabled=True, rules=self.catalog.rules)
+        self.assertEqual(first, self.service.exchange_large_gift('u', 101, 'exchange-101'))
+        self.assertEqual(self.quantity('gift_large'), 203)
+        for quantity in (0, -1, 1.5, True, 1):
+            self.assertFalse(self.service.exchange_large_gift('u', quantity, f'bad-{quantity}')['success'])
+        self.assertEqual(self.quantity(), 0)
+        self.assertEqual(self.quantity('gift_large'), 203)
+
+    def test_fragment_exchange_rollback_and_concurrency(self):
+        self.db.get_player('u'); self.set_item(12)
+        def fail(conn, qq_id, item, amount):
+            change_item(conn, qq_id, item, amount)
+            if item == 'gift_large':
+                raise RuntimeError('interrupted after gift')
+        with patch('ongeki_gacha.growth_service.change_item', side_effect=fail):
+            with self.assertRaises(RuntimeError):
+                self.service.exchange_large_gift('u', 1, 'retry')
+        self.assertEqual(self.quantity(), 12)
+        self.assertEqual(self.quantity('gift_large'), 0)
+        with ThreadPoolExecutor(2) as pool:
+            results = list(pool.map(lambda key: self.service.exchange_large_gift('u', 1, key), ['retry', 'other']))
+        self.assertEqual(sum(result['success'] for result in results), 1)
+        self.assertEqual(self.quantity(), 0)
+        self.assertEqual(self.quantity('gift_large'), 1)
 
     def test_gift_purchase_weekly_cap_and_points(self):
         self.own()
@@ -334,24 +425,25 @@ class GrowthServiceTests(unittest.TestCase):
         self.assertTrue(self.db.submit_task(advanced.task_id,"u").success)
         receipt=self.db.approve_task(advanced.task_id,"admin",grade="SSS",reward=125)
         self.assertTrue(receipt.success)
-        self.assertEqual((receipt.medium_gifts,receipt.growth_fragments,receipt.large_gifts),(1,1,0))
+        self.assertEqual((receipt.small_gifts,receipt.medium_gifts,receipt.growth_fragments,receipt.large_gifts),(0,1,1,0))
         challenge=self.db.create_task("u",task_kind="challenge",game="maimai",song_id="s1",song_title="T1")
         self.assertTrue(challenge.success)
         self.assertTrue(self.db.submit_task(challenge.task_id,"u").success)
         receipt=self.db.approve_task(challenge.task_id,"admin",grade="SSS",reward=80)
         self.assertTrue(receipt.success)
-        self.assertEqual((receipt.medium_gifts,receipt.growth_fragments,receipt.large_gifts),(0,1,0))
+        self.assertEqual((receipt.small_gifts,receipt.medium_gifts,receipt.growth_fragments,receipt.large_gifts),(0,1,0,0))
         normal=self.db.create_task("u",task_kind="normal",game="maimai",song_id="s2",song_title="T2")
         self.assertTrue(self.db.submit_task(normal.task_id,"u").success)
         receipt=self.db.approve_task(normal.task_id,"admin",grade="普通",reward=30)
-        self.assertEqual((receipt.medium_gifts,receipt.growth_fragments,receipt.large_gifts),(0,0,0))
+        self.assertEqual((receipt.small_gifts,receipt.medium_gifts,receipt.growth_fragments,receipt.large_gifts),(1,0,0,0))
         ultimate=self.db.create_task("u",task_kind="ultimate",game="chunithm",song_id="s3",song_title="T3")
         self.assertTrue(self.db.submit_task(ultimate.task_id,"u").success)
         receipt=self.db.complete_ultimate(ultimate.task_id,"admin",reward=30000)
         self.assertTrue(receipt.success)
         self.assertEqual((receipt.medium_gifts,receipt.growth_fragments,receipt.large_gifts),(0,0,0))
         self.assertEqual(receipt.points,30235)
-        self.assertEqual(self.quantity("gift_medium"),1)
+        self.assertEqual(self.quantity("gift_small"),1)
+        self.assertEqual(self.quantity("gift_medium"),2)
         self.assertEqual(self.quantity("gift_large"),0)
 
     def test_bloom_ticket_source_and_cooldown(self):
@@ -372,6 +464,15 @@ class GrowthServiceTests(unittest.TestCase):
         first = approve("advanced", 13.5, "SSS", "a2")
         self.assertEqual(first.bloom_tickets, 1)
         self.assertEqual(self.quantity("bloom_ticket"), 1)
+        # 活动券可在任务冷却期间发放，且不改变冷却起点。
+        cooldown = self.db._conn.execute(
+            "SELECT last_at FROM player_cooldowns WHERE qq_id='u' AND key='bloom_ticket'"
+        ).fetchone()[0]
+        with patch.object(self.db, 'current_date_str', return_value='2026-09-01'):
+            self.assertEqual(self.db.daily_checkin('u', **CHECKIN_ARGS).bloom_tickets, 1)
+        self.assertEqual(self.db._conn.execute(
+            "SELECT last_at FROM player_cooldowns WHERE qq_id='u' AND key='bloom_ticket'"
+        ).fetchone()[0], cooldown)
         second = approve("advanced", 13.5, "SSS", "a3")
         self.assertEqual(second.bloom_tickets, 0)
         self.assertIn("冷却", second.cooldown_text)
@@ -380,7 +481,7 @@ class GrowthServiceTests(unittest.TestCase):
         )
         third = approve("advanced", 13.5, "SSS", "a4")
         self.assertEqual(third.bloom_tickets, 1)
-        self.assertEqual(self.quantity("bloom_ticket"), 2)
+        self.assertEqual(self.quantity("bloom_ticket"), 3)
 
 
 if __name__ == "__main__":

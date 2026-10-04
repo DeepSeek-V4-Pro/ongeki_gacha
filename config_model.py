@@ -16,7 +16,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.3.1", description="配置版本")
+    config_version: str = Field(default="1.3.2", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -242,32 +242,38 @@ class GrowthConfig(PluginConfigBase):
     __ui_order__ = 8
 
     enabled: bool = Field(default=True, description="启用全部17名主角色好感与主动解花；基础N卡默认1星")
-    voice_enabled: bool = Field(default=True, description="启用已通过自动校验的QQ角色语音；全部素材已自动验收，可手动关闭")
+    voice_enabled: bool = Field(default=True, description="启用已通过校验的QQ角色语音；素材需自行接入并验收，可手动关闭")
     automatic_voice_enabled: bool = Field(default=True, description="语音启用后，成功送礼或好感升级自动回应；每笔最多一条")
     companion_points: int = Field(default=300, ge=1, description="每日陪伴获得的好感")
     gift_small_points: int = Field(default=300, ge=1, description="小礼物好感")
     gift_medium_points: int = Field(default=1000, ge=1, description="中礼物好感")
     gift_large_points: int = Field(default=10000, ge=1, description="大礼物好感")
-    monthly_event_days: int = Field(default=7, ge=1, description="每月签到活动天数")
+    monthly_event_days: int = Field(default=10, ge=1, le=31, description="每月从1日开始的签到活动天数")
     monthly_event_small_gift_days: list[int] = Field(
-        default_factory=lambda: [1, 3], description="活动周发放小礼物的日期"
+        default_factory=lambda: [1, 3, 6, 9], description="月初活动发放小礼物的日期"
     )
     monthly_event_medium_gift_days: list[int] = Field(
-        default_factory=lambda: [5], description="活动周发放中礼物的日期"
+        default_factory=lambda: [4, 8], description="月初活动发放中礼物的日期"
     )
     monthly_event_large_gift_days: list[int] = Field(
-        default_factory=lambda: [7], description="活动周发放大礼物的日期"
+        default_factory=lambda: [5, 10], description="月初活动发放大礼物的日期"
     )
-    monthly_event_fragments: int = Field(default=5, ge=0, description="活动周其余日期发放的花之碎片")
-    task_medium_gifts_daily_cap: int = Field(default=1, ge=0, description="任务中礼物每日上限")
+    monthly_event_bloom_ticket_days: list[int] = Field(
+        default_factory=lambda: [1], description="月初活动发放1张解花券的日期，可与礼物同日"
+    )
+    monthly_event_fragments: int = Field(default=2, ge=0, description="活动中无礼物或解花券的日期发放的花之碎片")
+    task_small_gifts_daily_cap: int = Field(default=3, ge=0, description="任务小礼物每日上限")
+    task_small_gift_sources: list[str] = Field(default_factory=lambda: ["normal"], description="可发小礼物的任务类型")
+    task_medium_gifts_daily_cap: int = Field(default=3, ge=0, description="任务中礼物每日上限")
     task_medium_gift_sources: list[str] = Field(
         default_factory=lambda: ["challenge", "advanced"], description="可发中礼物的任务类型"
     )
-    task_fragments_normal: int = Field(default=1, ge=0, description="普通任务审核碎片")
+    large_gift_fragment_price: int = Field(default=12, ge=1, description="兑换1份大礼物消耗的花之碎片，无兑换额度限制")
+    task_fragments_normal: int = Field(default=0, ge=0, description="普通任务审核碎片")
     task_fragments_challenge: int = Field(default=1, ge=0, description="挑战任务审核碎片")
     task_fragments_advanced: int = Field(default=1, ge=0, description="高级挑战审核碎片")
     task_fragments_ultimate: int = Field(default=0, ge=0, description="终极任务审核碎片")
-    task_fragments_daily_cap: int = Field(default=2, ge=0, description="任务碎片每日上限")
+    task_fragments_daily_cap: int = Field(default=1, ge=0, description="任务碎片每日上限")
     gift_purchase_small_price: int = Field(default=150, ge=1, description="小礼物点数价格")
     gift_purchase_small_weekly_cap: int = Field(default=10, ge=1, description="小礼物每周购买上限")
     gift_purchase_medium_price: int = Field(default=500, ge=1, description="中礼物点数价格")
@@ -308,15 +314,27 @@ class GrowthConfig(PluginConfigBase):
             raise ValueError("bloom_ticket_source_kind 目前只支持 advanced")
         if self.bloom_ticket_source_grade not in {"SSS", "SSS+"}:
             raise ValueError("bloom_ticket_source_grade 只能是 SSS 或 SSS+")
-        if any(day > self.monthly_event_days for day in (
+        if any(not 1 <= day <= self.monthly_event_days for day in (
             *self.monthly_event_small_gift_days,
             *self.monthly_event_medium_gift_days,
             *self.monthly_event_large_gift_days,
+            *self.monthly_event_bloom_ticket_days,
         )):
-            raise ValueError("月度活动物品日期不能超过 monthly_event_days")
+            raise ValueError("月度活动物品日期必须在1到 monthly_event_days 之间")
+        gift_days = [
+            *self.monthly_event_small_gift_days,
+            *self.monthly_event_medium_gift_days,
+            *self.monthly_event_large_gift_days,
+        ]
+        if len(set(gift_days)) != len(gift_days):
+            raise ValueError("月度活动礼物日期不能重复或重叠")
+        if len(set(self.monthly_event_bloom_ticket_days)) != len(self.monthly_event_bloom_ticket_days):
+            raise ValueError("月度活动解花券日期不能重复")
         allowed = {"normal", "challenge", "advanced", "ultimate"}
-        if not self.task_medium_gift_sources or not set(self.task_medium_gift_sources) <= allowed:
-            raise ValueError("task_medium_gift_sources 含未知任务类型")
+        for size in ('small', 'medium'):
+            sources = getattr(self, f'task_{size}_gift_sources')
+            if len(set(sources)) != len(sources) or not set(sources) <= allowed:
+                raise ValueError(f"task_{size}_gift_sources 含重复或未知任务类型")
         return self
 
     def rule_overrides(self) -> dict[str, Any]:
@@ -333,9 +351,13 @@ class GrowthConfig(PluginConfigBase):
             "monthly_event_small_gift_days": list(self.monthly_event_small_gift_days),
             "monthly_event_medium_gift_days": list(self.monthly_event_medium_gift_days),
             "monthly_event_large_gift_days": list(self.monthly_event_large_gift_days),
+            "monthly_event_bloom_ticket_days": list(self.monthly_event_bloom_ticket_days),
             "monthly_event_fragments": self.monthly_event_fragments,
+            "task_small_gifts_daily_cap": self.task_small_gifts_daily_cap,
+            "task_small_gift_sources": list(self.task_small_gift_sources),
             "task_medium_gifts_daily_cap": self.task_medium_gifts_daily_cap,
             "task_medium_gift_sources": list(self.task_medium_gift_sources),
+            "large_gift_fragment_price": self.large_gift_fragment_price,
             "task_fragments_daily_cap": self.task_fragments_daily_cap,
             "task_fragments": {
                 "normal": self.task_fragments_normal,

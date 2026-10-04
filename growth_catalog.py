@@ -76,20 +76,29 @@ class GrowthCatalog:
             if type(value) is not int or not minimum <= value <= 1_000_000:
                 raise ValueError(f"养成规则 {name} 必须为范围内整数")
         for name in ("monthly_event_days", "monthly_event_fragments",
-                     "task_medium_gifts_daily_cap", "task_fragments_daily_cap"):
+                     "task_small_gifts_daily_cap", "task_medium_gifts_daily_cap",
+                     "task_fragments_daily_cap"):
             integer(rules.get(name), name)
+        integer(rules.get('large_gift_fragment_price'), 'large_gift_fragment_price', 1)
         integer(rules.get("companion_points"), "companion_points", 1)
         integer(rules.get('ultimate_large_gifts_lifetime_cap'),'ultimate_large_gifts_lifetime_cap')
         event_days = rules["monthly_event_days"]
+        if not 1 <= event_days <= 31:
+            raise ValueError("月度活动天数必须在1到31之间")
         seen = set()
         for name in ("monthly_event_small_gift_days", "monthly_event_medium_gift_days",
                      "monthly_event_large_gift_days"):
             days = rules.get(name)
             if not isinstance(days, list) or any(type(day) is not int or not 1 <= day <= event_days for day in days):
                 raise ValueError(f"养成规则 {name} 日期越界")
-            if seen & set(days):
-                raise ValueError(f"养成规则 {name} 与其它礼物日重复")
+            if len(set(days)) != len(days) or seen & set(days):
+                raise ValueError(f"养成规则 {name} 礼物日期重复或重叠")
             seen |= set(days)
+        ticket_days = rules.get("monthly_event_bloom_ticket_days")
+        if not isinstance(ticket_days, list) or any(
+            type(day) is not int or not 1 <= day <= event_days for day in ticket_days
+        ) or len(set(ticket_days)) != len(ticket_days):
+            raise ValueError("月度活动解花券日期无效")
         purchase = rules.get("gift_purchase")
         if not isinstance(purchase, dict) or not purchase or not set(purchase) <= {"small", "medium"}:
             raise ValueError("养成规则 gift_purchase 只支持小礼物与中礼物")
@@ -98,9 +107,10 @@ class GrowthCatalog:
                 raise ValueError(f"养成规则 gift_purchase.{size} 字段不完整")
             integer(plan.get("price"), f"gift_purchase.{size}.price", 1)
             integer(plan.get("weekly_cap"), f"gift_purchase.{size}.weekly_cap", 1)
-        sources=rules.get('task_medium_gift_sources')
-        if not isinstance(sources, list) or not sources or len(set(sources)) != len(sources) or not set(sources) <= {"normal", "challenge", "advanced", "ultimate"}:
-            raise ValueError('中礼物任务来源无效')
+        for size in ('small', 'medium'):
+            sources = rules.get(f'task_{size}_gift_sources')
+            if not isinstance(sources, list) or any(not isinstance(source, str) for source in sources) or len(set(sources)) != len(sources) or not set(sources) <= {"normal", "challenge", "advanced", "ultimate"}:
+                raise ValueError(f'{size}礼物任务来源无效')
         for name in ("duplicate_fragments", "overflow_fragments"):
             values = rules.get(name)
             if not isinstance(values, dict) or set(values) != set(FRAGMENT_RATES):

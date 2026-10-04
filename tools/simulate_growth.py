@@ -57,7 +57,7 @@ def simulate(root: Path, *, runs: int = 30, days: int = 730, seed: int = 2026091
                     claimed = set()
                     stages = [0] * 10
                     milestones = {}
-                    fragments = balance = pulls = small = medium = 0
+                    fragments = balance = pulls = small = medium = large = 0
                     for day in range(1, days + 1):
                         ec = config["economy"]
                         balance += rng.randint(ec["min_reward"], ec["max_reward"])
@@ -66,9 +66,18 @@ def simulate(root: Path, *, runs: int = 30, days: int = 730, seed: int = 2026091
                         balance += ec["streak_cycle_reward"] if day % ec["streak_cycle_days"] == 0 else 0
                         balance += config["task"]["normal_reward"] if task else 0
                         balance += extra_budget
-                        fragments += rules["checkin_fragments"] + (rules["weekly_fragments"] if day % 7 == 0 else 0)
-                        fragments += rules["task_fragments"]["normal"] if task else 0
-                        small += rules["checkin_small_gifts"]
+                        day_of_month = (day - 1) % 30 + 1
+                        if day_of_month <= rules["monthly_event_days"]:
+                            if day_of_month in rules["monthly_event_small_gift_days"]:
+                                small += 1
+                            elif day_of_month in rules["monthly_event_medium_gift_days"]:
+                                medium += 1
+                            elif day_of_month in rules["monthly_event_large_gift_days"]:
+                                large += 1
+                            elif day_of_month not in rules["monthly_event_bloom_ticket_days"]:
+                                fragments += rules["monthly_event_fragments"]
+                        fragments += min(rules["task_fragments_daily_cap"], rules["task_fragments"]["normal"]) if task else 0
+                        small += min(1, rules['task_small_gifts_daily_cap']) if task and 'normal' in rules['task_small_gift_sources'] else 0
                         medium += min(1, rules["task_medium_gifts_daily_cap"]) if task and "normal" in rules["task_medium_gift_sources"] else 0
 
                         def grant(card, source):
@@ -96,13 +105,16 @@ def simulate(root: Path, *, runs: int = 30, days: int = 730, seed: int = 2026091
                             used = min(medium, (curve[REWARD_MAX_LEVEL] - affection[cid]) // rules["gift_points"]["medium"])
                             affection[cid] += used * rules["gift_points"]["medium"]
                             medium -= used
+                            used = min(large, (curve[REWARD_MAX_LEVEL] - affection[cid]) // rules["gift_points"]["large"])
+                            affection[cid] += used * rules["gift_points"]["large"]
+                            large -= used
                             for reward in rewards[cid]:
                                 key = reward["reward_key"]
                                 if key not in claimed and affection[cid] >= curve[int(reward["level"])]:
                                     claimed.add(key)
                                     if reward["kind"] == "NormalCard":
                                         grant(cards.by_id[int(reward["id"])], "affection_reward")
-                        # 解花券来源为高级挑战13.5+/SSS：这里只模拟角色好感门槛。
+                        # 券来自月初签到及高级挑战：这里只模拟角色好感门槛。
                         for index, card in enumerate(selected):
                             while stages[index] < 2:
                                 stage = stages[index]
@@ -138,7 +150,8 @@ def simulate(root: Path, *, runs: int = 30, days: int = 730, seed: int = 2026091
                         "多重复组每天额外注入1500抽卡点用于敏感性实验，不是系统免费产出。",
                         "从零组用签到和任务点数尽量11连；无月卡、囤点奖、极低概率大奖或天井。",
                         "已满星组不再抽卡，用于隔离好感和材料瓶颈；多重复注入仅对从零组生效。",
-                        "解花券暂定高级挑战目标≥13.5且SSS/SSS+获得，阶段里程碑只代表角色好感门槛到达。",
+                        "每月按30天近似，月初活动发礼物和券；解花券也可由高级挑战获得，阶段里程碑只代表好感门槛到达。",
+                        "此工具不模拟碎片兑换大礼物；含兑换的单角色养成请运行 affection_balance_report。",
                         "十角色轮流按日收取陪伴和积攒的礼物；前一卡两阶段完成后才养下一卡。",
             "期限内未完成记为删失，完成样本中位数不能代表全部用户；目标卡ID明确列出。"],
         "results": results}

@@ -653,7 +653,8 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             "【养成】\n"
             "/伙伴 <角色姓名>　/陪伴　/好感 [角色姓名|列表]\n"
             "/好感 <角色姓名> 卡面 <卡ID>　/好感奖励 [角色姓名]\n"
-            "/礼物 [购买 小|中]　/送礼 <角色姓名> 小|中|大 [数量]\n"
+            "/礼物　/礼物 购买 小|中 [数量]　/礼物 兑换 大 [数量]\n"
+            "/送礼 <角色姓名> 小|中|大 [数量]\n"
             "/养成 <卡ID>　/解花 <卡ID>　/超解花 <卡ID>\n"
             "/装扮 [称号|装饰 <ID>|卸下]\n"
             "/角色语音 [角色姓名] [序号]　/角色语音 分类\n"
@@ -675,6 +676,30 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         """生成完整规则说明，供转发消息使用。"""
         economy = self.config.economy
         monthly = self.config.monthly_card
+        growth = self.config.growth
+        task_labels = {"normal": "普通", "challenge": "挑战", "advanced": "高级挑战", "ultimate": "终极"}
+        task_gifts = '；'.join(
+            f"{'/'.join(task_labels[source] for source in sources)}每次1份{label}（每日合计上限{cap}）"
+            if sources and cap else f"任务不发{label}"
+            for label, sources, cap in (
+                ("小礼物", growth.task_small_gift_sources, growth.task_small_gifts_daily_cap),
+                ("中礼物", growth.task_medium_gift_sources, growth.task_medium_gifts_daily_cap),
+            )
+        )
+        ultimate_gifts = (
+            f"终极任务每次1份大礼物（账号累计上限{growth.ultimate_large_gifts_lifetime_cap}）"
+            if growth.ultimate_large_gifts_lifetime_cap else "任务不发大礼物"
+        )
+        ticket_days = '、'.join(map(str, growth.monthly_event_bloom_ticket_days))
+        checkin_ticket_source = (
+            f"月初签到活动第{ticket_days}日各1张" if ticket_days else "签到活动不发解花券"
+        )
+        event_gifts = '，'.join(
+            f"{label}：第{'、'.join(map(str, days))}日各1份" if days else f"{label}：不发放"
+            for label, days in (("小礼物", growth.monthly_event_small_gift_days),
+                                ("中礼物", growth.monthly_event_medium_gift_days),
+                                ("大礼物", growth.monthly_event_large_gift_days))
+        )
         item_labels = {
             "gift_small": "小礼物",
             "gift_medium": "中礼物",
@@ -698,9 +723,10 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             "新获得的称号与装饰会自动装备，同类型更高节点覆盖为最新一件；仍可在 /装扮 中换装或卸下",
             "/卡册 <角色姓名> [页码] 按角色查看卡册与卡ID，非主角色归入“其他”；"
             "翻页由用户指定页码，单次只发一页，示例 /卡册 星咲 あかり 1",
-            "礼物价值：小礼物300、中礼物1000、大礼物10000好感；好感无上限，"
+            f"礼物价值：小礼物{growth.gift_small_points}、中礼物{growth.gift_medium_points}、"
+            f"大礼物{growth.gift_large_points}好感；好感无上限，"
             "10档（Lv1000）后按最高档位的每级需求继续累计，心形最多显示 99 / 99，累计点数不封顶",
-            "重复卡立即折算花之碎片，超出满星后折算更多；解花不要求卡牌满星，"
+            "重复卡立即折算花之碎片，满星内/满星后：N与R 1/1、SR 2/3、SR+ 2/4、SSR 4/8；解花不要求卡牌满星，"
             "超解花需满星（N卡11星、其他5星）且已解花；"
             f"角色好感分别达到 Lv{self.config.growth.bloom_levels[0]} / "
             f"Lv{self.config.growth.bloom_levels[1]}，"
@@ -709,19 +735,24 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             "（这里的等级是角色好感等级，与卡面等级无关）",
             "解花与超解花成功后会发送阶段对照图；卡ID可在 /卡册 或抽卡结果图底部查看",
             (
-                f"解花券来源：高级挑战目标定数 ≥ "
+                f"解花券来源：{checkin_ticket_source}；高级挑战目标定数 ≥ "
                 f"{self.config.growth.bloom_ticket_source_min_level:g} 且以 "
                 f"{self.config.growth.bloom_ticket_source_grade} 及以上通关时获得 1 张{bloom_labels[0]}，"
-                f"获得后 {self.config.growth.bloom_ticket_cooldown_days} 天冷却；"
-                "花之碎片只用于超解花，归属未确认的卡暂不可新解花"
+                f"任务获得后 {self.config.growth.bloom_ticket_cooldown_days} 天冷却，签到券不占任务冷却；"
+                "花之碎片可用于超解花或兑换大礼物，归属未确认的卡暂不可新解花"
             ),
             "旧版解花阶段继承；好感奖励自动领取，奖励N卡不产生重复碎片",
-            "每月1-7日为签到活动：第1、3天小礼物，第5天中礼物，第7天大礼物，其余活动日发花之碎片；活动之外的签到不发养成物品",
+            f"每月1-{self.config.growth.monthly_event_days}日为签到活动："
+            f"{event_gifts}；"
+            "无礼物或解花券的活动日发花之碎片，活动之外的签到不发活动物品，漏签不补发",
             f"签到活动日的碎片奖励为每次 {self.config.growth.monthly_event_fragments}；"
-            f"任务审核每次1碎片，每天合计最多{self.config.growth.task_fragments_daily_cap}；"
+            f"普通/挑战/高级挑战/终极审核分别发{self.config.growth.task_fragments_normal}/"
+            f"{self.config.growth.task_fragments_challenge}/{self.config.growth.task_fragments_advanced}/"
+            f"{self.config.growth.task_fragments_ultimate}碎片，每天合计最多{self.config.growth.task_fragments_daily_cap}；"
             "好感节点发的N卡不产生碎片",
             "小礼物与中礼物可用点数购买（每周限量，见 /礼物），"
-            "中礼物还可由挑战/高级挑战任务审核获得，每日最多1份；终极任务只发放点数",
+            f"大礼物可用 {growth.large_gift_fragment_price} 片花之碎片兑换1份，不限额度：/礼物 兑换 大 [数量]",
+            f"任务礼物：{task_gifts}；{ultimate_gifts}",
             "语音分为自动回应与手动点播：小礼物、中/大礼物、好感升级会自动回应一条，升级优先；"
             "档案语音在 /角色语音 <角色姓名> <序号> 手动播放，可用 /角色语音 分类 查看分类",
             "【签到与奖励】",
@@ -2009,10 +2040,12 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
                     "gift_medium": receipt.medium_gifts,
                     "gift_large": receipt.large_gifts,
                     "flower_fragment": receipt.growth_fragments,
+                    "bloom_ticket": receipt.bloom_tickets,
                 }
                 for label, amount in (("小礼物", receipt.small_gifts),
                                       ("中礼物", receipt.medium_gifts),
-                                      ("大礼物", receipt.large_gifts)):
+                                      ("大礼物", receipt.large_gifts),
+                                      ("解花券", receipt.bloom_tickets)):
                     if amount:
                         gained.append(f"{label} ×{amount}")
                 if receipt.growth_fragments:

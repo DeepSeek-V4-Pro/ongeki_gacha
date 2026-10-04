@@ -213,6 +213,24 @@ class GrowthService:
         return self._run(qq_id, request_id, "gift_purchase",
                          {"size": size, "quantity": quantity}, execute)
 
+    def exchange_large_gift(self, qq_id: str, quantity: int, request_id: str) -> dict:
+        """用碎片兑换大礼物，不设单笔、每日或每周额度；与库存同事务防重。"""
+        def execute(conn, now):
+            if type(quantity) is not int or quantity < 1:
+                raise GrowthError("兑换数量需为正整数（/礼物 兑换 大 1）")
+            unit_price = self.catalog.rules['large_gift_fragment_price']
+            price = unit_price * quantity
+            row = conn.execute("SELECT quantity FROM player_items WHERE qq_id=? AND item_id='flower_fragment'",
+                               (qq_id,)).fetchone()
+            owned = int(row[0]) if row else 0
+            if owned < price:
+                raise GrowthError(f"花之碎片不足 {owned}/{price}（/规则 查看来源）")
+            change_item(conn, qq_id, 'flower_fragment', -price)
+            change_item(conn, qq_id, 'gift_large', quantity)
+            return {'size': 'large', 'label': '大礼物', 'quantity': quantity,
+                    'unit_price': unit_price, 'price': price, 'remaining': owned - price}
+        return self._run(qq_id, request_id, 'gift_exchange', {'quantity': quantity}, execute)
+
     def bloom(self, qq_id: str, card_id: int, stage: int, request_id: str) -> dict:
         def execute(conn, now):
             card = self.catalog.cards.by_id.get(card_id)

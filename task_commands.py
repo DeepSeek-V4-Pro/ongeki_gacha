@@ -12,9 +12,11 @@ from .gacha_db import GachaDatabase
 from .task_catalog import GAME_LABELS, pick_random_task
 
 
-def _growth_reward_text(medium_gifts: int, large_gifts: int, fragments: int) -> str:
+def _growth_reward_text(medium_gifts: int, large_gifts: int, fragments: int, small_gifts: int = 0) -> str:
     """只列实际发放的养成物品；全为 0 时返回空串。"""
     parts = []
+    if small_gifts:
+        parts.append(f"小礼物 ×{small_gifts}")
     if medium_gifts:
         parts.append(f"中礼物 ×{medium_gifts}")
     if large_gifts:
@@ -359,12 +361,13 @@ class TaskCommandsMixin:
                 text += f"｜{receipt.cooldown_text}"
             if self.config.growth.enabled:
                 text += _growth_reward_text(
-                    receipt.medium_gifts, receipt.large_gifts, receipt.growth_fragments
+                    receipt.medium_gifts, receipt.large_gifts, receipt.growth_fragments, receipt.small_gifts
                 )
                 await self._send_item_gain_card(
                     stream_id,
                     task.qq_id,
                     {
+                        "gift_small": receipt.small_gifts,
                         "gift_medium": receipt.medium_gifts,
                         "gift_large": receipt.large_gifts,
                         "flower_fragment": receipt.growth_fragments,
@@ -466,12 +469,13 @@ class TaskCommandsMixin:
         )
         if receipt.success and self.config.growth.enabled:
             text += _growth_reward_text(
-                receipt.medium_gifts, receipt.large_gifts, receipt.growth_fragments
+                receipt.medium_gifts, receipt.large_gifts, receipt.growth_fragments, receipt.small_gifts
             )
             await self._send_item_gain_card(
                 stream_id,
                 target_id,
                 {
+                    "gift_small": receipt.small_gifts,
                     "gift_medium": receipt.medium_gifts,
                     "gift_large": receipt.large_gifts,
                     "flower_fragment": receipt.growth_fragments,

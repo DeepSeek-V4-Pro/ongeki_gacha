@@ -109,6 +109,7 @@ class CheckinReceipt:
     small_gifts: int = 0
     medium_gifts: int = 0
     large_gifts: int = 0
+    bloom_tickets: int = 0
 
 
 @dataclass(frozen=True)
@@ -181,6 +182,7 @@ class TaskReviewReceipt:
     grade: str = ""
     error: str = ""
     growth_fragments: int = 0
+    small_gifts: int = 0
     medium_gifts: int = 0
     large_gifts: int = 0
     bloom_tickets: int = 0
@@ -607,29 +609,30 @@ class GachaDatabase:
         return DrawCommitment(card_id, row is None, previous+1, stage>=1, stage==2, fragments)
 
     def _award_growth_daily(self, conn: sqlite3.Connection, qq_id: str, today: str,
-                            source: str, event_id: str, now: str) -> tuple[int, int, int, int]:
-        """与签到或审核同事务发奖；返回（小礼物, 中礼物, 花之碎片, 大礼物）。
+                            source: str, event_id: str, now: str) -> tuple[int, int, int, int, int]:
+        """与签到或审核同事务发奖；返回（小礼物, 中礼物, 花之碎片, 大礼物, 解花券）。
 
-        签到物品集中在每月前若干天的活动里：礼物日发礼物，其余活动日发碎片，
-        活动之外的签到只发点数。任务物品仍按审核成功的UTC日期计每日上限。
+        签到物品集中在每月前若干天的活动里：解花券可与礼物同日，无物品日发碎片，
+        活动之外的签到不发活动物品。任务物品仍按审核成功的UTC日期计每日上限。
         """
         if not self._growth_enabled:
-            return 0, 0, 0, 0
+            return 0, 0, 0, 0, 0
         key = json.dumps(["daily_growth", source, qq_id, event_id], separators=(",", ":"))
         if conn.execute("SELECT 1 FROM growth_events WHERE event_key=?", (key,)).fetchone():
-            return 0, 0, 0, 0
+            return 0, 0, 0, 0, 0
         rules = self._growth_rules
-        small_gifts = medium_gifts = large_gifts = fragments = 0
+        small_gifts = medium_gifts = large_gifts = fragments = bloom_tickets = 0
         if source == "checkin":
             day = int(today[8:10])
             if 1 <= day <= rules["monthly_event_days"]:
+                bloom_tickets = int(day in rules["monthly_event_bloom_ticket_days"])
                 if day in rules["monthly_event_small_gift_days"]:
                     small_gifts = 1
                 elif day in rules["monthly_event_medium_gift_days"]:
                     medium_gifts = 1
                 elif day in rules["monthly_event_large_gift_days"]:
                     large_gifts = 1
-                else:
+                elif not bloom_tickets:
                     fragments = rules["monthly_event_fragments"]
         else:
             def quota(action, wanted, cap, period=today):
@@ -639,19 +642,24 @@ class GachaDatabase:
                 conn.execute("""INSERT INTO growth_daily_usage VALUES(?,?,?,?) ON CONFLICT(qq_id,utc_date,action)
                     DO UPDATE SET quantity=excluded.quantity""", (qq_id, period, action, used+amount))
                 return amount
-            medium_gifts = quota("task_gifts", int(source in rules["task_medium_gift_sources"]), rules["task_medium_gifts_daily_cap"])
+            small_gifts = quota("task_small_gifts", int(source in rules["task_small_gift_sources"]), rules["task_small_gifts_daily_cap"])
+            # 保留旧的中礼物额度键，热更新当天不会丢失已领取数量。
+            medium_gifts = quota("task_gifts", int(source in rules["task_medium_gift_sources"]),
+                                 rules["task_medium_gifts_daily_cap"])
             if source == "ultimate" and rules["ultimate_large_gifts_lifetime_cap"] > 0:
                 large_gifts = quota("ultimate_large_gifts", 1, rules["ultimate_large_gifts_lifetime_cap"], "lifetime")
             fragments = quota("task_fragments", rules["task_fragments"][source], rules["task_fragments_daily_cap"])
         for item_id, amount in (("gift_small", small_gifts), ("gift_medium", medium_gifts),
-                                ("gift_large", large_gifts), ("flower_fragment", fragments)):
+                                ("gift_large", large_gifts), ("flower_fragment", fragments),
+                                ("bloom_ticket", bloom_tickets)):
             if amount:
                 change_item(conn, qq_id, item_id, amount)
         conn.execute("INSERT INTO growth_events VALUES(?,?,?,?,?,?,?)", (
             key, qq_id, source, json.dumps({"event_id": event_id, "utc_date": today}),
             json.dumps({"gift_small": small_gifts, "gift_medium": medium_gifts,
-                        "gift_large": large_gifts, "flower_fragment": fragments}), rules["version"], now))
-        return small_gifts, medium_gifts, fragments, large_gifts
+                        "gift_large": large_gifts, "flower_fragment": fragments,
+                        "bloom_ticket": bloom_tickets}), rules["version"], now))
+        return small_gifts, medium_gifts, fragments, large_gifts, bloom_tickets
 
     def close(self) -> None:
         """关闭数据库连接。"""
@@ -1338,7 +1346,7 @@ class GachaDatabase:
                     non_gacha_is_cho_kaika = granted.is_cho_kaika
                     duplicate_reward = granted.fragments
                     non_gacha_card_id = chosen_card_id
-                small_gifts, medium_gifts, growth_fragments, large_gifts = self._award_growth_daily(
+                small_gifts, medium_gifts, growth_fragments, large_gifts, bloom_tickets = self._award_growth_daily(
                     conn, qq_id, today, "checkin", today, now)
                 conn.execute("COMMIT")
                 player = self._player_state(conn, qq_id)
@@ -1362,6 +1370,7 @@ class GachaDatabase:
                     small_gifts=small_gifts,
                     medium_gifts=medium_gifts,
                     large_gifts=large_gifts,
+                    bloom_tickets=bloom_tickets,
                     growth_fragments=growth_fragments + duplicate_reward,
                 )
             except Exception:
@@ -2212,7 +2221,7 @@ class GachaDatabase:
                     "SELECT points FROM players WHERE qq_id = ?",
                     (qq_id,),
                 ).fetchone()
-                _, medium_gifts, growth_fragments, large_gifts = self._award_growth_daily(
+                small_gifts, medium_gifts, growth_fragments, large_gifts, _ = self._award_growth_daily(
                     conn, qq_id, self.current_date_str(0), str(row["task_kind"]), str(task_id), now)
                 bloom_tickets = 0
                 cooldown_text = ""
@@ -2261,6 +2270,7 @@ class GachaDatabase:
                 conn.execute("COMMIT")
                 return TaskReviewReceipt(
                     success=True,
+                    small_gifts=small_gifts,
                     medium_gifts=medium_gifts,
                     large_gifts=large_gifts,
                     growth_fragments=growth_fragments,
@@ -2435,11 +2445,12 @@ class GachaDatabase:
                     "SELECT points FROM players WHERE qq_id = ?",
                     (qq_id,),
                 ).fetchone()
-                _, medium_gifts, growth_fragments, large_gifts = self._award_growth_daily(
+                small_gifts, medium_gifts, growth_fragments, large_gifts, _ = self._award_growth_daily(
                     conn, qq_id, self.current_date_str(0), "ultimate", str(task_id), now)
                 conn.execute("COMMIT")
                 return TaskReviewReceipt(
                     success=True,
+                    small_gifts=small_gifts,
                     medium_gifts=medium_gifts,
                     large_gifts=large_gifts,
                     growth_fragments=growth_fragments,

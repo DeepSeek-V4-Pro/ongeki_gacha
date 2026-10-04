@@ -99,6 +99,10 @@ def describe_receipt(
             f"\n本周还可购买 {result['weekly_cap'] - result['weekly_used']} 份"
             f"｜/送礼 <角色姓名> {size} 1"
         )
+    if action == "礼物兑换":
+        return (f"已兑换 大礼物 ×{result['quantity']}"
+                f"｜消耗花之碎片 {result['price']}（剩余 {result['remaining']}）"
+                "\n/送礼 <角色姓名> 大 1")
     kind={'Trophy':'称号','NamePlate':'名牌','Attachment':'装饰'}.get(result['cosmetic_type'],result['cosmetic_type'])
     if result['cosmetic_id']=='卸下':
         return f"已卸下{kind}｜/装扮 查看已解锁"
@@ -259,6 +263,12 @@ class GrowthCommandsMixin:
                     text = '名牌展示已停用，已解锁名牌保留为收藏。可使用 /装扮 查看称号和装饰。'
                 else:
                     result = await asyncio.to_thread(service.equip, user, kind, args[1], request_id)
+            elif action == "礼物" and args and args[0] == "兑换":
+                if len(args) not in (2, 3) or args[1] != "大":
+                    raise ValueError("用法：/礼物 兑换 大 [数量]")
+                result = await asyncio.to_thread(
+                    service.exchange_large_gift, user, int(args[2]) if len(args) == 3 else 1, request_id)
+                action = "礼物兑换"
             elif action == "礼物" and args and args[0] in {"购买", "买"}:
                 if len(args) not in (2, 3):
                     raise ValueError("用法：/礼物 购买 小/中 [数量]")
@@ -318,13 +328,15 @@ class GrowthCommandsMixin:
                 sent=await self._growth_image(stream_id,action,args,snapshot,catalog,portrait_card,purchase)
             except Exception as exc:
                 self.ctx.logger.warning('养成图片失败，使用文本回执: %s',exc)
-        if action == "礼物购买" and result is not None and result.get("success"):
+        if action in {"礼物购买", "礼物兑换"} and result is not None and result.get("success"):
             await self._send_item_gain_card(
                 stream_id,
                 user,
                 {f"gift_{result['size']}": int(result["quantity"])},
-                title="购买获得物品",
+                title="兑换获得物品" if action == "礼物兑换" else "购买获得物品",
                 subtitle=(
+                    f"花之碎片 -{result['price']}｜剩余 {result['remaining']}"
+                    if action == "礼物兑换" else
                     f"{result['label']} ×{result['quantity']}"
                     f"｜-{result['price']} 点｜剩余 {result['points']} 点"
                 ),
@@ -370,7 +382,8 @@ class GrowthCommandsMixin:
         output=self.ctx.paths.runtime_dir/f'growth_{time_ns()}.png'
         if action=='礼物' and not args:
             items={r['item_id']:r['quantity'] for r in snapshot['player_items']}
-            path=await asyncio.to_thread(render_gift_inventory,items,output,purchase)
+            path=await asyncio.to_thread(render_gift_inventory,items,output,purchase,
+                                        fragment_price=catalog.rules['large_gift_fragment_price'])
         elif action=='好感':
             profile=snapshot['player_growth_profile']
             partner=profile[0]['partner_character_id'] if profile else None
@@ -420,7 +433,9 @@ class GrowthCommandsMixin:
                     f"{label} {plan['price']} 点/份"
                     f"（本周可买 {plan['left']}/{plan['cap']}）"
                 )
-            lines.append("/礼物 购买 小 1")
+            price = catalog.rules['large_gift_fragment_price']
+            lines.append(f"大礼物 {price} 花之碎片/份（不限兑换，可换 {items.get('flower_fragment',0) // price} 份）")
+            lines.extend(["/礼物 购买 小 1", "/礼物 兑换 大 1"])
             return "\n".join(lines)
         if action == "列表":
             return "\n".join(f"{c['name']}｜" +

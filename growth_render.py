@@ -181,13 +181,15 @@ def original_asset(image, key, box):
             contain(image,source,box)
 
 
-def render_gift_inventory(items: dict, output: Path, purchase: dict | None = None):
+def render_gift_inventory(items: dict, output: Path, purchase: dict | None = None, *, fragment_price: int = 12):
     purchase = purchase or {}
     cards = []
     for size,label,value in (('small','小礼物',300),('medium','中礼物',1000),('large','大礼物',10000)):
         plan = purchase.get(size)
         notes = ([f"购买 {plan['price']} 点 / 份", f"本周剩余 {plan['left']} / {plan['cap']}"]
                  if plan else ['无点数购买渠道'])
+        if size == 'large':
+            notes = [f"兑换 {fragment_price} 碎片 / 份", '不限兑换额度']
         notes = [line for note in notes for line in wrap(note,264,24)]
         counts = wrap(f"持有 {items.get('gift_'+size,0)}",264,34)
         cards.append((size,label,value,notes,counts))
@@ -215,7 +217,7 @@ def render_gift_inventory(items: dict, output: Path, purchase: dict | None = Non
     top=y+card_height+24
     game_ui.panel(image,(48,top,1032,top+fragment_height))
     bottom=text_block(draw,(72,top+24),'\n'.join(fragment_lines),936,size=40,bold=True)
-    text_block(draw,(72,bottom+12),'/礼物 购买 小 1  ·  /送礼 星咲 あかり 小 1',936,size=30,fill=t.PINK)
+    text_block(draw,(72,bottom+12),'/礼物 购买 小 1  ·  /礼物 兑换 大 1',936,size=30,fill=t.PINK)
     footer(draw,height,command='/好感 · /装扮 · /养成 <卡ID>')
     return save(image,output)
 

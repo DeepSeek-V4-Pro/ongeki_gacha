@@ -15,7 +15,10 @@
 - 不同用户对素材使用范围和来源的授权情况不同；
 - 公开渠道中的成品图、缩略图与本地标准卡面（768×1052）并不等同。
 
-所有接入工具都是离线脚本：它们不下载、不解包、不调用网络，只处理你本地的文件。
+素材接入脚本只处理本地文件，不下载或解包游戏资源。插件运行时获取公开曲库、曲绘和公告图的网络功能另计。
+
+命令运行目录：`python tools/...` 在插件目录运行；`python -m ongeki_gacha.tools...` 在插件父目录运行，插件文件夹需名为 `ongeki_gacha`。
+下文模块命令中的输出路径已按父目录书写。运行 `verify_text_fallback` 还需要当前 Python 环境安装 MaiBot SDK 2.x。
 
 ## 1. 一分钟概览
 
@@ -310,13 +313,13 @@ NotoSansCJKsc-Bold.otf
 
 ```powershell
 python -m ongeki_gacha.tools.build_growth_assets `
-  --source <提取目录> --output assets\growth
+  --source <提取目录> --output ongeki_gacha\assets\growth
 python -m ongeki_gacha.tools.build_growth_theme
 ```
 
 `build_growth_assets` 会把白名单素材复制到 `assets/growth/images/` 并写出
 `visual_asset_manifest.json`（逐项记录来源、尺寸与 SHA-256）；
-`build_growth_theme` 从角色立绘取色生成 `character_theme.json`，不需要参数。
+`build_growth_theme` 使用原始奖励附件标注的角色专属 RGB 色值生成 `character_theme.json`，不需要参数。
 缺少这些图片时，好感页、奖励页与解花对照图会自动退化为文字卡片。
 
 ## 9. 语音
@@ -326,16 +329,16 @@ python -m ongeki_gacha.tools.build_growth_theme
 
 ```powershell
 python -m ongeki_gacha.tools.build_affection_voice_assets `
-  --source <提取目录>\voice_extracted --output assets\growth
+  --source <提取目录>\voice_extracted --output ongeki_gacha\assets\growth
 python -m ongeki_gacha.tools.build_event_voice_assets `
-  --source <提取目录>\event_voice_extracted --output assets\growth
+  --source <提取目录>\event_voice_extracted --output ongeki_gacha\assets\growth
 ```
 
-打包后先做一次自动校验（解码、时长、响度、散列），确认无误再写入验收状态：
+打包后先做一次自动校验（解码、时长、响度、散列），确认无误再写入验收状态。自动校验不替代人工听感检查：
 
 ```powershell
-python -m ongeki_gacha.tools.review_voice_assets --root . --report temp\voice_review.json
-python -m ongeki_gacha.tools.review_voice_assets --root . --approve
+python -m ongeki_gacha.tools.review_voice_assets --root ongeki_gacha --report ongeki_gacha\temp\voice_review.json
+python -m ongeki_gacha.tools.review_voice_assets --root ongeki_gacha --approve
 ```
 
 只有 `listening_review == "verified"` 的语音才会发送；想先接入但不发语音，
@@ -351,7 +354,7 @@ python -m ongeki_gacha.tools.verify_growth_install
 # 无素材兜底（复制一份不含二进制的副本实际跑一轮命令）
 python -m ongeki_gacha.tools.verify_text_fallback
 
-# 卡面接入结果
+# 卡面接入结果（切回插件目录后运行）
 python tools/card_asset_tools.py verify
 ```
 
@@ -370,8 +373,8 @@ python tools/card_asset_tools.py verify
 
 - **为什么不随插件提供全部卡面？** 版权不属于项目代码，且公开渠道中的成品图、缩略图和本地标准图层
   并不总是等价；维护者不能替用户确认其获取、复制和使用素材的权限。
-- **插件不加载，提示卡牌索引不可用**：先跑 `python tools/sync_card_data.py` 生成
-  `assets/card_data/card_info_merged.json`；卡面可以之后再接。
+- **插件不加载，提示卡牌索引不可用**：检查配置路径；缺少 `assets/card_data/card_info_merged.json` 时，
+  从同版本插件包补齐随包索引。同步卡面脚本不能重建完整卡牌索引，卡面可以之后再接。
 - **已经有 `card_info_merged.json`，为什么还提示卡图缺失？** 元数据 JSON 不需要图片；
   显示 `/卡图` 和合成抽卡结果才需要 `ui_card_*.png`。请检查 `assets/card_data/`
   目录或 `assets.cards_dir` 配置。
@@ -382,7 +385,7 @@ python tools/card_asset_tools.py verify
 - **官方宣传图可以直接用来做卡面吗？** 通常不建议。官方宣传图可能经过裁切、合成、缩小或加文字/边框，
   尺寸也不一定是 768×1052。它适合做预览、对照和确认，不应直接伪装成完整标准卡面。
 - **我已确认有权限，应该放哪些文件？** 建议直接使用
-  `tools/card_asset_tools.py import --source <素材目录>`，
+  `python tools/card_asset_tools.py import --source <素材目录>`，
   脚本会自动识别/重命名、转换尺寸、更新 `imagePresent` 并重建校验清单；
   也可以手动按 `ui_card_<6位ID>.png` 命名放入 `assets/card_data/`。
 

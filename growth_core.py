@@ -5,8 +5,10 @@ MAIN_CHARACTER_IDS = frozenset(range(1000, 1017))
 CURVE_VERSION = "affection-v2"
 REWARD_MAX_LEVEL = 1000
 MAX_AFFECTION_LEVEL = 9999
-FRAGMENT_RATES = {"N": 1, "R": 1, "SR": 3, "SRPlus": 4, "SSR": 8}
-OVERFLOW_FRAGMENT_RATES = {"N": 2, "R": 2, "SR": 6, "SRPlus": 8, "SSR": 16}
+FRAGMENT_RATES = {"N": 1, "R": 1, "SR": 2, "SRPlus": 2, "SSR": 4}
+OVERFLOW_FRAGMENT_RATES = {"N": 1, "R": 1, "SR": 3, "SRPlus": 4, "SSR": 8}
+# 旧版迁移补偿固定使用当时的倍率，不随后续产出平衡调整。
+LEGACY_OVERFLOW_FRAGMENT_RATES = {"N": 2, "R": 2, "SR": 6, "SRPlus": 8, "SSR": 16}
 
 
 def legacy_growth(rarity: str | None, copies: int, kaika: bool, cho_kaika: bool) -> tuple[int, int]:
@@ -18,7 +20,7 @@ def legacy_growth(rarity: str | None, copies: int, kaika: bool, cho_kaika: bool)
         return stage, 0
     maximum = 11 if rarity == "N" else 5
     derived = 2 if copies >= maximum + 2 else 1 if copies >= maximum + 1 else 0
-    return max(stage, derived), max(0, copies - maximum - 2) * OVERFLOW_FRAGMENT_RATES[rarity]
+    return max(stage, derived), max(0, copies - maximum - 2) * LEGACY_OVERFLOW_FRAGMENT_RATES[rarity]
 
 
 def build_thresholds(points: list[int], scales: list[int]) -> tuple[int, ...]:
@@ -64,7 +66,7 @@ def affection_progress(points: int, thresholds: tuple[int, ...]) -> tuple[int, f
 
 def duplicate_fragments(rarity: str, old_copies: int, new_copies: int,
                         *, source: str) -> int:
-    """重复卡即给碎片：满星内每张按基础值，超出满星部分按更高值。"""
+    """重复卡即给碎片：满星内按基础值，超出满星按溢出值。"""
     if old_copies < 0 or new_copies < old_copies:
         raise ValueError("发卡数量非法")
     if source == "affection_reward":

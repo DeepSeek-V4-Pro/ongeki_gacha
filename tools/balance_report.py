@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 import tomllib
 
+from .affection_balance_report import task_gifts
+
 
 # v5：本次改动前的默认值，仅用于前后对照。
 OLD = {
@@ -87,21 +89,18 @@ def _profile_counts(profile: str, task: dict) -> tuple[int, int, int]:
 
 
 def _item_balance(current: dict, rules: dict, curve: list[int]) -> dict:
-    """按满勤上界估算月度物品流量；碎片当前没有消耗端。"""
+    """按30天满勤上界估算月度物品流量，不计重复卡碎片。"""
     growth = current["growth"]
     weeks = 30 / 7
     small_days = len(rules.get("monthly_event_small_gift_days") or [])
     medium_days = len(rules.get("monthly_event_medium_gift_days") or [])
     large_days = len(rules.get("monthly_event_large_gift_days") or [])
-    small_month = small_days + growth["gift_purchase_small_weekly_cap"] * weeks
+    counts = {kind: int(current['task'].get(f'{kind}_count', 0)) for kind in ('normal', 'challenge', 'advanced')}
+    daily_gifts = task_gifts(rules, counts)
+    small_month = small_days + growth["gift_purchase_small_weekly_cap"] * weeks + 30 * daily_gifts['small']
     medium_month = (
         medium_days
-        + min(
-            int(rules["task_medium_gifts_daily_cap"]),
-            int(int(current["task"]["challenge_count"]) > 0 and "challenge" in rules["task_medium_gift_sources"])
-            + int(int(current["task"]["advanced_count"]) > 0 and "advanced" in rules["task_medium_gift_sources"]),
-        )
-        * 30
+        + 30 * daily_gifts['medium']
         + growth["gift_purchase_medium_weekly_cap"] * weeks
     )
     large_month = large_days
@@ -111,12 +110,16 @@ def _item_balance(current: dict, rules: dict, curve: list[int]) -> dict:
         + medium_month * int(rules["gift_points"]["medium"])
         + large_month * int(rules["gift_points"]["large"])
     )
-    fragments_fixed = (
-        3 * int(rules["monthly_event_fragments"])
-        + 30 * int(rules["task_fragments_daily_cap"])
-    )
+    item_days = set(rules["monthly_event_small_gift_days"]) | set(rules["monthly_event_medium_gift_days"]) | set(
+        rules["monthly_event_large_gift_days"]) | set(rules["monthly_event_bloom_ticket_days"])
+    fragment_days = set(range(1, rules["monthly_event_days"] + 1)) - item_days
+    task_fragments = min(rules["task_fragments_daily_cap"], sum(
+        int(current["task"].get(f"{kind}_count", 0)) * rules["task_fragments"][kind]
+        for kind in ("normal", "challenge", "advanced")
+    ))
+    fragments_fixed = len(fragment_days) * int(rules["monthly_event_fragments"]) + 30 * task_fragments
     cooldown_days = max(int(rules["bloom_ticket_source"]["cooldown_days"]), 1)
-    tickets_per_month = 30 / cooldown_days
+    tickets_per_month = len(rules["monthly_event_bloom_ticket_days"]) + 30 / cooldown_days
     return {
         "fragments_fixed_per_month": fragments_fixed,
         "fragments_sink_per_super_bloom": (
@@ -124,7 +127,8 @@ def _item_balance(current: dict, rules: dict, curve: list[int]) -> dict:
             if rules["bloom_items"][1] == "flower_fragment"
             else None
         ),
-        "fragments_note": "碎片只用于超解花；固定来源已降为活动周5/天、任务2/天上限",
+        "fragments_note": "碎片可用于超解花或兑换大礼物；按月初无物品日与任务每日上限计算，重复卡另计",
+        "large_gifts_from_fixed_fragments_30_days": fragments_fixed // rules['large_gift_fragment_price'],
         "bloom_tickets_per_month": round(tickets_per_month, 2),
         "bloom_items": list(rules["bloom_items"]),
         "bloom_ticket_costs": list(rules["bloom_costs"]),
@@ -166,6 +170,7 @@ def build(root: Path) -> dict:
         small_days = set(active_rules.get("monthly_event_small_gift_days") or [])
         medium_days = set(active_rules.get("monthly_event_medium_gift_days") or [])
         large_days = set(active_rules.get("monthly_event_large_gift_days") or [])
+        ticket_days = set(active_rules.get("monthly_event_bloom_ticket_days") or [])
         for profile in profiles:
             normal_count, challenge_count, advanced_count = _profile_counts(profile, task)
             points = affection = fragments = small = medium = large = 0
@@ -190,19 +195,16 @@ def build(root: Path) -> dict:
                     gift_small = active_rules.get("checkin_small_gifts", 0)
                     fragments += active_rules.get("checkin_fragments", 0)
                     fragments += active_rules.get("weekly_fragments", 0) if day % 7 == 0 else 0
-                elif day_of_month not in small_days | medium_days | large_days:
+                elif day_of_month not in small_days | medium_days | large_days | ticket_days:
                     fragments += active_rules["monthly_event_fragments"]
                 small += gift_small
                 medium += gift_medium
                 large += gift_large
 
-                task_gift_sources = set(active_rules.get("task_medium_gift_sources") or [])
-                task_gifts = min(
-                    active_rules["task_medium_gifts_daily_cap"],
-                    int(challenge_count > 0 and "challenge" in task_gift_sources)
-                    + int(advanced_count > 0 and "advanced" in task_gift_sources),
-                )
-                medium += task_gifts
+                daily_gifts = task_gifts(active_rules, {'normal': normal_count, 'challenge': challenge_count,
+                                                       'advanced': advanced_count})
+                small += daily_gifts['small']
+                medium += daily_gifts['medium']
                 affection = min(
                     curve[-1],
                     affection
@@ -210,7 +212,8 @@ def build(root: Path) -> dict:
                     + gift_small * active_rules["gift_points"]["small"]
                     + gift_medium * active_rules["gift_points"]["medium"]
                     + gift_large * active_rules["gift_points"]["large"]
-                    + task_gifts * active_rules["gift_points"]["medium"],
+                    + daily_gifts['small'] * active_rules["gift_points"]["small"]
+                    + daily_gifts['medium'] * active_rules["gift_points"]["medium"],
                 )
                 fragments += min(
                     active_rules["task_fragments_daily_cap"],
@@ -222,7 +225,7 @@ def build(root: Path) -> dict:
                     if affection >= curve[level]:
                         milestones.setdefault(f"level_{level}", day)
                 while stage < 2 and affection >= curve[active_rules["bloom_levels"][stage]]:
-                    # 解花券来源为高级挑战13.5+/SSS；这里只记录好感门槛，不假设券已发放。
+                    # 券来自月初签到及高级挑战；这里只记录好感门槛，不假设已解花。
                     stage += 1
                     milestones[f"affection_gate_stage_{stage}"] = day
                 if day in (30, 90):
@@ -253,7 +256,8 @@ def build(root: Path) -> dict:
             "基础签到按数学期望；挑战与高级挑战按SSS上界；无月卡、囤点奖、终极奖、管理员注入。",
             "十一连等价仅为点数/500，不是抽到目标卡或满星概率。",
             "未计5%签到掉卡及随机抽卡重复碎片，所得养成时间仅隔离固定奖励通道。",
-            "解花券暂定高级挑战目标≥13.5且SSS/SSS+获得，15天冷却；阶段时间只计算角色好感门槛。",
+            "每月按30天近似，不将碎片兑换计入等级时间；真实日历与兑换方案见 affection_balance_report。",
+            "解花券来自月初签到和高级挑战目标≥13.5且SSS/SSS+（任务15天冷却）；阶段时间只计算角色好感门槛。",
             "满级后的礼物数量为累计发放量，不表示全部已消费。",
         ],
         "task_daily_max": {
@@ -287,6 +291,11 @@ def build(root: Path) -> dict:
         "rules": {
             "version": rules["version"],
             "monthly_event_fragments": rules["monthly_event_fragments"],
+            "monthly_event_days": rules["monthly_event_days"],
+            "monthly_event_bloom_ticket_days": rules["monthly_event_bloom_ticket_days"],
+            "large_gift_fragment_price": rules['large_gift_fragment_price'],
+            "task_small_gifts_daily_cap": rules['task_small_gifts_daily_cap'],
+            "task_medium_gifts_daily_cap": rules['task_medium_gifts_daily_cap'],
             "bloom_levels": rules["bloom_levels"],
             "bloom_items": rules["bloom_items"],
             "bloom_costs": rules["bloom_costs"],

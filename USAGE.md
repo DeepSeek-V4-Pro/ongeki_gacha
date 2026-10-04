@@ -1,6 +1,6 @@
 # 使用说明
 
-当前版本：1.3.1（2026-09-23）
+当前版本：1.3.2（2026-10-04）
 
 本文结构：1 简介｜2 安装、素材与升级｜3 命令总览｜4 抽卡、卡池与天井｜
 5 点数经济｜6 随机任务｜7 主角色好感养成｜8 显示与回退｜9 数据目录与素材｜
@@ -10,7 +10,8 @@
 ## 1. 简介
 
 音击抽卡模拟器是一个 MaiBot 插件，在聊天环境里模拟音击（オンゲキ）的抽卡、卡牌收藏、
-随机任务和主角色好感养成。所有点数与物品都是模拟数值，不连接任何官方服务。
+随机任务和主角色好感养成。所有点数与物品都是模拟数值，不接入官方玩家账号或机台数据。
+运行时会获取公开曲库、曲绘和官方卡池公告图；卡牌素材与玩家存档保存在本地。
 
 - 抽卡结果图底部带 RinNET 风格的信息条，显示卡牌数字 ID 与完整卡号（如 `104490 [O.N.G.E.K.I.]1.50-E-0371`）；
   `/卡图` 发送的是不带信息条的高清原图。
@@ -22,7 +23,7 @@
 1. 把插件目录放进 MaiBot 插件目录（新版运行时为 `<MaiBot>/plugins/`）。
 2. 在插件管理界面加载该插件，或重启实例。
 3. 插件默认读取自身目录下的 `assets/card_data/`，也可以在配置中填写绝对路径。
-4. 需要 Pillow >= 11.3.0；首次加载会自动生成 `config.toml`。
+4. 需要 MaiBot SDK 2.x 与 Pillow >= 11.3.0；首次加载会自动生成 `config.toml`。
 
 ### 2.1 素材是可选的
 
@@ -42,24 +43,57 @@
 系统里没有任何可用中日文字体时，图片渲染会整体关闭，全部回复退化为纯文字。
 补齐素材后重新加载插件即可生效，不需要改配置。
 
-插件运行时会监视插件目录下的 `.py` 与 `_manifest.json`，替换文件后会自动重启该插件运行时，
-不需要手动重启整个 MaiBot。
+替换文件后，在 MaiBot 插件管理中重新加载插件，或重启实例，确认日志显示加载成功。
 
-### 2.2 从 1.3.0 升级
+### 2.2 从 1.3.0 / 1.3.1 升级到 1.3.2
 
-备份插件数据目录中的 `ongeki_gacha.db` 和实例自己的 `config.toml`，再替换为 1.3.1 文件。
-本次修正显示与主题色；启动时会为待发送揭示记录补充解花状态列，已有记录保留。
-保留原有配置和素材目录即可。
+1. 停止插件后，备份插件数据目录中的 `ongeki_gacha.db` 和实例的 `config.toml`。
+2. 替换为 1.3.2 的代码与 JSON 索引，保留自己的配置、数据库和素材目录。
+3. **同步奖励配置**：新增键缺省时使用新默认值，已有键仍保留旧值。只改版本号不会迁移奖励数值。
+   要采用本版平衡方案，请在现有 `[plugin]` / `[growth]` 段中更新或补齐以下字段，
+   不要重复追加同名段；其他自定义配置按需保留。
+
+```toml
+[plugin]
+config_version = "1.3.2"
+
+[growth]
+monthly_event_days = 10
+monthly_event_small_gift_days = [1, 3, 6, 9]
+monthly_event_medium_gift_days = [4, 8]
+monthly_event_large_gift_days = [5, 10]
+monthly_event_bloom_ticket_days = [1]
+monthly_event_fragments = 2
+task_small_gifts_daily_cap = 3
+task_small_gift_sources = ["normal"]
+task_medium_gifts_daily_cap = 3
+task_medium_gift_sources = ["challenge", "advanced"]
+large_gift_fragment_price = 12
+task_fragments_normal = 0
+task_fragments_challenge = 1
+task_fragments_advanced = 1
+task_fragments_ultimate = 0
+task_fragments_daily_cap = 1
+ultimate_large_gifts_lifetime_cap = 0
+```
+
+4. 重新加载后查看 `/规则` 和 `/礼物`，确认活动为每月 1–10 日、大礼物价格为 12 碎片，
+   挑战与高级挑战中礼物每日合计上限为 3。
+
+已有点数、好感、物品和领取记录保留，不追扣库存，也不补发过去的签到或已审核任务。
+月初活动按 UTC 日历日期发放；升级前已签到的当天不会再次领奖。
+待审核任务按审核时的配置发奖，已用的每日任务礼物和碎片额度继续累计。
+重复卡采用新碎片倍率，旧版本迁移补偿仍使用原倍率。
+从 1.3.0 升级时，启动会补齐待发送揭示记录的解花状态列，原有记录保留。
 
 ### 2.3 从 1.2.1 升级
 
 1. **备份**：复制插件数据目录中的 `ongeki_gacha.db`，并备份插件目录里的 `config.toml`。
-2. **替换代码**：用 1.3.1 的插件目录覆盖旧目录，保留实例自己的 `config.toml`。
+2. **替换代码**：用 1.3.2 的插件目录覆盖旧目录，保留实例自己的 `config.toml`。
 3. **加载**：在 MaiBot 插件管理中重新加载该插件，或重启实例。
-   插件运行时会监视源码变化，替换 `.py` 或 `_manifest.json` 后会自动重启该插件运行时。
 4. **核对配置**：旧配置文件里缺少的新键会按默认值在运行时生效，已有键的值
    （例如管理员列表、卡池模式、奖励数值）保持不变。如果希望把新键写进 `config.toml`
-   方便手工编辑，在插件配置页保存一次即可。
+   方便手工编辑，在插件配置页保存一次即可。奖励配置同时按上节同步。
 5. **验证**：依次发送 `/帮助`、`/点数`、`/卡池`、`/好感 列表`、`/任务列表`，
    确认图片与文字回执正常、数据库备份已生成。
 
@@ -101,6 +135,7 @@
 | `/送礼 <角色姓名> 小\|中\|大 [数量]` | 消耗礼物提升好感 |
 | `/礼物` | 查看礼物、花之碎片、解花券数量与本周可购买额度 |
 | `/礼物 购买 小\|中 [数量]` | 用点数购买小/中礼物 |
+| `/礼物 兑换 大 [数量]` | 每 12 片花之碎片兑换 1 份大礼物，不限单笔数量、次数与日/周额度 |
 | `/养成 <卡ID>` | 查看单卡养成状态、解花条件与消耗 |
 | `/解花 <卡ID>` / `/超解花 <卡ID>` | 执行解花 / 超解花 |
 | `/装扮` | 查看已解锁的称号与装饰 |
@@ -133,7 +168,7 @@
 
 - 消耗：1 连 50 点、5 连 250 点、11 连 500 点。
 - 抽取顺序：先按稀有度权重（默认 R 77 / SR 20 / SSR 3），再在池内按卡权重抽取，UP 卡按 `pickup_multiplier`（默认 ×10）加权。
-- 保底：11 连必得 SR 或以上；5 连每用户每个 UTC 周首次触发一次 SR 或以上保底。
+- 保底：11 连必得 SR 或以上；5 连每用户每周首次触发一次 SR 或以上保底，周四 00:00 UTC 重置。
 - 月卡附带两次半价五连，使用后 5 连按 125 点结算。
 
 ### 4.1 卡池模式
@@ -144,7 +179,7 @@
   `/卡池` 列出全部启用池，默认抽取最近开启的一个，也可用 `/抽卡 <池ID> <1/5/11>` 指定。
   当天没有活动池时使用常驻池。
 - **常驻池**包含当前版本已有的全部 R/SR/SSR 基础卡，用 `/抽卡 常驻 11` 单独抽取。
-- 活动池候选是“当期版本已有的全部 R/SR/SSR”再叠加本期 UP 与天井选择卡，与原作机台模型一致。
+- 活动池候选是“当期版本已有的全部 R/SR/SSR”再叠加本期 UP 与天井选择卡，是本插件采用的模拟模型，不代表官方完整实现。
   官方公告没有标注 UP 时会显示 `UP 卡：0 张`，但候选卡依然存在。
 - 排表里的 `non_gacha_pool` 卡不进入任何抽卡池，改为签到按概率掉落。
 
@@ -228,14 +263,18 @@
 
 | 物品 | 默认获取方式 | 限制 |
 | --- | --- | --- |
-| 小礼物（300 好感） | 每月活动第 1、3 天；点数购买 | 每周最多购买 10 份，150 点/份 |
-| 中礼物（1000 好感） | 每月活动第 5 天；挑战/高级挑战审核通过；点数购买 | 审核每日 1 份；每周最多购买 3 份，500 点/份 |
-| 大礼物（10000 好感） | 每月活动第 7 天 | 当前唯一稳定来源 |
-| 花之碎片 | 重复卡折算；每月活动第 2/4/6 天各 5；任务审核每次 1、每日上限 2 | 只用于超解花，每次 90 |
-| 解花券 | 高级挑战目标定数 >= 13.5 且 SSS/SSS+ 通关，获得后 15 天冷却 | 解花消耗 1 张 |
+| 小礼物（300 好感） | 每月活动第 1、3、6、9 日各 1 份；普通任务审核每次 1 份；点数购买 | 活动合计 4 份；任务每日最多 3 份；每周最多购买 10 份，150 点/份 |
+| 中礼物（1000 好感） | 每月活动第 4、8 日各 1 份；挑战/高级挑战审核每次 1 份；点数购买 | 活动合计 2 份；任务每日合计最多 3 份；每周最多购买 3 份，500 点/份 |
+| 大礼物（10000 好感） | 每月活动第 5、10 日各 1 份；碎片兑换 | 活动合计 2 份；每 12 片碎片换 1 份，无兑换额度；任务不发大礼物 |
+| 花之碎片 | 重复卡折算；每月活动第 2、7 日各 2；挑战/高级挑战审核每次 1、每日合计上限 1 | 普通与终极任务不发；超解花每次 90，兑换大礼物每份 12 |
+| 解花券 | 每月第 1 日签到 1 张；高级挑战目标定数 >= 13.5 且 SSS/SSS+ 通关 1 张 | 任务来源有 15 天冷却，签到券不受该冷却影响，也不占用冷却；解花消耗 1 张 |
 
-- 每月 1-7 日是签到活动周，活动之外的签到只发点数。
-- 点数购买额度按 UTC ISO 周结算，跨群共享。
+- 每月 1–10 日开放一轮签到活动，按日历日期发放；漏签不补发，下月重新开始，11 日以后不发活动物品。原有签到点数、连续签到奖励及随机卡掉落照常结算。
+- 重复卡碎片（满星内 / 满星后）：N、R 为 1 / 1，SR 为 2 / 3，SR+ 为 2 / 4，SSR 为 4 / 8；首获和好感奖励 N 卡不产生碎片。
+- 从月初起连续 30 天签到且每天完成至少 1 次挑战或高级挑战审核，固定碎片为活动 4 + 任务 30 = 34，重复卡另计；新规则只影响之后的发放，已有库存与旧版迁移补偿保留。
+- `/礼物 兑换 大 3` 消耗 36 片碎片，获得 3 份大礼物；兑换与库存同事务结算，同消息重投不重复扣减。兑换后用 `/送礼 <角色姓名> 大 [数量]` 提升好感，`/礼物` 可查看兑换价格与可换数量。
+- 任务礼物和碎片额度按审核成功的 UTC 日期累计，跨群共享；不是接取或提交任务的日期。
+- 点数购买额度在每周一 00:00 UTC 重置，跨群共享；与周四重置的五连保底分别计算。
 
 ### 7.5 解花与超解花
 
@@ -264,7 +303,7 @@
 
 ## 9. 数据目录与素材
 
-默认数据目录：
+默认卡牌素材与索引目录（相对插件目录，与玩家数据库目录不同）：
 
 ```text
 assets/card_data/
@@ -281,7 +320,7 @@ assets/card_data/
 常用校验命令（在插件父目录运行）：
 
 ```powershell
-python tools/sync_card_data.py --check                    # 卡面完整性与哈希
+python ongeki_gacha/tools/sync_card_data.py --check      # 卡面完整性与哈希
 python -m ongeki_gacha.tools.verify_growth_install       # 养成素材与语音逐项散列
 python -m ongeki_gacha.tools.verify_text_fallback        # 无素材兜底
 ```
@@ -289,7 +328,8 @@ python -m ongeki_gacha.tools.verify_text_fallback        # 无素材兜底
 ## 10. 配置项
 
 配置由 `config_model.py` 定义，Runner 首次加载时生成 `config.toml`，
-修改后会自动热更新（热更新失败时保留旧资源并写日志）。以下是 1.3.1 的默认值。
+通过插件配置页保存后触发热更新，失败时会写日志；手动改文件后建议重新加载并核对 `/规则`。
+以下是 1.3.2 的默认值。
 
 升级时旧配置文件缺少的新键会按默认值在运行时生效；如果想把这些键写进文件方便手改，
 在插件配置页保存一次即可。已有键的值不会被覆盖。
@@ -297,7 +337,7 @@ python -m ongeki_gacha.tools.verify_text_fallback        # 无素材兜底
 ```toml
 [plugin]
 enabled = true
-config_version = "1.3.1"
+config_version = "1.3.2"
 
 [assets]
 cards_dir = "assets/card_data"
@@ -383,18 +423,22 @@ companion_points = 300
 gift_small_points = 300
 gift_medium_points = 1000
 gift_large_points = 10000
-monthly_event_days = 7
-monthly_event_small_gift_days = [1, 3]
-monthly_event_medium_gift_days = [5]
-monthly_event_large_gift_days = [7]
-monthly_event_fragments = 5
-task_medium_gifts_daily_cap = 1
+monthly_event_days = 10
+monthly_event_small_gift_days = [1, 3, 6, 9]
+monthly_event_medium_gift_days = [4, 8]
+monthly_event_large_gift_days = [5, 10]
+monthly_event_bloom_ticket_days = [1]
+monthly_event_fragments = 2
+task_small_gifts_daily_cap = 3
+task_small_gift_sources = ["normal"]
+task_medium_gifts_daily_cap = 3
 task_medium_gift_sources = ["challenge", "advanced"]
-task_fragments_normal = 1
+large_gift_fragment_price = 12
+task_fragments_normal = 0
 task_fragments_challenge = 1
 task_fragments_advanced = 1
 task_fragments_ultimate = 0
-task_fragments_daily_cap = 2
+task_fragments_daily_cap = 1
 gift_purchase_small_price = 150
 gift_purchase_small_weekly_cap = 10
 gift_purchase_medium_price = 500
@@ -425,15 +469,16 @@ short_reply_max_chars = 700
 要点：
 
 - `voice_enabled = false` 会保留完整的养成功能但停止发送语音；`automatic_voice_enabled` 只控制自动回应。
-- `rules_overrides` 可以用整表覆盖 `assets/growth/rules_draft.json` 的规则，具名字段优先。
+- `rules_overrides` 按顶层键覆盖 `assets/growth/rules_draft.json` 的规则，具名字段优先。
+- 养成默认规则为 `growth-balance-v9`；旧配置中的具名数值不会自动覆盖，升级时请按上例同步月初活动、任务礼物和碎片字段。活动日期必须在 1 到 `monthly_event_days` 之间；小、中、大礼物日期不可重复或重叠。`monthly_event_bloom_ticket_days` 可与礼物日重叠，每个指定日发 1 张券；无礼物或券的活动日按 `monthly_event_fragments` 发碎片。
+- `task_small_gift_sources` / `task_medium_gift_sources` 指定每次审核发 1 份小/中礼物的任务类型，分别受每日上限控制。`large_gift_fragment_price` 为每份大礼物的碎片兑换价，必须为正整数。
 - `strict_pool_cards = true` 时严格按池子候选卡抽取，不会混入当期尚未出现的未来版本卡。
 - `[task]` 中的数据源地址可换成镜像；`catalog_cache_ttl` 控制曲库缓存秒数。
 
 ## 11. 故障排查
 
-- **加载失败并提示数据不可用**：先用 `python tools/card_asset_tools.py scan` 检查素材，
-  接入后运行 `python tools/sync_card_data.py`；也可以在配置里填写正确的绝对路径。
-  只缺卡面不影响加载，插件会改用文字输出。
+- **加载失败并提示数据不可用**：检查 `assets.cards_dir`、`assets.card_info_json` 与日志中的文件路径；
+  如果缺少随包 JSON 索引，重新解压同版本插件包补齐。只缺卡面不影响加载，插件会改用文字输出。
 - **`/卡池` 显示空排表**：确认 `assets/card_data/gacha_pools.json` 存在，必要时重新获取插件包。
 - **`/卡池` 显示 `UP 卡：0 张`**：官方公告未提供 UP 名单时属于正常；可用 `/天井列表` 查看选择卡，
   用 `/概率` 查看实际权重。

@@ -4,6 +4,7 @@ from pathlib import Path
 import unittest
 
 from ..gacha_core import CardInfo
+from ..growth_catalog import GrowthCatalog
 from ..growth_core import (
     MAX_AFFECTION_LEVEL,
     REWARD_MAX_LEVEL,
@@ -15,6 +16,24 @@ from ..growth_core import (
 
 
 class GrowthCoreTests(unittest.TestCase):
+    def test_monthly_rule_dates_and_task_sources_are_validated(self):
+        rules = json.loads((Path(__file__).parents[1] / 'assets/growth/rules_draft.json').read_text(encoding='utf8'))
+        for overrides in (
+            {'monthly_event_small_gift_days': [1, 1]},
+            {'monthly_event_medium_gift_days': [1]},
+            {'monthly_event_bloom_ticket_days': [1, 1]},
+            {'monthly_event_bloom_ticket_days': [0]},
+            {'monthly_event_large_gift_days': [11]},
+            {'monthly_event_days': 32},
+            {'task_small_gift_sources': [[]]},
+            {'task_medium_gift_sources': ['challenge', 'challenge']},
+        ):
+            with self.subTest(overrides=overrides), self.assertRaises(ValueError):
+                GrowthCatalog._validate_rules({**rules, **overrides})
+        # A ticket may share a gift date; an empty source list disables that task gift.
+        GrowthCatalog._validate_rules({**rules, 'monthly_event_bloom_ticket_days': [1, 4, 5],
+                                       'task_small_gift_sources': [], 'task_medium_gift_sources': []})
+
     def test_curve_boundaries(self):
         data = json.loads((Path(__file__).parents[1] / "assets/growth/affection_curve.json").read_text(encoding="utf-8"))
         thresholds = tuple(data["thresholds"])
@@ -46,8 +65,11 @@ class GrowthCoreTests(unittest.TestCase):
             build_thresholds([1] * 10, [101] * 10)
 
     def test_duplicates_pay_base_and_more_after_overflow(self):
-        """重复卡即给碎片；满星内按基础值，超出满星按更高值。"""
-        for rarity, maximum, base, overflow in [("N", 11, 1, 2), ("SSR", 5, 8, 16)]:
+        """首获不发碎片；跨越满星边界按各稀有度的新倍率结算。"""
+        for rarity, maximum, base, overflow in [
+            ("N", 11, 1, 1), ("R", 5, 1, 1), ("SR", 5, 2, 3),
+            ("SRPlus", 5, 2, 4), ("SSR", 5, 4, 8),
+        ]:
             self.assertEqual(duplicate_fragments(rarity, 0, 1, source="draw"), 0)
             self.assertEqual(duplicate_fragments(rarity, 1, 2, source="draw"), base)
             self.assertEqual(duplicate_fragments(rarity, 2, maximum, source="draw"), (maximum - 2) * base)
