@@ -1,6 +1,6 @@
 # 使用说明
 
-当前版本：1.3.2（2026-10-04）
+当前版本：1.3.3（2026-10-07）
 
 本文结构：1 简介｜2 安装、素材与升级｜3 命令总览｜4 抽卡、卡池与天井｜
 5 点数经济｜6 随机任务｜7 主角色好感养成｜8 显示与回退｜9 数据目录与素材｜
@@ -45,17 +45,17 @@
 
 替换文件后，在 MaiBot 插件管理中重新加载插件，或重启实例，确认日志显示加载成功。
 
-### 2.2 从 1.3.0 / 1.3.1 升级到 1.3.2
+### 2.2 从 1.3.0 / 1.3.1 / 1.3.2 升级到 1.3.3
 
 1. 停止插件后，备份插件数据目录中的 `ongeki_gacha.db` 和实例的 `config.toml`。
-2. 替换为 1.3.2 的代码与 JSON 索引，保留自己的配置、数据库和素材目录。
+2. 替换为 1.3.3 的代码与 JSON 索引，保留自己的配置、数据库和素材目录。
 3. **同步奖励配置**：新增键缺省时使用新默认值，已有键仍保留旧值。只改版本号不会迁移奖励数值。
    要采用本版平衡方案，请在现有 `[plugin]` / `[growth]` 段中更新或补齐以下字段，
    不要重复追加同名段；其他自定义配置按需保留。
 
 ```toml
 [plugin]
-config_version = "1.3.2"
+config_version = "1.3.3"
 
 [growth]
 monthly_event_days = 10
@@ -75,9 +75,20 @@ task_fragments_advanced = 1
 task_fragments_ultimate = 0
 task_fragments_daily_cap = 1
 ultimate_large_gifts_lifetime_cap = 0
+large_gift_monthly_first_cap = 10
+large_gift_second_price = 24
+large_gift_monthly_second_cap = 20
+large_gift_final_price = 60
+gift_purchase_small_price = 20
+gift_purchase_small_daily_cap = 10
+gift_purchase_medium_price = 60
+gift_purchase_medium_daily_cap = 5
+challenge_bloom_ticket_min_level = 10.0
+challenge_bloom_ticket_grade = "SSS"
+challenge_bloom_ticket_cooldown_days = 30
 ```
 
-4. 重新加载后查看 `/规则` 和 `/礼物`，确认活动为每月 1–10 日、大礼物价格为 12 碎片，
+4. 重新加载后查看 `/规则` 和 `/礼物`，确认活动为每月 1–10 日、大礼物月度三档价格为 12/24/60 碎片，
    挑战与高级挑战中礼物每日合计上限为 3。
 
 已有点数、好感、物品和领取记录保留，不追扣库存，也不补发过去的签到或已审核任务。
@@ -89,13 +100,13 @@ ultimate_large_gifts_lifetime_cap = 0
 ### 2.3 从 1.2.1 升级
 
 1. **备份**：复制插件数据目录中的 `ongeki_gacha.db`，并备份插件目录里的 `config.toml`。
-2. **替换代码**：用 1.3.2 的插件目录覆盖旧目录，保留实例自己的 `config.toml`。
+2. **替换代码**：用 1.3.3 的插件目录覆盖旧目录，保留实例自己的 `config.toml`。
 3. **加载**：在 MaiBot 插件管理中重新加载该插件，或重启实例。
 4. **核对配置**：旧配置文件里缺少的新键会按默认值在运行时生效，已有键的值
    （例如管理员列表、卡池模式、奖励数值）保持不变。如果希望把新键写进 `config.toml`
    方便手工编辑，在插件配置页保存一次即可。奖励配置同时按上节同步。
 5. **验证**：依次发送 `/帮助`、`/点数`、`/卡池`、`/好感 列表`、`/任务列表`，
-   确认图片与文字回执正常、数据库备份已生成。
+   确认图片与文字回执正常；需要迁移的旧库还应核对迁移备份已生成。
 
 升级会在同一数据库上就地迁移，先备份再写入；用户已有的资产不会被回收。
 迁移执行前会生成一致性数据库备份（`before-growth-*.db` 等）到插件数据目录。
@@ -133,9 +144,9 @@ ultimate_large_gifts_lifetime_cap = 0
 | `/伙伴 <角色姓名>` | 选择当前伙伴 |
 | `/陪伴` | 每日一次，提升伙伴好感 |
 | `/送礼 <角色姓名> 小\|中\|大 [数量]` | 消耗礼物提升好感 |
-| `/礼物` | 查看礼物、花之碎片、解花券数量与本周可购买额度 |
+| `/礼物` | 查看礼物、花之碎片、解花券数量、今日可购买额度和大礼物月度阶梯余额 |
 | `/礼物 购买 小\|中 [数量]` | 用点数购买小/中礼物 |
-| `/礼物 兑换 大 [数量]` | 每 12 片花之碎片兑换 1 份大礼物，不限单笔数量、次数与日/周额度 |
+| `/礼物 兑换 大 [数量]` | 每月前10份各12碎片、接着20份各24碎片，之后各60碎片不限量；跨档分段计价 |
 | `/养成 <卡ID>` | 查看单卡养成状态、解花条件与消耗 |
 | `/解花 <卡ID>` / `/超解花 <卡ID>` | 执行解花 / 超解花 |
 | `/装扮` | 查看已解锁的称号与装饰 |
@@ -168,7 +179,7 @@ ultimate_large_gifts_lifetime_cap = 0
 
 - 消耗：1 连 50 点、5 连 250 点、11 连 500 点。
 - 抽取顺序：先按稀有度权重（默认 R 77 / SR 20 / SSR 3），再在池内按卡权重抽取，UP 卡按 `pickup_multiplier`（默认 ×10）加权。
-- 保底：11 连必得 SR 或以上；5 连每用户每周首次触发一次 SR 或以上保底，周四 00:00 UTC 重置。
+- 保底：11 连必得 SR 或以上；5 连每用户每周首次触发一次 SR 或以上保底，每周四 00:00 按 `economy.tz_offset_hours` 配置时区重置。
 - 月卡附带两次半价五连，使用后 5 连按 125 点结算。
 
 ### 4.1 卡池模式
@@ -196,6 +207,9 @@ ultimate_large_gifts_lifetime_cap = 0
 （2020-10 ～ 2026-07）。2023～2026 年仍有大量日常池未收录，official 模式只复现已收录池的当年同期排期，
 不代表完整官方时间线。
 
+抽卡回执中的“池内 UP 卡共 N 种”表示卡池设置，不是本次抽中的数量；“首次获得”才是本次新卡数。
+五连会分别提示本次是否使用周保底，十一连会提示本次保底；消耗和余额单独列出。
+
 ## 5. 点数经济
 
 | 项目 | 默认值 |
@@ -218,6 +232,7 @@ ultimate_large_gifts_lifetime_cap = 0
 
 任务曲库来自音击、舞萌 DX、中二节奏三款游戏，不指定游戏时混合随机，也可以用
 `/接任务 挑战 中二` 这样的写法限定游戏。
+音击 LU 中具有有效内部定数的计分谱可参与任务；零定数及明确不计分的特殊谱继续排除。
 
 | 类型 | 每日次数 | 选谱规则 | 奖励 |
 | --- | --- | --- | --- |
@@ -263,18 +278,18 @@ ultimate_large_gifts_lifetime_cap = 0
 
 | 物品 | 默认获取方式 | 限制 |
 | --- | --- | --- |
-| 小礼物（300 好感） | 每月活动第 1、3、6、9 日各 1 份；普通任务审核每次 1 份；点数购买 | 活动合计 4 份；任务每日最多 3 份；每周最多购买 10 份，150 点/份 |
-| 中礼物（1000 好感） | 每月活动第 4、8 日各 1 份；挑战/高级挑战审核每次 1 份；点数购买 | 活动合计 2 份；任务每日合计最多 3 份；每周最多购买 3 份，500 点/份 |
-| 大礼物（10000 好感） | 每月活动第 5、10 日各 1 份；碎片兑换 | 活动合计 2 份；每 12 片碎片换 1 份，无兑换额度；任务不发大礼物 |
-| 花之碎片 | 重复卡折算；每月活动第 2、7 日各 2；挑战/高级挑战审核每次 1、每日合计上限 1 | 普通与终极任务不发；超解花每次 90，兑换大礼物每份 12 |
-| 解花券 | 每月第 1 日签到 1 张；高级挑战目标定数 >= 13.5 且 SSS/SSS+ 通关 1 张 | 任务来源有 15 天冷却，签到券不受该冷却影响，也不占用冷却；解花消耗 1 张 |
+| 小礼物（300 好感） | 每月活动第 1、3、6、9 日各 1 份；普通任务审核每次 1 份；点数购买 | 活动合计 4 份；任务每日最多 3 份；每日最多购买 10 份，20 点/份 |
+| 中礼物（1000 好感） | 每月活动第 4、8 日各 1 份；挑战/高级挑战审核每次 1 份；点数购买 | 活动合计 2 份；任务每日合计最多 3 份；每日最多购买 5 份，60 点/份 |
+| 大礼物（10000 好感） | 每月活动第 5、10 日各 1 份；碎片兑换 | 活动合计 2 份；月度三档12/24/60碎片，额度10/20/不限量；任务不发大礼物 |
+| 花之碎片 | 重复卡折算；每月活动第 2、7 日各 2；挑战/高级挑战审核每次 1、每日合计上限 1 | 普通与终极任务不发；超解花每次 90，兑换大礼物按月度12/24/60阶梯价 |
+| 解花券 | 每月第 1 日签到 1 张；挑战目标定数 >= 10、高级挑战目标定数 >= 13.5 且 SSS/SSS+，各可获 1 张 | 高级挑战冷却15天；挑战目标定数>=10且SSS/SSS+另得1张、独立冷却30天（一个月按30天计）；签到、挑战、高级挑战互不占用冷却；解花消耗 1 张 |
 
 - 每月 1–10 日开放一轮签到活动，按日历日期发放；漏签不补发，下月重新开始，11 日以后不发活动物品。原有签到点数、连续签到奖励及随机卡掉落照常结算。
 - 重复卡碎片（满星内 / 满星后）：N、R 为 1 / 1，SR 为 2 / 3，SR+ 为 2 / 4，SSR 为 4 / 8；首获和好感奖励 N 卡不产生碎片。
 - 从月初起连续 30 天签到且每天完成至少 1 次挑战或高级挑战审核，固定碎片为活动 4 + 任务 30 = 34，重复卡另计；新规则只影响之后的发放，已有库存与旧版迁移补偿保留。
-- `/礼物 兑换 大 3` 消耗 36 片碎片，获得 3 份大礼物；兑换与库存同事务结算，同消息重投不重复扣减。兑换后用 `/送礼 <角色姓名> 大 [数量]` 提升好感，`/礼物` 可查看兑换价格与可换数量。
+- 本月尚未兑换时，`/礼物 兑换 大 3` 消耗 36 片碎片；若本月已兑 9 份，同一指令跨档消耗 12 + 24 × 2 = 60 片，均获得 3 份大礼物；兑换与库存同事务结算，同消息重投不重复扣减。兑换后用 `/送礼 <角色姓名> 大 [数量]` 提升好感，`/礼物` 可查看兑换价格与可换数量。
 - 任务礼物和碎片额度按审核成功的 UTC 日期累计，跨群共享；不是接取或提交任务的日期。
-- 点数购买额度在每周一 00:00 UTC 重置，跨群共享；与周四重置的五连保底分别计算。
+- 小中礼物每天00:00重置，大礼物每月1日00:00重置阶梯额度，均使用经济配置时区、按账号跨群共享；仅最高价档不限量。
 
 ### 7.5 解花与超解花
 
@@ -329,7 +344,7 @@ python -m ongeki_gacha.tools.verify_text_fallback        # 无素材兜底
 
 配置由 `config_model.py` 定义，Runner 首次加载时生成 `config.toml`，
 通过插件配置页保存后触发热更新，失败时会写日志；手动改文件后建议重新加载并核对 `/规则`。
-以下是 1.3.2 的默认值。
+以下是 1.3.3 的默认值。
 
 升级时旧配置文件缺少的新键会按默认值在运行时生效；如果想把这些键写进文件方便手改，
 在插件配置页保存一次即可。已有键的值不会被覆盖。
@@ -337,7 +352,7 @@ python -m ongeki_gacha.tools.verify_text_fallback        # 无素材兜底
 ```toml
 [plugin]
 enabled = true
-config_version = "1.3.2"
+config_version = "1.3.3"
 
 [assets]
 cards_dir = "assets/card_data"
@@ -439,10 +454,8 @@ task_fragments_challenge = 1
 task_fragments_advanced = 1
 task_fragments_ultimate = 0
 task_fragments_daily_cap = 1
-gift_purchase_small_price = 150
-gift_purchase_small_weekly_cap = 10
-gift_purchase_medium_price = 500
-gift_purchase_medium_weekly_cap = 3
+gift_purchase_small_price = 20
+gift_purchase_medium_price = 60
 bloom_items = ["bloom_ticket", "flower_fragment"]
 bloom_levels = [100, 200]
 bloom_costs = [1, 90]
@@ -457,6 +470,15 @@ voice_request_ttl_seconds = 600
 voice_inflight_limit = 10
 voice_send_timeout_seconds = 30
 rules_overrides = {}
+large_gift_monthly_first_cap = 10
+large_gift_second_price = 24
+large_gift_monthly_second_cap = 20
+large_gift_final_price = 60
+gift_purchase_small_daily_cap = 10
+gift_purchase_medium_daily_cap = 5
+challenge_bloom_ticket_min_level = 10.0
+challenge_bloom_ticket_grade = "SSS"
+challenge_bloom_ticket_cooldown_days = 30
 
 [ui]
 render_cache_ttl_seconds = 86400
@@ -470,10 +492,20 @@ short_reply_max_chars = 700
 
 - `voice_enabled = false` 会保留完整的养成功能但停止发送语音；`automatic_voice_enabled` 只控制自动回应。
 - `rules_overrides` 按顶层键覆盖 `assets/growth/rules_draft.json` 的规则，具名字段优先。
-- 养成默认规则为 `growth-balance-v9`；旧配置中的具名数值不会自动覆盖，升级时请按上例同步月初活动、任务礼物和碎片字段。活动日期必须在 1 到 `monthly_event_days` 之间；小、中、大礼物日期不可重复或重叠。`monthly_event_bloom_ticket_days` 可与礼物日重叠，每个指定日发 1 张券；无礼物或券的活动日按 `monthly_event_fragments` 发碎片。
-- `task_small_gift_sources` / `task_medium_gift_sources` 指定每次审核发 1 份小/中礼物的任务类型，分别受每日上限控制。`large_gift_fragment_price` 为每份大礼物的碎片兑换价，必须为正整数。
+- 养成默认规则为 `growth-balance-v10`；旧配置中的具名数值不会自动覆盖，升级时请按上例同步月初活动、任务礼物和碎片字段。活动日期必须在 1 到 `monthly_event_days` 之间；小、中、大礼物日期不可重复或重叠。`monthly_event_bloom_ticket_days` 可与礼物日重叠，每个指定日发 1 张券；无礼物或券的活动日按 `monthly_event_fragments` 发碎片。
+- `task_small_gift_sources` / `task_medium_gift_sources` 指定每次审核发 1 份小/中礼物的任务类型，分别受每日上限控制。`large_gift_fragment_price` 为第一档价格，后续档位由 `large_gift_second_price` / `large_gift_final_price` 配置，三档价格必须严格递增。
 - `strict_pool_cards = true` 时严格按池子候选卡抽取，不会混入当期尚未出现的未来版本卡。
 - `[task]` 中的数据源地址可换成镜像；`catalog_cache_ttl` 控制曲库缓存秒数。
+
+
+1.3.3 礼物商店配置：`gift_purchase_small_price` / `gift_purchase_small_daily_cap` 默认20/10，
+`gift_purchase_medium_price` / `gift_purchase_medium_daily_cap` 默认60/5。
+大礼物第一档额度 `large_gift_monthly_first_cap` 默认10；第二档单价/额度
+`large_gift_second_price` / `large_gift_monthly_second_cap` 默认24/20；第三档 `large_gift_final_price` 默认60，不限量。
+旧 `gift_purchase_*_weekly_cap` 不再使用，升级时可移除；升级前的大礼物兑换不追计月度额度，不追扣碎片。
+挑战解花券由 `challenge_bloom_ticket_min_level` / `challenge_bloom_ticket_grade` / `challenge_bloom_ticket_cooldown_days`
+控制，默认10/SSS/30；高级挑战原有15天冷却独立保留。
+音击 LU 的有效内部定数计分谱参与任务，零定数谱继续排除；旧曲库缓存首次使用时自动尝试刷新。
 
 ## 11. 故障排查
 
@@ -486,7 +518,7 @@ short_reply_max_chars = 700
 - **`/卡图` 提示“卡面未接入”**：该卡 PNG 还没导入，按 [素材指南](ASSETS.md) 补齐。
 - **抽卡只返回文字清单**：卡面、界面素材或字体至少缺一样，看插件日志里的提示行。
 - **好感页只有文字**：`assets/growth/images/` 还没接入。
-- **`/签到` 提示重复**：同一 UTC 日期只能签到一次。
+- **`/签到` 提示重复**：同一配置时区日期只能签到一次。
 - **语音点播提示限流**：默认 10 秒冷却、每分钟 5 次，可在 `[growth]` 调整。
 - **抽卡提示数量错误**：数量只能是 1、5 或 11。
 

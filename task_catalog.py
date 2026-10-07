@@ -12,6 +12,7 @@
 
 from __future__ import annotations
 
+import math
 import hashlib
 import json
 import logging
@@ -74,6 +75,8 @@ DIFFICULTY_LABELS = {
 
 def _difficulty_label(game: str, kind: str, index: int) -> str:
     labels = DIFFICULTY_LABELS.get(game, ())
+    if game == "ongeki" and kind in {"lun", "lunatic", "lu"}:
+        return "LUNATIC"
     if kind == "utage":
         return "UTAGE"
     if game == "maimai" and kind == "dx":
@@ -295,19 +298,26 @@ def _normalize_ongeki(songs: list[dict], source_url: str) -> list[CatalogSong]:
                 or sheet.get("internalLevel")
                 or ""
             ).strip()
-            level_value = _as_float(
-                sheet.get("levelValue")
-                if sheet.get("levelValue") is not None
-                else sheet.get("internalLevelValue")
-            )
+            # 上游 isSpecial 标记所有 LU；是否计分应以有效内部定数判定。
+            internal = sheet.get("internalLevelValue")
+            if internal is None:
+                internal = sheet.get("internalLevel")
+            level_value = _as_float(internal if internal is not None else sheet.get("levelValue"))
+            is_lunatic = kind in {"lun", "lunatic", "lu"} or str(sheet.get("difficulty", "")).lower() == "lunatic"
+            if is_lunatic:
+                label = "LUNATIC"
+            valid_constant = math.isfinite(level_value) and level_value > 0
+            is_special = not valid_constant or sheet.get("isScoreValid") is False or sheet.get("isRating") is False
+            if sheet.get("isLocked") or sheet.get("disabled"):
+                is_special = True
             charts.append(
                 CatalogChart(
                     index=index,
                     kind=kind,
                     label=label,
                     level_display=level_display or f"Lv.{level_value:g}",
-                    level_value=level_value or _parse_level(level_display),
-                    is_special=kind == "lun",
+                    level_value=level_value if valid_constant else 0.0,
+                    is_special=is_special,
                 )
             )
 
@@ -476,13 +486,15 @@ def load_or_fetch_catalog(
     if cache_path.is_file() and not force:
         age = time.time() - cache_path.stat().st_mtime
         if age < ttl:
-            return _catalog_from_dicts(json.loads(cache_path.read_text(encoding="utf-8")))
+            cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            if isinstance(cached, dict) and cached.get("version") == 2:
+                return _catalog_from_dicts(cached["songs"])
     try:
         catalog = load_catalog(sources=sources, asset_bases=asset_bases)
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(
             json.dumps(
-                [song.to_dict() for song in catalog],
+                {"version": 2, "songs": [song.to_dict() for song in catalog]},
                 ensure_ascii=False,
                 indent=2,
             ),
@@ -496,6 +508,8 @@ def load_or_fetch_catalog(
 
 
 def _catalog_from_dicts(items: list[dict]) -> list[CatalogSong]:
+    if isinstance(items, dict):
+        items = items["songs"]
     result: list[CatalogSong] = []
     for item in items:
         charts = tuple(CatalogChart(**chart) for chart in item.get("charts", []))

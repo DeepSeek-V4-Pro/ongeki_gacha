@@ -1,4 +1,4 @@
-"""按真实日历对照 v8/v9 的单角色养成，复用运行抽卡器估算重复卡兑换。"""
+"""按真实日历对照 v9/v10 的单角色养成，复用运行抽卡器估算重复卡兑换。"""
 from __future__ import annotations
 
 import argparse
@@ -14,6 +14,7 @@ import tomllib
 
 from ..gacha_core import CardPool, load_cards
 from ..gacha_pools import GachaSchedule
+from ..gift_economy import affordable_large_gifts, quote_large_gifts
 from ..growth_core import affection_level, duplicate_fragments
 
 
@@ -40,9 +41,9 @@ def monthly_rewards(rules: dict, day: int) -> tuple[Counter, int]:
 
 def previous_rules(current: dict) -> dict:
     rules = deepcopy(current)
-    rules.update(version='growth-balance-v8', task_small_gifts_daily_cap=0,
-                 task_small_gift_sources=[], task_medium_gifts_daily_cap=1)
-    rules.pop('large_gift_fragment_price', None)
+    rules.update(version='growth-balance-v9')
+    rules['gift_purchase'] = {'small': {'price':150, 'weekly_cap':10}, 'medium': {'price':500, 'weekly_cap':3}}
+    rules.pop('large_gift_monthly_first_cap', None)
     return rules
 
 
@@ -55,6 +56,8 @@ def simulate(config: dict, rules: dict, thresholds: tuple[int, ...], counts: dic
     inventory = Counter()
     weekly_bought = Counter()
     last_week = None
+    last_month = None
+    monthly_exchanged = 0
     affection = fragments = fragments_gained = pulls = exchanged = 0
     points = spent_gifts = 0
     milestones, checkpoints = {}, {}
@@ -63,6 +66,10 @@ def simulate(config: dict, rules: dict, thresholds: tuple[int, ...], counts: dic
         count * rules['task_fragments'][kind] for kind, count in counts.items()))
     for day in range(1, horizon + 1):
         today = start + timedelta(days=day-1)
+        month = (today.year, today.month)
+        if month != last_month:
+            monthly_exchanged = 0
+            last_month = month
         tasks_today = task_weekdays is None or today.weekday() in task_weekdays
         week = today.isocalendar()[:2]
         if week != last_week:
@@ -82,7 +89,7 @@ def simulate(config: dict, rules: dict, thresholds: tuple[int, ...], counts: dic
         gained = month_fragments + (daily_fragments if tasks_today else 0)
         if buy:
             for size, plan in rules['gift_purchase'].items():
-                quantity = min(plan['weekly_cap']-weekly_bought[size], int(points // plan['price']))
+                quantity = min(plan.get('daily_cap', plan.get('weekly_cap', 0)-weekly_bought[size]), int(points // plan['price']))
                 points -= quantity * plan['price']
                 spent_gifts += quantity * plan['price']
                 weekly_bought[size] += quantity
@@ -99,8 +106,14 @@ def simulate(config: dict, rules: dict, thresholds: tuple[int, ...], counts: dic
         fragments_gained += gained
         if exchange:
             price = rules['large_gift_fragment_price']
-            quantity = max(0, fragments-reserve) // price
-            fragments -= quantity * price
+            if 'large_gift_monthly_first_cap' in rules:
+                quantity = affordable_large_gifts(rules, monthly_exchanged, max(0, fragments-reserve))
+                cost = sum(p['cost'] for p in quote_large_gifts(rules, monthly_exchanged, quantity))
+            else:
+                quantity = max(0, fragments-reserve) // price
+                cost = quantity * price
+            fragments -= cost
+            monthly_exchanged += quantity
             gifts['large'] += quantity
             exchanged += quantity
         affection += rules['companion_points'] + sum(
@@ -131,18 +144,18 @@ def build(root: Path, *, trials=30, horizon=6000, seed=20261004) -> dict:
                 ('普通与挑战', {'normal': config['task']['normal_count'], 'challenge': config['task']['challenge_count']}),
                 ('全部日常任务', {kind: config['task'][f'{kind}_count'] for kind in ('normal','challenge','advanced')})]
     rows = []
-    for version, active_rules in (('v8', previous_rules(rules)), ('v9', rules)):
+    for version, active_rules in (('v9', previous_rules(rules)), ('v10', rules)):
         for label, counts in profiles:
-            for exchange in ((False, True) if version == 'v9' else (False,)):
+            for exchange in ((False, True) if version in {'v9', 'v10'} else (False,)):
                 rows.append({'version': version, 'profile': label, 'exchange': exchange,
                              **simulate(config, active_rules, thresholds, counts, exchange=exchange, horizon=horizon)})
     counts = profiles[-1][1]
-    for version, active_rules, exchange in (('v8', previous_rules(rules), False), ('v9', rules, True)):
+    for version, active_rules, exchange in (('v9', previous_rules(rules), True), ('v10', rules, True)):
         rows.append({'version': version, 'profile': '每周2天各1普通1挑战', 'exchange': exchange,
             **simulate(config, active_rules, thresholds, {'normal':1, 'challenge':1}, exchange=exchange,
                        task_weekdays=(5,6), horizon=horizon)})
     for reserve, buy in ((90, False), (0, True)):
-        rows.append({'version': 'v9', 'profile': '全部日常任务', 'exchange': True,
+        rows.append({'version': 'v10', 'profile': '全部日常任务', 'exchange': True,
                      'fragment_reserve': reserve, 'buy_gifts': buy,
                      **simulate(config, rules, thresholds, counts, exchange=True, reserve=reserve, buy=buy, horizon=horizon)})
     cards = load_cards(root/'assets/card_data/card_info_merged.json')
@@ -172,10 +185,10 @@ def build(root: Path, *, trials=30, horizon=6000, seed=20261004) -> dict:
                'growth_core.py','tools/affection_balance_report.py']
     return {'rule_version': rules['version'], 'start_date': '2026-10-01', 'seed': seed,
             'horizon_days': horizon, 'source_sha256': {path: hashlib.sha256((root/path).read_bytes()).hexdigest() for path in sources},
-            'assumptions': ['从月初连续签到，按实际日历与UTC ISO周；集中养一个角色，每日陪伴，全部礼物立即送出。',
+            'assumptions': ['从月初连续签到，按实际日历，v9周限购、v10日限购与月度阶梯兑换；集中养一个角色，每日陪伴，全部礼物立即送出。',
                 '点数、任务次数和抽卡参数读取config.toml；养成采用随包规则JSON，不合并实例的growth覆盖配置。',
                 '任务每天审核通过；礼物不要求SSS，点数按SSS上界计算，影响买礼物和抽卡的样本。',
-                'v8为开发中间方案，不是1.3.1发布版；无新增任务礼物及碎片兑换。',
+                'v9为1.3.2发布版，固定12碎片兑换；v10为1.3.3月度阶梯价与每日礼物商店。',
                 '默认不买礼物、不抽卡、不花碎片超解花；兑换组将所有可用碎片兑换，保留90片组另列。',
                 '抽卡组从空库存开始，使用真实常驻池、当前权重及十一连保底；无天井、月卡、囤点奖、签到随机卡或大奖。',
                 '表中天数只表示好感门槛，不代表已满足满星、解花券及超解花材料条件。',

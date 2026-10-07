@@ -134,6 +134,21 @@ class PluginGrowthTests(unittest.IsolatedAsyncioTestCase):
         played=await self.dispatch('/角色语音 星咲明 1','voice-play')
         self.assertTrue(played[0])
 
+    async def test_draw_receipt_distinguishes_current_and_previous_guarantee(self):
+        self.plugin._db.get_player('user')
+        self.plugin._db._conn.execute("UPDATE players SET points=10000 WHERE qq_id='user'")
+        self.plugin._render_ready = False
+        first = (await self.dispatch('/抽卡 常驻 5', 'draw-first'))[1]
+        self.assertIn('抽卡完成：5 张', first)
+        self.assertIn('本次消耗 250 点｜余额 9750 点', first)
+        self.assertIn('本次使用每周首次五连保底', first)
+        self.assertEqual(first, (await self.dispatch('/抽卡 常驻 5', 'draw-first'))[1])
+        second = (await self.dispatch('/抽卡 常驻 5', 'draw-second'))[1]
+        self.assertIn('本周首次五连保底此前已使用', second)
+        self.assertIn('余额 9500 点', second)
+        eleven = (await self.dispatch('/抽卡 常驻 11', 'draw-eleven'))[1]
+        self.assertIn('本次11连保底：至少1张 SR 或以上', eleven)
+
     async def test_gift_purchase_entry(self):
         await self.dispatch('/伙伴 星咲明','buy-partner')
         plan=self.plugin._growth.catalog.rules['gift_purchase']['small']
@@ -296,7 +311,7 @@ class PluginGrowthTests(unittest.IsolatedAsyncioTestCase):
         await self.dispatch('/礼物 兑换 大 1','exchange-item-image')
         self.assertEqual(before, self.plugin._growth.snapshot('user'))
         page = await self.dispatch('/礼物','exchange-inventory')
-        self.assertIn('12 花之碎片/份', page[1])
+        self.assertIn('第1档 12 碎片/份', page[1])
 
     async def test_bloom_command_sends_result_image(self):
         await self.dispatch('/伙伴 星咲 あかり','bloom-prep')

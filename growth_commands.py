@@ -12,6 +12,7 @@ from maibot_sdk import Command
 from .character_names import arguments
 from .bloom_render import render_bloom_result
 from .gacha_core import max_detail_slots
+from .gift_economy import large_gift_shop_lines
 from .growth_core import (
     MAIN_CHARACTER_IDS,
     MAX_AFFECTION_LEVEL,
@@ -93,16 +94,22 @@ def describe_receipt(
         return "\n".join(lines)
     if action == "礼物购买":
         size = '小' if result['size'] == 'small' else '中'
+        period = f"{result['date']} 当日" if 'date' in result else '原交易当周'
+        remaining = result.get('daily_cap', result.get('weekly_cap', 0)) - result.get('daily_used', result.get('weekly_used', 0))
         return (
             f"已购买 {result['label']} ×{result['quantity']}"
             f"｜消耗 {result['price']} 点（剩余 {result['points']} 点）"
-            f"\n本周还可购买 {result['weekly_cap'] - result['weekly_used']} 份"
+            f"\n{period}还可购买 {remaining} 份"
             f"｜/送礼 <角色姓名> {size} 1"
         )
     if action == "礼物兑换":
+        details = "；".join(f"{p['quantity']}份×{p['unit_price']}碎片={p['cost']}" for p in result.get('breakdown', []))
+        tiers = "\n".join(result.get('tier_lines', []))
+        quota = (f"\n分档消耗：{details}\n{result['month']} 已兑 {result['monthly_used']} 份；每月1日重置\n{tiers}"
+                 if 'monthly_used' in result else "\n旧版兑换回执；当前阶梯额度请查看 /礼物")
         return (f"已兑换 大礼物 ×{result['quantity']}"
                 f"｜消耗花之碎片 {result['price']}（剩余 {result['remaining']}）"
-                "\n/送礼 <角色姓名> 大 1")
+                f"{quota}\n/送礼 <角色姓名> 大 1")
     kind={'Trophy':'称号','NamePlate':'名牌','Attachment':'装饰'}.get(result['cosmetic_type'],result['cosmetic_type'])
     if result['cosmetic_id']=='卸下':
         return f"已卸下{kind}｜/装扮 查看已解锁"
@@ -383,7 +390,7 @@ class GrowthCommandsMixin:
         if action=='礼物' and not args:
             items={r['item_id']:r['quantity'] for r in snapshot['player_items']}
             path=await asyncio.to_thread(render_gift_inventory,items,output,purchase,
-                                        fragment_price=catalog.rules['large_gift_fragment_price'])
+                                        fragment_price=catalog.rules['large_gift_fragment_price'], gift_points=catalog.rules['gift_points'])
         elif action=='好感':
             profile=snapshot['player_growth_profile']
             partner=profile[0]['partner_character_id'] if profile else None
@@ -428,13 +435,18 @@ class GrowthCommandsMixin:
                 f"｜解花券 {items.get('bloom_ticket',0)}",
             ]
             for size, plan in (purchase or {}).items():
+                if size == "large":
+                    continue
                 label = {"small": "小礼物", "medium": "中礼物"}[size]
                 lines.append(
                     f"{label} {plan['price']} 点/份"
-                    f"（本周可买 {plan['left']}/{plan['cap']}）"
+                    f"（今日可买 {plan['left']}/{plan['cap']}）"
                 )
-            price = catalog.rules['large_gift_fragment_price']
-            lines.append(f"大礼物 {price} 花之碎片/份（不限兑换，可换 {items.get('flower_fragment',0) // price} 份）")
+            large = (purchase or {}).get('large', {})
+            lines.append(f"大礼物本月已兑 {large.get('used', 0)} 份（每月1日按配置时区重置）")
+            lines.extend(large.get('lines') or large_gift_shop_lines(catalog.rules))
+            if 'affordable' in large:
+                lines.append(f"现有碎片按阶梯价可换 {large['affordable']} 份；超解花另需保留 {catalog.rules['bloom_costs'][1]} 碎片")
             lines.extend(["/礼物 购买 小 1", "/礼物 兑换 大 1"])
             return "\n".join(lines)
         if action == "列表":

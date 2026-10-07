@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 from .gacha_core import CardCollection
@@ -80,6 +81,18 @@ class GrowthCatalog:
                      "task_fragments_daily_cap"):
             integer(rules.get(name), name)
         integer(rules.get('large_gift_fragment_price'), 'large_gift_fragment_price', 1)
+        for name in ("large_gift_monthly_first_cap", "large_gift_second_price", "large_gift_monthly_second_cap", "large_gift_final_price"):
+            integer(rules.get(name), name, 1)
+        if not rules['large_gift_fragment_price'] < rules['large_gift_second_price'] < rules['large_gift_final_price']:
+            raise ValueError("大礼物三档价格必须递增")
+        challenge = rules.get("challenge_bloom_ticket_source", {})
+        if not isinstance(challenge, dict):
+            raise ValueError("挑战解花券规则必须为字典")
+        if challenge.get("kind") != "challenge" or challenge.get("grade") not in {"SSS", "SSS+"}:
+            raise ValueError("挑战解花券来源或评级无效")
+        if type(challenge.get("min_level")) not in (float, int) or not math.isfinite(challenge["min_level"]) or challenge["min_level"] <= 0:
+            raise ValueError("挑战解花券定数无效")
+        integer(challenge.get("cooldown_days"), "challenge_bloom_ticket_source.cooldown_days", 1)
         integer(rules.get("companion_points"), "companion_points", 1)
         integer(rules.get('ultimate_large_gifts_lifetime_cap'),'ultimate_large_gifts_lifetime_cap')
         event_days = rules["monthly_event_days"]
@@ -103,10 +116,10 @@ class GrowthCatalog:
         if not isinstance(purchase, dict) or not purchase or not set(purchase) <= {"small", "medium"}:
             raise ValueError("养成规则 gift_purchase 只支持小礼物与中礼物")
         for size, plan in purchase.items():
-            if not isinstance(plan, dict) or set(plan) != {"price", "weekly_cap"}:
+            if not isinstance(plan, dict) or set(plan) != {"price", "daily_cap"}:
                 raise ValueError(f"养成规则 gift_purchase.{size} 字段不完整")
             integer(plan.get("price"), f"gift_purchase.{size}.price", 1)
-            integer(plan.get("weekly_cap"), f"gift_purchase.{size}.weekly_cap", 1)
+            integer(plan.get("daily_cap"), f"gift_purchase.{size}.daily_cap", 1)
         for size in ('small', 'medium'):
             sources = rules.get(f'task_{size}_gift_sources')
             if not isinstance(sources, list) or any(not isinstance(source, str) for source in sources) or len(set(sources)) != len(sources) or not set(sources) <= {"normal", "challenge", "advanced", "ultimate"}:

@@ -1,5 +1,5 @@
 {
-  "version": "growth-balance-v9",
+  "version": "growth-balance-v10",
   "curve_version": "affection-v2",
   "status": "release",
   "companion_points": 300,
@@ -28,7 +28,9 @@
   ],
   "monthly_event_fragments": 2,
   "task_small_gifts_daily_cap": 3,
-  "task_small_gift_sources": ["normal"],
+  "task_small_gift_sources": [
+    "normal"
+  ],
   "task_medium_gifts_daily_cap": 3,
   "large_gift_fragment_price": 12,
   "task_fragments_daily_cap": 1,
@@ -40,12 +42,12 @@
   },
   "gift_purchase": {
     "small": {
-      "price": 150,
-      "weekly_cap": 10
+      "price": 20,
+      "daily_cap": 10
     },
     "medium": {
-      "price": 500,
-      "weekly_cap": 3
+      "price": 60,
+      "daily_cap": 5
     }
   },
   "bloom_levels": [
@@ -84,5 +86,15 @@
     "challenge",
     "advanced"
   ],
-  "ultimate_large_gifts_lifetime_cap": 0
+  "ultimate_large_gifts_lifetime_cap": 0,
+  "large_gift_monthly_first_cap": 10,
+  "large_gift_second_price": 24,
+  "large_gift_monthly_second_cap": 20,
+  "large_gift_final_price": 60,
+  "challenge_bloom_ticket_source": {
+    "kind": "challenge",
+    "min_level": 10.0,
+    "grade": "SSS",
+    "cooldown_days": 30
+  }
 }

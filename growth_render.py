@@ -181,15 +181,19 @@ def original_asset(image, key, box):
             contain(image,source,box)
 
 
-def render_gift_inventory(items: dict, output: Path, purchase: dict | None = None, *, fragment_price: int = 12):
+def render_gift_inventory(items: dict, output: Path, purchase: dict | None = None, *, fragment_price: int = 12, gift_points: dict | None = None):
     purchase = purchase or {}
+    gift_points = gift_points or {'small': 300, 'medium': 1000, 'large': 10000}
     cards = []
     for size,label,value in (('small','小礼物',300),('medium','中礼物',1000),('large','大礼物',10000)):
-        plan = purchase.get(size)
-        notes = ([f"购买 {plan['price']} 点 / 份", f"本周剩余 {plan['left']} / {plan['cap']}"]
+        value = gift_points[size]
+        plan = purchase.get(size) if size != "large" else None
+        notes = ([f"购买 {plan['price']} 点 / 份", f"今日剩余 {plan['left']} / {plan['cap']}"]
                  if plan else ['无点数购买渠道'])
         if size == 'large':
-            notes = [f"兑换 {fragment_price} 碎片 / 份", '不限兑换额度']
+            large = purchase.get('large', {})
+            tier_notes = [part for line in (large.get('lines') or ['阶梯价格请查看 /礼物']) for part in line.split(' · ')]
+            notes = [f"本月已兑 {large.get('used', 0)} 份", *tier_notes, '每月1日重置额度']
         notes = [line for note in notes for line in wrap(note,264,24)]
         counts = wrap(f"持有 {items.get('gift_'+size,0)}",264,34)
         cards.append((size,label,value,notes,counts))

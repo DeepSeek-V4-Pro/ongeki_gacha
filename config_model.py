@@ -16,7 +16,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.3.2", description="配置版本")
+    config_version: str = Field(default="1.3.3", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -268,16 +268,20 @@ class GrowthConfig(PluginConfigBase):
     task_medium_gift_sources: list[str] = Field(
         default_factory=lambda: ["challenge", "advanced"], description="可发中礼物的任务类型"
     )
-    large_gift_fragment_price: int = Field(default=12, ge=1, description="兑换1份大礼物消耗的花之碎片，无兑换额度限制")
+    large_gift_fragment_price: int = Field(default=12, ge=1, description="大礼物第一档碎片单价，每月重置额度")
+    large_gift_monthly_first_cap: int = Field(default=10, ge=1, description="大礼物每月第一档额度")
+    large_gift_second_price: int = Field(default=24, ge=1, description="大礼物第二档碎片单价")
+    large_gift_monthly_second_cap: int = Field(default=20, ge=1, description="大礼物每月第二档额度，不含第一档")
+    large_gift_final_price: int = Field(default=60, ge=1, description="大礼物第三档碎片单价，不限量")
     task_fragments_normal: int = Field(default=0, ge=0, description="普通任务审核碎片")
     task_fragments_challenge: int = Field(default=1, ge=0, description="挑战任务审核碎片")
     task_fragments_advanced: int = Field(default=1, ge=0, description="高级挑战审核碎片")
     task_fragments_ultimate: int = Field(default=0, ge=0, description="终极任务审核碎片")
     task_fragments_daily_cap: int = Field(default=1, ge=0, description="任务碎片每日上限")
-    gift_purchase_small_price: int = Field(default=150, ge=1, description="小礼物点数价格")
-    gift_purchase_small_weekly_cap: int = Field(default=10, ge=1, description="小礼物每周购买上限")
-    gift_purchase_medium_price: int = Field(default=500, ge=1, description="中礼物点数价格")
-    gift_purchase_medium_weekly_cap: int = Field(default=3, ge=1, description="中礼物每周购买上限")
+    gift_purchase_small_price: int = Field(default=20, ge=1, description="小礼物点数价格")
+    gift_purchase_small_daily_cap: int = Field(default=10, ge=1, description="小礼物每日购买上限")
+    gift_purchase_medium_price: int = Field(default=60, ge=1, description="中礼物点数价格")
+    gift_purchase_medium_daily_cap: int = Field(default=5, ge=1, description="中礼物每日购买上限")
     bloom_items: list[str] = Field(
         default_factory=lambda: ["bloom_ticket", "flower_fragment"],
         description="解花/超解花消耗的物品ID",
@@ -288,6 +292,9 @@ class GrowthConfig(PluginConfigBase):
     bloom_ticket_source_min_level: float = Field(default=13.5, ge=1.0, description="解花券来源目标最低定数")
     bloom_ticket_source_grade: str = Field(default="SSS", description="解花券来源最低评级")
     bloom_ticket_cooldown_days: int = Field(default=15, ge=0, description="解花券获取冷却天数")
+    challenge_bloom_ticket_min_level: float = Field(default=10.0, ge=1.0, description="挑战解花券目标最低定数")
+    challenge_bloom_ticket_grade: str = Field(default="SSS", description="挑战解花券最低评级")
+    challenge_bloom_ticket_cooldown_days: int = Field(default=30, ge=1, description="挑战解花券独立冷却天数，默认一个月按30天计")
     ultimate_large_gifts_lifetime_cap: int = Field(default=0, ge=0, description="终极任务大礼物终身上限")
     voice_cooldown_seconds: int = Field(default=10, ge=0, description="语音点播冷却秒数")
     voice_minute_limit: int = Field(default=5, ge=1, description="语音每分钟次数上限")
@@ -335,6 +342,10 @@ class GrowthConfig(PluginConfigBase):
             sources = getattr(self, f'task_{size}_gift_sources')
             if len(set(sources)) != len(sources) or not set(sources) <= allowed:
                 raise ValueError(f"task_{size}_gift_sources 含重复或未知任务类型")
+        if not self.large_gift_fragment_price < self.large_gift_second_price < self.large_gift_final_price:
+            raise ValueError("大礼物三档价格必须递增")
+        if self.challenge_bloom_ticket_grade not in {"SSS", "SSS+"}:
+            raise ValueError("挑战解花券评级只能是 SSS 或 SSS+")
         return self
 
     def rule_overrides(self) -> dict[str, Any]:
@@ -358,6 +369,15 @@ class GrowthConfig(PluginConfigBase):
             "task_medium_gifts_daily_cap": self.task_medium_gifts_daily_cap,
             "task_medium_gift_sources": list(self.task_medium_gift_sources),
             "large_gift_fragment_price": self.large_gift_fragment_price,
+            "large_gift_monthly_first_cap": self.large_gift_monthly_first_cap,
+            "large_gift_second_price": self.large_gift_second_price,
+            "large_gift_monthly_second_cap": self.large_gift_monthly_second_cap,
+            "large_gift_final_price": self.large_gift_final_price,
+            "challenge_bloom_ticket_source": {
+                "kind": "challenge", "min_level": self.challenge_bloom_ticket_min_level,
+                "grade": self.challenge_bloom_ticket_grade,
+                "cooldown_days": self.challenge_bloom_ticket_cooldown_days,
+            },
             "task_fragments_daily_cap": self.task_fragments_daily_cap,
             "task_fragments": {
                 "normal": self.task_fragments_normal,
@@ -366,8 +386,8 @@ class GrowthConfig(PluginConfigBase):
                 "ultimate": self.task_fragments_ultimate,
             },
             "gift_purchase": {
-                "small": {"price": self.gift_purchase_small_price, "weekly_cap": self.gift_purchase_small_weekly_cap},
-                "medium": {"price": self.gift_purchase_medium_price, "weekly_cap": self.gift_purchase_medium_weekly_cap},
+                "small": {"price": self.gift_purchase_small_price, "daily_cap": self.gift_purchase_small_daily_cap},
+                "medium": {"price": self.gift_purchase_medium_price, "daily_cap": self.gift_purchase_medium_daily_cap},
             },
             "bloom_items": list(self.bloom_items),
             "bloom_levels": list(self.bloom_levels),

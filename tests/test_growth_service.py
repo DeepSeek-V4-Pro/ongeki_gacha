@@ -358,10 +358,10 @@ class GrowthServiceTests(unittest.TestCase):
 
     def test_fragment_exchange_unlimited_replay_restart_and_invalid_quantity(self):
         self.db.get_player('u')
-        self.set_item(2436)
+        self.set_item(10980)
         first = self.service.exchange_large_gift('u', 101, 'exchange-101')
         self.assertTrue(first['success'])
-        self.assertEqual((first['price'], first['remaining']), (1212, 1224))
+        self.assertEqual((first['price'], first['remaining']), (4860, 6120))
         self.assertEqual(first, self.service.exchange_large_gift('u', 101, 'exchange-101'))
         self.assertFalse(self.service.exchange_large_gift('u', 1, 'exchange-101')['success'])
         second = self.service.exchange_large_gift('u', 102, 'exchange-102')
@@ -394,7 +394,7 @@ class GrowthServiceTests(unittest.TestCase):
         self.assertEqual(self.quantity(), 0)
         self.assertEqual(self.quantity('gift_large'), 1)
 
-    def test_gift_purchase_weekly_cap_and_points(self):
+    def test_gift_purchase_daily_cap_and_points(self):
         self.own()
         plans = self.catalog.rules["gift_purchase"]
         self.db._conn.execute("UPDATE players SET points=0 WHERE qq_id='u'")
@@ -402,20 +402,20 @@ class GrowthServiceTests(unittest.TestCase):
         self.assertFalse(self.service.buy_gift('u', 'large', 1, 'unsupported')['success'])
         self.db._conn.execute("UPDATE players SET points=5000 WHERE qq_id='u'")
         small, medium = plans['small'], plans['medium']
-        first = self.service.buy_gift('u', 'small', small['weekly_cap'], 'buy-1')
+        first = self.service.buy_gift('u', 'small', small['daily_cap'], 'buy-1')
         self.assertTrue(first['success'])
         self.assertEqual((first['quantity'], first['price'], first['points']),
-                         (small['weekly_cap'], small['price']*small['weekly_cap'],
-                          5000-small['price']*small['weekly_cap']))
-        self.assertEqual(self.quantity('gift_small'), small['weekly_cap'])
+                         (small['daily_cap'], small['price']*small['daily_cap'],
+                          5000-small['price']*small['daily_cap']))
+        self.assertEqual(self.quantity('gift_small'), small['daily_cap'])
         self.assertFalse(self.service.buy_gift('u', 'small', 1, 'buy-2')['success'])
-        self.assertEqual(self.service.buy_gift('u', 'small', small['weekly_cap'], 'buy-1'), first)
+        self.assertEqual(self.service.buy_gift('u', 'small', small['daily_cap'], 'buy-1'), first)
         self.assertFalse(self.service.buy_gift('u', 'small', 1, 'buy-1')['success'])
-        bought = self.service.buy_gift('u', 'medium', medium['weekly_cap'], 'buy-3')
+        bought = self.service.buy_gift('u', 'medium', medium['daily_cap'], 'buy-3')
         self.assertTrue(bought['success'])
-        self.assertEqual(bought['price'], medium['price']*medium['weekly_cap'])
+        self.assertEqual(bought['price'], medium['price']*medium['daily_cap'])
         self.assertFalse(self.service.buy_gift('u', 'medium', 1, 'buy-4')['success'])
-        self.assertEqual(self.quantity('gift_medium'), medium['weekly_cap'])
+        self.assertEqual(self.quantity('gift_medium'), medium['daily_cap'])
         self.assertEqual(self.quantity('gift_large'), 0)
 
     def test_review_sources_points_and_growth_items(self):
@@ -458,12 +458,12 @@ class GrowthServiceTests(unittest.TestCase):
             return self.db.approve_task(task.task_id, "admin", grade=grade, reward=100)
 
         challenge = approve("challenge", 13.5, "SSS", "c1")
-        self.assertEqual(challenge.bloom_tickets, 0)
+        self.assertEqual(challenge.bloom_tickets, 1)
         low = approve("advanced", 12.7, "SSS", "a1")
         self.assertEqual(low.bloom_tickets, 0)
         first = approve("advanced", 13.5, "SSS", "a2")
         self.assertEqual(first.bloom_tickets, 1)
-        self.assertEqual(self.quantity("bloom_ticket"), 1)
+        self.assertEqual(self.quantity("bloom_ticket"), 2)
         # 活动券可在任务冷却期间发放，且不改变冷却起点。
         cooldown = self.db._conn.execute(
             "SELECT last_at FROM player_cooldowns WHERE qq_id='u' AND key='bloom_ticket'"
@@ -481,7 +481,7 @@ class GrowthServiceTests(unittest.TestCase):
         )
         third = approve("advanced", 13.5, "SSS", "a4")
         self.assertEqual(third.bloom_tickets, 1)
-        self.assertEqual(self.quantity("bloom_ticket"), 3)
+        self.assertEqual(self.quantity("bloom_ticket"), 4)
 
 
 if __name__ == "__main__":

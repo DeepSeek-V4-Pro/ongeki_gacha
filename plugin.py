@@ -181,7 +181,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         async with self._lock:
             if self._db is not None:
                 self._db.initialize_growth(cards, enabled=self.config.growth.enabled, rules=growth_catalog.rules)
-                self._growth = GrowthService(self._db, growth_catalog)
+                self._growth = GrowthService(self._db, growth_catalog, tz_offset_hours=self.config.economy.tz_offset_hours)
                 self._reward_catalog = reward_catalog
                 if self._voice is None:
                     self._voice = self._build_voice_service(self._growth, voice_catalog)
@@ -256,7 +256,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         voice_catalog.validate_rewards(catalog)
         self._reward_catalog = RewardCatalog(Path(__file__).parent / "assets/growth")
         database.initialize_growth(cards, enabled=self.config.growth.enabled, rules=catalog.rules)
-        self._growth = GrowthService(database, catalog)
+        self._growth = GrowthService(database, catalog, tz_offset_hours=self.config.economy.tz_offset_hours)
         self._voice = VoiceService(
             self._growth,
             voice_catalog,
@@ -750,8 +750,13 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             f"{self.config.growth.task_fragments_challenge}/{self.config.growth.task_fragments_advanced}/"
             f"{self.config.growth.task_fragments_ultimate}碎片，每天合计最多{self.config.growth.task_fragments_daily_cap}；"
             "好感节点发的N卡不产生碎片",
-            "小礼物与中礼物可用点数购买（每周限量，见 /礼物），"
-            f"大礼物可用 {growth.large_gift_fragment_price} 片花之碎片兑换1份，不限额度：/礼物 兑换 大 [数量]",
+            "小礼物与中礼物可用点数购买（每日限量，按配置时区重置，见 /礼物），"
+            f"大礼物每月前{growth.large_gift_monthly_first_cap}份各{growth.large_gift_fragment_price}碎片，"
+            f"接着{growth.large_gift_monthly_second_cap}份各{growth.large_gift_second_price}碎片，"
+            f"之后各{growth.large_gift_final_price}碎片不限量；每月1日按配置时区重置：/礼物 兑换 大 [数量]",
+            f"挑战目标定数 ≥ {growth.challenge_bloom_ticket_min_level:g} 且 {growth.challenge_bloom_ticket_grade} 及以上，"
+            f"可获1张解花券，独立冷却{growth.challenge_bloom_ticket_cooldown_days}天；与高级挑战、签到来源互不占用冷却",
+            "音击 LU 中有有效内部定数的计分谱参与任务；零定数及明确不计分谱仍排除",
             f"任务礼物：{task_gifts}；{ultimate_gifts}",
             "语音分为自动回应与手动点播：小礼物、中/大礼物、好感升级会自动回应一条，升级优先；"
             "档案语音在 /角色语音 <角色姓名> <序号> 手动播放，可用 /角色语音 分类 查看分类",
@@ -1060,6 +1065,8 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             >= float(self.config.growth.bloom_ticket_source_min_level)
         ):
             requirement += f"；{self.config.growth.bloom_ticket_source_grade} 及以上可获解花券"
+        if task_kind == "challenge" and selection.chart.level_value >= self.config.growth.challenge_bloom_ticket_min_level:
+            requirement += f"；{self.config.growth.challenge_bloom_ticket_grade} 及以上可获解花券（独立{self.config.growth.challenge_bloom_ticket_cooldown_days}天冷却）"
         return requirement
 
     def _task_sources(self) -> tuple[dict[str, str], dict[str, str]]:
@@ -1892,15 +1899,15 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
                 else "常驻"
             )
             summary_lines = [
-                f"{count} 连｜{pool_label}",
+                f"抽卡完成：{count} 张｜卡池 {pool_label}",
                 f"{self._rare_summary(drawn_cards)}"
-                f"｜新卡 {sum(1 for item in receipt.commitments if item.is_new)}"
+                f"｜首次获得 {sum(1 for item in receipt.commitments if item.is_new)} 张"
                 f"｜碎片 +{sum(item.fragments for item in receipt.commitments)}",
-                f"剩余 {receipt.points} 点",
+                f"本次消耗 {cost} 点｜余额 {receipt.points} 点",
             ]
             if draw_pool.featured_count:
                 summary_lines.append(
-                    f"UP {draw_pool.featured_count} 张 ×{draw_pool.pickup_multiplier}"
+                    f"池内 UP 卡共 {draw_pool.featured_count} 种（抽取权重 ×{draw_pool.pickup_multiplier}，非本次抽中数）"
                 )
             if receipt.max_select_points:
                 if receipt.select_claimed:
@@ -1916,11 +1923,13 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
                         f"{receipt.max_select_points}"
                     )
                 summary_lines.append(ceiling_text)
+            if count == 11:
+                summary_lines.append("本次11连保底：至少1张 SR 或以上")
             if count == 5:
                 summary_lines.append(
-                    "5 连保底已用"
+                    "本次使用每周首次五连保底：至少1张 SR 或以上"
                     if weekly_5_claimed
-                    else "5 连保底本周已用"
+                    else "本周首次五连保底此前已使用，本次按普通概率抽取"
                 )
                 if half_price_used:
                     summary_lines.append(

@@ -172,7 +172,7 @@ python tools/sync_card_data.py `
   --check
 ```
 
-如果目录中没有 `ui_card_*.png`，插件会提示“卡牌数据不可用”。
+缺少 `ui_card_*.png` 只影响卡面展示，抽卡与养成仍可使用文字；缺少或无法读取 `card_info_merged.json` 才会导致卡牌数据不可用。
 也可以在插件配置中修改：
 
 ```toml

@@ -2226,6 +2226,12 @@ class GachaDatabase:
                 bloom_tickets = 0
                 cooldown_text = ""
                 ticket_source = (self._growth_rules or {}).get("bloom_ticket_source") or {}
+                cooldown_key = "bloom_ticket"
+                ticket_label = "高级挑战解花券"
+                if str(row["task_kind"]) == "challenge":
+                    ticket_source = (self._growth_rules or {}).get("challenge_bloom_ticket_source") or {}
+                    cooldown_key = "bloom_ticket_challenge"
+                    ticket_label = "挑战解花券"
                 if self._growth_ready and self._growth_enabled and ticket_source:
                     required_grade = str(ticket_source.get("grade") or "SSS").upper().replace("＋", "+")
                     actual_grade = str(grade or "").upper().replace("＋", "+")
@@ -2240,8 +2246,8 @@ class GachaDatabase:
                     ):
                         cooldown_days = max(int(ticket_source.get("cooldown_days") or 0), 0)
                         last = conn.execute(
-                            "SELECT last_at FROM player_cooldowns WHERE qq_id=? AND key='bloom_ticket'",
-                            (qq_id,),
+                            "SELECT last_at FROM player_cooldowns WHERE qq_id=? AND key=?",
+                            (qq_id, cooldown_key),
                         ).fetchone()
                         allowed = True
                         remaining_days = 0
@@ -2260,13 +2266,13 @@ class GachaDatabase:
                             change_item(conn, qq_id, "bloom_ticket", 1)
                             conn.execute(
                                 """INSERT INTO player_cooldowns(qq_id, key, last_at)
-                                   VALUES(?, 'bloom_ticket', ?)
+                                   VALUES(?, ?, ?)
                                    ON CONFLICT(qq_id, key) DO UPDATE SET last_at=excluded.last_at""",
-                                (qq_id, now),
+                                (qq_id, cooldown_key, now),
                             )
                             bloom_tickets = 1
                         else:
-                            cooldown_text = f"解花券冷却中（剩余{remaining_days}天）"
+                            cooldown_text = f"{ticket_label}冷却中（剩余{remaining_days}天）"
                 conn.execute("COMMIT")
                 return TaskReviewReceipt(
                     success=True,

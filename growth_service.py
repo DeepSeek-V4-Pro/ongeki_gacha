@@ -9,6 +9,7 @@ from .gacha_core import max_detail_slots
 from .growth_catalog import GrowthCatalog
 from .growth_core import CURVE_VERSION, MAIN_CHARACTER_IDS, affection_level
 from .growth_migration import change_item
+from .gift_economy import quote_large_gifts, affordable_large_gifts, large_gift_shop_lines
 
 
 class GrowthError(ValueError):
@@ -16,9 +17,10 @@ class GrowthError(ValueError):
 
 
 class GrowthService:
-    def __init__(self, database, catalog: GrowthCatalog):
+    def __init__(self, database, catalog: GrowthCatalog, *, tz_offset_hours: int = 0):
         self.db = database
         self.catalog = catalog
+        self.tz_offset_hours = int(tz_offset_hours)
 
     def automatic_voice_event(self, qq_id, request_id, *, claim=False):
         """只使用已提交交易；发送前持久化占位，重启及重投也不补发。"""
@@ -180,7 +182,7 @@ class GrowthService:
         return f"{iso.year}-W{iso.week:02d}"
 
     def buy_gift(self, qq_id: str, size: str, quantity: int, request_id: str) -> dict:
-        """用点数购买小/中礼物，每周限额按UTC ISO周结算。"""
+        """用点数购买小/中礼物，每日限额按配置时区结算。"""
         def execute(conn, now):
             plan = self.catalog.rules.get("gift_purchase", {}).get(size)
             if plan is None:
@@ -188,13 +190,16 @@ class GrowthService:
             if type(quantity) is not int or not 1 <= quantity <= 100:
                 raise GrowthError("购买数量需 1-100 份")
             label = {"small": "小礼物", "medium": "中礼物"}[size]
-            week = self._week_key(self.db.current_date_str(0))
-            action = f"gift_purchase_{size}"
+            day = self.db.current_date_str(self.tz_offset_hours)
+            action = f"gift_purchase_daily_{size}"
+            latest = conn.execute("SELECT MAX(utc_date) FROM growth_daily_usage WHERE qq_id=? AND action=?", (qq_id, action)).fetchone()[0]
+            if latest and latest > day:
+                raise GrowthError("购买记录晚于当前日期，请检查服务器时间或时区配置")
             row = conn.execute("SELECT quantity FROM growth_daily_usage WHERE qq_id=? AND utc_date=? AND action=?",
-                               (qq_id, week, action)).fetchone()
+                               (qq_id, day, action)).fetchone()
             used = int(row[0]) if row else 0
-            if used + quantity > plan["weekly_cap"]:
-                raise GrowthError(f"本周{label}已购满 {used}/{plan['weekly_cap']}")
+            if used + quantity > plan["daily_cap"]:
+                raise GrowthError(f"今日{label}还可购买 {max(0, plan['daily_cap'] - used)} 份（已购 {used}/{plan['daily_cap']}，本次请求 {quantity} 份）")
             price = plan["price"] * quantity
             row = conn.execute("SELECT points FROM players WHERE qq_id=?", (qq_id,)).fetchone()
             owned = int(row[0]) if row else 0
@@ -205,30 +210,40 @@ class GrowthService:
             conn.execute("UPDATE players SET points=points-?, updated_at=? WHERE qq_id=?", (price, now, qq_id))
             change_item(conn, qq_id, f"gift_{size}", quantity)
             conn.execute("""INSERT INTO growth_daily_usage VALUES(?,?,?,?) ON CONFLICT(qq_id,utc_date,action)
-                DO UPDATE SET quantity=excluded.quantity""", (qq_id, week, action, used + quantity))
+                DO UPDATE SET quantity=excluded.quantity""", (qq_id, day, action, used + quantity))
             return {"size": size, "label": label, "quantity": quantity, "price": price,
-                    "points": owned - price, "weekly_used": used + quantity,
-                    "weekly_cap": plan["weekly_cap"]}
+                    "points": owned - price, "date": day, "daily_used": used + quantity,
+                    "daily_cap": plan["daily_cap"]}
 
         return self._run(qq_id, request_id, "gift_purchase",
                          {"size": size, "quantity": quantity}, execute)
 
     def exchange_large_gift(self, qq_id: str, quantity: int, request_id: str) -> dict:
-        """用碎片兑换大礼物，不设单笔、每日或每周额度；与库存同事务防重。"""
+        """每月三档递增兑换；额度、扣款、物品和防重记录同事务提交。"""
         def execute(conn, now):
             if type(quantity) is not int or quantity < 1:
                 raise GrowthError("兑换数量需为正整数（/礼物 兑换 大 1）")
-            unit_price = self.catalog.rules['large_gift_fragment_price']
-            price = unit_price * quantity
-            row = conn.execute("SELECT quantity FROM player_items WHERE qq_id=? AND item_id='flower_fragment'",
-                               (qq_id,)).fetchone()
+            month = self.db.current_date_str(self.tz_offset_hours)[:7]
+            action = 'large_gift_exchange_monthly'
+            latest = conn.execute("SELECT MAX(utc_date) FROM growth_daily_usage WHERE qq_id=? AND action=?", (qq_id, action)).fetchone()[0]
+            if latest and latest > month:
+                raise GrowthError("兑换记录晚于当前月份，请检查服务器时间或时区配置")
+            row = conn.execute("SELECT quantity FROM growth_daily_usage WHERE qq_id=? AND utc_date=? AND action=?", (qq_id, month, action)).fetchone()
+            used = int(row[0]) if row else 0
+            breakdown = quote_large_gifts(self.catalog.rules, used, quantity)
+            price = sum(part['cost'] for part in breakdown)
+            row = conn.execute("SELECT quantity FROM player_items WHERE qq_id=? AND item_id='flower_fragment'", (qq_id,)).fetchone()
             owned = int(row[0]) if row else 0
             if owned < price:
-                raise GrowthError(f"花之碎片不足 {owned}/{price}（/规则 查看来源）")
+                raise GrowthError(f"花之碎片不足 {owned}/{price}（按本月阶梯价合计；/礼物 查看各档余额）")
             change_item(conn, qq_id, 'flower_fragment', -price)
             change_item(conn, qq_id, 'gift_large', quantity)
+            conn.execute("""INSERT INTO growth_daily_usage VALUES(?,?,?,?) ON CONFLICT(qq_id,utc_date,action)
+                DO UPDATE SET quantity=excluded.quantity""", (qq_id, month, action, used + quantity))
             return {'size': 'large', 'label': '大礼物', 'quantity': quantity,
-                    'unit_price': unit_price, 'price': price, 'remaining': owned - price}
+                    'price': price, 'remaining': owned - price, 'breakdown': breakdown,
+                    'month': month, 'monthly_used': used + quantity,
+                    'tier_lines': large_gift_shop_lines(self.catalog.rules, used + quantity)}
         return self._run(qq_id, request_id, 'gift_exchange', {'quantity': quantity}, execute)
 
     def bloom(self, qq_id: str, card_id: int, stage: int, request_id: str) -> dict:
@@ -328,9 +343,9 @@ class GrowthService:
                 raise
 
     def gift_purchase_state(self, qq_id: str) -> dict:
-        """本周小/中礼物的点数购买额度，供背包页与回执显示。"""
+        """今日小/中礼物的点数购买额度，供背包页与回执显示。"""
         plans = self.catalog.rules.get("gift_purchase", {})
-        week = self._week_key(self.db.current_date_str(0))
+        day = self.db.current_date_str(self.tz_offset_hours)
         state: dict = {}
         with self.db._lock:
             conn = self.db._conn
@@ -339,8 +354,15 @@ class GrowthService:
             for size, plan in plans.items():
                 row = conn.execute(
                     "SELECT quantity FROM growth_daily_usage WHERE qq_id=? AND utc_date=? AND action=?",
-                    (qq_id, week, f"gift_purchase_{size}")).fetchone()
+                    (qq_id, day, f"gift_purchase_daily_{size}")).fetchone()
                 used = int(row[0]) if row else 0
-                state[size] = {"price": plan["price"], "cap": plan["weekly_cap"],
-                               "used": used, "left": plan["weekly_cap"] - used}
+                state[size] = {"price": plan["price"], "cap": plan["daily_cap"],
+                               "used": used, "left": max(0, plan["daily_cap"] - used)}
+            month = day[:7]
+            row = conn.execute("SELECT quantity FROM growth_daily_usage WHERE qq_id=? AND utc_date=? AND action='large_gift_exchange_monthly'", (qq_id, month)).fetchone()
+            used = int(row[0]) if row else 0
+            fragments = conn.execute("SELECT quantity FROM player_items WHERE qq_id=? AND item_id='flower_fragment'", (qq_id,)).fetchone()
+            state['large'] = {'used': used, 'month': month,
+                              'lines': large_gift_shop_lines(self.catalog.rules, used),
+                              'affordable': affordable_large_gifts(self.catalog.rules, used, int(fragments[0]) if fragments else 0)}
         return state
