@@ -295,10 +295,14 @@ def _draw_info_row(
     label_color: tuple[int, int, int] = (127, 116, 157),
     value_color: tuple[int, int, int] = TEXT_DARK,
     value_font_size: int = 20,
+    max_width: float | None = None,
 ) -> None:
     x, y = xy
     label_font = _font(18)
     value_font = _font(value_font_size)
+    while max_width and draw.textlength(value, font=value_font) > max_width and value_font_size > 14:
+        value_font_size -= 1
+        value_font = _font(value_font_size)
     draw.text((x, y), label, font=label_font, fill=label_color)
     value_x = x + 92
     draw.text((value_x, y - 1), value, font=value_font, fill=value_color)
@@ -419,9 +423,11 @@ def render_task_card(data: TaskCardData, output_path: Path, size: tuple[int, int
 
     row_y = artist_y + 48
     level_label = "任务谱面" if str(data.kind or "").lower() != "normal" else "最高难度"
-    _draw_info_row(draw, (info_x, row_y), level_label, str(data.level or "-"), value_font_size=23)
-    _draw_info_row(draw, (info_x, row_y + 40), "任务要求", str(data.requirement or "任意难度"), value_font_size=22)
-    _draw_info_row(draw, (info_x, row_y + 80), "完成奖励", f"{data.reward} 点", value_font_size=23)
+    value_width = info_max_width - 92
+    _draw_info_row(draw, (info_x, row_y), level_label, str(data.level or "-"), value_font_size=23, max_width=value_width)
+    _draw_info_row(draw, (info_x, row_y + 40), "任务要求", str(data.requirement or "任意难度"), value_font_size=22, max_width=value_width)
+    reward = f"{data.reward} 点" + ("起（按评级）" if data.kind in {"challenge", "advanced"} else "")
+    _draw_info_row(draw, (info_x, row_y + 80), "完成奖励", reward, value_font_size=23, max_width=value_width)
 
     # 接取人
     if data.user_id:
@@ -436,7 +442,7 @@ def render_task_card(data: TaskCardData, output_path: Path, size: tuple[int, int
     if data.note:
         note_font = _font(17)
         draw.text(
-            (card[0] + 320, card[3] - 46),
+            (card[0] + 42, card[3] - 78),
             data.note,
             font=note_font,
             fill=TEXT_MUTED,

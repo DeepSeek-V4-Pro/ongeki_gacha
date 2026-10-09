@@ -16,7 +16,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.3.3", description="配置版本")
+    config_version: str = Field(default="1.3.4", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -181,7 +181,7 @@ class TaskConfig(PluginConfigBase):
     challenge_min_level: float = Field(
         default=10.0,
         ge=1.0,
-        description="挑战最低等级，默认 10 级或以上",
+        description="挑战最低谱面定数，默认 10.0",
     )
     advanced_min_level: float = Field(
         default=12.7,
@@ -417,6 +417,46 @@ class UIConfig(PluginConfigBase):
     short_reply_max_chars: int = Field(default=700, ge=1, description="短回复直接发文字的最大字符数")
 
 
+class PreviewConfig(PluginConfigBase):
+    """只接受三游戏曲库歌曲的公开音源试听。"""
+
+    __ui_label__ = "曲目预览"
+    __ui_icon__ = "music"
+    __ui_order__ = 10
+
+    enabled: bool = Field(default=True, description="启用曲库限定的QQ语音试听")
+    automatic_ultimate: bool = Field(default=True, description="终极任务接取后自动试听，失败静默")
+    providers: list[str] = Field(default_factory=lambda: ["netease_api", "netease", "meting_tencent", "meting_kugou", "meting_kuwo", "meting_netease", "deezer"], description="按顺序尝试音源；Meting与网易云登录接口需配置地址，Deezer仅提供短试听")
+    netease_api_url: str = Field(default="", description="自建NeteaseCloudMusicApiEnhanced地址，如http://127.0.0.1:3000；留空跳过登录接口")
+    netease_cookie: str = Field(default="", repr=False, description="网易云登录Cookie，仅POST到netease_api_url；留空使用接口服务端登录态")
+    meting_api_url: str = Field(default="", description="自建metowolf/Meting-API完整端点，如http://127.0.0.1:3001/api；各平台Cookie在该服务端配置")
+    allow_preview_fallback: bool = Field(default=False, description="全部完整音源失败后是否发送明确标注的短试听片段")
+    max_duration_seconds: int = Field(default=1200, ge=60, le=3600, description="音频最长秒数，默认20分钟；超限拒绝发送，不截断")
+    ffmpeg_path: str = Field(default="", description="FFmpeg路径；留空使用PATH或imageio-ffmpeg")
+    request_timeout_seconds: int = Field(default=15, ge=3, le=60, description="单次元数据请求超时秒数")
+    download_timeout_seconds: int = Field(default=60, ge=5, le=180, description="单次音频下载超时秒数")
+    total_timeout_seconds: int = Field(default=180, ge=30, le=600, description="所有音源搜索下载的总预算秒数，另预留60秒转码")
+    send_timeout_seconds: int = Field(default=90, ge=5, le=180, description="QQ图片或长语音发送超时秒数")
+    cooldown_seconds: int = Field(default=10, ge=0, le=60, description="同账号试听请求间隔秒数")
+    cache_ttl_seconds: int = Field(default=24 * 60 * 60, ge=60, le=7 * 24 * 60 * 60, description="音频缓存保留秒数，缓存总量不超过256MiB")
+    max_download_bytes: int = Field(default=64 * 1024 * 1024, ge=1024, le=128 * 1024 * 1024, description="单个音源下载上限字节数")
+
+    @model_validator(mode="after")
+    def _validate_providers(self):
+        supported = {"deezer", "netease", "netease_api", "meting_netease", "meting_tencent", "meting_kugou", "meting_kuwo"}
+        if not self.providers or any(name not in supported for name in self.providers):
+            raise ValueError("preview.providers 存在不支持的音源或为空")
+        if len(set(self.providers)) != len(self.providers):
+            raise ValueError("preview.providers 不可重复")
+        from urllib.parse import urlsplit
+        for address in (self.netease_api_url, self.meting_api_url):
+            if address:
+                parsed = urlsplit(address)
+                if parsed.scheme not in ("http", "https") or not parsed.hostname or parsed.username or parsed.password or parsed.fragment:
+                    raise ValueError("preview API 地址须为完整HTTP(S)地址，不接受内嵌账号密码或片段")
+        return self
+
+
 class OngekiGachaPluginConfig(PluginConfigBase):
     """ONGEKI 模拟抽卡插件配置。"""
 
@@ -429,3 +469,4 @@ class OngekiGachaPluginConfig(PluginConfigBase):
     task: TaskConfig = Field(default_factory=TaskConfig)
     growth: GrowthConfig = Field(default_factory=GrowthConfig)
     ui: UIConfig = Field(default_factory=UIConfig)
+    preview: PreviewConfig = Field(default_factory=PreviewConfig)

@@ -30,12 +30,15 @@ CARD_FILL = (255, 255, 255, 236)
 SECTION_PATTERN = re.compile(r"^【.+】$")
 
 FONT_CANDIDATES = (
+    Path("/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"),
+    Path("/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc"),
     Path(__file__).parent / "assets/fonts/NotoSansCJKsc-Regular.otf",
     Path("C:/Windows/Fonts/msyh.ttc"),
     Path("C:/Windows/Fonts/simhei.ttf"),
     Path("C:/Windows/Fonts/msyhbd.ttc"),
 )
 BOLD_FONT_CANDIDATES = (
+    Path("/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc"),
     Path(__file__).parent / "assets/fonts/NotoSansCJKsc-Bold.otf",
     Path("C:/Windows/Fonts/msyhbd.ttc"),
     Path("C:/Windows/Fonts/msyh.ttc"),

@@ -9,7 +9,7 @@ from typing import Any
 from maibot_sdk import Command
 
 from .gacha_db import GachaDatabase
-from .task_catalog import GAME_LABELS, pick_random_task
+from .task_catalog import GAME_LABELS, KIND_LABELS, pick_random_task
 
 
 def _growth_reward_text(medium_gifts: int, large_gifts: int, fragments: int, small_gifts: int = 0) -> str:
@@ -31,8 +31,9 @@ class TaskCommandsMixin:
 
     @Command(
         "ongeki_task_accept",
+        timeout_ms=1_800_000,
         description="接取音游随机任务",
-    pattern=r"^/接任务\s+(?P<kind>高级挑战|普通|挑战|终极)(?:\s+(?P<game>\S+))?\s*$",
+        pattern=r"^/接任务\s+(?P<kind>高级挑战|普通|挑战|终极)(?:\s+(?P<game>\S+))?\s*$",
     )
     async def handle_task_accept(
         self,
@@ -42,6 +43,11 @@ class TaskCommandsMixin:
         user_id = self._user_id(kwargs)
         task_kind = self._task_kind_from_kwargs(kwargs)
         game = self._task_game_from_kwargs(kwargs)
+        raw_game = str((kwargs.get("matched_groups") or {}).get("game") or "").strip()
+        if raw_game and game is None:
+            text = "游戏可选：音击、舞萌、中二"
+            await self._send_text(stream_id, text)
+            return True, text, True
         task_config = self.config.task
         if not task_config.enabled:
             text = "随机任务功能未启用"
@@ -59,9 +65,11 @@ class TaskCommandsMixin:
                 await self._send_text(stream_id, text)
                 return True, text, True
 
+            if self.config.task.auto_reset:
+                self._db.expire_daily_tasks(GachaDatabase.current_date_str(self.config.economy.tz_offset_hours))
             incomplete = self._db.list_tasks(
                 user_id,
-                statuses=("active", "submitted"),
+                statuses=("active", "submitted", "rejected"), limit=-1,
             )
             incomplete_keys = {
                 f"{task.game}:{task.song_id}" for task in incomplete
@@ -86,15 +94,7 @@ class TaskCommandsMixin:
                 ultimate_min_level=self.config.task.ultimate_min_level,
             )
             if selection is None:
-                if task_kind == "ultimate":
-                    self._db.set_ultimate_finished(user_id, True)
-                    reason = (
-                        "该游戏终极曲目已全部完成"
-                        if game
-                        else "终极曲目已全部完成"
-                    )
-                else:
-                    reason = "该游戏候选任务不足" if game else "候选任务不足"
+                reason = "当前没有可接取的达标谱面（已完成或被未结束任务占用）"
                 text = f"{reason}，无法接取任务"
                 await self._send_text(stream_id, text)
                 return True, text, True
@@ -109,6 +109,7 @@ class TaskCommandsMixin:
                 song_title=selection.song.title,
                 artist=selection.song.artist,
                 difficulty_index=chart.index if chart is not None else None,
+                chart_type=chart.kind if chart is not None else "",
                 difficulty_label=(
                     chart.label
                     if chart is not None
@@ -153,7 +154,9 @@ class TaskCommandsMixin:
                         await self._send_text(stream_id, text)
             else:
                 await self._send_text(stream_id, text)
-            return True, text, True
+        if task_kind == "ultimate":
+            await self._automatic_song_preview(stream_id, user_id, selection.song)
+        return True, text, True
 
     @Command(
         "ongeki_task_list",
@@ -205,28 +208,32 @@ class TaskCommandsMixin:
             "active": "待完成",
             "submitted": "待审核",
             "approved": "已通过",
-            "rejected": "已拒绝",
+            "rejected": "已驳回，可重提",
             "reset": "已重置",
             "expired": "已过期",
         }
-        tasks = [
-            task
-            for task in self._db.list_tasks(user_id, limit=100)
-            if task.task_kind == "ultimate" or task.task_date == today
-        ][:30]
+        if self.config.task.auto_reset:
+            self._db.expire_daily_tasks(today)
+        current = self._db.list_tasks(user_id, statuses=("active", "submitted", "rejected"), limit=-1)
+        history = self._db.list_tasks(user_id, limit=100)
+        tasks = sorted({task.id: task for task in current + history
+                      if task.status in {"active", "submitted"}
+                      or (task.task_kind == "ultimate" and task.status == "rejected")
+                      or task.task_date == today}.values(),
+                       key=lambda task: (task.task_kind != "ultimate", task.status not in {"active", "submitted", "rejected"}, -task.id))[:30]
         if tasks:
             lines.append("")
             for task in tasks:
                 game_name = GAME_LABELS.get(task.game, task.game)
                 status = status_labels.get(task.status, task.status)
                 lines.append(
-                    f"#{task.id} [{game_name}] {self._ellipsize(task.song_title, 16)}"
+                    f"#{task.id} {KIND_LABELS.get(task.task_kind, task.task_kind)} [{game_name}] {self._ellipsize(task.song_title, 16)}"
                     f"｜{task.requirement_text}｜{status}"
                 )
         else:
             lines.append("")
             lines.append("暂无任务。发送 /接任务 普通 领取任务")
-        lines.append("接取：/接任务 普通|挑战|高级挑战｜提交：发送成绩图及 /任务完成 <ID>")
+        lines.append("成绩图 + /任务完成 <ID>；终极用 /终极提交 <ID>")
         text = "\n".join(lines)
         await self._send_text(stream_id, text, title="音击抽卡模拟器 · 任务列表")
         return True, text, True
@@ -245,6 +252,16 @@ class TaskCommandsMixin:
         matched_groups: dict = None,
         **kwargs: dict[str, Any],
     ) -> tuple[bool, str, bool]:
+        return await self._submit_task(stream_id, matched_groups, kwargs, ultimate=False)
+
+    @Command("ongeki_ultimate_submit", description="提交终极任务成绩",
+             pattern=r"^/终极提交\s+(?P<task_id>\d+)(?:\s+(?P<note>.+))?\s*$")
+    async def handle_ultimate_submit(self, stream_id: str = "", matched_groups: dict = None,
+                                     **kwargs: dict[str, Any]) -> tuple[bool, str, bool]:
+        return await self._submit_task(stream_id, matched_groups, kwargs, ultimate=True)
+
+    async def _submit_task(self, stream_id, matched_groups, kwargs, *, ultimate):
+        command = "/终极提交" if ultimate else "/任务完成"
         user_id = self._user_id(kwargs)
         groups = matched_groups or {}
         try:
@@ -253,11 +270,7 @@ class TaskCommandsMixin:
             task_id = 0
         note = str(groups.get("note") or "").strip()
         if task_id <= 0:
-            text = "用法：发送成绩图及 /任务完成 <ID>"
-            await self._send_text(stream_id, text)
-            return True, text, True
-        if self.config.task.require_photo and not self._has_photo(kwargs):
-            text = "请在发送 /任务完成 <ID> 时附上成绩图"
+            text = f"用法：成绩图 + {command} <ID>"
             await self._send_text(stream_id, text)
             return True, text, True
         if self._db is None:
@@ -269,7 +282,18 @@ class TaskCommandsMixin:
             text = "未找到该任务或不属于你"
             await self._send_text(stream_id, text)
             return True, text, True
-        receipt = self._db.submit_task(task_id, user_id, note=note)
+        if (task.task_kind == "ultimate") != ultimate:
+            correct = "/终极提交" if task.task_kind == "ultimate" else "/任务完成"
+            text = f"请使用 {correct} {task_id} 提交此任务"
+            await self._send_text(stream_id, text)
+            return True, text, True
+        if self.config.task.require_photo and not self._has_photo(kwargs):
+            text = f"请在同一条消息附成绩图：{command} {task_id}"
+            await self._send_text(stream_id, text)
+            return True, text, True
+        if self.config.task.auto_reset:
+            self._db.expire_daily_tasks(GachaDatabase.current_date_str(self.config.economy.tz_offset_hours))
+        receipt = self._db.submit_task(task_id, user_id, note=note, ultimate=ultimate)
         if not receipt.success:
             text = receipt.error or "提交失败"
             await self._send_text(stream_id, text)
@@ -282,7 +306,12 @@ class TaskCommandsMixin:
         ]
         if note:
             lines.append(f"备注 {note}")
-        lines.append(f"管理员 /任务审核 {task_id} S|SS|SSS|SSS+")
+        if ultimate:
+            lines.append(f"管理员：/终极审核 {task_id} 通过|拒绝")
+        elif task.task_kind == "normal":
+            lines.append(f"管理员：/任务审核 {task_id} 普通|拒绝")
+        else:
+            lines.append(f"管理员：/任务审核 {task_id} S|SS|SSS|SSS+|拒绝")
         text = "\n".join(lines)
         await self._send_text(stream_id, text)
         return True, text, True
@@ -324,12 +353,12 @@ class TaskCommandsMixin:
             await self._send_text(stream_id, text)
             return True, text, True
         if task.task_kind == "ultimate":
-            text = "终极任务请用 /终极完成"
+            text = f"请使用 /终极审核 {task_id} 通过|拒绝"
             await self._send_text(stream_id, text)
             return True, text, True
         if grade == "拒绝":
             receipt = self._db.reject_task(task_id, user_id, note=note)
-            text = "任务已拒绝" if receipt.success else (receipt.error or "操作失败")
+            text = f"任务 #{task_id} 已驳回，可补图重提" if receipt.success else (receipt.error or "操作失败")
             await self._send_text(stream_id, text)
             return True, text, True
         if task.task_kind == "normal":
@@ -403,13 +432,38 @@ class TaskCommandsMixin:
             lines = ["【待审核任务】"]
             for task in tasks:
                 lines.append(
-                    f"#{task.id} | {GAME_LABELS.get(task.game, task.game)}"
+                    f"#{task.id} {KIND_LABELS.get(task.task_kind, task.task_kind)}｜{GAME_LABELS.get(task.game, task.game)}"
                     f"｜{self._ellipsize(task.song_title, 16)}"
                     f"｜{task.requirement_text}"
                     f"｜接取人 {task.qq_id}"
                 )
+            lines.append("一般：/任务审核 <ID> 普通|S|SS|SSS|SSS+|拒绝")
+            lines.append("终极：/终极审核 <ID> 通过|拒绝")
             text = "\n".join(lines)
         await self._send_text(stream_id, text, title="音击抽卡模拟器 · 待审核任务")
+        return True, text, True
+
+    @Command("ongeki_ultimate_review", description="管理员审核终极任务",
+             pattern=r"^/终极审核\s+(?P<task_id>\d+)\s+(?P<result>通过|拒绝)(?:\s+(?P<note>.+))?\s*$")
+    async def handle_ultimate_review(self, stream_id: str = "", matched_groups: dict = None,
+                                     **kwargs: dict[str, Any]) -> tuple[bool, str, bool]:
+        user_id = self._user_id(kwargs)
+        groups = matched_groups or {}
+        if not self._is_admin(user_id) or self._db is None:
+            text = "仅管理员可审核终极任务（需插件已就绪）"
+        else:
+            task_id = int(groups.get("task_id") or 0)
+            task = self._db.get_task(task_id)
+            if task is None or task.task_kind != "ultimate":
+                text = "未找到该终极任务"
+            elif groups.get("result") == "拒绝":
+                receipt = self._db.reject_task(task_id, user_id, note=str(groups.get("note") or ""))
+                text = f"终极任务 #{task_id} 已驳回，可补图重提" if receipt.success else receipt.error
+            elif groups.get("result") == "通过":
+                return await self._complete_ultimate_task(stream_id, task, user_id, str(groups.get("note") or ""))
+            else:
+                text = "用法：/终极审核 <ID> 通过|拒绝 [备注]"
+        await self._send_text(stream_id, text)
         return True, text, True
 
     @Command(
@@ -455,10 +509,15 @@ class TaskCommandsMixin:
             )
             await self._send_text(stream_id, text)
             return True, text, True
+        return await self._complete_ultimate_task(stream_id, task, user_id, note)
+
+    async def _complete_ultimate_task(self, stream_id, task, user_id, note=""):
+        task_id, target_id = task.id, task.qq_id
         receipt = self._db.complete_ultimate(
             task_id,
             user_id,
             reward=self.config.task.ultimate_reward,
+            note=note,
         )
         text = (
             f"终极任务 #{task_id} 完成"
@@ -515,6 +574,7 @@ class TaskCommandsMixin:
         today = GachaDatabase.current_date_str(
             self.config.economy.tz_offset_hours
         )
+        task = self._db.get_task(task_id)
         receipt = self._db.reset_task(
             task_id,
             user_id,
@@ -522,7 +582,8 @@ class TaskCommandsMixin:
             today=today,
         )
         text = (
-            f"任务 #{task_id} 已重置，次数已返还"
+            f"任务 #{task_id} 已重置"
+            + ("，今日次数已返还" if task and task.task_kind != "ultimate" and task.task_date == today else "")
             if receipt.success
             else (receipt.error or "重置失败")
         )

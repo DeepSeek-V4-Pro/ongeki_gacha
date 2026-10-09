@@ -98,7 +98,7 @@ class TaskCatalogTests(unittest.TestCase):
                                     song_id='s1',song_title='Test',difficulty_index=3)
                 db.submit_task(task.task_id,'u')
                 # 模拟旧数据/另一写入方已结算同谱面。
-                db._conn.execute("INSERT INTO ultimate_completed_charts VALUES('u','chunithm','s1',3,'old')")
+                db._conn.execute("INSERT INTO ultimate_completed_charts(qq_id,game,song_id,difficulty_index,completed_at) VALUES('u','chunithm','s1',3,'old')")
                 self.assertFalse(db.complete_ultimate(task.task_id,'admin',reward=30000).success)
                 self.assertEqual(db.get_player('u').points,0)
                 self.assertFalse(db.get_task(task.task_id).awarded)

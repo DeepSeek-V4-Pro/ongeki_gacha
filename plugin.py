@@ -28,6 +28,7 @@ from .reward_catalog import RewardCatalog
 from .growth_service import GrowthService
 from .growth_commands import GrowthCommandsMixin, request_identity
 from .voice_service import VoiceCatalog, VoiceService
+from .preview_commands import PreviewCommandsMixin
 from .gacha_pools import GachaSchedule, PoolCard, PoolEntry
 from .gacha_render import GachaRenderer, OVERLAY_FILES, RenderCard
 from .card_reveal import render_card_reveal
@@ -64,13 +65,14 @@ POOL_KIND_LABELS = {
     "special": "特殊",
 }
 
-class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
+class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
     """ONGEKI 模拟抽卡插件。"""
 
     config_model = OngekiGachaPluginConfig
 
     def __init__(self) -> None:
         super().__init__()
+        self._init_song_preview()
         self._lock: asyncio.Lock = asyncio.Lock()
         self._reveal_lock = asyncio.Lock()
         self._cards: CardCollection | None = None
@@ -123,7 +125,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         self._growth = None
         self._voice = None
         self._reward_catalog = None
-        self._reward_catalog = None
+        self._preview_selections.pending.clear()
         if self._cleanup_task is not None:
             self._cleanup_task.cancel()
             try:
@@ -659,11 +661,12 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             "/装扮 [称号|装饰 <ID>|卸下]\n"
             "/角色语音 [角色姓名] [序号]　/角色语音 分类\n"
             "【随机任务】\n"
+            "/曲目预览 [游戏] 曲名 [| 歌手]　/曲目预览 序号\n"
             "/接任务 普通|挑战|高级挑战|终极 [音击|舞萌|中二]　/任务列表\n"
-            "/任务完成 <任务ID>（同时发送成绩图）\n"
+            "/任务完成 <ID>｜/终极提交 <ID>（同发成绩图）\n"
             "【管理员】\n"
-            "/任务审核 <任务ID> <S|SS|SSS|SSS+|拒绝>　/任务审核列表\n"
-            "/终极完成 <用户> <任务ID>　/奖励 <用户> <点数>\n"
+            "/任务审核 <任务ID> <普通|S|SS|SSS|SSS+|拒绝>　/任务审核列表\n"
+            "/终极审核 <ID> 通过|拒绝　/奖励 <用户> <点数>\n"
             "/任务重置 <任务ID>　/任务清理 [天数]\n"
             "【说明】\n"
             "角色姓名默认显示原作写法，常用中文写法同样可用。\n"
@@ -812,9 +815,9 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             f"普通任务：每日 {self.config.task.normal_count} 次，任意难度，奖励 {self.config.task.normal_reward} 点",
             (
                 f"挑战任务：每日 {self.config.task.challenge_count} 次，"
-                f"从至少有一张 {self.config.task.challenge_min_level:g} "
-                "级或以上谱面的歌曲中随机，并选取该曲的最低达标谱面，"
-                f"要求该谱面或以上 S 评级；是否挑战更高难度由玩家选择，"
+                f"从至少有一张定数 ≥ {self.config.task.challenge_min_level:g} "
+                "的谱面所属歌曲中随机，并选取该曲的最低达标谱面，"
+                f"要求该谱面或同类型更高难度达到 S；是否挑战更高难度由玩家选择，"
                 "不锁定曲目最高难度"
             ),
             (
@@ -826,7 +829,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
                 f"高级挑战：每日 {self.config.task.advanced_count} 次，"
                 f"从至少有一张定数 {self.config.task.advanced_min_level:g} "
                 "或以上谱面的歌曲中随机，并选取该曲的最低达标谱面，"
-                "要求该谱面或以上 S 评级；奖励 "
+                "要求该谱面或同类型更高难度达到 S；奖励 "
                 f"S {self.config.task.advanced_reward_s} 点、"
                 f"SS {self.config.task.advanced_reward_ss} 点、"
                 f"SSS/SSS+ {self.config.task.advanced_reward_sss} 点"
@@ -840,13 +843,12 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             ),
             (
                 f"终极任务：从谱面定数 ≥ {self.config.task.ultimate_min_level:g}"
-                "（这是内部定数阈值，不是 14 级+）"
                 "的超高难谱面随机，要求 SSS+ 评级，"
                 f"奖励 {self.config.task.ultimate_reward} 点；"
-                "同一曲目若有多个达标难度，会作为不同任务分别记录，"
+                "仅限指定谱面；舞萌标准/DX及各难度分别记录，"
                 "已完成的难度不再重复，全部达标谱面完成后该线结束"
             ),
-            "/任务完成 <任务ID> 需同时发送成绩照片，提交后请管理员审核",
+            "成绩图与指令同发：一般 /任务完成 <ID>；终极 /终极提交 <ID>",
             (
                 f"普通/挑战/高级挑战未完成任务将在每日 00:00 自动过期；"
                 "待审核任务保留，已结束任务默认 "
@@ -1058,16 +1060,9 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         grade_text = "SSS+" if task_kind == "ultimate" else "S 及以上"
         if selection.chart is None:
             return grade_text
-        requirement = f"{selection.requirement} · {grade_text}"
-        if (
-            task_kind == "advanced"
-            and selection.chart.level_value
-            >= float(self.config.growth.bloom_ticket_source_min_level)
-        ):
-            requirement += f"；{self.config.growth.bloom_ticket_source_grade} 及以上可获解花券"
-        if task_kind == "challenge" and selection.chart.level_value >= self.config.growth.challenge_bloom_ticket_min_level:
-            requirement += f"；{self.config.growth.challenge_bloom_ticket_grade} 及以上可获解花券（独立{self.config.growth.challenge_bloom_ticket_cooldown_days}天冷却）"
-        return requirement
+        if task_kind == "ultimate":
+            return f"{selection.exact_requirement} · SSS+"
+        return f"{selection.requirement} · {grade_text}"
 
     def _task_sources(self) -> tuple[dict[str, str], dict[str, str]]:
         task = self.config.task
@@ -1114,10 +1109,8 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
         user_id: str,
     ) -> tuple[str | None, str, bool]:
         """返回 (图片 base64, 文本信息, 卡片是否完整)。"""
-        chart = selection.chart
         text = self._task_card_text(task_id, selection, task_kind)
         if not self._render_ready:
-            text += "\n（当前未接入渲染素材，任务以文字模式发送）"
             return None, text, False
         cover_path = None
         cover_loaded = False
@@ -1164,7 +1157,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             requirement=self._task_requirement(selection, task_kind),
             reward=self._task_reward(task_kind),
             user_id=user_id,
-            note="完成后请发送对应成绩截图",
+            note=f"成绩图 + {'/终极提交' if task_kind == 'ultimate' else '/任务完成'} {task_id}",
             cover_path=cover_path,
         )
         output_path = self.ctx.paths.runtime_dir / f"ongeki_task_{task_id}.png"
@@ -1178,7 +1171,7 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             text += "\n（曲绘加载失败，任务信息已返回文字模式）"
         elif image_base64 is None:
             text += "\n（任务卡图片生成失败，已返回文字模式）"
-        complete = cover_loaded and image_base64 is not None
+        complete = image_base64 is not None
         return image_base64, text, complete
 
     def _task_card_text(
@@ -1196,8 +1189,8 @@ class OngekiGachaPlugin(GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
             f"曲目：{selection.song.title} — {selection.song.artist}\n"
             f"任务谱面：{self._task_level_text(selection)}\n"
             f"要求：{self._task_requirement(selection, task_kind)}\n"
-            f"奖励：{self._task_reward(task_kind)} 点\n"
-            f"提交：/任务完成 {task_id}（同时发送成绩图）"
+            f"奖励：{self._task_reward(task_kind)} 点{'起（按评级）' if task_kind in {'challenge', 'advanced'} else ''}\n"
+            f"提交：成绩图 + {'/终极提交' if task_kind == 'ultimate' else '/任务完成'} {task_id}"
         )
 
     def _cleanup_render_cache(self) -> None:

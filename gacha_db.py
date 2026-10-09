@@ -13,6 +13,7 @@ import random
 import sqlite3
 import threading
 
+from .task_identity import chart_key, chart_type as normalize_chart_type, migrate_task_identity
 from .gacha_core import CardCollection
 from .growth_core import duplicate_fragments
 from .growth_migration import change_item, migrate, MIGRATION_ID, ITEM_MIGRATION_ID, CURVE_MIGRATION_ID
@@ -161,6 +162,7 @@ class TaskRecord:
     reviewed_grade: str
     awarded: bool
     note: str
+    chart_type: str = ""
 
 
 @dataclass(frozen=True)
@@ -454,36 +456,7 @@ class GachaDatabase:
             );
             """
         )
-        # 旧版按“曲目”记终极完成。优先从历史任务恢复当时的 difficulty_index，
-        # 使同曲其他难度仍可抽取；只有恢复不到具体难度时才保留整曲锁（-1）。
-        conn.execute(
-            """
-            INSERT OR IGNORE INTO ultimate_completed_charts(
-                qq_id, game, song_id, difficulty_index, completed_at
-            )
-            SELECT qq_id, game, song_id, COALESCE(difficulty_index, -1),
-                   COALESCE(reviewed_at, created_at)
-            FROM tasks
-            WHERE task_kind = 'ultimate'
-              AND status = 'approved'
-              AND awarded = 1
-            """
-        )
-        conn.execute(
-            """
-            INSERT OR IGNORE INTO ultimate_completed_charts(
-                qq_id, game, song_id, difficulty_index, completed_at
-            )
-            SELECT s.qq_id, s.game, s.song_id, -1, s.completed_at
-            FROM ultimate_completed_songs AS s
-            WHERE NOT EXISTS (
-                SELECT 1 FROM ultimate_completed_charts AS c
-                WHERE c.qq_id = s.qq_id
-                  AND c.game = s.game
-                  AND c.song_id = s.song_id
-            )
-            """
-        )
+        migrate_task_identity(conn)
         existing_columns = {row[1] for row in conn.execute("PRAGMA table_info(players)").fetchall()}
         if "weekly_5_guarantee_week" not in existing_columns:
             conn.execute(
@@ -1783,6 +1756,7 @@ class GachaDatabase:
                 if row["difficulty_index"] is not None
                 else None
             ),
+            chart_type=str(row["chart_type"] or ""),
             difficulty_label=str(row["difficulty_label"] or ""),
             target_level=str(row["target_level"] or ""),
             target_level_value=float(row["target_level_value"] or 0),
@@ -1881,13 +1855,14 @@ class GachaDatabase:
         )
 
     @staticmethod
-    def _ultimate_chart_completed(conn, qq_id, game, song_id, difficulty_index):
+    def _ultimate_chart_completed(conn, qq_id, game, song_id, difficulty_index, chart_type=""):
         # -1 是旧库无法恢复难度时的整曲锁；也禁止缺失难度绕过已完成谱面。
         index = difficulty_index if difficulty_index is not None else -1
         return conn.execute(
             "SELECT 1 FROM ultimate_completed_charts WHERE qq_id=? AND game=? AND song_id=? "
-            "AND (difficulty_index=-1 OR difficulty_index=? OR ?=-1) LIMIT 1",
-            (qq_id, game, song_id, index, index),
+            "AND (difficulty_index=-1 OR difficulty_index=? OR ?=-1) "
+            "AND (difficulty_index=-1 OR ?=-1 OR chart_type='' OR chart_type=? OR ?='') LIMIT 1",
+            (qq_id, game, song_id, index, index, index, chart_type, chart_type),
         ).fetchone() is not None
 
     def create_task(
@@ -1901,6 +1876,7 @@ class GachaDatabase:
         artist: str = "",
         difficulty_index: int | None = None,
         difficulty_label: str = "",
+        chart_type: str = "",
         target_level: str = "",
         target_level_value: float = 0.0,
         requirement_text: str = "",
@@ -1915,6 +1891,7 @@ class GachaDatabase:
         """接取任务并记录每日配额。"""
         if task_kind not in {"normal", "challenge", "advanced", "ultimate"}:
             return TaskReceipt(success=False, error="未知任务类型")
+        chart_type = normalize_chart_type(game, chart_type, difficulty_label)
         kind_label = {
             "normal": "普通",
             "challenge": "挑战",
@@ -1948,32 +1925,13 @@ class GachaDatabase:
 
                 active_ultimate = 0
                 if task_kind == "ultimate":
-                    if self._ultimate_chart_completed(conn, qq_id, game, song_id, difficulty_index):
+                    if self._ultimate_chart_completed(conn, qq_id, game, song_id, difficulty_index, chart_type):
                         conn.rollback()
                         return TaskReceipt(success=False, error="该终极谱面已完成，不能重复接取")
-                    progress = conn.execute(
-                        "SELECT * FROM ultimate_progress WHERE qq_id = ?",
-                        (qq_id,),
-                    ).fetchone()
-                    helper_task_id = (
-                        int(progress["active_task_id"])
-                        if progress is not None and progress["active_task_id"] is not None
-                        else None
-                    )
-                    if helper_task_id is not None:
-                        helper = conn.execute(
-                            "SELECT status FROM tasks WHERE id = ?",
-                            (helper_task_id,),
-                        ).fetchone()
-                        if helper is not None and str(helper["status"]) in {
-                            "active",
-                            "submitted",
-                        }:
-                            conn.execute("ROLLBACK")
-                            return TaskReceipt(
-                                success=False,
-                                error="已有未完成/待审核的终极任务",
-                            )
+                    if conn.execute("SELECT 1 FROM tasks WHERE qq_id=? AND task_kind='ultimate' "
+                                    "AND status IN ('active','submitted','rejected') LIMIT 1", (qq_id,)).fetchone():
+                        conn.rollback()
+                        return TaskReceipt(success=False, error="已有未完成或待审核的终极任务")
                     active_ultimate = 1
 
                 cursor = conn.execute(
@@ -1982,8 +1940,8 @@ class GachaDatabase:
                         qq_id, task_kind, game, song_id, song_title, artist,
                         difficulty_index, difficulty_label, target_level,
                         target_level_value, requirement_text, reward, cover_url,
-                        task_date, status, created_at, note
-                    ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?, ?)
+                        task_date, status, created_at, note, chart_type
+                    ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?, ?, ?)
                     """,
                     (
                         qq_id,
@@ -2002,6 +1960,7 @@ class GachaDatabase:
                         task_date,
                         now,
                         note,
+                        chart_type,
                     ),
                 )
                 task_id = int(cursor.lastrowid)
@@ -2090,7 +2049,7 @@ class GachaDatabase:
             ).fetchall()
             return [self._task_from_row(row) for row in rows]
 
-    def submit_task(self, task_id: int, qq_id: str, *, note: str = "") -> TaskReceipt:
+    def submit_task(self, task_id: int, qq_id: str, *, note: str = "", ultimate: bool | None = None) -> TaskReceipt:
         now = self._now_iso()
         with self._lock:
             if self._conn is None:
@@ -2108,6 +2067,10 @@ class GachaDatabase:
                 if str(row["qq_id"]) != qq_id:
                     conn.execute("ROLLBACK")
                     return TaskReceipt(success=False, error="不能提交他人的任务")
+                if ultimate is not None and (str(row["task_kind"]) == "ultimate") != ultimate:
+                    conn.rollback()
+                    command = "/终极提交" if row["task_kind"] == "ultimate" else "/任务完成"
+                    return TaskReceipt(success=False, error=f"请使用 {command} {task_id}")
                 if str(row["status"]) not in {"active", "rejected"}:
                     conn.execute("ROLLBACK")
                     return TaskReceipt(
@@ -2174,17 +2137,17 @@ class GachaDatabase:
                     conn.execute("ROLLBACK")
                     return TaskReviewReceipt(
                         success=False,
-                        error="终极任务请使用 /终极完成",
+                        error="终极任务请使用 /终极审核",
                     )
+                if int(row["awarded"] or 0):
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="任务奖励已发放")
                 if str(row["status"]) != "submitted":
                     conn.execute("ROLLBACK")
                     return TaskReviewReceipt(
                         success=False,
                         error="任务尚未提交成绩（图片 + /任务完成 <ID>）",
                     )
-                if int(row["awarded"] or 0):
-                    conn.execute("ROLLBACK")
-                    return TaskReviewReceipt(success=False, error="任务奖励已发放")
                 qq_id = str(row["qq_id"])
                 conn.execute(
                     """
@@ -2314,7 +2277,7 @@ class GachaDatabase:
                     conn.execute("ROLLBACK")
                     return TaskReviewReceipt(
                         success=False,
-                        error="任务尚未提交成绩（图片 + /任务完成 <ID>）",
+                        error="仅待审核任务可驳回",
                     )
                 conn.execute(
                     """
@@ -2350,6 +2313,7 @@ class GachaDatabase:
         *,
         reward: int,
         ultimate_total: int = 0,
+        note: str = "",
     ) -> TaskReviewReceipt:
         now = self._now_iso()
         with self._lock:
@@ -2368,15 +2332,15 @@ class GachaDatabase:
                 if str(row["task_kind"]) != "ultimate":
                     conn.execute("ROLLBACK")
                     return TaskReviewReceipt(success=False, error="该任务不是终极任务")
+                if int(row["awarded"] or 0):
+                    conn.execute("ROLLBACK")
+                    return TaskReviewReceipt(success=False, error="任务奖励已发放")
                 if str(row["status"]) != "submitted":
                     conn.execute("ROLLBACK")
                     return TaskReviewReceipt(
                         success=False,
-                        error="任务尚未提交成绩（图片 + /任务完成 <ID>）",
+                        error="任务尚未提交成绩（成绩图 + /终极提交 <ID>）",
                     )
-                if int(row["awarded"] or 0):
-                    conn.execute("ROLLBACK")
-                    return TaskReviewReceipt(success=False, error="任务奖励已发放")
                 qq_id = str(row["qq_id"])
                 game = str(row["game"])
                 song_id = str(row["song_id"])
@@ -2385,16 +2349,16 @@ class GachaDatabase:
                     if row["difficulty_index"] is not None
                     else -1
                 )
-                if self._ultimate_chart_completed(conn, qq_id, game, song_id, difficulty_index):
+                if self._ultimate_chart_completed(conn, qq_id, game, song_id, difficulty_index, str(row["chart_type"])):
                     conn.rollback()
                     return TaskReviewReceipt(success=False, error="该终极谱面已领取奖励，不能重复结算")
                 conn.execute(
                     """
                     INSERT OR IGNORE INTO ultimate_completed_charts(
-                        qq_id, game, song_id, difficulty_index, completed_at
-                    ) VALUES(?, ?, ?, ?, ?)
+                        qq_id, game, song_id, difficulty_index, completed_at, chart_type
+                    ) VALUES(?, ?, ?, ?, ?, ?)
                     """,
-                    (qq_id, game, song_id, difficulty_index, now),
+                    (qq_id, game, song_id, difficulty_index, now, str(row["chart_type"])),
                 )
                 conn.execute(
                     """
@@ -2403,10 +2367,11 @@ class GachaDatabase:
                         reviewed_by = ?,
                         reviewed_at = ?,
                         reviewed_grade = 'SSS+',
-                        awarded = 1
+                        awarded = 1,
+                        note = ?
                     WHERE id = ?
                     """,
-                    (admin_id, now, task_id),
+                    (admin_id, now, note, task_id),
                 )
                 conn.execute(
                     """
@@ -2445,6 +2410,7 @@ class GachaDatabase:
                     admin_id,
                     grade="SSS+",
                     points=reward,
+                    note=note,
                     now=now,
                 )
                 player = conn.execute(
@@ -2553,20 +2519,20 @@ class GachaDatabase:
                 "SELECT * FROM ultimate_progress WHERE qq_id = ?",
                 (qq_id,),
             ).fetchone()
+            active = self._conn.execute(
+                "SELECT id FROM tasks WHERE qq_id=? AND task_kind='ultimate' "
+                "AND status IN ('active','submitted','rejected') ORDER BY id DESC LIMIT 1", (qq_id,)
+            ).fetchone()
             if row is None:
                 return UltimateProgress(
                     stage=0,
-                    active_task_id=None,
+                    active_task_id=int(active[0]) if active else None,
                     finished=False,
                     completed_at=None,
                 )
             return UltimateProgress(
                 stage=int(row["stage"] or 0),
-                active_task_id=(
-                    int(row["active_task_id"])
-                    if row["active_task_id"] is not None
-                    else None
-                ),
+                active_task_id=int(active[0]) if active else None,
                 finished=bool(row["finished"]),
                 completed_at=str(row["completed_at"]) if row["completed_at"] else None,
             )
@@ -2577,7 +2543,7 @@ class GachaDatabase:
                 raise RuntimeError("数据库尚未打开")
             rows = self._conn.execute(
                 """
-                SELECT game, song_id, difficulty_index
+                SELECT game, song_id, difficulty_index, chart_type
                 FROM ultimate_completed_charts
                 WHERE qq_id = ?
                 """,
@@ -2585,9 +2551,8 @@ class GachaDatabase:
             ).fetchall()
             keys: set[str] = set()
             for row in rows:
-                song_key = f"{row['game']}:{row['song_id']}"
                 index = int(row["difficulty_index"])
-                keys.add(song_key if index < 0 else f"{song_key}:{index}")
+                keys.add(chart_key(row["game"], row["song_id"], index, row["chart_type"]))
             return keys
 
     def set_ultimate_finished(self, qq_id: str, finished: bool) -> None:
@@ -2671,6 +2636,7 @@ class GachaDatabase:
                 """
                 DELETE FROM tasks
                 WHERE status IN ('approved', 'rejected', 'reset', 'expired')
+                  AND NOT (task_kind='ultimate' AND status='rejected')
                   AND COALESCE(reviewed_at, created_at) < ?
                 """,
                 (cutoff,),

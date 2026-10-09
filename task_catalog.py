@@ -30,6 +30,7 @@ from typing import Any, Iterable
 from PIL import Image
 
 from .task_render import TaskCardData, render_task_card
+from .task_identity import chart_key
 
 
 DEFAULT_SOURCES: dict[str, str] = {
@@ -79,9 +80,9 @@ def _difficulty_label(game: str, kind: str, index: int) -> str:
         return "LUNATIC"
     if kind == "utage":
         return "UTAGE"
-    if game == "maimai" and kind == "dx":
+    if game == "maimai" and kind in {"dx", "standard"}:
         base = labels[index] if index < len(labels) else f"DX {index}"
-        return f"{base} DX"
+        return f"{base} {'DX' if kind == 'dx' else '标准'}"
     if 0 <= index < len(labels):
         return labels[index]
     return str(index)
@@ -143,11 +144,19 @@ class TaskSelection:
         )
 
     @property
+    def exact_requirement(self) -> str:
+        if self.chart is None:
+            return "任意难度"
+        return f"仅 {self.chart.label.upper()} {self.chart.level_display}"
+
+    @property
     def requirement(self) -> str:
         if self.chart is None:
             return "任意难度"
         max_difficulty_index = max(
-            (item.index for item in self.song.charts if not item.is_special),
+            (item.index for item in self.song.charts if not item.is_special
+             and (self.song.game != "maimai" or item.kind == self.chart.kind)
+             and not (self.song.game == "ongeki" and item.index == 4)),
             default=-1,
         )
         suffix = "" if self.chart.index >= max_difficulty_index else " 或以上"
@@ -194,7 +203,8 @@ def pick_random_task(
                     (
                         chart
                         for chart in song.charts
-                        if not chart.is_special
+                        if not chart.is_special and math.isfinite(chart.level_value)
+                        and chart.level_value > 0
                         and chart.level_value >= threshold
                     ),
                     key=lambda item: item.level_value,
@@ -206,7 +216,8 @@ def pick_random_task(
             and song.max_level_value >= threshold
             and song.key not in excluded
             and any(
-                not chart.is_special and chart.level_value >= threshold
+                not chart.is_special and math.isfinite(chart.level_value)
+                and chart.level_value > 0 and chart.level_value >= threshold
                 for chart in song.charts
             )
         ]
@@ -219,12 +230,17 @@ def pick_random_task(
             TaskSelection(song=song, chart=chart)
             for song in catalog
             for chart in song.charts
-            if not chart.is_special
+            if not song.disabled and not song.locked
+            and not chart.is_special
             and chart.level_value >= threshold
+            and math.isfinite(chart.level_value)
+            and chart.level_value > 0
             and song.key not in completed
             and f"{song.key}:{chart.index}" not in completed
+            and chart_key(song.game, song.song_id, chart.index, chart.kind) not in completed
             and song.key not in excluded
             and f"{song.key}:{chart.index}" not in excluded
+            and chart_key(song.game, song.song_id, chart.index, chart.kind) not in excluded
         ]
     else:
         raise ValueError(f"未知任务类型: {kind}")
@@ -391,11 +407,15 @@ def _normalize_lxns(
         charts: list[CatalogChart] = []
         standard_charts: list[CatalogChart] = []
         for outer_kind, index, chart in chart_items:
-            kind = str(outer_kind or chart.get("type") or "standard").lower()
-            raw_index = int(_as_float(chart.get("difficulty"), index) or index)
+            kind = str(chart.get("type") or outer_kind or "standard").lower()
+            raw_index = int(_as_float(chart.get("difficulty"), index))
             label = _difficulty_label(game, kind, raw_index)
             level_display = str(chart.get("level") or "").strip()
             level_value = _as_float(chart.get("level_value"))
+            if not math.isfinite(level_value) or level_value <= 0:
+                continue
+            if bool(chart.get("disabled", False)) or bool(chart.get("locked", False)):
+                continue
             is_special = kind in {"utage", "worlds_end"} or (
                 game == "chunithm" and raw_index >= 5
             )
@@ -411,7 +431,7 @@ def _normalize_lxns(
             if not is_special:
                 standard_charts.append(chart_model)
 
-        if not standard_charts and exclude_special:
+        if not standard_charts:
             continue
         max_chart = max(standard_charts, key=lambda item: item.level_value)
         cover_base = asset_base.rstrip("/").replace(
@@ -512,7 +532,11 @@ def _catalog_from_dicts(items: list[dict]) -> list[CatalogSong]:
         items = items["songs"]
     result: list[CatalogSong] = []
     for item in items:
-        charts = tuple(CatalogChart(**chart) for chart in item.get("charts", []))
+        charts = tuple(
+            CatalogChart(**{**chart, "label": _difficulty_label("maimai", chart["kind"], chart["index"])})
+            if item["game"] == "maimai" else CatalogChart(**chart)
+            for chart in item.get("charts", [])
+        )
         result.append(
             CatalogSong(
                 game=str(item["game"]),
@@ -692,7 +716,7 @@ def _render_example(
     if kind in {"challenge", "advanced"}:
         requirement = f"{selection.requirement} · S 及以上"
     elif kind == "ultimate":
-        requirement = f"{selection.requirement} · SSS+"
+        requirement = f"{selection.exact_requirement} · SSS+"
     else:
         requirement = selection.requirement
     safe_song_id = hashlib.sha1(song.song_id.encode("utf-8")).hexdigest()[:10]

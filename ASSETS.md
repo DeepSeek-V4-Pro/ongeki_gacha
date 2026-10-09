@@ -26,7 +26,7 @@
 | --- | --- | --- | --- |
 | 卡面 | `assets/card_data/ui_card_<6位ID>.png` | `tools/card_asset_tools.py` 扫描 / 合成 / 导入 | 抽卡结果图、`/卡图`、卡牌揭示图改为文字 |
 | 界面素材 | `assets/ui/*.webp`、`assets/ui/*.ttf` | 手动复制 | 抽卡结果图与揭示图改为文字 |
-| 字体 | `assets/fonts/NotoSansCJKsc-*.otf` | 手动复制 | 回退系统字体；系统也没有时全部改纯文字 |
+| 字体 | `assets/fonts/NotoSansCJKsc-*.otf` | 手动复制 | 回退系统字体；系统也没有时常规回复改纯文字，曲目预览版本列表报错 |
 | 养成图片 | `assets/growth/images/**`、`assets/growth/rewards/**` | `tools/build_growth_assets.py` | 好感页、奖励页、解花对照图改为文字卡片 |
 | 语音 | `assets/growth/voices/**` | `tools/build_affection_voice_assets.py` 等 | 语音命令返回提示文字，其他功能正常 |
 
@@ -38,7 +38,7 @@
   加文字渲染成分页图片；这条路径不读取任何游戏素材。
 - **需要游戏素材的图片改为文字**：抽卡结果图换成带卡名与 ID 的文字清单；卡牌揭示图、
   `/卡图`、好感页、奖励页、解花对照图、任务卡都会退化成文字或文字卡片。
-- **连字体都没有时**：所有图片渲染关闭，全部回复走纯文字。
+- **连字体都没有时**：常规图片渲染关闭并回退纯文字；曲目预览版本选择必须使用图片，会提示缺少字体。
 - 插件加载时会打印一条日志，说明缺哪类素材；补上素材后重新加载插件即可生效，不需要改配置。
 
 想确认自己的包确实能这样跑：
@@ -304,7 +304,7 @@ NotoSansCJKsc-Bold.otf
 这两个文件按 SIL Open Font License 1.1 授权，`assets/fonts/LICENSE` 与 `sources.json`
 记录了许可与摘要。没有这两个字体时插件会自动使用系统中文字体
 （Windows 微软雅黑/黑体、Linux Noto、macOS 苹方）；系统也没有可用的中日文字体时，
-全部回复退化为纯文字。
+常规回复退化为纯文字；曲目预览的版本选择列表会提示缺少字体。
 
 ## 8. 养成图片
 
@@ -399,3 +399,8 @@ python tools/card_asset_tools.py verify
 - 如你是权利人并希望停止使用特定素材，请通过插件仓库或维护者联系方式提出。
 
 继续阅读：[免责声明](DISCLAIMER.md)、[第三方声明](NOTICE.md)、[更新日志](CHANGELOG.md)。
+
+## 曲目预览素材（1.3.4）
+
+曲目预览的曲绘从所选游戏曲库获取并原样发送；完整音频优先从配置的音源获取，发送前压缩为MP3。
+这些媒体与登录Cookie不随发布包分发。多源配置、缓存和错误处理见 [曲目预览配置](MUSIC_PREVIEW.md)。
