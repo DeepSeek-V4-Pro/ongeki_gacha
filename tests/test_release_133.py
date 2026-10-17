@@ -27,10 +27,17 @@ class LunaticTests(unittest.TestCase):
         for kind in ('normal', 'challenge', 'advanced', 'ultimate'):
             self.assertIsNotNone(pick_random_task(songs, kind, ultimate_min_level=14.8))
 
-    def test_zero_nonfinite_and_unscored_lu_remain_excluded(self):
+    def test_zero_nonfinite_and_unscored_lu_stay_preview_only(self):
         for constant in (0, -1, float('nan'), float('inf')):
-            self.assertEqual(_normalize_ongeki([self.song(constant)], ''), [])
-        self.assertEqual(_normalize_ongeki([self.song(14.9, isScoreValid=False)], ''), [])
+            songs = _normalize_ongeki([self.song(constant)], '')
+            self.assertEqual(len(songs), 1)
+            self.assertTrue(songs[0].disabled)
+            for kind in ('normal', 'challenge', 'advanced', 'ultimate'):
+                self.assertIsNone(pick_random_task(songs, kind, ultimate_min_level=14.8))
+        songs = _normalize_ongeki([self.song(14.9, isScoreValid=False)], '')
+        self.assertEqual(len(songs), 1)
+        self.assertTrue(songs[0].disabled)
+        self.assertIsNone(pick_random_task(songs, 'ultimate', ultimate_min_level=14.8))
 
     def test_upgrade_refreshes_old_cache_then_uses_new_cache(self):
         songs = _normalize_ongeki([self.song(14.9)], '')
@@ -42,7 +49,7 @@ class LunaticTests(unittest.TestCase):
                 fetch.assert_called_once()
             with patch(load_or_fetch_catalog.__module__+'.load_catalog', side_effect=AssertionError('unexpected fetch')):
                 self.assertEqual(load_or_fetch_catalog(path), songs)
-            self.assertEqual(json.loads(path.read_text(encoding='utf8'))['version'], 2)
+            self.assertEqual(json.loads(path.read_text(encoding='utf8'))['version'], 3)
 
 
 class Economy133Tests(unittest.TestCase):

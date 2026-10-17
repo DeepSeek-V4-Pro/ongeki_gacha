@@ -325,8 +325,7 @@ class GrowthCommandsMixin:
         except (ValueError, KeyError) as exc:
             text = (
                 f"参数无效：{exc}\n"
-                "例 /好感 星咲 あかり｜/伙伴 星咲 あかり｜/陪伴\n"
-                "卡牌 /养成 <ID>｜/解花 <ID>｜更多 /帮助"
+                "示例：/好感 星咲 あかり｜/伙伴 星咲 あかり｜/养成 <卡ID>｜更多见 /帮助"
             )
         sent=False
         text_as_plain=False

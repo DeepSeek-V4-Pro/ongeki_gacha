@@ -400,7 +400,7 @@ python tools/card_asset_tools.py verify
 
 继续阅读：[免责声明](DISCLAIMER.md)、[第三方声明](NOTICE.md)、[更新日志](CHANGELOG.md)。
 
-## 曲目预览素材（1.3.4）
+## 曲目预览素材（1.3.4 起）
 
-曲目预览的曲绘从所选游戏曲库获取并原样发送；完整音频优先从配置的音源获取，发送前压缩为MP3。
+曲目预览的曲绘从所选游戏曲库获取，默认压缩为JPEG；完整音频优先从配置的音源获取，默认压缩为MP3。关闭 `preview.compress_media` 时分别原样发送曲绘和未压缩WAV。
 这些媒体与登录Cookie不随发布包分发。多源配置、缓存和错误处理见 [曲目预览配置](MUSIC_PREVIEW.md)。

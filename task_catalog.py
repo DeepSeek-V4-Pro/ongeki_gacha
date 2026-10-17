@@ -338,19 +338,19 @@ def _normalize_ongeki(songs: list[dict], source_url: str) -> list[CatalogSong]:
             )
 
         standard_charts = [chart for chart in charts if not chart.is_special]
-        if not standard_charts:
-            continue
-        max_chart = max(standard_charts, key=lambda item: item.level_value)
+        # 曲目预览也需要 LU/特殊谱面曲目：没有计分普通谱时保留为任务不可选，
+        # 否则「怨撃・真」「怒槌」等只有 LU 的曲目会从曲库中消失。
+        max_chart = max(standard_charts or charts, key=lambda item: item.level_value, default=None)
         result.append(
             CatalogSong(
                 game="ongeki",
                 song_id=song_id,
                 title=title,
                 artist=str(song.get("artist") or "").strip(),
-                max_level=_parse_level(max_chart.level_display),
-                max_level_display=max_chart.level_display,
-                max_level_value=max_chart.level_value,
-                disabled=False,
+                max_level=_parse_level(max_chart.level_display) if max_chart else 0.0,
+                max_level_display=max_chart.level_display if max_chart else "",
+                max_level_value=max_chart.level_value if max_chart else 0.0,
+                disabled=not standard_charts,
                 locked=False,
                 cover_url=_ongeki_cover_url(song, source_url),
                 charts=tuple(charts),
@@ -431,9 +431,9 @@ def _normalize_lxns(
             if not is_special:
                 standard_charts.append(chart_model)
 
-        if not standard_charts:
+        if not charts:
             continue
-        max_chart = max(standard_charts, key=lambda item: item.level_value)
+        max_chart = max(standard_charts or charts, key=lambda item: item.level_value, default=None)
         cover_base = asset_base.rstrip("/").replace(
             "assets2.lxns.net",
             "assets.lxns.net",
@@ -445,10 +445,10 @@ def _normalize_lxns(
                 song_id=song_id,
                 title=title,
                 artist=str(song.get("artist") or "").strip(),
-                max_level=_parse_level(max_chart.level_display),
-                max_level_display=max_chart.level_display,
-                max_level_value=max_chart.level_value,
-                disabled=bool(song.get("disabled", False)),
+                max_level=_parse_level(max_chart.level_display) if max_chart else 0.0,
+                max_level_display=max_chart.level_display if max_chart else "",
+                max_level_value=max_chart.level_value if max_chart else 0.0,
+                disabled=bool(song.get("disabled", False)) or not standard_charts,
                 locked=bool(song.get("locked", False)),
                 cover_url=cover_url,
                 charts=tuple(charts),
@@ -507,14 +507,14 @@ def load_or_fetch_catalog(
         age = time.time() - cache_path.stat().st_mtime
         if age < ttl:
             cached = json.loads(cache_path.read_text(encoding="utf-8"))
-            if isinstance(cached, dict) and cached.get("version") == 2:
+            if isinstance(cached, dict) and cached.get("version") == 3:
                 return _catalog_from_dicts(cached["songs"])
     try:
         catalog = load_catalog(sources=sources, asset_bases=asset_bases)
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(
             json.dumps(
-                {"version": 2, "songs": [song.to_dict() for song in catalog]},
+                {"version": 3, "songs": [song.to_dict() for song in catalog]},
                 ensure_ascii=False,
                 indent=2,
             ),

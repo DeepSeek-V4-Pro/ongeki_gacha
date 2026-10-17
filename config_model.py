@@ -16,7 +16,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.3.4", description="配置版本")
+    config_version: str = Field(default="1.3.5", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -431,6 +431,7 @@ class PreviewConfig(PluginConfigBase):
     netease_cookie: str = Field(default="", repr=False, description="网易云登录Cookie，仅POST到netease_api_url；留空使用接口服务端登录态")
     meting_api_url: str = Field(default="", description="自建metowolf/Meting-API完整端点，如http://127.0.0.1:3001/api；各平台Cookie在该服务端配置")
     allow_preview_fallback: bool = Field(default=False, description="全部完整音源失败后是否发送明确标注的短试听片段")
+    compress_media: bool = Field(default=True, description="压缩预览曲绘与语音；关闭时发送原图和未压缩WAV，体积更大，可能发送失败")
     max_duration_seconds: int = Field(default=1200, ge=60, le=3600, description="音频最长秒数，默认20分钟；超限拒绝发送，不截断")
     ffmpeg_path: str = Field(default="", description="FFmpeg路径；留空使用PATH或imageio-ffmpeg")
     request_timeout_seconds: int = Field(default=15, ge=3, le=60, description="单次元数据请求超时秒数")

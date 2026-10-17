@@ -1,4 +1,4 @@
-"""曲库限定的 QQ 长语音：严格元数据匹配、多音源与一分钟选择。"""
+"""曲库限定的 QQ 长语音：宽松曲名搜索、严格版本核对、多音源与一分钟选择。"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -24,12 +24,52 @@ import zipfile
 
 from PIL import Image, ImageFont
 
+from .han_variants import HAN_VARIANTS
 from .task_catalog import CatalogSong
 from .text_render import FONT_CANDIDATES
 
 
 class PreviewError(Exception):
     """可直接展示给用户的阶段错误，不包含音源签名 URL。"""
+
+
+_COVER_MAX_EDGE = 1280
+_COVER_JPEG_QUALITY = 88
+_VOICE_SIZE_LIMIT = 5 * 1024 * 1024
+
+
+def compress_cover(image, original: bytes) -> bytes:
+    """把曲绘压成最长边 1280 的 JPEG；压缩后没有更小则保留原图。"""
+    if image.mode in ("RGBA", "LA") or (image.mode == "P" and "transparency" in image.info):
+        rgba = image.convert("RGBA")
+        background = Image.new("RGB", rgba.size, (255, 255, 255))
+        background.paste(rgba, mask=rgba.getchannel("A"))
+        image = background
+    else:
+        image = image.convert("RGB")
+    if max(image.size) > _COVER_MAX_EDGE:
+        image.thumbnail((_COVER_MAX_EDGE, _COVER_MAX_EDGE), Image.Resampling.LANCZOS)
+    output = BytesIO()
+    image.save(output, format="JPEG", quality=_COVER_JPEG_QUALITY, optimize=True)
+    compressed = output.getvalue()
+    return compressed if len(compressed) < len(original) else original
+
+
+def _summarize_errors(errors, limit: int = 3) -> str:
+    """把多音源的失败原因压成一条短回执，避免刷屏。"""
+    grouped = {}
+    for error in dict.fromkeys(errors):
+        name, _, reason = error.partition('：')
+        grouped.setdefault(reason, []).append(name)
+    items = []
+    for reason, names in grouped.items():
+        label = '/'.join(names[:2]) + (f'等{len(names)}个' if len(names) > 2 else '')
+        if len(reason) > 48:
+            reason = reason[:47] + '…'
+        items.append(f'{label}：{reason}')
+    if len(items) > limit:
+        items = items[:limit] + [f'其余{len(items) - limit}项略']
+    return '；'.join(items)
 
 
 def require_preview_font():
@@ -48,25 +88,89 @@ def normalized(value: str) -> str:
     return re.sub(r"\s+", "", unicodedata.normalize("NFKC", str(value)).casefold())
 
 
+# 曲名搜索额外忽略标点、空白与异体字；歌手核对仍保留版本信息。
+_TITLE_NOISE = re.compile(r"[\W_]+", re.UNICODE)
+_VARIANT_TABLE = str.maketrans(HAN_VARIANTS)
+
+
+def search_normalized(value: str) -> str:
+    """曲名/歌手的宽松归一化：全半角、大小写、标点、空白与常见异体字。"""
+    text = unicodedata.normalize("NFKC", str(value)).casefold()
+    return _TITLE_NOISE.sub("", text.translate(_VARIANT_TABLE))
+
+
+def titles_match(expected: str, actual: str) -> bool:
+    left, right = search_normalized(expected), search_normalized(actual)
+    return bool(left) and left == right
+
+
+def _search_text(song) -> str:
+    """音源搜索词：短署名带上歌手，游戏长署名只用曲名，避免搜索接口被长串拖垮。"""
+    artist = str(getattr(song, "artist", "") or "").strip()
+    if artist and len(artist) <= 30 and "／" not in artist and "CV" not in artist.upper():
+        return f"{song.title} {artist}"
+    return str(song.title)
+
+
+_ARTIST_SEPARATORS = ("、", ", ", " & ", " / ", " × ", " feat. ", " feat ", "／",
+                      "&", " + ", "+", "・", "·", ",", "/", "×")
+_ARTIST_SPLIT = re.compile(r"[、,，/／&＆+＋×・·:：;；()（）\[\]【】「」『』<>《》〈〉|｜]+")
+_ARTIST_GENERIC = {"曲", "歌", "cv", "vo", "vocal", "arr", "arrange", "lyrics",
+                   "music", "作词", "作曲", "编曲", "演唱", "歌手"}
+
+
+def _artist_fragments(value: str) -> list[str]:
+    """把“曲：…／歌：…（CV：…）”一类署名拆成可比较的片段。"""
+    text = normalized(value)
+    fragments = [fragment for fragment in _ARTIST_SPLIT.split(text) if fragment]
+    fragments.append(text)
+    return [fragment for fragment in fragments
+            if fragment and fragment not in _ARTIST_GENERIC]
+
+
+def _fragment_contains(fragment: str, name: str) -> bool:
+    if fragment == name:
+        return True
+    if len(name) < 2:
+        return False
+    start = fragment.find(name)
+    while start != -1:
+        before = fragment[start - 1] if start else ""
+        after = fragment[start + len(name)] if start + len(name) < len(fragment) else ""
+        # 中日文姓名可直接作为片段的一部分；拉丁字母名要求词边界，避免 Sing 命中 Singer。
+        if not name.isascii():
+            return True
+        if (not before or not before.isalnum()) and (not after or not after.isalnum()):
+            return True
+        start = fragment.find(name, start + 1)
+    return False
+
+
 def matching_artists(expected: str, artists: tuple[str, ...]) -> bool:
     if not expected.strip() or not artists or any(not name.strip() for name in artists):
         return False
     actual = normalized(expected)
-    return any(actual == normalized(separator.join(artists))
-               for separator in ("、", ", ", " & ", " / ", " × ", " feat. "))
+    for separator in _ARTIST_SEPARATORS:
+        if actual == normalized(separator.join(artists)):
+            return True
+    # 游戏曲库常写“曲：…／歌：角色(CV：歌手)”，音源只列歌手。
+    # 只有音源给出的每位歌手都能在曲库署名中找到时才通过，仍拒绝错配阵容。
+    fragments = _artist_fragments(expected)
+    return all(any(_fragment_contains(fragment, normalized(name)) for fragment in fragments)
+               for name in artists)
 
 
 def catalog_matches(catalog, query: str, game: str | None = None, artist: str = ""):
-    title = normalized(query)
+    title = search_normalized(query)
     if not title:
         raise PreviewError("请填写曲名")
     songs = [song for song in catalog if song.game in {"ongeki", "maimai", "chunithm"}
              and (game is None or song.game == game)]
     # 精确曲名优先；模糊命中只用来生成供用户选择的曲库列表。
-    exact = [song for song in songs if normalized(song.title) == title]
-    songs = exact or [song for song in songs if title in normalized(song.title)]
+    exact = [song for song in songs if search_normalized(song.title) == title]
+    songs = exact or [song for song in songs if title in search_normalized(song.title)]
     if artist:
-        songs = [song for song in songs if normalized(song.artist) == normalized(artist)]
+        songs = [song for song in songs if matching_artists(song.artist, (artist,))]
     # 同游戏同曲同歌手的 LU/普通或谱面条目只提供一次试听，优先基础条目。
     unique = {}
     for song in sorted(songs, key=lambda s: (s.song_id.startswith('(LUN)'), s.game, s.song_id)):
@@ -151,7 +255,7 @@ class _PublicRedirect(urllib.request.HTTPRedirectHandler):
 def download(url, *, limit, timeout, allowed_hosts=(), trusted_base='', form=None):
     _public_url(url, allowed_hosts, trusted_base)
     data = urllib.parse.urlencode(form).encode() if form is not None else None
-    request = urllib.request.Request(url, data=data, headers={'User-Agent': 'OngekiGacha/1.3.4'})
+    request = urllib.request.Request(url, data=data, headers={'User-Agent': 'OngekiGacha/1.3.5'})
     try:
         opener = urllib.request.build_opener(_PublicRedirect(allowed_hosts, trusted_base, form is not None))
         started = time.monotonic()
@@ -211,9 +315,9 @@ class PreviewTrack:
     is_preview: bool = False
 
     def matches(self, song):
-        return (normalized(self.title) == normalized(song.title)
+        return (titles_match(self.title, song.title)
                 and matching_artists(song.artist, self.artists)
-                and (not self.version or normalized(self.version) in normalized(song.title)))
+                and (not self.version or search_normalized(self.version) in search_normalized(song.title)))
 
 
 class DeezerProvider:
@@ -221,7 +325,7 @@ class DeezerProvider:
     hosts = ('dzcdn.net',)
 
     def search(self, song, timeout, *, deadline):
-        url = 'https://api.deezer.com/search?' + urllib.parse.urlencode({'q': song.title, 'limit': 50})
+        url = 'https://api.deezer.com/search?' + urllib.parse.urlencode({'q': _search_text(song), 'limit': 50})
         result = fetch_json(url, remaining(deadline, timeout))
         if result.get('error'):
             raise PreviewError("搜索接口拒绝请求")
@@ -262,7 +366,7 @@ class NeteaseProvider:
 
     def search(self, song, timeout, *, deadline):
         url = 'https://music.163.com/api/search/get?' + urllib.parse.urlencode({
-            's': song.title + ' ' + song.artist, 'type': 1, 'limit': 50, 'offset': 0})
+            's': _search_text(song), 'type': 1, 'limit': 50, 'offset': 0})
         result = fetch_json(url, remaining(deadline, timeout))
         body = result.get('result')
         if result.get('code') != 200 or not isinstance(body, dict):
@@ -314,16 +418,16 @@ class NeteaseAPIProvider:
 
     def search(self, song, timeout, *, deadline):
         if not self.base:
-            raise PreviewError('未配置 preview.netease_api_url')
+            raise PreviewError('未配置接口地址')
 
         def api(path, **params):
             # 不使用跨平台解锁/替换功能，以免元数据对应 A、实际音频却来自 B。
             return fetch_json(self.base + path, remaining(deadline, timeout), trusted_base=self.base,
                               form={**params, **({'cookie': self.cookie} if self.cookie else {}), 'unblock': 'false'})
 
-        result = api('/cloudsearch', keywords=song.title + ' ' + song.artist, type=1, limit=50)
+        result = api('/cloudsearch', keywords=_search_text(song), type=1, limit=50)
         if result.get('code') != 200:
-            raise PreviewError('搜索失败，请检查接口与 Cookie 登录状态')
+            raise PreviewError('搜索失败，请检查接口/Cookie')
         matches = []
         for row in (result.get('result') or {}).get('songs', [])[:50]:
             identifier = str(row.get('id', ''))
@@ -343,10 +447,10 @@ class NeteaseAPIProvider:
             audio = api('/song/url/v1', id=identifier, level='standard')
             rows = audio.get('data') or []
             if audio.get('code') != 200 or not rows or str(rows[0].get('id', '')) != identifier:
-                raise PreviewError('播放地址获取失败，请检查 Cookie 与账号播放权限')
+                raise PreviewError('播放地址获取失败，请检查 Cookie/权限')
             resource = rows[0]
             if not resource.get('url'):
-                raise PreviewError('该曲无可用播放地址，请检查 Cookie、账号权限或地区限制')
+                raise PreviewError('无可用播放地址，请检查 Cookie/地区限制')
             from dataclasses import replace
             matches.append(replace(track, url=https_media_url(resource['url']),
                 page_url='https://music.163.com/song?id=' + identifier,
@@ -367,7 +471,7 @@ class MetingProvider:
 
     def search(self, song, timeout, *, deadline):
         if not self.base:
-            raise PreviewError('未配置 preview.meting_api_url（登录信息在该服务端配置）')
+            raise PreviewError('未配置 Meting 端点')
         def api(kind, identifier):
             parsed = urllib.parse.urlsplit(self.base)
             query = dict(urllib.parse.parse_qsl(parsed.query))
@@ -375,7 +479,7 @@ class MetingProvider:
             url = urllib.parse.urlunsplit(parsed._replace(query=urllib.parse.urlencode(query)))
             return fetch_json(url, remaining(deadline, timeout), trusted_base=self.base, array=True)
 
-        result = api('search', song.title + ' ' + song.artist)
+        result = api('search', _search_text(song))
         matches = []
         for row in result[:50]:
             if not isinstance(row, dict):
@@ -444,7 +548,7 @@ def convert_preview(payload, directory, *, executable, seconds):
 
 def encode_qq_voice(data, duration, directory, *, executable):
     """保留全长压缩为 MP3，给 SDK 双份 Base64 字段留出 16MiB 帧预算。"""
-    limit = 5 * 1024 * 1024
+    limit = _VOICE_SIZE_LIMIT
     budget = limit * 8 / (duration + 10)
     bitrate = max(rate for rate in (8000, 16000, 24000, 32000, 40000, 48000) if rate <= budget)
     Path(directory).mkdir(parents=True, exist_ok=True)
@@ -541,7 +645,7 @@ class SongPreviewService:
                 tracks = provider.search(song, self.config.request_timeout_seconds,
                                          deadline=min(deadline, time.monotonic() + 35))
                 if not tracks:
-                    errors.append(f'{provider.name}：无曲名、歌手及版本完全匹配的音源')
+                    errors.append(f'{provider.name}：无匹配版本')
                     continue
                 for track in tracks:
                     if not track.matches(song):
@@ -550,7 +654,7 @@ class SongPreviewService:
                         if not math.isfinite(track.duration) or track.duration < 0:
                             raise PreviewError('音源时长元数据无效')
                         if track.is_preview and not self.config.allow_preview_fallback:
-                            raise PreviewError('仅有试听片段，请配置有效登录状态或其他音源')
+                            raise PreviewError('仅有试听片段')
                         payload = download(track.url, limit=self.config.max_download_bytes,
                             timeout=remaining(deadline, self.config.download_timeout_seconds),
                             allowed_hosts=provider.hosts,
@@ -582,12 +686,8 @@ class SongPreviewService:
         if fallback is not None:
             self._cache(path, fallback)
             return fallback
-        grouped = {}
-        for error in dict.fromkeys(errors):
-            name, _, reason = error.partition('：')
-            grouped.setdefault(reason, []).append(name)
-        summary = '；'.join('/'.join(names) + '：' + reason for reason, names in grouped.items())
-        raise PreviewError(summary or '未找到完整版音源；可配置登录接口或允许试听片段兜底')
+        summary = _summarize_errors(errors)
+        raise PreviewError(summary or '未找到完整音源；请配置音源或允许试听片段')
 
     def _cache(self, path, prepared):
         # WAV 与来源信息放在同一原子缓存中，避免并发覆盖后把片段标为完整版。
@@ -605,6 +705,10 @@ class SongPreviewService:
             temporary.unlink(missing_ok=True)
 
     def voice(self, prepared):
+        if not self.config.compress_media:
+            if len(prepared.audio) > _VOICE_SIZE_LIMIT:
+                raise PreviewError('未压缩语音超过5MiB，请开启 preview.compress_media 或缩短时长')
+            return prepared.audio
         return encode_qq_voice(prepared.audio, prepared.duration, self.cache_dir,
                                executable=ffmpeg_executable(self.config.ffmpeg_path))
 
@@ -618,12 +722,14 @@ class SongPreviewService:
                 if image.width * image.height > 16000000:
                     raise PreviewError("曲绘尺寸超过限制")
                 image.load()
-            # 校验后原样发送，不缩放、不重新编码，也不添加文字或边框。
-            return payload
+                if not self.config.compress_media:
+                    # 校验后原样发送，不缩放、不重新编码，也不添加文字或边框。
+                    return payload
+                return compress_cover(image, payload)
         except PreviewError as exc:
             raise PreviewError(f'曲绘获取失败：{exc}') from exc
         except (OSError, ValueError, Image.DecompressionBombError) as exc:
-            raise PreviewError('曲绘解码失败：接口返回的不是有效图片') from exc
+            raise PreviewError('曲绘解码或压缩失败：接口返回的不是有效图片') from exc
 
     def cleanup(self):
         files = []

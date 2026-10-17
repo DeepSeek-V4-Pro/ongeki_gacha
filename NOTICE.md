@@ -36,6 +36,12 @@ SDK 及其依赖不属于本项目，请遵循其各自许可。
 音频与曲绘仅在运行时获取和缓存，不随代码仓库分发；配置中的登录信息也不得提交到仓库。
 `imageio-ffmpeg` 提供 FFmpeg 可执行程序，或由使用者配置已有 FFmpeg；遵循这些依赖各自的许可。
 
+### Unicode 汉字变体数据
+
+曲名搜索的异体字折叠表由 Unicode Han Database（`Unihan_Variants.txt`）生成，
+并少量补充了 Unihan 未标注的语义异体字。Unihan 数据版权归 Unicode, Inc.，
+按 [Unicode Terms of Use](https://www.unicode.org/terms_of_use.html) 使用。
+
 ## 3. SEGA 与第三方游戏素材
 
 音击相关的名称、商标、角色、卡面、UI、音频及其他素材，权利均归 SEGA 或相应权利人所有，

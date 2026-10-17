@@ -94,7 +94,7 @@ class TaskCommandsMixin:
                 ultimate_min_level=self.config.task.ultimate_min_level,
             )
             if selection is None:
-                reason = "当前没有可接取的达标谱面（已完成或被未结束任务占用）"
+                reason = "没有可接取的达标谱面（已完成或被占用）"
                 text = f"{reason}，无法接取任务"
                 await self._send_text(stream_id, text)
                 return True, text, True
@@ -216,11 +216,12 @@ class TaskCommandsMixin:
             self._db.expire_daily_tasks(today)
         current = self._db.list_tasks(user_id, statuses=("active", "submitted", "rejected"), limit=-1)
         history = self._db.list_tasks(user_id, limit=100)
-        tasks = sorted({task.id: task for task in current + history
+        all_tasks = sorted({task.id: task for task in current + history
                       if task.status in {"active", "submitted"}
                       or (task.task_kind == "ultimate" and task.status == "rejected")
                       or task.task_date == today}.values(),
-                       key=lambda task: (task.task_kind != "ultimate", task.status not in {"active", "submitted", "rejected"}, -task.id))[:30]
+                       key=lambda task: (task.task_kind != "ultimate", task.status not in {"active", "submitted", "rejected"}, -task.id))
+        tasks = all_tasks[:12]
         if tasks:
             lines.append("")
             for task in tasks:
@@ -230,9 +231,11 @@ class TaskCommandsMixin:
                     f"#{task.id} {KIND_LABELS.get(task.task_kind, task.task_kind)} [{game_name}] {self._ellipsize(task.song_title, 16)}"
                     f"｜{task.requirement_text}｜{status}"
                 )
+            if len(all_tasks) > len(tasks):
+                lines.append(f"其余 {len(all_tasks) - len(tasks)} 条未显示")
         else:
             lines.append("")
-            lines.append("暂无任务。发送 /接任务 普通 领取任务")
+            lines.append("暂无任务，发送 /接任务 普通 领取")
         lines.append("成绩图 + /任务完成 <ID>；终极用 /终极提交 <ID>")
         text = "\n".join(lines)
         await self._send_text(stream_id, text, title="音击抽卡模拟器 · 任务列表")
@@ -425,10 +428,11 @@ class TaskCommandsMixin:
             text = "仅管理员可操作（或插件未就绪）"
             await self._send_text(stream_id, text)
             return True, text, True
-        tasks = self._db.list_pending_tasks()
-        if not tasks:
+        all_tasks = self._db.list_pending_tasks()
+        if not all_tasks:
             text = "暂无待审核任务"
         else:
+            tasks = all_tasks[:10]
             lines = ["【待审核任务】"]
             for task in tasks:
                 lines.append(
@@ -437,6 +441,8 @@ class TaskCommandsMixin:
                     f"｜{task.requirement_text}"
                     f"｜接取人 {task.qq_id}"
                 )
+            if len(all_tasks) > len(tasks):
+                lines.append(f"其余 {len(all_tasks) - len(tasks)} 条未显示")
             lines.append("一般：/任务审核 <ID> 普通|S|SS|SSS|SSS+|拒绝")
             lines.append("终极：/终极审核 <ID> 通过|拒绝")
             text = "\n".join(lines)

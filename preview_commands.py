@@ -44,7 +44,7 @@ class PreviewCommandsMixin:
             await self._send_text(stream_id, text)
             return True, text, True
         if not raw:
-            text = '用法：/曲目预览 [音击|舞萌|中二] 曲名 [| 歌手]\n多结果时，60秒内发送 /曲目预览 序号；可发送 /曲目预览 取消'
+            text = '用法：/曲目预览 [音击|舞萌|中二] 曲名 [| 歌手]；多结果按序号选择，/曲目预览 取消'
             await self._send_text(stream_id, text)
             return True, text, True
         if raw == '取消':
@@ -75,15 +75,15 @@ class PreviewCommandsMixin:
                 query = (parts[1] if len(parts) > 1 else '') if game else raw
                 title, separator, artist = query.partition('|')
                 if separator and not artist.strip():
-                    raise PreviewError('分隔符 | 后需要填写歌手，或去掉分隔符查看版本列表')
+                    raise PreviewError('| 后需填写歌手，或去掉分隔符')
                 catalog = await self._get_task_catalog()
                 if not catalog:
-                    raise PreviewError('游戏曲库获取失败，请稍后重试')
+                    raise PreviewError('曲库获取失败，请稍后重试')
                 songs = catalog_matches(catalog, title.strip(), game, artist.strip())
                 if not songs:
-                    raise PreviewError('三个游戏曲库中没有匹配的曲名/歌手版本；不支持曲库外歌曲或音频链接')
+                    raise PreviewError('曲库中没有匹配的曲名/歌手')
                 if len(songs) > 30:
-                    raise PreviewError('匹配超过30项，请补全曲名、指定游戏或使用“曲名 | 歌手”缩小范围')
+                    raise PreviewError('匹配超过30项，请补全曲名或指定游戏')
                 if len(songs) > 1:
                     await self._send_preview_choices(stream_id, songs)
                     self._preview_selections.put(key, songs)
@@ -92,14 +92,14 @@ class PreviewCommandsMixin:
             # 序号对应的快照仍须属于当前游戏曲库，不能在曲库变更后发送旧条目。
             catalog = await self._get_task_catalog()
             if not catalog or not any(s.key == song.key and s.title == song.title and s.artist == song.artist for s in catalog):
-                raise PreviewError('所选歌曲已不在当前曲库，请重新搜索')
+                raise PreviewError('曲目已不在曲库，请重新搜索')
             await self._send_song_preview(stream_id, user, song, cover=True)
             return True, f'已发送 {song.title} — {song.artist} 的试听', True
         except PreviewError as exc:
             text = f'曲目预览失败：{exc}'
         except Exception as exc:
             self.ctx.logger.warning('曲目预览异常: %s', type(exc).__name__)
-            text = f'曲目预览失败：处理阶段发生 {type(exc).__name__}，请查看插件日志'
+            text = f'曲目预览失败：{type(exc).__name__}，请查看插件日志'
         finally:
             self._preview_busy.discard(key)
         await self._send_text(stream_id, text)
@@ -107,7 +107,7 @@ class PreviewCommandsMixin:
 
     async def _send_preview_choices(self, stream_id, songs):
         require_preview_font()
-        lines = ['同名曲目需确认歌手版本；60秒内发送 /曲目预览 序号', '']
+        lines = ['60秒内发送 /曲目预览 序号选择版本', '']
         for index, song in enumerate(songs, 1):
             lines.extend([f'{index}. [{GAME_LABELS[song.game]}] {song.title}', f'歌手：{song.artist or "曲库未提供"}', ''])
         path = self.ctx.paths.runtime_dir / f'preview_choices_{uuid.uuid4().hex}.png'

@@ -60,6 +60,26 @@ class IdentityTests(unittest.TestCase):
         self.assertTrue(sp.matching_artists('A、B', ('A', 'B')))
         self.assertFalse(sp.matching_artists('A', ('A', 'B')))
 
+    def test_variant_punctuation_and_credit_search_is_loose_but_bounded(self):
+        grievance = song(title='怨撃', artist='細江慎治')
+        for query in ('怨擊', '怨击', '怨撃'):
+            self.assertEqual(sp.catalog_matches([grievance], query), [grievance], query)
+        punctuation = song(title='Back To Back!', artist='Singer', identifier='4')
+        for query in ('back to back', 'Back-To-Back', 'ＢＡＣＫ　ＴＯ　ＢＡＣＫ！'):
+            self.assertEqual(sp.catalog_matches([punctuation], query), [punctuation], query)
+        game_credit = song(title='Test', artist='曲：A & B／歌：C(CV：D)、E(CV：F)', identifier='5')
+        self.assertTrue(sp.PreviewTrack('p', 'Test', ('D', 'F'), '', '').matches(game_credit))
+        self.assertFalse(sp.PreviewTrack('p', 'Test', ('D', 'X'), '', '').matches(game_credit))
+        self.assertTrue(sp.catalog_matches([game_credit], 'Test', artist='D'))
+        self.assertFalse(sp.catalog_matches([game_credit], 'Test', artist='X'))
+        self.assertFalse(sp.catalog_matches([song(artist='Singer')], 'Test', artist='Sing'))
+
+    def test_failure_summary_is_short(self):
+        summary = sp._summarize_errors(
+            [f'{name}：原因{index}' for index, name in enumerate('ABCDEF')])
+        self.assertIn('其余3项略', summary)
+        self.assertLessEqual(summary.count('；'), 3)
+
     def test_selection_60_second_expiry_and_isolation(self):
         now = [100]
         store = sp.SelectionStore(lambda: now[0])
@@ -227,19 +247,43 @@ class ServiceTests(unittest.TestCase):
         with self.assertRaisesRegex(sp.PreviewError, '时长不符'):
             self.service.prepare(replace(song(), song_id='another'))
 
-    def test_cover_uses_catalog_and_errors_on_missing_or_invalid(self):
+    def test_cover_compresses_by_default_and_keeps_original_when_disabled(self):
         buffer = BytesIO()
-        Image.new('RGB', (100, 100)).save(buffer, 'PNG')
-        self.download.return_value = buffer.getvalue()
+        Image.effect_noise((1600, 1600), 100).convert('RGB').save(buffer, 'PNG')
+        original = buffer.getvalue()
+        self.download.return_value = original
         data = self.service.cover(song())
         self.assertEqual(self.download.call_args.args[0], song().cover_url)
-        self.assertEqual(data, buffer.getvalue())
-        self.assertEqual(Image.open(BytesIO(data)).width, 100)
+        with Image.open(BytesIO(data)) as image:
+            self.assertEqual(image.format, 'JPEG')
+            self.assertLessEqual(max(image.size), 1280)
+        self.assertLess(len(data), len(original))
+
+        self.config.compress_media = False
+        data = self.service.cover(song())
+        self.assertEqual(data, original)
+        with Image.open(BytesIO(data)) as image:
+            self.assertEqual(image.size, (1600, 1600))
+
         with self.assertRaisesRegex(sp.PreviewError, '未提供'):
             self.service.cover(replace(song(), cover_url=''))
         self.download.return_value = b'not image'
-        with self.assertRaisesRegex(sp.PreviewError, '曲绘解码失败'):
+        with self.assertRaisesRegex(sp.PreviewError, '曲绘解码'):
             self.service.cover(song())
+
+    def test_voice_compression_toggle_and_large_wav_guard(self):
+        prepared = sp.PreparedPreview(wav(2), 'test source', 2, False, True)
+        self.config.compress_media = False
+        with patch.object(sp, 'encode_qq_voice') as encoder:
+            self.assertEqual(self.service.voice(prepared), prepared.audio)
+            encoder.assert_not_called()
+        with self.assertRaisesRegex(sp.PreviewError, '未压缩语音超过5MiB'):
+            self.service.voice(sp.PreparedPreview(wav(170), 'test source', 170, False, True))
+
+        self.config.compress_media = True
+        with patch.object(sp, 'encode_qq_voice', return_value=b'mp3') as encoder:
+            self.assertEqual(self.service.voice(prepared), b'mp3')
+            encoder.assert_called_once()
 
 
 @unittest.skipIf(OngekiGachaPlugin is None, '需要SDK命令环境')
@@ -273,7 +317,8 @@ class CommandTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(matches), 1, message)
         metadata = matches[0]['metadata']
         self.assertEqual(matches[0].get('name', metadata.get('name')), 'ongeki_song_preview')
-        self.assertGreaterEqual(metadata.get('timeout_ms', 0), 1_200_000)
+        extra = metadata.get('metadata') if isinstance(metadata.get('metadata'), dict) else metadata
+        self.assertGreaterEqual(extra.get('timeout_ms', 0), 1_200_000)
         groups = re.fullmatch(metadata['command_pattern'], message).groupdict()
         return await getattr(self.plugin, metadata['handler_name'])(
             stream_id=kwargs.pop('stream_id', 'g'), matched_groups=groups, **kwargs)
@@ -303,7 +348,7 @@ class CommandTests(unittest.IsolatedAsyncioTestCase):
     async def test_registered_command_whitespace_usage_cancel_and_invalid_artist(self):
         self.assertIn('用法', (await self.dispatch(''))[1])
         self.assertIn('请填写曲名', (await self.dispatch('音击'))[1])
-        self.assertIn('需要填写歌手', (await self.dispatch('Test |'))[1])
+        self.assertIn('需填写歌手', (await self.dispatch('Test |'))[1])
         await self.dispatch('音击\tTest | Singer')
         self.assertEqual(self.service.prepare.call_args.args[0], song())
         self.plugin._preview_attempts.clear()
