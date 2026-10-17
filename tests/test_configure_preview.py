@@ -26,13 +26,13 @@ class ConfigurePreviewTests(unittest.TestCase):
                 encoding='utf8')
             values = dict(cp.PREVIEW_DEFAULTS)
             values['netease_cookie'] = 'MUSIC_U=a"b\\c'
-            values['ffmpeg_path'] = r'C:\ffmpeg\bin\ffmpeg.exe'
+            values['ffmpeg_path'] = 'ffmpeg.exe'
             cp.write_config(path, values)
             data = tomllib.loads(path.read_text(encoding='utf8'))
             self.assertTrue(data['plugin']['enabled'])
             self.assertEqual(data['ui']['short_reply_max_lines'], 10)
             self.assertEqual(data['preview']['netease_cookie'], 'MUSIC_U=a"b\\c')
-            self.assertEqual(data['preview']['ffmpeg_path'], r'C:\ffmpeg\bin\ffmpeg.exe')
+            self.assertEqual(data['preview']['ffmpeg_path'], 'ffmpeg.exe')
             self.assertEqual(data['preview']['future_key'], 'keep')
             self.assertTrue(list(Path(temp).glob('config.toml.bak-*')))
 
