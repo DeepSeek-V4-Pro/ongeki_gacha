@@ -1,4 +1,5 @@
 """1.3.6：曲库保留未解锁曲目、搜索与压缩档位、配置补齐和版本补偿。"""
+import asyncio
 import json
 import tempfile
 import unittest
@@ -6,6 +7,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 from .. import song_preview as sp
+from ..compensation_commands import CompensationCommandsMixin
 from ..config_model import OngekiGachaPluginConfig
 from ..config_sync import sync_json_config, sync_toml_config
 from ..gacha_core import load_cards
@@ -286,6 +288,72 @@ class CompensationTests(unittest.TestCase):
     def test_baseline_is_stable_across_calls(self):
         first = self.db.ensure_version_baseline('1.3.6')
         self.assertEqual(first, self.db.ensure_version_baseline('1.3.6'))
+
+
+class _FakeDb:
+    def __init__(self, result):
+        self.result = result
+
+    def claimed_versions(self, qq_id):
+        return set()
+
+    def ensure_version_baseline(self, version):
+        return '2026-10-20T00:00:00+00:00'
+
+    def claim_version_reward(self, qq_id, version, *, points, items, baseline_at):
+        return dict(self.result)
+
+
+class _FakePlugin(CompensationCommandsMixin):
+    """只装配补偿命令需要的部分，不依赖数据库与素材。"""
+
+    def __init__(self, result, image_ok):
+        self._db = _FakeDb(result)
+        self._lock = asyncio.Lock()
+        self._image_ok = image_ok
+        self.texts = []
+        self.cards = []
+
+    def _user_id(self, kwargs):
+        return 'u'
+
+    async def _send_text(self, stream_id, text, **kwargs):
+        self.texts.append(text)
+
+    async def _send_item_gain_card(self, stream_id, user_id, items, *, title='', subtitle=''):
+        self.cards.append({'items': dict(items), 'title': title, 'subtitle': subtitle})
+        return self._image_ok
+
+
+class CompensationCommandTests(unittest.IsolatedAsyncioTestCase):
+    async def test_success_sends_item_image_without_extra_text(self):
+        plugin = _FakePlugin({'success': True, 'points': 6202}, image_ok=True)
+        await plugin.handle_version_reward(stream_id='g')
+        self.assertEqual(len(plugin.cards), 1)
+        self.assertEqual(plugin.cards[0]['items'], {'bloom_ticket': 2, 'gift_large': 3})
+        self.assertIn('1.3.6', plugin.cards[0]['title'])
+        self.assertIn('+2000', plugin.cards[0]['subtitle'])
+        self.assertIn('当前 6202', plugin.cards[0]['subtitle'])
+        self.assertEqual(plugin.texts, [])
+
+    async def test_image_failure_falls_back_to_text(self):
+        plugin = _FakePlugin({'success': True, 'points': 6202}, image_ok=False)
+        await plugin.handle_version_reward(stream_id='g')
+        self.assertEqual(len(plugin.cards), 1)
+        self.assertEqual(len(plugin.texts), 1)
+        self.assertIn('解花券×2', plugin.texts[0])
+        self.assertIn('2000 点', plugin.texts[0])
+
+    async def test_ineligible_and_missing_data_send_text_only(self):
+        for result, expected in (
+            ({'success': False, 'error': 'not_eligible'}, '之前没有你的数据'),
+            ({'success': False, 'error': 'no_data'}, '没有你的账号数据'),
+        ):
+            plugin = _FakePlugin(result, image_ok=True)
+            await plugin.handle_version_reward(stream_id='g')
+            self.assertEqual(plugin.cards, [])
+            self.assertEqual(len(plugin.texts), 1)
+            self.assertIn(expected, plugin.texts[0])
 
 
 if __name__ == '__main__':
