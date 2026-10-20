@@ -201,7 +201,10 @@ def sync_json_config(path: Path, defaults: dict[str, Any], version: str) -> dict
         summary["error"] = "配置文件不存在"
         return summary
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
+        raw_bytes = path.read_bytes()
+        # AstrBot 写出的 JSON 可能带 UTF-8 BOM，读的时候按 utf-8-sig 解，写回时保留。
+        has_bom = raw_bytes.startswith(b"\xef\xbb\xbf")
+        raw = json.loads(raw_bytes.decode("utf-8-sig"))
     except (OSError, UnicodeError, ValueError) as exc:
         summary["error"] = f"配置文件无法解析：{type(exc).__name__}"
         return summary
@@ -236,6 +239,7 @@ def sync_json_config(path: Path, defaults: dict[str, Any], version: str) -> dict
     if not added and not migrated:
         return summary
     backup = _backup(path)
-    path.write_text(json.dumps(raw, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    text = json.dumps(raw, ensure_ascii=False, indent=2) + "\n"
+    path.write_text(("\ufeff" if has_bom else "") + text, encoding="utf-8")
     summary.update(changed=True, added=added, migrated=migrated, backup=str(backup))
     return summary

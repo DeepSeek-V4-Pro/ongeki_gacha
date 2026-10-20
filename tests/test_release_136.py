@@ -175,6 +175,20 @@ class ConfigSyncTests(unittest.TestCase):
             self.assertEqual(data['preview']['compress_media'], 'full')
             self.assertIn('rotation_mode', data['pool'])
 
+    def test_json_sync_accepts_and_preserves_utf8_bom(self):
+        # AstrBot 写出的 JSON 带 UTF-8 BOM，同步不能因此失败或丢掉 BOM。
+        defaults = OngekiGachaPluginConfig().model_dump()
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'config.json'
+            payload = json.dumps({'plugin': {'config_version': '1.3.5'}}, ensure_ascii=False)
+            path.write_bytes(b'\xef\xbb\xbf' + payload.encode('utf-8'))
+            summary = sync_json_config(path, defaults, '1.3.6')
+            self.assertTrue(summary['changed'])
+            raw = path.read_bytes()
+            self.assertTrue(raw.startswith(b'\xef\xbb\xbf'))
+            data = json.loads(raw.decode('utf-8-sig'))
+            self.assertEqual(data['plugin']['config_version'], '1.3.6')
+
 
 class CompensationTests(unittest.TestCase):
     @classmethod
