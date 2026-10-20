@@ -49,7 +49,7 @@ class LunaticTests(unittest.TestCase):
                 fetch.assert_called_once()
             with patch(load_or_fetch_catalog.__module__+'.load_catalog', side_effect=AssertionError('unexpected fetch')):
                 self.assertEqual(load_or_fetch_catalog(path), songs)
-            self.assertEqual(json.loads(path.read_text(encoding='utf8'))['version'], 3)
+            self.assertEqual(json.loads(path.read_text(encoding='utf8'))['version'], 4)
 
 
 class Economy133Tests(unittest.TestCase):

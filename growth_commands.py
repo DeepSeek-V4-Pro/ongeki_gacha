@@ -104,8 +104,8 @@ def describe_receipt(
         )
     if action == "礼物兑换":
         details = "；".join(f"{p['quantity']}份×{p['unit_price']}碎片={p['cost']}" for p in result.get('breakdown', []))
-        tiers = "\n".join(result.get('tier_lines', []))
-        quota = (f"\n分档消耗：{details}\n{result['month']} 已兑 {result['monthly_used']} 份；每月1日重置\n{tiers}"
+        tiers = "｜".join(result.get('tier_lines', []))
+        quota = (f"\n{result['month']} 已兑 {result['monthly_used']} 份（每月1日重置）｜本次 {details}\n{tiers}"
                  if 'monthly_used' in result else "\n旧版兑换回执；当前阶梯额度请查看 /礼物")
         return (f"已兑换 大礼物 ×{result['quantity']}"
                 f"｜消耗花之碎片 {result['price']}（剩余 {result['remaining']}）"
@@ -324,8 +324,7 @@ class GrowthCommandsMixin:
                 )
         except (ValueError, KeyError) as exc:
             text = (
-                f"参数无效：{exc}\n"
-                "示例：/好感 星咲 あかり｜/伙伴 星咲 あかり｜/养成 <卡ID>｜更多见 /帮助"
+                f"参数无效：{exc}｜示例 /好感 星咲 あかり、/伙伴 星咲 あかり、/养成 <卡ID>"
             )
         sent=False
         text_as_plain=False

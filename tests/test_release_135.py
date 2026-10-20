@@ -32,7 +32,13 @@ class Search135Tests(unittest.TestCase):
         target = song(title='Test', artist='曲：A & B／歌：C(CV：D)、E(CV：F)', identifier='3')
         self.assertTrue(PreviewTrack('p', 'Test', ('D', 'F'), '', '').matches(target))
         self.assertTrue(PreviewTrack('p', 'Test', ('C',), '', '').matches(target))
-        self.assertFalse(PreviewTrack('p', 'Test', ('D', 'X'), '', '').matches(target))
+        # 音源追加合唱/嘉宾时只要有一位歌手对上就放行（1.3.6 起）。
+        self.assertTrue(PreviewTrack('p', 'Test', ('D', 'X'), '', '').matches(target))
+        # 两边都是英文名却完全对不上，判为不同演唱阵容。
+        self.assertFalse(PreviewTrack('p', 'Test', ('X', 'Y'), '', '').matches(target))
+        # 罗马字署名与日文歌手名无法逐字核对，按写法不同放过。
+        self.assertTrue(PreviewTrack('p', 'Test', ('平田祥一郎',), '', '')
+                        .matches(song(artist='Shoichiro Hirata feat.Sana')))
         self.assertTrue(catalog_matches([target], 'Test', artist='D'))
         self.assertFalse(catalog_matches([target], 'Test', artist='X'))
         self.assertEqual(_search_text(song(title='Test', artist='Singer')), 'Test Singer')

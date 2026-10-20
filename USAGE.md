@@ -1,20 +1,21 @@
 # 使用说明
 
-当前版本：1.3.5（2026-10-18）
+当前版本：1.3.6（2026-10-20）
 
 本文结构：1 简介｜2 安装、素材与升级｜3 命令总览｜4 抽卡、卡池与天井｜
 5 点数经济｜6 随机任务｜7 主角色好感养成｜8 显示与回退｜9 数据目录与素材｜
 10 配置项｜11 故障排查｜12 已知限制。素材怎么接入见 [素材指南](ASSETS.md)，
 本版新增与修复见 [更新日志](CHANGELOG.md)。
 
-## 曲目预览（1.3.5）
+## 曲目预览（1.3.6）
 
 - `/曲目预览 [音击|舞萌|中二] 曲名 [| 歌手]`：发送游戏曲绘与 QQ 语音，正常成功不额外发送说明文字。
 - 多个候选时发送图片列表；同一账号在同一会话 **60 秒内**发送 `/曲目预览 序号`，或 `/曲目预览 取消`。过期须重新搜索。
 - 只搜索已接入的三个游戏曲库；歌曲和歌手版本必须对应，曲绘必须来自该游戏曲库。不会用唱片封面替代游戏曲绘。
-- 默认压缩曲绘与语音（`preview.compress_media = true`）：曲绘压成最长边1280的JPEG，语音压成单声道MP3；关闭后发送原图和未压缩WAV，体积更大，超过5MiB会报错。
-- 搜索忽略全半角、大小写、标点、空白与常见中日异体字；「怨擊」「怨击」都能找到「怨撃」。只有 LU 谱面的曲目会保留在预览曲库，但不会进入随机任务。
-- 歌手核对允许用游戏署名中的 CV 名匹配音源歌手，例如「歌：星咲 あかり(CV：赤尾 ひかる)」可以用「赤尾ひかる」检索；音源列表里多出的歌手仍会被拒绝。
+- 预览压缩分三档（`preview.compress_media`）：`full`（默认，全长低码率）、`half`（较高码率优先音质，放不下时只发开头能容纳的部分并标注时长）、`none`（原图原 WAV，超过 5MiB 会报错）。曲绘在 `full`/`half` 下压成最长边 1280 的 JPEG。
+- 搜索忽略全半角、大小写、标点、空白与常见中日异体字；「怨擊」「怨击」都能找到「怨撃」。只有 LU 谱面的曲目、以及当前版本未解锁（locked）或不可用（disabled）的曲目都会保留在预览曲库，但不会进入随机任务。
+- 歌手核对允许用游戏署名中的 CV 名匹配音源歌手，例如「歌：星咲 あかり(CV：赤尾 ひかる)」可以用「赤尾ひかる」检索；音源追加的嘉宾或合唱者不再判为错配，但两边都是英文名却完全对不上时仍会拒绝。罗马字署名与日文歌手名这种无法逐字核对的情况按写法不同放过。
+- 音源把嘉宾写进标题时（如「Cosmic Train (feat. SUIMI)」）仍能匹配；LONG、Remix、Live 等版本后缀仍会被拒绝。
 - 接取终极任务成功后自动发送对应歌曲语音，失败静默，不影响任务接取。手动预览会显示失败环节和原因，最多列出 3 个音源原因。
 - 优先发送完整音频，不按 30/60 秒截断；默认最长 20 分钟，超过上限会报错，可配置。QQ 最终能否接收长语音仍取决于适配器。
 
@@ -59,6 +60,16 @@
 
 替换文件后，在 MaiBot 插件管理中重新加载插件，或重启实例，确认日志显示加载成功。
 
+### 1.3.5 → 1.3.6 补充说明
+
+本次是兼容更新，替换代码与 JSON 索引后重新加载即可，数据库和素材目录都不用重建。首次加载会自动补齐旧 `config.toml` 缺的键，并把整组仍是旧默认值的配置升级到新默认值（`pool.rotation_mode`、`pool.rotation_interval_days`、`economy.streak_cycle_days`、`economy.streak_cycle_reward`、`preview.compress_media`），改写前生成 `config.toml.bak-<时间>` 备份；任何一项被手动改过就整组保留。
+
+- 卡池默认改为 `official`：按几月几日复现历史官方池（忽略年份），池期约一个月。想继续按固定天数轮换就把 `rotation_mode` 改回 `cycle`。
+- 签到周期奖励从「每 15 天 1200 点」改为「每 30 天 2400 点」，日均不变；每日签到、7 天奖励和月卡数值都不变。
+- 曲目预览压缩新增 `half` 档，`compress_media` 由布尔值改为 `none|half|full`；旧配置的 `true/false` 会按 `full/none` 处理。
+- 曲库缓存版本升到 4，升级后会自动重建 `task_catalog_merged.json`，不需要手动删除。
+- 新增 `/版本补偿`：1.3.6 发放 2000 点、2 张解花券、3 份大礼物；只有本版本发布前就已有数据的账号能领取，每个版本每账号一次。
+
 ### 1.3.4 → 1.3.5 补充说明
 
 本次是兼容更新，不需要清空数据库。替换代码与 JSON 索引后重新加载即可；旧曲库缓存会自动升级，无需手动删除 `task_catalog_merged.json`。
@@ -87,7 +98,7 @@
 
 ```toml
 [plugin]
-config_version = "1.3.5"
+config_version = "1.3.6"
 
 [growth]
 monthly_event_days = 10
@@ -132,7 +143,7 @@ challenge_bloom_ticket_cooldown_days = 30
 ### 2.3 从 1.2.1 升级
 
 1. **备份**：复制插件数据目录中的 `ongeki_gacha.db`，并备份插件目录里的 `config.toml`。
-2. **替换代码**：用 1.3.5 的插件目录覆盖旧目录，保留实例自己的 `config.toml`。
+2. **替换代码**：用 1.3.6 的插件目录覆盖旧目录，保留实例自己的 `config.toml`。
 3. **加载**：在 MaiBot 插件管理中重新加载该插件，或重启实例。
 4. **核对配置**：旧配置文件里缺少的新键会按默认值在运行时生效，已有键的值
    （例如管理员列表、卡池模式、奖励数值）保持不变。如果希望把新键写进 `config.toml`
@@ -158,8 +169,9 @@ challenge_bloom_ticket_cooldown_days = 30
 
 | 命令 | 说明 |
 | --- | --- |
-| `/签到` | 每日签到，结算基础点数、连续签到、7 天 / 15 天周期、月卡加成、每月活动物品与囤点奖励 |
+| `/签到` | 每日签到，结算基础点数、连续签到、7 天 / 30 天周期、月卡加成、每月活动物品与囤点奖励 |
 | `/点数` | 查看点数、花之碎片、解花券、连续签到与月卡状态 |
+| `/版本补偿` | 领取本版本更新补偿；每个版本每账号一次，需在该版本发布前已有数据 |
 | `/月卡` | 查看月卡状态；`/月卡 购买`、`/月卡 续费` 购买或续费 |
 | `/抽卡 [常驻\|普通\|常规\|<池ID>] [1\|5\|11]` | 抽卡；不写数量时默认 1 连 |
 | `/概率` | 查看当前稀有度权重、消耗与保底规则 |
@@ -218,11 +230,11 @@ challenge_bloom_ticket_cooldown_days = 30
 
 ### 4.1 卡池模式
 
-- `rotation_mode = "cycle"`（默认）：按 `rotation_interval_days`（默认 15 天）循环使用已收录的历史官方卡池。
-  `rotation_epoch` 可固定起点，留空时使用数据库首次记录，重启不会退回第一期。
-- `rotation_mode = "official"`：按「几月几日」匹配历史官方池（忽略年份），可能同时启用多个池；
-  `/卡池` 列出全部启用池，默认抽取最近开启的一个，也可用 `/抽卡 <池ID> <1/5/11>` 指定。
+- `rotation_mode = "official"`（默认）：按「几月几日」匹配历史官方池（忽略年份），池期约一个月，可能同时启用多个池；
+  `/卡池` 列出全部启用池，默认抽取最近开启的一个，也可用 `/抽卡 <池ID> <1/5/11>` 指定；`/卡池 下一期` 显示按日期排序的下一期。
   当天没有活动池时使用常驻池。
+- `rotation_mode = "cycle"`：按 `rotation_interval_days`（默认 30 天）循环使用已收录的历史官方卡池。
+  `rotation_epoch` 可固定起点，留空时使用数据库首次记录，重启不会退回第一期。
 - **常驻池**包含当前版本已有的全部 R/SR/SSR 基础卡，用 `/抽卡 常驻 11` 单独抽取。
 - 活动池候选是“当期版本已有的全部 R/SR/SSR”再叠加本期 UP 与天井选择卡，是本插件采用的模拟模型，不代表官方完整实现。
   官方公告没有标注 UP 时会显示 `UP 卡：0 张`，但候选卡依然存在。
@@ -251,7 +263,7 @@ challenge_bloom_ticket_cooldown_days = 30
 | 每日基础签到 | 70～110 点（平均约 90） |
 | 连续签到 | 第 2 天起每天额外 +10，封顶 +100；断签重新从第 1 天算 |
 | 连续 7 天奖励 | +600 点 |
-| 连续 15 天周期奖励 | +1200 点（对应一次卡池轮替） |
+| 连续 30 天周期奖励 | +2400 点（对应一次约一个月的卡池档期，日均与旧版 15 天档一致） |
 | 月卡 | 1000 点 / 30 天，有效期每日签到额外 +80 点 |
 | 月卡附赠 | 2 次半价五连；剩余不超过 3 天可续费 |
 | 囤点档位 | 1000 / 3000 / 10000 点各触发 100 / 500 / 2000 点，每档一次，每 60 天重置 |
@@ -378,7 +390,7 @@ python -m ongeki_gacha.tools.verify_text_fallback        # 无素材兜底
 
 配置由 `config_model.py` 定义，Runner 首次加载时生成 `config.toml`，
 通过插件配置页保存后触发热更新，失败时会写日志；手动改文件后建议重新加载并核对 `/规则`。
-以下是 1.3.5 的默认值。
+以下是 1.3.6 的默认值。
 
 升级时旧配置文件缺少的新键会按默认值在运行时生效；如果想把这些键写进文件方便手改，
 在插件配置页保存一次即可。已有键的值不会被覆盖。
@@ -386,7 +398,7 @@ python -m ongeki_gacha.tools.verify_text_fallback        # 无素材兜底
 ```toml
 [plugin]
 enabled = true
-config_version = "1.3.5"
+config_version = "1.3.6"
 
 [assets]
 cards_dir = "assets/card_data"
@@ -399,8 +411,8 @@ weight_sr = 20
 weight_sr_plus = 0
 weight_ssr = 3
 schedule_json = "assets/card_data/gacha_pools.json"
-rotation_mode = "cycle"
-rotation_interval_days = 15
+rotation_mode = "official"
+rotation_interval_days = 30
 rotation_epoch = ""
 pickup_multiplier = 10
 strict_pool_cards = true
@@ -415,8 +427,8 @@ tz_offset_hours = 0
 streak_daily_step = 10
 streak_daily_max = 100
 streak_weekly_reward = 600
-streak_cycle_days = 15
-streak_cycle_reward = 1200
+streak_cycle_days = 30
+streak_cycle_reward = 2400
 non_gacha_checkin_probability = 0.05
 savings_threshold_1 = 1000
 savings_bonus_1 = 100
@@ -529,7 +541,8 @@ netease_api_url = ""
 netease_cookie = ""
 meting_api_url = ""
 allow_preview_fallback = false
-compress_media = true
+compress_media = "full"
+half_bitrate_kbps = 64
 max_duration_seconds = 1200
 ffmpeg_path = ""
 request_timeout_seconds = 15

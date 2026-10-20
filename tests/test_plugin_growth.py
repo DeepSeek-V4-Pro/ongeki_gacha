@@ -144,14 +144,14 @@ class PluginGrowthTests(unittest.IsolatedAsyncioTestCase):
         self.plugin._render_ready = False
         first = (await self.dispatch('/抽卡 常驻 5', 'draw-first'))[1]
         self.assertIn('抽卡完成：5 张', first)
-        self.assertIn('本次消耗 250 点｜余额 9750 点', first)
-        self.assertIn('本次使用每周首次五连保底', first)
+        self.assertIn('消耗 250 点｜余额 9750 点', first)
+        self.assertIn('5 连周保底：≥1 SR', first)
         self.assertEqual(first, (await self.dispatch('/抽卡 常驻 5', 'draw-first'))[1])
         second = (await self.dispatch('/抽卡 常驻 5', 'draw-second'))[1]
-        self.assertIn('本周首次五连保底此前已使用', second)
+        self.assertIn('5 连周保底已用', second)
         self.assertIn('余额 9500 点', second)
         eleven = (await self.dispatch('/抽卡 常驻 11', 'draw-eleven'))[1]
-        self.assertIn('本次11连保底：至少1张 SR 或以上', eleven)
+        self.assertIn('11 连保底：≥1 SR', eleven)
 
     async def test_gift_purchase_entry(self):
         await self.dispatch('/伙伴 星咲明','buy-partner')

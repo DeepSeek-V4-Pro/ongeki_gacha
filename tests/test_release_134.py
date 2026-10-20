@@ -49,9 +49,13 @@ class Catalog134Tests(unittest.TestCase):
         charts = _normalize_lxns('maimai',raw,'')[0].charts
         self.assertEqual([c.index for c in charts],[3,3,0])
         self.assertEqual([c.label for c in charts][:2],['MASTER 标准','MASTER DX'])
-        self.assertEqual(_normalize_lxns('maimai',[{'id':2,'title':'Test','difficulties':{
+        # 没有任何有效定数的曲目仍留在曲库里供预览搜索，只标记为任务不可选。
+        kept = _normalize_lxns('maimai',[{'id':2,'title':'Test','difficulties':{
             'dx':[{'difficulty':3,'level':'15','level_value':float('nan')}]
-        }}],''),[])
+        }}],'')
+        self.assertEqual(len(kept), 1)
+        self.assertTrue(kept[0].disabled)
+        self.assertEqual(kept[0].charts, ())
 
 
 class Database134Tests(unittest.TestCase):

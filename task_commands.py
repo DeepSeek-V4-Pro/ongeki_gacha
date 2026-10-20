@@ -302,8 +302,8 @@ class TaskCommandsMixin:
             await self._send_text(stream_id, text)
             return True, text, True
         lines = [
-            f"任务 #{task_id} 已提交，等待管理员审核｜账号 {user_id}",
-            f"{GAME_LABELS.get(task.game, task.game)}"
+            f"任务 #{task_id} 已提交待审｜账号 {user_id}"
+            f"｜{GAME_LABELS.get(task.game, task.game)}"
             f"｜{self._ellipsize(task.song_title, 20)}"
             f"｜{task.requirement_text}",
         ]
@@ -510,8 +510,7 @@ class TaskCommandsMixin:
             return True, text, True
         if task.task_kind != "ultimate" or task.qq_id != target_id:
             text = (
-                "该任务不是该用户的终极任务"
-                "（/终极完成 <QQ号> <任务ID>，ID 见 /任务列表）"
+                "该任务不是该用户的终极任务｜/终极完成 <QQ号> <任务ID>"
             )
             await self._send_text(stream_id, text)
             return True, text, True

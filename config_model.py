@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from maibot_sdk import Field, PluginConfigBase
-from pydantic import model_validator
+from pydantic import field_validator, model_validator
 
 
 class PluginSectionConfig(PluginConfigBase):
@@ -16,7 +16,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.3.5", description="配置版本")
+    config_version: str = Field(default="1.3.6", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -53,13 +53,13 @@ class PoolConfig(PluginConfigBase):
         description="官方卡池排表 JSON；可填写绝对路径",
     )
     rotation_mode: str = Field(
-        default="cycle",
-        description="official=按几月几日复现历史官方池（忽略年份）；cycle=按间隔循环历史官方池",
+        default="official",
+        description="official=按几月几日复现历史官方池（忽略年份，默认，与官方约一个月的档期一致）；cycle=按间隔循环历史官方池",
     )
     rotation_interval_days: int = Field(
-        default=15,
+        default=30,
         ge=1,
-        description="cycle 模式下每个池的持续天数",
+        description="cycle 模式下每个池的持续天数；official 模式不生效",
     )
     rotation_epoch: str = Field(
         default="",
@@ -104,8 +104,8 @@ class EconomyConfig(PluginConfigBase):
     streak_daily_step: int = Field(default=10, ge=0, description="连续签到每天递增额外点数")
     streak_daily_max: int = Field(default=100, ge=0, description="连续签到每日额外点数上限")
     streak_weekly_reward: int = Field(default=600, ge=0, description="每连续签到 7 天额外奖励点数")
-    streak_cycle_days: int = Field(default=15, ge=1, description="每连续签到多少天发放卡池周期奖励")
-    streak_cycle_reward: int = Field(default=1200, ge=0, description="卡池周期奖励点数")
+    streak_cycle_days: int = Field(default=30, ge=1, description="每连续签到多少天发放卡池周期奖励（默认按一个月）")
+    streak_cycle_reward: int = Field(default=2400, ge=0, description="卡池周期奖励点数（30 天一发，日均与旧版 15 天档一致）")
     non_gacha_checkin_probability: float = Field(
         default=0.05,
         ge=0.0,
@@ -431,7 +431,11 @@ class PreviewConfig(PluginConfigBase):
     netease_cookie: str = Field(default="", repr=False, description="网易云登录Cookie，仅POST到netease_api_url；留空使用接口服务端登录态")
     meting_api_url: str = Field(default="", description="自建metowolf/Meting-API完整端点，如http://127.0.0.1:3001/api；各平台Cookie在该服务端配置")
     allow_preview_fallback: bool = Field(default=False, description="全部完整音源失败后是否发送明确标注的短试听片段")
-    compress_media: bool = Field(default=True, description="压缩预览曲绘与语音；关闭时发送原图和未压缩WAV，体积更大，可能发送失败")
+    compress_media: str = Field(
+        default="full",
+        description="预览压缩档位：none=原图原WAV；half=较高码率优先音质，超限只保留开头可容纳部分；full=全长自适应低码率",
+    )
+    half_bitrate_kbps: int = Field(default=64, ge=8, le=320, description="half 档位的 MP3 码率（kbps），越高音质越好、可发送时长越短")
     max_duration_seconds: int = Field(default=1200, ge=60, le=3600, description="音频最长秒数，默认20分钟；超限拒绝发送，不截断")
     ffmpeg_path: str = Field(default="", description="FFmpeg路径；留空使用PATH或imageio-ffmpeg")
     request_timeout_seconds: int = Field(default=15, ge=3, le=60, description="单次元数据请求超时秒数")
@@ -441,6 +445,15 @@ class PreviewConfig(PluginConfigBase):
     cooldown_seconds: int = Field(default=10, ge=0, le=60, description="同账号试听请求间隔秒数")
     cache_ttl_seconds: int = Field(default=24 * 60 * 60, ge=60, le=7 * 24 * 60 * 60, description="音频缓存保留秒数，缓存总量不超过256MiB")
     max_download_bytes: int = Field(default=64 * 1024 * 1024, ge=1024, le=128 * 1024 * 1024, description="单个音源下载上限字节数")
+
+    @field_validator("compress_media", mode="before")
+    @classmethod
+    def _normalize_compress_media(cls, value):
+        """兼容旧配置的布尔值：true -> full，false -> none。"""
+        if isinstance(value, bool):
+            return "full" if value else "none"
+        text = str(value or "").strip().lower()
+        return text if text in {"none", "half", "full"} else "full"
 
     @model_validator(mode="after")
     def _validate_providers(self):

@@ -295,13 +295,13 @@ def _normalize_ongeki(songs: list[dict], source_url: str) -> list[CatalogSong]:
     for song in songs:
         if not isinstance(song, dict):
             continue
-        if bool(song.get("isLocked", False)):
-            continue
 
         title = str(song.get("title") or "").strip()
         song_id = str(song.get("songId") or title or "").strip()
         if not title and not song_id:
             continue
+        # 未开放的曲目仍留在曲库里：预览要能搜到，任务池再按 locked 过滤。
+        locked = bool(song.get("isLocked", False))
 
         charts: list[CatalogChart] = []
         for index, sheet in enumerate(song.get("sheets") or []):
@@ -351,7 +351,7 @@ def _normalize_ongeki(songs: list[dict], source_url: str) -> list[CatalogSong]:
                 max_level_display=max_chart.level_display if max_chart else "",
                 max_level_value=max_chart.level_value if max_chart else 0.0,
                 disabled=not standard_charts,
-                locked=False,
+                locked=locked,
                 cover_url=_ongeki_cover_url(song, source_url),
                 charts=tuple(charts),
             )
@@ -374,8 +374,10 @@ def _normalize_lxns(
         song_id = str(song.get("id") or "").strip()
         if not title or not song_id:
             continue
-        if bool(song.get("disabled", False)) or bool(song.get("locked", False)):
-            continue
+        # 未解锁（locked）与当前版本不可用（disabled）的曲目仍保留在曲库：
+        # 曲目预览要能搜到它们，随机任务再按这两个标记过滤。
+        song_disabled = bool(song.get("disabled", False))
+        song_locked = bool(song.get("locked", False))
 
         raw_difficulties = song.get("difficulties") or []
         if isinstance(raw_difficulties, dict):
@@ -432,7 +434,9 @@ def _normalize_lxns(
                 standard_charts.append(chart_model)
 
         if not charts:
-            continue
+            # 只有 WORLD'S END / UTAGE 谱面或无有效定数的曲目：任务不可选，
+            # 但仍保留在曲库里供预览搜索。
+            song_disabled = True
         max_chart = max(standard_charts or charts, key=lambda item: item.level_value, default=None)
         cover_base = asset_base.rstrip("/").replace(
             "assets2.lxns.net",
@@ -448,8 +452,8 @@ def _normalize_lxns(
                 max_level=_parse_level(max_chart.level_display) if max_chart else 0.0,
                 max_level_display=max_chart.level_display if max_chart else "",
                 max_level_value=max_chart.level_value if max_chart else 0.0,
-                disabled=bool(song.get("disabled", False)) or not standard_charts,
-                locked=bool(song.get("locked", False)),
+                disabled=song_disabled or not standard_charts,
+                locked=song_locked,
                 cover_url=cover_url,
                 charts=tuple(charts),
             )
@@ -507,14 +511,14 @@ def load_or_fetch_catalog(
         age = time.time() - cache_path.stat().st_mtime
         if age < ttl:
             cached = json.loads(cache_path.read_text(encoding="utf-8"))
-            if isinstance(cached, dict) and cached.get("version") == 3:
+            if isinstance(cached, dict) and cached.get("version") == 4:
                 return _catalog_from_dicts(cached["songs"])
     try:
         catalog = load_catalog(sources=sources, asset_bases=asset_bases)
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(
             json.dumps(
-                {"version": 3, "songs": [song.to_dict() for song in catalog]},
+                {"version": 4, "songs": [song.to_dict() for song in catalog]},
                 ensure_ascii=False,
                 indent=2,
             ),

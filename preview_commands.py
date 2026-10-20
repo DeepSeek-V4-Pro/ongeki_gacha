@@ -146,7 +146,7 @@ class PreviewCommandsMixin:
         except OSError as exc:
             raise PreviewError('试听缓存读写失败，请检查目录权限和磁盘空间') from exc
         try:
-            voice = await asyncio.wait_for(asyncio.to_thread(service.voice, prepared), 75)
+            payload = await asyncio.wait_for(asyncio.to_thread(service.voice, prepared), 75)
         except TimeoutError as exc:
             raise PreviewError('QQ长语音压缩超时') from exc
         if cover:
@@ -164,14 +164,15 @@ class PreviewCommandsMixin:
             except Exception as exc:
                 raise PreviewError(f'曲绘发送失败（{type(exc).__name__}）') from exc
         try:
-            result = await asyncio.wait_for(self.ctx.send.custom('voice', base64.b64encode(voice).decode(), stream_id,
+            result = await asyncio.wait_for(self.ctx.send.custom('voice', base64.b64encode(payload.audio).decode(), stream_id,
                 rpc_timeout_ms=self.config.preview.send_timeout_seconds * 1000),
                                             self.config.preview.send_timeout_seconds)
             if not sent_success(result):
                 reason = result.get('error', '') if isinstance(result, dict) else ''
                 raise PreviewError('QQ语音发送失败' + (f'：{reason}' if reason else '，请检查适配器的语音/转码支持'))
-            if prepared.is_preview:
-                await self._send_text(stream_id, '曲目预览：' + prepared.label)
+            if prepared.is_preview or payload.note:
+                detail = prepared.label + (f'（{payload.note}）' if payload.note else '')
+                await self._send_text(stream_id, '曲目预览：' + detail)
         except TimeoutError as exc:
             raise PreviewError('QQ语音发送超时，结果不确定，未自动重试') from exc
         except PreviewError:

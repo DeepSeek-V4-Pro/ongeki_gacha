@@ -4,6 +4,7 @@ __pycache__/
 *.db-shm
 *.db-wal
 /config.toml
+/config.toml.bak-*
 .venv/
 temp/
 data/

@@ -454,6 +454,16 @@ class GachaDatabase:
                 value       TEXT NOT NULL DEFAULT '',
                 updated_at  TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS version_claims (
+                qq_id       TEXT NOT NULL,
+                version     TEXT NOT NULL,
+                points      INTEGER NOT NULL DEFAULT 0,
+                items_json  TEXT NOT NULL DEFAULT '{}',
+                claimed_at  TEXT NOT NULL,
+                PRIMARY KEY(qq_id, version),
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
             """
         )
         migrate_task_identity(conn)
@@ -2699,6 +2709,113 @@ class GachaDatabase:
                 (today, now, reset_offset, today),
             ).rowcount
             return weekly, savings
+
+    # ==================== 版本变更补偿 ====================
+
+    def _first_seen_at(self, conn: sqlite3.Connection, qq_id: str) -> str:
+        """用户在本插件里最早留下的数据时间；没有数据返回空串。"""
+        row = conn.execute(
+            "SELECT created_at FROM players WHERE qq_id = ?", (qq_id,)
+        ).fetchone()
+        stamps = [str(row["created_at"])] if row is not None else []
+        for sql in (
+            "SELECT MIN(created_at) AS t FROM checkins WHERE qq_id = ?",
+            "SELECT MIN(created_at) AS t FROM gacha_logs WHERE qq_id = ?",
+            "SELECT MIN(first_obtained_at) AS t FROM inventory WHERE qq_id = ?",
+            "SELECT MIN(created_at) AS t FROM admin_grants WHERE target_id = ?",
+        ):
+            try:
+                value = conn.execute(sql, (qq_id,)).fetchone()
+            except sqlite3.OperationalError:
+                continue
+            if value is not None and value["t"]:
+                stamps.append(str(value["t"]))
+        return min(stamps) if stamps else ""
+
+    def ensure_version_baseline(self, version: str) -> str:
+        """记录该版本首次运行的时间；之后新建的账号不再算「上个版本有数据」。"""
+        key = f"version_baseline:{version}"
+        now = self._now_iso()
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            row = conn.execute(
+                "SELECT value FROM app_settings WHERE key = ?", (key,)
+            ).fetchone()
+            if row is not None and str(row["value"]).strip():
+                return str(row["value"])
+            conn.execute(
+                """
+                INSERT INTO app_settings(key, value, updated_at)
+                VALUES(?, ?, ?)
+                ON CONFLICT(key) DO NOTHING
+                """,
+                (key, now, now),
+            )
+            row = conn.execute(
+                "SELECT value FROM app_settings WHERE key = ?", (key,)
+            ).fetchone()
+            return str(row["value"]) if row is not None else now
+
+    def claimed_versions(self, qq_id: str) -> set[str]:
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            rows = self._conn.execute(
+                "SELECT version FROM version_claims WHERE qq_id = ?", (qq_id,)
+            ).fetchall()
+            return {str(row["version"]) for row in rows}
+
+    def claim_version_reward(
+        self,
+        qq_id: str,
+        version: str,
+        *,
+        points: int,
+        items: dict[str, int],
+        baseline_at: str = "",
+    ) -> dict:
+        """领取一次版本补偿；已有数据且数据早于该版本基线才可领取。"""
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                found = self._first_seen_at(conn, qq_id)
+                if not found:
+                    conn.execute("ROLLBACK")
+                    return {"success": False, "error": "no_data"}
+                if baseline_at and found >= baseline_at:
+                    conn.execute("ROLLBACK")
+                    return {"success": False, "error": "not_eligible"}
+                changed = conn.execute(
+                    """
+                    INSERT OR IGNORE INTO version_claims(qq_id, version, points, items_json, claimed_at)
+                    VALUES(?, ?, ?, ?, ?)
+                    """,
+                    (qq_id, version, int(points), json.dumps(items, ensure_ascii=False), self._now_iso()),
+                )
+                if not changed.rowcount:
+                    conn.execute("ROLLBACK")
+                    return {"success": False, "error": "claimed"}
+                if points:
+                    conn.execute(
+                        "UPDATE players SET points = points + ?, updated_at = ? WHERE qq_id = ?",
+                        (int(points), self._now_iso(), qq_id),
+                    )
+                for item, quantity in (items or {}).items():
+                    if quantity:
+                        change_item(conn, qq_id, str(item), int(quantity))
+                conn.execute("COMMIT")
+            except BaseException:
+                conn.execute("ROLLBACK")
+                raise
+            row = self._conn.execute(
+                "SELECT points FROM players WHERE qq_id = ?", (qq_id,)
+            ).fetchone()
+            return {"success": True, "points": int(row["points"]) if row is not None else 0}
 
     def get_setting(self, key: str) -> str:
         with self._lock:

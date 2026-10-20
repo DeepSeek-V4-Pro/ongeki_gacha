@@ -21,6 +21,9 @@ import urllib.request
 from .starter_cards import STARTER_CARD_IDS
 from . import render_theme
 from .config_model import OngekiGachaPluginConfig
+from .config_sync import sync_json_config, sync_toml_config
+from .compensation_commands import CompensationCommandsMixin
+from .version_rewards import PLUGIN_VERSION
 from .gacha_core import CardCollection, CardInfo, CardPool, load_cards, rarity_display
 from .gacha_db import GachaDatabase
 from .growth_catalog import GrowthCatalog
@@ -65,7 +68,7 @@ POOL_KIND_LABELS = {
     "special": "特殊",
 }
 
-class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
+class OngekiGachaPlugin(CompensationCommandsMixin, PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsMixin, MaiBotPlugin):
     """ONGEKI 模拟抽卡插件。"""
 
     config_model = OngekiGachaPluginConfig
@@ -96,6 +99,8 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
         self._task_catalog_lock = asyncio.Lock()
         self._task_catalog_path: Path | None = None
         self._task_reset_task: asyncio.Task | None = None
+        # 配置文件同步目标：MaiBot 为插件目录 config.toml，AstrBot 由适配层改为 JSON。
+        self._config_sync_targets: list[Path] = [Path(__file__).resolve().parent / "config.toml"]
         # 素材是可选内容：发布包不含卡面、字体与音频，缺失时整体回退文字。
         self._render_ready: bool = False
         self._card_images_ready: bool = False
@@ -104,7 +109,11 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
     async def on_load(self) -> None:
         """加载卡牌、初始化数据库和渲染器。"""
         try:
+            self._sync_config_file()
             self._initialize()
+            if self._db is not None:
+                # 记录本版本首次运行时间：之后新建的账号不算「上个版本有数据」。
+                self._db.ensure_version_baseline(PLUGIN_VERSION)
         except Exception:
             await self.on_unload()
             raise
@@ -216,6 +225,34 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
         self._active_pool_instances.clear()
         self._sync_active_pool()
         self.ctx.logger.info("ONGEKI 模拟抽卡配置已热更新")
+
+    def _sync_config_file(self) -> None:
+        """升级后补齐配置文件缺失的键并迁移旧默认值；失败不影响加载。"""
+        try:
+            defaults = self.config_model().model_dump()
+        except Exception as exc:
+            self.ctx.logger.warning("配置默认值生成失败，跳过配置同步: %s", exc)
+            return
+        for target in self._config_sync_targets:
+            if not target.is_file():
+                continue
+            try:
+                if target.suffix.lower() == ".toml":
+                    summary = sync_toml_config(target, defaults, PLUGIN_VERSION)
+                else:
+                    summary = sync_json_config(target, defaults, PLUGIN_VERSION)
+            except Exception as exc:
+                self.ctx.logger.warning("配置文件同步失败 %s: %s", target, exc)
+                continue
+            if summary.get("error") or not summary.get("changed"):
+                continue
+            self.ctx.logger.info(
+                "配置文件已同步到 %s：新增 %s；迁移 %s；备份 %s",
+                PLUGIN_VERSION,
+                "、".join(summary.get("added") or []) or "无",
+                "、".join(summary.get("migrated") or []) or "无",
+                summary.get("backup") or "无",
+            )
 
     def _initialize(self) -> None:
         db_path = self.ctx.paths.data_dir / "ongeki_gacha.db"
@@ -425,7 +462,7 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
         """Select the active pool according to the configured rotation mode."""
         if not schedule.entries:
             return None
-        mode = str(config.pool.rotation_mode or "cycle").strip().lower()
+        mode = str(config.pool.rotation_mode or "official").strip().lower()
         today = cls._today(config)
         if mode == "official":
             return schedule.active_for(today, ignore_year=True)
@@ -445,7 +482,7 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
         """Return every pool currently active under the configured mode."""
         if not schedule.entries:
             return ()
-        mode = str(config.pool.rotation_mode or "cycle").strip().lower()
+        mode = str(config.pool.rotation_mode or "official").strip().lower()
         if mode == "official":
             return schedule.active_for_all(
                 cls._today(config),
@@ -645,7 +682,7 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
     def _help_text(self) -> str:
         """按当前配置生成 /帮助 返回文案。"""
         return (
-            "【签到】/签到 /点数 /月卡 /卡册 <角色> [页] /卡图 <ID>\n"
+            "【签到】/签到 /点数 /月卡 /版本补偿 /卡册 <角色> [页] /卡图 <ID>\n"
             "【抽卡】/抽卡 [常驻|池ID] [1|5|11] /概率 /卡池 /天井 /天井列表 /天井池\n"
             "【养成】/伙伴 /陪伴 /好感 /好感奖励 /礼物 /送礼 /养成 /解花 /超解花 /装扮 /角色语音\n"
             "【任务】/曲目预览 [游戏] 曲名 [| 歌手] /接任务 /任务列表 /任务完成 /终极提交\n"
@@ -762,8 +799,8 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
             "11 连必得 SR 或以上；5 连每用户每周首次触发一次 SR 或以上保底；"
             "抽卡次数与保底按用户独立累计",
             "【卡池】",
-            f"默认每 {self.config.pool.rotation_interval_days} 天轮换一个历史官方卡池；"
-            "official 模拟模式按几月几日匹配历史官方池（忽略年份）",
+            "默认 official 模式：按几月几日复现历史官方池（忽略年份），池期约一个月；"
+            f"cycle 模式才按每 {self.config.pool.rotation_interval_days} 天轮换",
             "official 模式可能同时启用多个官方卡池；默认抽最近开启的活动池，"
             "可用 /抽卡 <池ID> <数量> 指定其他启用池",
             "/卡池 会列出全部启用中的官方卡池，/天井列表 会列出全部启用池的天井状态",
@@ -1161,14 +1198,12 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
         """任务信息的纯文字版本；渲染不可用时直接发送这段内容。"""
         game_label = GAME_LABELS.get(selection.song.game, selection.song.game)
         return (
-            f"任务ID：#{task_id}\n"
-            f"类型：{KIND_LABELS.get(task_kind, task_kind)}\n"
-            f"游戏：{game_label}\n"
-            f"曲目：{selection.song.title} — {selection.song.artist}\n"
-            f"任务谱面：{self._task_level_text(selection)}\n"
-            f"要求：{self._task_requirement(selection, task_kind)}\n"
-            f"奖励：{self._task_reward(task_kind)} 点{'起（按评级）' if task_kind in {'challenge', 'advanced'} else ''}\n"
-            f"提交：成绩图 + {'/终极提交' if task_kind == 'ultimate' else '/任务完成'} {task_id}"
+            f"任务 #{task_id}｜{KIND_LABELS.get(task_kind, task_kind)}｜{game_label}"
+            f"｜{selection.song.title} — {selection.song.artist}\n"
+            f"{self._task_level_text(selection)}"
+            f"｜{self._task_requirement(selection, task_kind)}"
+            f"｜奖励 {self._task_reward(task_kind)} 点{'起（按评级）' if task_kind in {'challenge', 'advanced'} else ''}\n"
+            f"成绩图 + {'/终极提交' if task_kind == 'ultimate' else '/任务完成'} {task_id}"
         )
 
     def _cleanup_render_cache(self) -> None:
@@ -1409,6 +1444,23 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
             self._active_pool_instances[selected.pool_id] = pool
         self._pool = pool
         return True
+
+    @staticmethod
+    def _next_official_pool(schedule: GachaSchedule, today: date) -> PoolEntry | None:
+        """official 模式下按「几月几日」找下一期官方池，年末回绕到年初。"""
+        key = (today.month, today.day)
+        later = [
+            entry
+            for entry in schedule.entries
+            if entry.start_date is not None
+            and (entry.start_date.month, entry.start_date.day) > key
+        ]
+        pool = later or [
+            entry for entry in schedule.entries if entry.start_date is not None
+        ]
+        if not pool:
+            return None
+        return min(pool, key=lambda entry: (entry.start_date.month, entry.start_date.day))
 
     def _cycle_index(self, schedule: GachaSchedule) -> int | None:
         if not schedule.entries:
@@ -1874,11 +1926,11 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
                 f"{self._rare_summary(drawn_cards)}"
                 f"｜首次获得 {sum(1 for item in receipt.commitments if item.is_new)} 张"
                 f"｜碎片 +{sum(item.fragments for item in receipt.commitments)}",
-                f"本次消耗 {cost} 点｜余额 {receipt.points} 点",
+                f"消耗 {cost} 点｜余额 {receipt.points} 点",
             ]
             if draw_pool.featured_count:
                 summary_lines.append(
-                    f"池内 UP 卡共 {draw_pool.featured_count} 种（抽取权重 ×{draw_pool.pickup_multiplier}，非本次抽中数）"
+                    f"池内 UP {draw_pool.featured_count} 种（权重 ×{draw_pool.pickup_multiplier}）"
                 )
             if receipt.max_select_points:
                 if receipt.select_claimed:
@@ -1895,12 +1947,12 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
                     )
                 summary_lines.append(ceiling_text)
             if count == 11:
-                summary_lines.append("本次11连保底：至少1张 SR 或以上")
+                summary_lines.append("11 连保底：≥1 SR")
             if count == 5:
                 summary_lines.append(
-                    "本次使用每周首次五连保底：至少1张 SR 或以上"
+                    "5 连周保底：≥1 SR"
                     if weekly_5_claimed
-                    else "本周首次五连保底此前已使用，本次按普通概率抽取"
+                    else "5 连周保底已用，按普通概率"
                 )
                 if half_price_used:
                     summary_lines.append(
@@ -2449,7 +2501,7 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
                 return True, text, True
             self._sync_active_pool()
             schedule = self._schedule
-            mode = str(self.config.pool.rotation_mode or "cycle").strip().lower()
+            mode = str(self.config.pool.rotation_mode or "official").strip().lower()
             today = self._today(self.config)
             lines: list[str] = []
             shown_pool: PoolEntry | None = None
@@ -2503,7 +2555,24 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
                 if len(up_ssr) > 6:
                     lines.append("完整列表：/卡池 列表")
 
-            if mode == "official":
+            if mode == "official" and action == "下一期":
+                target = self._next_official_pool(schedule, today)
+                if target is None:
+                    lines = ["卡池排表为空"]
+                else:
+                    period = (
+                        f"{target.start_date:%Y-%m-%d} ～ {target.end_date:%Y-%m-%d}"
+                        if target.start_date and target.end_date
+                        else "日期未知"
+                    )
+                    lines = [
+                        f"下一期：{target.pool_id}｜{self._ellipsize(target.name, 60)}",
+                        f"官方日期：{period}｜{self._pool_kind_label(target.kind)}",
+                        f"UP SSR：{len(target.up_ssr_cards())} 张｜UP 卡：{target.featured_count} 张",
+                    ]
+                    shown_pool = target
+                active_entries = ()
+            elif mode == "official":
                 active_entries = self._active_pool_entries
                 if not active_entries:
                     lines = [
@@ -2801,11 +2870,10 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
                         return receipt.error or "天井兑换失败"
                     verb = "获得" if receipt.is_new else "重复获得"
                     return (
-                        f"天井兑换成功（{pool.pool_id}）！{verb} "
-                        f"{self._card_display_name(card, 40)}"
-                        f"（ID {card.id}）\n"
-                        f"当前持有：{receipt.copies} 张\n花之碎片 +{receipt.fragments}\n"
-                        f"继续：/养成 {card.id}｜查看天井：/天井"
+                        f"天井兑换成功（{pool.pool_id}）｜{verb} "
+                        f"{self._card_display_name(card, 40)}（ID {card.id}）\n"
+                        f"当前持有 {receipt.copies} 张｜花之碎片 +{receipt.fragments}"
+                        f"｜/养成 {card.id}｜/天井 查看进度"
                     )
 
                 matches: list[
@@ -2949,7 +3017,7 @@ class OngekiGachaPlugin(PreviewCommandsMixin, GrowthCommandsMixin, TaskCommandsM
         lines = ["音击抽卡模拟器 · 非官方概率"]
         if self._active_pool_entries:
             mode = str(
-                config.pool.rotation_mode or "cycle"
+                config.pool.rotation_mode or "official"
             ).strip().lower()
             scope_label = "官方" if mode == "official" else ""
             lines.append(

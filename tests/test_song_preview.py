@@ -53,8 +53,11 @@ class IdentityTests(unittest.TestCase):
         self.assertFalse(sp.catalog_matches(catalog, 'Not in game'))
         self.assertFalse(sp.catalog_matches(catalog, 'Test', artist='Sing'))
         for title, artists in [('Test (Remix)', ('Singer',)), ('Test', ('Other',)),
-                                ('Test', ('Singer', 'Guest')), ('Test', ('Singer (CV:X)',))]:
+                                ('Test', ('Other', 'Third'))]:
             self.assertFalse(sp.PreviewTrack('p', title, artists, '', '').matches(song()))
+        # 音源追加嘉宾或给歌手名加括号注解时，只要主唱对得上就接受。
+        self.assertTrue(sp.PreviewTrack('p', 'Test', ('Singer', 'Guest'), '', '').matches(song()))
+        self.assertTrue(sp.PreviewTrack('p', 'Test', ('Singer (CV:X)',), '', '').matches(song()))
         self.assertTrue(sp.PreviewTrack('p', 'ＴＥＳＴ', ('Singer',), '', '').matches(song()))
         self.assertFalse(sp.PreviewTrack('p', 'Test', ('Singer',), '', '', version='Live').matches(song()))
         self.assertTrue(sp.matching_artists('A、B', ('A', 'B')))
@@ -69,7 +72,8 @@ class IdentityTests(unittest.TestCase):
             self.assertEqual(sp.catalog_matches([punctuation], query), [punctuation], query)
         game_credit = song(title='Test', artist='曲：A & B／歌：C(CV：D)、E(CV：F)', identifier='5')
         self.assertTrue(sp.PreviewTrack('p', 'Test', ('D', 'F'), '', '').matches(game_credit))
-        self.assertFalse(sp.PreviewTrack('p', 'Test', ('D', 'X'), '', '').matches(game_credit))
+        self.assertTrue(sp.PreviewTrack('p', 'Test', ('D', 'X'), '', '').matches(game_credit))
+        self.assertFalse(sp.PreviewTrack('p', 'Test', ('X', 'Y'), '', '').matches(game_credit))
         self.assertTrue(sp.catalog_matches([game_credit], 'Test', artist='D'))
         self.assertFalse(sp.catalog_matches([game_credit], 'Test', artist='X'))
         self.assertFalse(sp.catalog_matches([song(artist='Singer')], 'Test', artist='Sing'))
@@ -119,7 +123,10 @@ class IdentityTests(unittest.TestCase):
                 self.skipTest('FFmpeg unavailable')
             data = sp.convert_preview(wav(75, 22050), folder, executable=exe, seconds=120)
             self.assertAlmostEqual(sp.validate_wav(data, 120), 75, places=1)
-            compressed = sp.encode_qq_voice(data, 75, folder, executable=exe)
+            prepared = sp.encode_qq_voice(data, 75, folder, executable=exe)
+            compressed = prepared.audio
+            self.assertEqual(prepared.mode, 'full')
+            self.assertFalse(prepared.truncated)
             decoded = sp.convert_preview(compressed, folder, executable=exe, seconds=120)
             self.assertAlmostEqual(sp.validate_wav(decoded, 120), 75, delta=.2)
             self.assertLess(len(compressed), len(data) / 3)
@@ -166,9 +173,12 @@ class ProviderTests(unittest.TestCase):
         with patch.object(sp, 'fetch_json', side_effect=[[row], [row]]):
             tracks = provider.search(song(), 5, deadline=time.monotonic() + 30)
             self.assertEqual(len(tracks), 1)
-        with patch.object(sp, 'fetch_json', side_effect=[[row], [dict(row, author='Other')]]):
+        # 第一轮搜索的详情对不上时会退回纯曲名再搜一次（1.3.6 起），这里各给一次响应。
+        with patch.object(sp, 'fetch_json', side_effect=[[row], [dict(row, author='Other')],
+                                                        [row], [row]]):
             self.assertEqual(provider.search(song(), 5, deadline=time.monotonic() + 30), [])
-        with patch.object(sp, 'fetch_json', side_effect=[[dict(row, url='http://127.0.0.1/private')]]):
+        with patch.object(sp, 'fetch_json', side_effect=[[dict(row, url='http://127.0.0.1/private')],
+                                                        [dict(row, url='http://127.0.0.1/private')]]):
             self.assertEqual(provider.search(song(), 5, deadline=time.monotonic() + 30), [])
 
     def test_deezer_rejects_wrong_contributors_and_marks_short(self):
@@ -179,6 +189,12 @@ class ProviderTests(unittest.TestCase):
             self.assertTrue(tracks[0].is_preview)
         detail['contributors'].append({'name': 'Other', 'role': 'Featured'})
         with patch.object(sp, 'fetch_json', side_effect=[{'data': [{'id': 1, 'title': 'Test'}]}, detail]):
+            # 主唱仍对得上，追加嘉宾不再判为错配（1.3.6 起）。
+            self.assertTrue(sp.DeezerProvider().search(song(), 5, deadline=time.monotonic() + 30))
+        detail['contributors'] = [{'name': 'Other', 'role': 'Main'}, {'name': 'Third', 'role': 'Featured'}]
+        # 第一轮全部被拒后会退回纯曲名再搜一次，因此需要两轮响应。
+        responses = [{'data': [{'id': 1, 'title': 'Test'}]}, detail] * 2
+        with patch.object(sp, 'fetch_json', side_effect=responses):
             self.assertFalse(sp.DeezerProvider().search(song(), 5, deadline=time.monotonic() + 30))
 
 
@@ -273,17 +289,39 @@ class ServiceTests(unittest.TestCase):
 
     def test_voice_compression_toggle_and_large_wav_guard(self):
         prepared = sp.PreparedPreview(wav(2), 'test source', 2, False, True)
-        self.config.compress_media = False
+        self.config.compress_media = 'none'
         with patch.object(sp, 'encode_qq_voice') as encoder:
-            self.assertEqual(self.service.voice(prepared), prepared.audio)
+            payload = self.service.voice(prepared)
+            self.assertEqual(payload.audio, prepared.audio)
+            self.assertEqual(payload.mode, 'none')
             encoder.assert_not_called()
+        self.config.compress_media = False
+        self.assertEqual(self.service.voice(prepared).audio, prepared.audio)
         with self.assertRaisesRegex(sp.PreviewError, '未压缩语音超过5MiB'):
             self.service.voice(sp.PreparedPreview(wav(170), 'test source', 170, False, True))
 
-        self.config.compress_media = True
-        with patch.object(sp, 'encode_qq_voice', return_value=b'mp3') as encoder:
-            self.assertEqual(self.service.voice(prepared), b'mp3')
+        self.config.compress_media = 'full'
+        fake = sp.VoicePayload(b'mp3', 'full', 64000, kept_seconds=2, total_seconds=2)
+        with patch.object(sp, 'encode_qq_voice', return_value=fake) as encoder:
+            self.assertEqual(self.service.voice(prepared).audio, b'mp3')
             encoder.assert_called_once()
+            self.assertEqual(encoder.call_args.kwargs['mode'], 'full')
+            self.assertEqual(encoder.call_args.kwargs['half_bitrate'], 64000)
+
+    def test_half_mode_keeps_quality_and_truncates_to_fit(self):
+        prepared = sp.PreparedPreview(wav(600), 'test source', 600, False, True)
+        self.config.compress_media = 'half'
+        self.config.half_bitrate_kbps = 96
+        fake = sp.VoicePayload(b'mp3', 'half', 96000, kept_seconds=430.0, total_seconds=600)
+        with patch.object(sp, 'encode_qq_voice', return_value=fake) as encoder:
+            payload = self.service.voice(prepared)
+        self.assertEqual(encoder.call_args.kwargs['mode'], 'half')
+        self.assertEqual(encoder.call_args.kwargs['half_bitrate'], 96000)
+        self.assertTrue(payload.truncated)
+        self.assertIn('半压缩', payload.note)
+        self.assertIn('7:10', payload.note)
+        self.assertIn('10:00', payload.note)
+        self.assertIn('96kbps', payload.note)
 
 
 @unittest.skipIf(OngekiGachaPlugin is None, '需要SDK命令环境')
@@ -304,7 +342,7 @@ class CommandTests(unittest.IsolatedAsyncioTestCase):
         self.service = Mock()
         self.service.prepare.return_value = sp.PreparedPreview(wav(90), 'test source', 90, False, True)
         self.service.cover.return_value = b'game jacket'
-        self.service.voice.return_value = b'ID3mock compressed voice'
+        self.service.voice.return_value = sp.VoicePayload(b'ID3mock compressed voice', 'full')
         self.plugin._preview_service = lambda: self.service
 
     async def asyncTearDown(self):

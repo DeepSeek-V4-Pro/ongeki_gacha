@@ -85,17 +85,17 @@ Meting 标准协议不接受客户端传入各平台 Cookie，因此插件不提
 ## 音频、缓存与错误
 
 音频先校验完整时长，默认压缩为单声道 MP3，通过 QQ `voice` / AstrBot `Record` 发送，由适配器转换为 QQ 支持的格式。
-关闭 `compress_media` 时发送转换后的未压缩 WAV；超过5MiB会报错，不会静默改回压缩。
-默认曲绘会压成最长边1280的JPEG，压缩后没有更小则保留原图；关闭 `compress_media` 时原样发送曲绘。
-发送数据控制在5MiB以内，音质随长语音时长调整，避免超过MaiBot通信帧上限；不会因此截断歌曲。
+`compress_media` 分三档：`full`（默认，全长低码率）、`half`（固定 `half_bitrate_kbps`，优先音质；超过5MiB 时只保留开头能容纳的部分并标注时长）、`none`（发送转换后的未压缩 WAV，超过5MiB会报错，不会静默改回压缩）。
+`full` / `half` 下曲绘会压成最长边1280的JPEG，压缩后没有更小则保留原图；`none` 时原样发送曲绘。
+发送数据控制在5MiB以内；`full` 的音质随长语音时长调整，避免超过MaiBot通信帧上限。
 安装 `requirements.txt` 中的 `imageio-ffmpeg`，或配置 `ffmpeg_path` 指向已有 FFmpeg。
 AstrBot QQ 官方机器人还需要框架的 SILK 转码支持；框架会自行调用**系统 PATH 中的** `ffmpeg`，不会读取插件的 `preview.ffmpeg_path`。
 若日志出现 `处理语音时出错: ffmpeg not found`，请把 ffmpeg 所在目录加入运行 AstrBot 的系统 PATH，或安装 `pyffmpeg`。
 OneBot/NapCat 等能否发送更长语音由适配器决定。
 
-不截取固定30秒。默认最大1200秒（20分钟）、下载最大64MiB；超限报错，不发送截断结果。
+不截取固定30秒。默认最大1200秒（20分钟）、下载最大64MiB；`full` / `half` 超过5MiB 时按档位处理（`half` 只保留开头并在回执标注），`none` 直接报错。
 检查实际解码时长与上游全长信息，发现短试听或截断时默认拒绝。启用 `allow_preview_fallback` 后，只有所有完整音源失败才使用片段。
-正常成功只发送曲绘和语音，不加文字或边框；默认压缩曲绘与语音，关闭 `compress_media` 后发送原图和未压缩WAV。仅使用短试听兜底并成功发送时，补一句“试听片段”；自动失败仍静默。
+正常成功只发送曲绘和语音，不加文字或边框；`none` 档发送原图和未压缩WAV。仅使用短试听兜底并成功发送时，补一句“试听片段”；`half` 截取时补一句保留时长；自动失败仍静默。
 Meting 标准响应没有全长，60秒以内按可能的试听片段处理；更长音频按原音源发送，但内部不标记为已验证完整版。
 
 缓存仅保留转换后的 WAV 与来源标签，默认24小时、最多256MiB；下载临时文件在处理结束后删除。
@@ -118,7 +118,8 @@ netease_api_url = ""
 netease_cookie = ""
 meting_api_url = ""
 allow_preview_fallback = false
-compress_media = true
+compress_media = "full"
+half_bitrate_kbps = 64
 max_duration_seconds = 1200
 ffmpeg_path = ""
 request_timeout_seconds = 15

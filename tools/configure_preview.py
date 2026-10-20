@@ -51,6 +51,7 @@ PREVIEW_KEYS = (
     "meting_api_url",
     "allow_preview_fallback",
     "compress_media",
+    "half_bitrate_kbps",
     "max_duration_seconds",
     "ffmpeg_path",
     "request_timeout_seconds",
@@ -71,7 +72,8 @@ PREVIEW_DEFAULTS: dict[str, Any] = {
     "netease_cookie": "",
     "meting_api_url": "",
     "allow_preview_fallback": False,
-    "compress_media": True,
+    "compress_media": "full",
+    "half_bitrate_kbps": 64,
     "max_duration_seconds": 1200,
     "ffmpeg_path": "",
     "request_timeout_seconds": 15,
@@ -417,7 +419,11 @@ def _print_current(values: dict[str, Any], path: Path | None) -> None:
     print(f"网易云 Cookie：{mask_secret(values.get('netease_cookie', ''))}")
     print(f"Meting 端点：{values.get('meting_api_url') or '未配置'}")
     print(f"短试听兜底：{'开启' if values.get('allow_preview_fallback') else '关闭'}")
-    print(f"压缩曲绘与语音：{'开启' if values.get('compress_media', True) else '关闭'}")
+    mode = values.get("compress_media", "full")
+    mode = "full" if mode is True else ("none" if mode is False else str(mode))
+    labels = {"none": "不压缩（原图原WAV）", "half": "半压缩（高码率，超限保留前段）", "full": "全压缩（全长低码率）"}
+    print(f"预览压缩档位：{labels.get(mode, mode)}")
+    print(f"half 码率：{values.get('half_bitrate_kbps', 64)} kbps")
     print(f"FFmpeg：{values.get('ffmpeg_path') or '自动查找'}")
     print("=" * 62)
 
@@ -456,6 +462,18 @@ def _prompt_bool(label: str, default: bool) -> bool:
     if not raw:
         return default
     return raw in {"y", "yes", "是", "1", "开", "开启"}
+
+
+_COMPRESS_MODES = {"1": "none", "2": "half", "3": "full",
+                   "none": "none", "half": "half", "full": "full"}
+
+
+def _prompt_compress_mode(default: str) -> str:
+    hint = {"none": "1", "half": "2", "full": "3"}.get(default, "3")
+    raw = _prompt(f"压缩档位 1 不压缩 2 半压缩 3 全压缩 [回车={hint}]", "").lower()
+    if not raw:
+        return default
+    return _COMPRESS_MODES.get(raw, default)
 
 
 def _add_providers(values: dict[str, Any], names: list[str]) -> None:
@@ -510,8 +528,17 @@ def interactive(values: dict[str, Any], path: Path | None) -> dict[str, Any]:
                 "终极任务接取后自动试听", bool(values.get("automatic_ultimate", True)))
             values["allow_preview_fallback"] = _prompt_bool(
                 "允许短试听兜底", bool(values.get("allow_preview_fallback", False)))
-            values["compress_media"] = _prompt_bool(
-                "压缩预览曲绘与语音", bool(values.get("compress_media", True)))
+            current_mode = values.get("compress_media", "full")
+            if current_mode is True:
+                current_mode = "full"
+            elif current_mode is False:
+                current_mode = "none"
+            current_mode = str(current_mode)
+            values["compress_media"] = _prompt_compress_mode(
+                current_mode if current_mode in {"none", "half", "full"} else "full")
+            if values["compress_media"] == "half":
+                values["half_bitrate_kbps"] = _prompt_int(
+                    "half 档位码率 kbps", int(values.get("half_bitrate_kbps", 64)), 8, 320)
             values["max_duration_seconds"] = _prompt_int(
                 "最长音频秒数", int(values["max_duration_seconds"]), 60, 3600)
             values["request_timeout_seconds"] = _prompt_int(
@@ -563,8 +590,10 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--ffmpeg", default=None)
     parser.add_argument("--allow-preview-fallback", dest="fallback", action="store_true", default=None)
     parser.add_argument("--no-preview-fallback", dest="fallback", action="store_false")
-    parser.add_argument("--compress-media", dest="compress", action="store_true", default=None)
-    parser.add_argument("--no-compress-media", dest="compress", action="store_false")
+    parser.add_argument("--compress-media", dest="compress", choices=("none", "half", "full"), default=None,
+                        help="预览压缩档位")
+    parser.add_argument("--no-compress-media", dest="compress", action="store_const", const="none")
+    parser.add_argument("--half-bitrate-kbps", dest="half_bitrate", type=int, default=None)
     parser.add_argument("--max-duration", type=int, default=None)
     parser.add_argument("--test", action="store_true", help="写完或读取后测试音源")
     parser.add_argument("--yes", action="store_true", help="非交互模式：不询问，直接写入")
@@ -589,6 +618,8 @@ def _apply_overrides(values: dict[str, Any], args: argparse.Namespace) -> None:
         values["allow_preview_fallback"] = args.fallback
     if args.compress is not None:
         values["compress_media"] = args.compress
+    if args.half_bitrate is not None:
+        values["half_bitrate_kbps"] = max(8, min(int(args.half_bitrate), 320))
     if args.max_duration is not None:
         values["max_duration_seconds"] = args.max_duration
 
