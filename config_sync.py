@@ -61,13 +61,19 @@ def _section_bounds(lines: list[str]) -> dict[str, tuple[int, int]]:
     return bounds
 
 
-def migrate_values(raw: dict[str, Any]) -> dict[tuple[str, str], Any]:
-    """把旧版本的默认写法升级为新默认值，返回需要就地改写的键值。
+def _is_number(value: Any) -> bool:
+    """只有数值才允许在升级时自动补写；布尔、字符串、列表、字典一律不动。"""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
 
-    只迁移「整组仍是旧默认值」的情况：用户把其中任何一项改成别的值，
-    就视为有意保留自定义配置，不再覆盖。
+
+def migrate_values(raw: dict[str, Any]) -> dict[tuple[str, str], Any]:
+    """返回升级时需要就地改写的键值，只包含数值调整和等价的写法迁移。
+
+    管理员、音源地址、Cookie、素材路径等非数值配置永远不在这里出现；
+    用户把其中任何一项改成别的值也视为有意保留，不会被覆盖。
     """
     overrides: dict[tuple[str, str], Any] = {}
+    # 旧布尔开关 -> 新三档字符串：true/false 与 full/none 语义相同，属于写法迁移。
     preview = raw.get("preview")
     if isinstance(preview, dict) and isinstance(preview.get("compress_media"), bool):
         overrides[("preview", "compress_media")] = "full" if preview["compress_media"] else "none"
@@ -77,8 +83,8 @@ def migrate_values(raw: dict[str, Any]) -> dict[tuple[str, str], Any]:
             interval = int(pool.get("rotation_interval_days") or 0)
         except (TypeError, ValueError):
             interval = 0
+        # 只有仍在用 cycle 轮替的用户才把 15 天调到 30 天；official 用户不受影响。
         if str(pool.get("rotation_mode") or "").strip().lower() == "cycle" and interval == 15:
-            overrides[("pool", "rotation_mode")] = "official"
             overrides[("pool", "rotation_interval_days")] = 30
     economy = raw.get("economy")
     if isinstance(economy, dict):
@@ -100,7 +106,10 @@ def _describe(key: tuple[str, str], value: Any) -> str:
 
 
 def sync_toml_config(path: Path, defaults: dict[str, Any], version: str) -> dict[str, Any]:
-    """补齐 config.toml 缺的键、迁移旧写法并写入版本号；返回变更摘要。"""
+    """只做数值层面的升级：补缺失的数值键、调整本版数值、写入版本号。
+
+    管理员、音源、Cookie、素材路径等非数值配置不会新增、不会改写。
+    """
     summary: dict[str, Any] = {
         "path": str(path),
         "changed": False,
@@ -138,23 +147,21 @@ def sync_toml_config(path: Path, defaults: dict[str, Any], version: str) -> dict
     lines = text.splitlines()
     bounds = _section_bounds(lines)
     inserts: list[tuple[int, list[str]]] = []
-    appended: list[str] = []
     added: list[str] = []
 
     for section, values in defaults.items():
-        if not isinstance(values, dict):
+        if not isinstance(values, dict) or section not in bounds:
+            # 不新建分组：管理员、音源等非数值配置一律保持原样。
             continue
         current = parsed.get(section)
         existing = current if isinstance(current, dict) else {}
-        missing = [key for key in values if key not in existing]
+        # 只补数值键；字符串、列表、字典（providers、admin_ids、Cookie、路径等）不补。
+        missing = [key for key in values if key not in existing and _is_number(values[key])]
         if not missing:
             continue
         new_lines = [f"{key} = {_format_value(values[key])}" for key in missing]
         added.extend(f"{section}.{key}" for key in missing)
-        if section in bounds:
-            inserts.append((bounds[section][1] + 1, new_lines))
-        else:
-            appended.extend(["", f"[{section}]", *new_lines])
+        inserts.append((bounds[section][1] + 1, new_lines))
 
     # 版本号与旧默认值就地改写。
     rewrites: dict[int, str] = {}
@@ -179,7 +186,6 @@ def sync_toml_config(path: Path, defaults: dict[str, Any], version: str) -> dict
         lines[index] = value
     for position, new_lines in sorted(inserts, key=lambda item: item[0], reverse=True):
         lines[position:position] = new_lines
-    lines.extend(appended)
 
     backup = _backup(path)
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -188,7 +194,7 @@ def sync_toml_config(path: Path, defaults: dict[str, Any], version: str) -> dict
 
 
 def sync_json_config(path: Path, defaults: dict[str, Any], version: str) -> dict[str, Any]:
-    """AstrBot 侧：补齐 JSON 配置缺的键，同样保留用户已有值。"""
+    """AstrBot 侧：同样只补数值键、只做数值迁移，其余配置保持原样。"""
     summary: dict[str, Any] = {
         "path": str(path),
         "changed": False,
@@ -213,16 +219,19 @@ def sync_json_config(path: Path, defaults: dict[str, Any], version: str) -> dict
         return summary
 
     added: list[str] = []
+    for section, values in defaults.items():
+        if not isinstance(values, dict):
+            continue
+        current = raw.get(section)
+        if not isinstance(current, dict):
+            # 不新建分组：管理员、音源等非数值配置一律保持原样。
+            continue
+        for key, value in values.items():
+            # 只补数值键；providers、admin_ids、Cookie、路径等不补也不改。
+            if key not in current and _is_number(value):
+                current[key] = value
+                added.append(f"{section}.{key}")
 
-    def merge(target: dict[str, Any], source: dict[str, Any], prefix: str) -> None:
-        for key, value in source.items():
-            if key not in target:
-                target[key] = value
-                added.append(f"{prefix}{key}")
-            elif isinstance(value, dict) and isinstance(target.get(key), dict):
-                merge(target[key], value, f"{prefix}{key}.")
-
-    merge(raw, defaults, "")
     migrated: list[str] = []
     for (section, key), value in migrate_values(raw).items():
         current = raw.get(section)

@@ -121,15 +121,17 @@ class HalfCompressionTests(unittest.TestCase):
 
 
 class ConfigSyncTests(unittest.TestCase):
-    def test_toml_sync_adds_missing_keys_and_migrates_old_defaults(self):
+    def test_toml_sync_only_touches_numbers(self):
         defaults = OngekiGachaPluginConfig().model_dump()
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'config.toml'
             path.write_text(
                 '[plugin]\nenabled = true\nconfig_version = "1.3.5"\n\n'
+                '[admin]\nadmin_ids = [123456789]\nallow_local_operator = false\n\n'
                 '[pool]\nrotation_mode = "cycle"\nrotation_interval_days = 15\n\n'
                 '[economy]\nstreak_cycle_days = 15\nstreak_cycle_reward = 1200\n\n'
-                '[preview]\ncompress_media = true\n',
+                '[preview]\nproviders = ["netease"]\nnetease_cookie = "MUSIC_U=x"\n'
+                'compress_media = true\n',
                 encoding='utf-8',
             )
             summary = sync_toml_config(path, defaults, '1.3.6')
@@ -138,13 +140,21 @@ class ConfigSyncTests(unittest.TestCase):
             import tomllib
             data = tomllib.loads(path.read_text(encoding='utf-8'))
             self.assertEqual(data['plugin']['config_version'], '1.3.6')
-            self.assertEqual(data['pool']['rotation_mode'], 'official')
+            # 数值调整生效；管理员、音源、Cookie 原样保留。
             self.assertEqual(data['pool']['rotation_interval_days'], 30)
+            self.assertEqual(data['pool']['rotation_mode'], 'cycle')
             self.assertEqual(data['economy']['streak_cycle_days'], 30)
             self.assertEqual(data['economy']['streak_cycle_reward'], 2400)
             self.assertEqual(data['preview']['compress_media'], 'full')
             self.assertEqual(data['preview']['half_bitrate_kbps'], 64)
-            self.assertIn('task.ultimate_reward', summary['added'])
+            self.assertEqual(data['preview']['providers'], ['netease'])
+            self.assertEqual(data['preview']['netease_cookie'], 'MUSIC_U=x')
+            self.assertEqual(data['admin']['admin_ids'], [123456789])
+            # 非数值键不会被补写，也不会新建分组。
+            self.assertNotIn('task', data)
+            self.assertNotIn('assets', data)
+            self.assertFalse([item for item in summary['added']
+                              if item.startswith(('admin.', 'preview.providers'))])
             again = sync_toml_config(path, defaults, '1.3.6')
             self.assertFalse(again['changed'])
 
@@ -162,18 +172,43 @@ class ConfigSyncTests(unittest.TestCase):
             self.assertEqual(data['pool']['rotation_mode'], 'cycle')
             self.assertEqual(data['pool']['rotation_interval_days'], 20)
 
-    def test_json_sync_merges_missing_keys(self):
+    def test_official_user_keeps_interval(self):
+        defaults = OngekiGachaPluginConfig().model_dump()
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'config.toml'
+            path.write_text(
+                '[plugin]\nconfig_version = "1.3.5"\n\n'
+                '[pool]\nrotation_mode = "official"\nrotation_interval_days = 15\n',
+                encoding='utf-8',
+            )
+            sync_toml_config(path, defaults, '1.3.6')
+            import tomllib
+            data = tomllib.loads(path.read_text(encoding='utf-8'))
+            self.assertEqual(data['pool']['rotation_mode'], 'official')
+            self.assertEqual(data['pool']['rotation_interval_days'], 15)
+
+    def test_json_sync_only_touches_numbers(self):
         defaults = OngekiGachaPluginConfig().model_dump()
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / 'config.json'
             path.write_text(json.dumps({'plugin': {'config_version': '1.3.5'},
-                                        'preview': {'compress_media': True}}), encoding='utf-8')
+                                        'admin': {'admin_ids': ['888']},
+                                        'preview': {'compress_media': True,
+                                                    'providers': ['netease'],
+                                                    'netease_cookie': 'MUSIC_U=y'}}),
+                            encoding='utf-8')
             summary = sync_json_config(path, defaults, '1.3.6')
             self.assertTrue(summary['changed'])
             data = json.loads(path.read_text(encoding='utf-8'))
             self.assertEqual(data['plugin']['config_version'], '1.3.6')
             self.assertEqual(data['preview']['compress_media'], 'full')
-            self.assertIn('rotation_mode', data['pool'])
+            self.assertEqual(data['preview']['providers'], ['netease'])
+            self.assertEqual(data['preview']['netease_cookie'], 'MUSIC_U=y')
+            self.assertEqual(data['admin']['admin_ids'], ['888'])
+            self.assertEqual(data['preview']['half_bitrate_kbps'], 64)
+            # 未新建 pool / growth 等分组。
+            self.assertNotIn('pool', data)
+            self.assertNotIn('growth', data)
 
     def test_json_sync_accepts_and_preserves_utf8_bom(self):
         # AstrBot 写出的 JSON 带 UTF-8 BOM，同步不能因此失败或丢掉 BOM。
