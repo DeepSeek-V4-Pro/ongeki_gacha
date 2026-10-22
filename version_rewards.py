@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 # 与 _manifest.json / metadata.yaml / config_model 的 plugin.config_version 同步。
-PLUGIN_VERSION = "1.3.6"
+PLUGIN_VERSION = "1.3.7"
 
 ITEM_LABELS = {
     "bloom_ticket": "解花券",

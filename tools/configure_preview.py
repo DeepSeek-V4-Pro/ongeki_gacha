@@ -11,9 +11,9 @@ Meting-API 地址，测试连接后写回配置并备份原文件。也支持非
 例如：
 
     python tools/configure_preview.py --provider netease_api \
-        --netease-api-url http://127.0.0.1:3000 --netease-cookie "MUSIC_U=..." --yes
+        --netease-api-url https://music-api.example.com --netease-cookie "MUSIC_U=..." --yes
 
-注意：Cookie 是敏感信息，只会写入本机配置文件，不要提交到仓库。
+注意：Cookie 是敏感信息，只会写入本地配置文件，不要提交到仓库。
 """
 
 from __future__ import annotations
@@ -501,15 +501,15 @@ def interactive(values: dict[str, Any], path: Path | None) -> dict[str, Any]:
         if choice == "0":
             return values
         if choice == "1":
-            url = _prompt("接口地址，例如 http://127.0.0.1:3000",
-                          str(values.get("netease_api_url") or "http://127.0.0.1:3000"))
+            url = _prompt("接口地址，例如 https://music-api.example.com",
+                          str(values.get("netease_api_url") or "https://music-api.example.com"))
             cookie = _prompt("网易云 Cookie", str(values.get("netease_cookie") or ""), secret=True)
             values["netease_api_url"] = url
             values["netease_cookie"] = cookie
             _add_providers(values, ["netease_api", "netease"])
         elif choice == "2":
-            url = _prompt("Meting 完整端点，例如 http://127.0.0.1:3001/api",
-                          str(values.get("meting_api_url") or "http://127.0.0.1:3001/api"))
+            url = _prompt("Meting 完整端点，例如 https://meting-api.example.com/api",
+                          str(values.get("meting_api_url") or "https://meting-api.example.com/api"))
             print("平台：1 QQ音乐  2 酷狗  3 酷我  4 网易云  5 全部")
             platform = input("请选择 [5]: ").strip() or "5"
             values["meting_api_url"] = url
@@ -674,7 +674,7 @@ def main(argv: list[str] | None = None) -> int:
         print("AstrBot 若正打开 WebUI 配置页，请先刷新或关闭，避免旧值覆盖本次写入。")
     print("然后发送 /曲目预览 音击 怨撃 验证；若仍失败，先看插件日志中的音源错误。")
     if values.get("netease_cookie"):
-        print("提示：Cookie 已写入本机配置，请勿把配置文件提交到公开仓库。")
+        print("提示：Cookie 已写入本地配置，请勿把配置文件提交到公开仓库。")
     return 0
 
 

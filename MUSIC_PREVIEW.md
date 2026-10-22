@@ -11,10 +11,10 @@
 
 歌手填写游戏曲库中的原始名称。先匹配本地曲库的曲名，再让音源返回曲名、完整歌手阵容与版本一致的结果。
 曲名匹配会忽略大小写、全半角、标点、空白与常见中日异体字，例如「怨擊」「怨击」都能找到「怨撃」；不会猜测中英译名、艺名、混音或现场版。
-歌手核对仍要求音源阵容与游戏署名一致，但允许用署名里的 CV 名匹配，例如「歌：星咲 あかり(CV：赤尾 ひかる)」可以用「赤尾ひかる」检索；音源多出的歌手会被拒绝。
+歌手核对仍要求音源阵容与游戏署名一致，但允许用署名里的 CV 名匹配，例如「歌：星咲 あかり(CV：赤尾 ひかる)」可以用「赤尾ひかる」检索；音源多出的歌手会被拒绝。署名只写组合名（如「歌：オンゲキシューターズ」）时音源只会列出成员 CV，无法逐人核对，这类署名按「无法核对」放行（1.3.7 起），曲名仍需精确匹配。
 上述命令是语法示例，不保证对应歌曲在音源中可用。
 同名多版本一定先发图片列表；序号只对发起者和当前会话有效，60秒到期自动失效，重启也会取消。
-曲绘来自所选游戏条目；缺少曲绘、图片下载/发送失败时，手动命令停止并报错，不会换用音源的唱片封面。
+曲绘来自所选游戏条目；缺少曲绘、图片下载/发送失败时，手动命令停止并报错，不会换用音源的唱片封面。舞萌 / 中二曲绘增加备用图片地址，首个地址返回无效图片时会自动重试（1.3.7 起）。
 只有 LU 或特殊谱面、没有可计分普通谱的曲目仍保留在预览曲库供搜索，但不会进入随机任务。
 
 终极任务自动语音直接使用已经抽到的歌曲和歌手，不弹版本列表；任务接取成功后在数据库锁外处理。
@@ -35,12 +35,12 @@ MaiBot 写回插件目录的 `config.toml`；AstrBot 自动查找 `data/config/a
 
 ```powershell
 python tools/configure_preview.py --provider netease_api `
-  --netease-api-url http://127.0.0.1:3000 --netease-cookie "MUSIC_U=..." --yes
+  --netease-api-url https://music-api.example.com --netease-cookie "MUSIC_U=..." --yes
 python tools/configure_preview.py --provider meting `
-  --meting-api-url http://127.0.0.1:3001/api --yes
+  --meting-api-url https://meting-api.example.com/api --yes
 ```
 
-写入后重载插件，再发送 `/曲目预览 音击 怨撃` 验证。Cookie 只应保存在本机配置，不要提交到仓库。
+写入后重载插件，再发送 `/曲目预览 音击 怨撃` 验证。Cookie 只应保存在本地配置，不要提交到仓库。
 
 ## 音源与登录
 
@@ -61,7 +61,7 @@ python tools/configure_preview.py --provider meting `
 ### 网易云登录接口
 
 运行 [NeteaseCloudMusicApiEnhanced](https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced)，将服务地址填入
-`netease_api_url`（例如 `http://127.0.0.1:3000`，不要附加 `/cloudsearch`）。
+`netease_api_url`（例如 `https://music-api.example.com`，不要附加 `/cloudsearch`）。
 把自己的网易云 Cookie 填入 `netease_cookie`；留空则使用服务端登录态。
 Cookie 仅放在发往这个明确配置的服务的 POST 正文中，不带到公共备用源或音频下载地址；该请求不跟随重定向。
 请只填写自己管理的服务地址，远程服务使用 HTTPS；配置含 Cookie 时不要公开分享配置文件。
@@ -74,7 +74,7 @@ Cookie 仅放在发往这个明确配置的服务的 POST 正文中，不带到�
 ### 多平台兜底
 
 运行 [metowolf/Meting-API](https://github.com/metowolf/Meting-API)，在 `meting_api_url` 填完整 API 端点，
-例如 `http://127.0.0.1:3001/api`。设置服务端 `METING_URL` 使搜索返回的音频链接与配置端点保持同一源（协议、域名、端口）。
+例如 `https://meting-api.example.com/api`。设置服务端 `METING_URL` 使搜索返回的音频链接与配置端点保持同一源（协议、域名、端口）。
 各平台 Cookie 在该服务的环境变量或 `cookie/tencent`、`cookie/kugou`、`cookie/kuwo`、`cookie/netease` 文件配置，
 具体以 [Meting-API 文档](https://github.com/metowolf/Meting-API/blob/master/README.md) 为准。
 Meting 标准协议不接受客户端传入各平台 Cookie，因此插件不提供无效的 `qq_cookie` 一类字段。

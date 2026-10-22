@@ -62,7 +62,7 @@ def main(output: Path, source: Path):
     (output/'metrics.json').write_text(json.dumps({'metrics':metrics,'notes':[
         '真实卡面和真实曲名谱面；持有量、余额、任务ID为固定展示样本，不是用户记录。',
         '旧版没有好感页面，因此不伪造旧好感对照。',
-        '仅记录本机首次渲染时间与体积；部署机器、峰值内存和QQ压缩仍待验证。']},ensure_ascii=False,indent=2),encoding='utf8')
+        '仅记录首次渲染时间与体积；部署环境、峰值内存和QQ压缩仍待验证。']},ensure_ascii=False,indent=2),encoding='utf8')
     print(output/'contact_sheet.png')
 
 

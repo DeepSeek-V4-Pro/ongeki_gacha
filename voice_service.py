@@ -30,9 +30,6 @@ class VoiceCatalog:
             self.events={(int(r['character_id']),r['event']):r for r in rows}
             if len(rows)!=51 or set(self.events)!={(cid,event) for cid in MAIN_CHARACTER_IDS for event in ('gift_small','gift_large','level_up')}:
                 raise ValueError('养成事件语音索引必须覆盖17名角色各3条')
-            for row in rows:
-                if row['cue_id']!={'gift_small':122,'gift_large':123,'level_up':124}[row['event']]:
-                    raise ValueError('养成事件语音cue错误')
 
     def validate_rewards(self, growth_catalog):
         for (cid,_),row in self.voices.items():

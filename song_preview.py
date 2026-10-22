@@ -150,6 +150,27 @@ _ARTIST_GENERIC = {"曲", "歌", "cv", "vo", "vocal", "arr", "arrange", "lyrics"
 _LATIN_LETTER = re.compile(r"[A-Za-z]")
 _CJK_LETTER = re.compile(r"[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]")
 
+# 署名只写组合名、不写成员名的曲目（音源只会列出成员 CV）：无法逐人核对。
+_UNIT_ONLY_CREDITS = (
+    "オンゲキシューターズ",
+    "3年生シューターズ",
+    "leafシューターズ",
+    "fireシューターズ",
+    "aquaシューターズ",
+    "ぱらすと！",
+    "いちげきしゅーたーず！",
+    "triumtone",
+    "⊿triedge",
+)
+
+
+def _unit_only_credit(signature: str) -> bool:
+    """判断署名是否只写了组合名；写了 CV 的署名仍按逐人核对处理。"""
+    text = normalized(signature)
+    if "cv" in text:
+        return False
+    return any(unit in text for unit in _UNIT_ONLY_CREDITS)
+
 
 def _artist_fragments(value: str) -> list[str]:
     """把“曲：…／歌：…（CV：…）”一类署名拆成可比较的片段。"""
@@ -239,6 +260,10 @@ def artist_rank(expected: str, artists: tuple[str, ...]) -> int:
     keys = [_artist_key(name) for name in names]
     if any(_fragment_contains(fragment, key) for fragment in fragments for key in keys):
         return 3
+    # 组合名署名（「歌：オンゲキシューターズ」）没有成员名可核对，按无法核对处理，
+    # 与「罗马字对日文名」同样放宽；仍要求曲名精确匹配，写错阵容的其他歌手不受影响。
+    if _unit_only_credit(signature):
+        return 1
     latin, cjk = _has_latin(signature), _has_cjk(signature)
     for name in names:
         if (_has_latin(name) and latin) or (_has_cjk(name) and cjk):
@@ -336,6 +361,17 @@ class _PublicRedirect(urllib.request.HTTPRedirectHandler):
         newurl = https_media_url(newurl) if not self.trusted_base or origin(newurl) != origin(self.trusted_base) else newurl
         _public_url(newurl, self.allowed_hosts, self.trusted_base)
         return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _png_cover_fallback(url: str) -> str:
+    """把 lxns 的 webp 曲绘地址换成同图 PNG 地址；空串表示没有可用的回退。"""
+    parsed = urllib.parse.urlsplit(url)
+    if parsed.hostname != 'assets.lxns.net':
+        return ''
+    path = parsed.path
+    if path.endswith('.png!webp'):
+        path = path[:-len('!webp')]
+    return urllib.parse.urlunsplit(parsed._replace(netloc='assets2.lxns.net', path=path))
 
 
 def download(url, *, limit, timeout, allowed_hosts=(), trusted_base='', form=None):
@@ -894,18 +930,31 @@ class SongPreviewService:
         try:
             payload = download(song.cover_url, limit=8 * 1024 * 1024,
                                timeout=self.config.request_timeout_seconds)
-            with Image.open(BytesIO(payload)) as image:
-                if image.width * image.height > 16000000:
-                    raise PreviewError("曲绘尺寸超过限制")
-                image.load()
-                if voice_mode(self.config.compress_media) == 'none':
-                    # 校验后原样发送，不缩放、不重新编码，也不添加文字或边框。
-                    return payload
-                return compress_cover(image, payload)
+            try:
+                return self._cover_from_bytes(payload)
+            except (OSError, ValueError, Image.DecompressionBombError):
+                # 主图片地址偶尔返回无效内容；同一张图在备用地址上是 PNG，
+                # 换过去再试一次，不做无限重试。
+                fallback = _png_cover_fallback(song.cover_url)
+                if not fallback or fallback == song.cover_url:
+                    raise
+                payload = download(fallback, limit=8 * 1024 * 1024,
+                                   timeout=self.config.request_timeout_seconds)
+                return self._cover_from_bytes(payload)
         except PreviewError as exc:
             raise PreviewError(f'曲绘获取失败：{exc}') from exc
         except (OSError, ValueError, Image.DecompressionBombError) as exc:
             raise PreviewError('曲绘解码或压缩失败：接口返回的不是有效图片') from exc
+
+    def _cover_from_bytes(self, payload: bytes) -> bytes:
+        with Image.open(BytesIO(payload)) as image:
+            if image.width * image.height > 16000000:
+                raise PreviewError("曲绘尺寸超过限制")
+            image.load()
+            if voice_mode(self.config.compress_media) == 'none':
+                # 校验后原样发送，不缩放、不重新编码，也不添加文字或边框。
+                return payload
+            return compress_cover(image, payload)
 
     def cleanup(self):
         files = []

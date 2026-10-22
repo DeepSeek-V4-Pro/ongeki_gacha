@@ -228,6 +228,21 @@ class PoolSelectState:
 
 
 @dataclass(frozen=True)
+class MangaDrawReceipt:
+    """A user's no-repeat manga draw result."""
+
+    manga_id: str
+    cycle: int
+    sent_count: int
+    total: int
+    reset: bool = False
+
+    @property
+    def remaining(self) -> int:
+        return max(self.total - self.sent_count, 0)
+
+
+@dataclass(frozen=True)
 class SelectClaimReceipt:
     """兑换天井选择卡结果。"""
 
@@ -464,6 +479,24 @@ class GachaDatabase:
                 PRIMARY KEY(qq_id, version),
                 FOREIGN KEY(qq_id) REFERENCES players(qq_id)
             );
+
+            CREATE TABLE IF NOT EXISTS manga_progress (
+                qq_id      TEXT PRIMARY KEY,
+                cycle      INTEGER NOT NULL DEFAULT 1,
+                updated_at TEXT NOT NULL,
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS manga_draws (
+                qq_id     TEXT NOT NULL,
+                cycle     INTEGER NOT NULL,
+                manga_id  TEXT NOT NULL,
+                drawn_at  TEXT NOT NULL,
+                PRIMARY KEY(qq_id, cycle, manga_id),
+                FOREIGN KEY(qq_id) REFERENCES players(qq_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_manga_draws_user_cycle
+                ON manga_draws(qq_id, cycle);
             """
         )
         migrate_task_identity(conn)
@@ -2841,6 +2874,91 @@ class GachaDatabase:
                     updated_at = excluded.updated_at
                 """,
                 (key, str(value or ""), now),
+            )
+
+    def draw_manga(self, qq_id: str, manga_ids: tuple[str, ...]) -> MangaDrawReceipt:
+        """Draw one manga not yet sent to this user in the current cycle."""
+        ids = tuple(dict.fromkeys(str(value) for value in manga_ids if str(value)))
+        if not ids:
+            raise ValueError("漫画目录为空")
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            conn = self._conn
+            conn.execute("BEGIN IMMEDIATE")
+            try:
+                self._ensure_player(conn, qq_id)
+                row = conn.execute(
+                    "SELECT cycle FROM manga_progress WHERE qq_id = ?",
+                    (qq_id,),
+                ).fetchone()
+                if row is None:
+                    cycle = 1
+                    conn.execute(
+                        "INSERT INTO manga_progress(qq_id, cycle, updated_at) "
+                        "VALUES(?, ?, ?)",
+                        (qq_id, cycle, self._now_iso()),
+                    )
+                else:
+                    cycle = int(row["cycle"])
+                sent = {
+                    str(item["manga_id"])
+                    for item in conn.execute(
+                        "SELECT manga_id FROM manga_draws "
+                        "WHERE qq_id = ? AND cycle = ?",
+                        (qq_id, cycle),
+                    ).fetchall()
+                }
+                available = [manga_id for manga_id in ids if manga_id not in sent]
+                reset = False
+                if not available:
+                    cycle += 1
+                    reset = True
+                    available = list(ids)
+                    conn.execute(
+                        "DELETE FROM manga_draws WHERE qq_id = ? AND cycle < ?",
+                        (qq_id, cycle),
+                    )
+                chosen = self._random.choice(available)
+                now = self._now_iso()
+                conn.execute(
+                    "INSERT INTO manga_draws(qq_id, cycle, manga_id, drawn_at) "
+                    "VALUES(?, ?, ?, ?)",
+                    (qq_id, cycle, chosen, now),
+                )
+                conn.execute(
+                    "UPDATE manga_progress SET cycle = ?, updated_at = ? "
+                    "WHERE qq_id = ?",
+                    (cycle, now, qq_id),
+                )
+                sent_count = int(
+                    conn.execute(
+                        "SELECT COUNT(*) FROM manga_draws "
+                        "WHERE qq_id = ? AND cycle = ?",
+                        (qq_id, cycle),
+                    ).fetchone()[0]
+                )
+                conn.execute("COMMIT")
+                return MangaDrawReceipt(
+                    manga_id=chosen,
+                    cycle=cycle,
+                    sent_count=sent_count,
+                    total=len(ids),
+                    reset=reset,
+                )
+            except BaseException:
+                conn.execute("ROLLBACK")
+                raise
+
+    def undo_manga_draw(self, qq_id: str, cycle: int, manga_id: str) -> None:
+        """Return a failed send to the unsent pool without changing the cycle."""
+        with self._lock:
+            if self._conn is None:
+                raise RuntimeError("数据库尚未打开")
+            self._conn.execute(
+                "DELETE FROM manga_draws "
+                "WHERE qq_id = ? AND cycle = ? AND manga_id = ?",
+                (qq_id, int(cycle), str(manga_id)),
             )
 
     def add_timed_event(

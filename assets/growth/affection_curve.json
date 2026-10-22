@@ -10001,14 +10001,5 @@
     144808200,
     144823800,
     144839400
-  ],
-  "source_sha256": {
-    "IntimateLevelPointTableRecord.json": "a258adcccc49a9e1d5241d9ec4d3935104298c3fdf3dd5c89be5d2d0008ef36d",
-    "IntimateLevelScaleTableRecord.json": "124df4ac558cb4382bec397bfa69d587a07f669b57a45eb9bada8bafb24c43c4",
-    "FavoriteCharaTableRecord.json": "cf01de7bb0fa2869f405567024a37b0ce4346dd52edf95e889cb20e86dcc6f8f",
-    "character_affection.json": "d2ddfc2acae054e3692d8539214d77cf37fd270d654b2e096c46172efcf5a7d8",
-    "chara.json": "018fa7838c8730d8c6c16020e684a99ee42040ac651bae899944f4a993372fc0",
-    "card_info_merged.json": "01a964f9b68b4a45c96f1c2bcf8690d4b29d1d9daacb674ca66fd800e2f8f10c",
-    "gacha_pools.json": "2377604f8679862b31c45c6cb015d5e54ea4cecbaaf2c6ef5ad2af3a75d8737f"
-  }
+  ]
 }

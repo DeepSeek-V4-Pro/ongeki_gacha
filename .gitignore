@@ -28,6 +28,8 @@ assets/growth/**/*.jpg
 assets/growth/**/*.wav
 assets/growth/**/*.mp3
 assets/growth/**/*.ogg
+assets/growth/*.backup.*
+assets/growth/build_report.json
 
 # 本地预览、检查日志和发布构建产物
 /artifacts/

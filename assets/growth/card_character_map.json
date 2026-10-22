@@ -23924,6 +23924,42 @@
       "image_present": true
     },
     {
+      "card_id": 104310,
+      "character_id": 1003,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104315,
+      "character_id": 1004,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104320,
+      "character_id": 1005,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104325,
+      "character_id": 1004,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
       "card_id": 104335,
       "character_id": 6001,
       "affection_enabled": false,
@@ -24209,6 +24245,1329 @@
       "bloom_policy": "material_only",
       "source": "card_info_merged.json:charaId",
       "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104535,
+      "character_id": 46359,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104540,
+      "character_id": 46360,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104545,
+      "character_id": 46361,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104550,
+      "character_id": 46362,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104555,
+      "character_id": 46364,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104560,
+      "character_id": 46363,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104565,
+      "character_id": 46365,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104570,
+      "character_id": 46359,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104575,
+      "character_id": 46361,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104580,
+      "character_id": 46359,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104585,
+      "character_id": 46360,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104590,
+      "character_id": 46366,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104595,
+      "character_id": 46366,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104600,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104605,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104610,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104615,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104620,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104625,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104630,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104635,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104640,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104690,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104695,
+      "character_id": 25001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104705,
+      "character_id": 1000,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104710,
+      "character_id": 1001,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104715,
+      "character_id": 1002,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104720,
+      "character_id": 1000,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104725,
+      "character_id": 1000,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104735,
+      "character_id": 46367,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104740,
+      "character_id": 46368,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104745,
+      "character_id": 46369,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104750,
+      "character_id": 46367,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104755,
+      "character_id": 46368,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104760,
+      "character_id": 46369,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104765,
+      "character_id": 46367,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104770,
+      "character_id": 46368,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104775,
+      "character_id": 46369,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104780,
+      "character_id": 46369,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104785,
+      "character_id": 46368,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104790,
+      "character_id": 46367,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104810,
+      "character_id": 1013,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104830,
+      "character_id": 46370,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104831,
+      "character_id": 46371,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104832,
+      "character_id": 46372,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104833,
+      "character_id": 46373,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104834,
+      "character_id": 46374,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104835,
+      "character_id": 46375,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104836,
+      "character_id": 46376,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104837,
+      "character_id": 46377,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104838,
+      "character_id": 46378,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104839,
+      "character_id": 46379,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104840,
+      "character_id": 46380,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104841,
+      "character_id": 46381,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104842,
+      "character_id": 46382,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104845,
+      "character_id": 46370,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104850,
+      "character_id": 46371,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104855,
+      "character_id": 46372,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104860,
+      "character_id": 46373,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104865,
+      "character_id": 46374,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104870,
+      "character_id": 46375,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104875,
+      "character_id": 46376,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104880,
+      "character_id": 46377,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104885,
+      "character_id": 46378,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104890,
+      "character_id": 46379,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104895,
+      "character_id": 46380,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104900,
+      "character_id": 46381,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104905,
+      "character_id": 46382,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104910,
+      "character_id": 46370,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104915,
+      "character_id": 46370,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104920,
+      "character_id": 46373,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 104950,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104955,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104960,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104965,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104970,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104975,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104980,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104985,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104990,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 104995,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105000,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105005,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105010,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105015,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105020,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105025,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105030,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105035,
+      "character_id": 34001,
+      "affection_enabled": false,
+      "bloom_policy": "material_only",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105050,
+      "character_id": 1006,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105055,
+      "character_id": 1007,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105060,
+      "character_id": 1009,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105065,
+      "character_id": 1010,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105070,
+      "character_id": 1009,
+      "affection_enabled": true,
+      "bloom_policy": "main_affection",
+      "source": "card_info_merged.json:charaId",
+      "reason": "",
+      "image_present": true
+    },
+    {
+      "card_id": 105095,
+      "character_id": 46383,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105100,
+      "character_id": 46384,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105105,
+      "character_id": 46385,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105106,
+      "character_id": 46386,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105107,
+      "character_id": 46387,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105108,
+      "character_id": 46388,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105109,
+      "character_id": 46389,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105110,
+      "character_id": 46383,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105115,
+      "character_id": 46383,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105120,
+      "character_id": 46384,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105125,
+      "character_id": 46384,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105130,
+      "character_id": 46385,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105135,
+      "character_id": 46386,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105140,
+      "character_id": 46386,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105145,
+      "character_id": 46387,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105150,
+      "character_id": 46388,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105155,
+      "character_id": 46389,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105160,
+      "character_id": 46383,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105165,
+      "character_id": 46383,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105166,
+      "character_id": 46388,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105170,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105175,
+      "character_id": 46391,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105180,
+      "character_id": 46392,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105185,
+      "character_id": 46393,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105190,
+      "character_id": 46394,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105195,
+      "character_id": 46395,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105200,
+      "character_id": 46396,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105205,
+      "character_id": 46397,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105210,
+      "character_id": 46398,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105215,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105220,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105225,
+      "character_id": 46391,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105230,
+      "character_id": 46391,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105235,
+      "character_id": 46392,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105240,
+      "character_id": 46392,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105245,
+      "character_id": 46393,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105250,
+      "character_id": 46393,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105255,
+      "character_id": 46394,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105260,
+      "character_id": 46394,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105265,
+      "character_id": 46395,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105270,
+      "character_id": 46395,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105275,
+      "character_id": 46396,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105280,
+      "character_id": 46396,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105285,
+      "character_id": 46397,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105290,
+      "character_id": 46397,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105295,
+      "character_id": 46398,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105300,
+      "character_id": 46398,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105305,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105310,
+      "character_id": 46397,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105315,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105320,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105325,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
+      "image_present": true
+    },
+    {
+      "card_id": 105330,
+      "character_id": 46390,
+      "affection_enabled": false,
+      "bloom_policy": "blocked_unmapped",
+      "source": "card_info_merged.json:charaId",
+      "reason": "missing_or_ambiguous_character",
       "image_present": true
     }
   ]

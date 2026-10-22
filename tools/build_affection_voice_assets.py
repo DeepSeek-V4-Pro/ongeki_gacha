@@ -1,6 +1,6 @@
 """打包170条档案语音到插件资源，保留索引与散列。
 
-运行：python -m ongeki_gacha.tools.build_affection_voice_assets --source output/character_affection/voice_extracted
+运行：python -m ongeki_gacha.tools.build_affection_voice_assets --source <本地语音目录>
 """
 from __future__ import annotations
 

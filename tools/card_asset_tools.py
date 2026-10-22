@@ -382,7 +382,7 @@ def find_font(
 def draw_card_name(canvas: Image.Image, card: dict[str, Any], font_path: Path | None) -> None:
     """用 Pillow 近似绘制卡名。
 
-    这是本地合成脚本的简化实现，不保证逐像素复刻 RinNET 的前端排版。
+    这是本地合成脚本的简化实现，不保证与游戏原始排版逐像素一致。
     """
 
     nick = str(card.get("nickName") or "").strip()

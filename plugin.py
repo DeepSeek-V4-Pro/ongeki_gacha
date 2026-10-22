@@ -33,6 +33,7 @@ from .growth_commands import GrowthCommandsMixin, request_identity
 from .voice_service import VoiceCatalog, VoiceService
 from .preview_commands import PreviewCommandsMixin
 from .gacha_pools import GachaSchedule, PoolCard, PoolEntry
+from .manga_service import MangaCatalog
 from .gacha_render import GachaRenderer, OVERLAY_FILES, RenderCard
 from .card_reveal import render_card_reveal
 from .catalog_render import (
@@ -90,6 +91,7 @@ class OngekiGachaPlugin(CompensationCommandsMixin, PreviewCommandsMixin, GrowthC
         self._db: GachaDatabase | None = None
         self._growth: GrowthService | None = None
         self._voice: VoiceService | None = None
+        self._manga = MangaCatalog()
         self._renderer: GachaRenderer | None = None
         self._cards_dir: Path | None = None
         self._card_info_path: Path | None = None
@@ -133,6 +135,7 @@ class OngekiGachaPlugin(CompensationCommandsMixin, PreviewCommandsMixin, GrowthC
         self._db = None
         self._growth = None
         self._voice = None
+        self._manga = MangaCatalog()
         self._reward_catalog = None
         self._preview_selections.pending.clear()
         if self._cleanup_task is not None:
@@ -684,6 +687,7 @@ class OngekiGachaPlugin(CompensationCommandsMixin, PreviewCommandsMixin, GrowthC
         return (
             "【签到】/签到 /点数 /月卡 /版本补偿 /卡册 <角色> [页] /卡图 <ID>\n"
             "【抽卡】/抽卡 [常驻|池ID] [1|5|11] /概率 /卡池 /天井 /天井列表 /天井池\n"
+            "【互动】/一击 随机发送一张官方一格漫画，按账号一轮内不重复\n"
             "【养成】/伙伴 /陪伴 /好感 /好感奖励 /礼物 /送礼 /养成 /解花 /超解花 /装扮 /角色语音\n"
             "【任务】/曲目预览 [游戏] 曲名 [| 歌手] /接任务 /任务列表 /任务完成 /终极提交\n"
             "【管理】/任务审核 /任务审核列表 /终极审核 /奖励 /任务重置 /任务清理\n"
@@ -870,6 +874,9 @@ class OngekiGachaPlugin(CompensationCommandsMixin, PreviewCommandsMixin, GrowthC
                 f"{self.config.task.task_history_retention_days} 天后自动清理"
             ),
             "管理员可发送 /任务清理 [天数] 立即清理已结束任务，待审核任务不会被删除",
+            "【官方漫画】",
+            "/一击 每次重新读取官网最新漫画列表并发送一张；"
+            "按用户记录本轮已发送项，当前全部条目发送前不重复，集齐后自动开始下一轮",
             "【说明】",
             "签到、任务、周保底与轮替均按国际时间 UTC 计算",
             "以上奖励与周期均可在插件配置中调整，详细说明见 USAGE.md",
@@ -2346,6 +2353,83 @@ class OngekiGachaPlugin(CompensationCommandsMixin, PreviewCommandsMixin, GrowthC
                 return True, text, True
 
         text = f"卡图 {card_id}：{self._card_display_name(card, 24)}"
+        await self._send_text(stream_id, text)
+        return True, text, True
+
+    @Command(
+        "ongeki_manga_hit",
+        description="随机发送一张未重复的官方一格漫画",
+        pattern=r"^/一击\s*$",
+    )
+    async def handle_manga_hit(
+        self,
+        stream_id: str = "",
+        **kwargs: dict[str, Any],
+    ) -> tuple[bool, str, bool]:
+        """Fetch the latest official manga list and send one unsent entry."""
+        user_id = self._user_id(kwargs)
+        if self._db is None:
+            text = "插件未就绪，请稍后重试"
+            await self._send_text(stream_id, text)
+            return True, text, True
+        try:
+            await asyncio.to_thread(self._manga.refresh, force=True)
+        except Exception as exc:
+            if not self._manga.entries:
+                self.ctx.logger.warning("官方漫画列表获取失败: %s", exc)
+                text = "官方漫画列表暂时获取失败，请稍后重试"
+                await self._send_text(stream_id, text)
+                return True, text, True
+            self.ctx.logger.warning("官方漫画刷新失败，使用本次运行缓存: %s", exc)
+
+        receipt = await asyncio.to_thread(
+            self._db.draw_manga,
+            user_id,
+            self._manga.ids,
+        )
+        entry = self._manga.by_id.get(receipt.manga_id)
+        if entry is None:
+            await asyncio.to_thread(
+                self._db.undo_manga_draw,
+                user_id,
+                receipt.cycle,
+                receipt.manga_id,
+            )
+            text = "漫画目录刚刚发生变化，请重试"
+            await self._send_text(stream_id, text)
+            return True, text, True
+        try:
+            image = await asyncio.to_thread(self._manga.download, entry)
+            image_base64 = base64.b64encode(image).decode("ascii")
+            sent = await self.ctx.send.image(image_base64, stream_id)
+            if sent is False or (
+                isinstance(sent, dict)
+                and (sent.get("sent") is False or sent.get("success") is False)
+            ):
+                raise RuntimeError("图片发送失败")
+        except Exception as exc:
+            await asyncio.to_thread(
+                self._db.undo_manga_draw,
+                user_id,
+                receipt.cycle,
+                receipt.manga_id,
+            )
+            self.ctx.logger.warning("官方漫画发送失败: %s", exc)
+            text = "漫画图片下载或发送失败，本次不计入已发送；请稍后重试"
+            await self._send_text(stream_id, text)
+            return True, text, True
+
+        lines = []
+        if receipt.reset:
+            lines.append(f"上一轮已全部发送，开始第 {receipt.cycle} 轮")
+        title = f"一击｜{entry.name}"
+        if entry.title:
+            title += f"「{entry.title}」"
+        lines.append(title)
+        lines.append(
+            f"本轮 {receipt.sent_count}/{receipt.total}｜剩余 {receipt.remaining}"
+        )
+        text = "\n".join(lines)
         await self._send_text(stream_id, text)
         return True, text, True
 

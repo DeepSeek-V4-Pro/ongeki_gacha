@@ -16,7 +16,7 @@ class PluginSectionConfig(PluginConfigBase):
     __ui_order__ = 0
 
     enabled: bool = Field(default=True, description="是否启用插件")
-    config_version: str = Field(default="1.3.6", description="配置版本")
+    config_version: str = Field(default="1.3.7", description="配置版本")
 
 
 class AssetsConfig(PluginConfigBase):
@@ -110,7 +110,7 @@ class EconomyConfig(PluginConfigBase):
         default=0.05,
         ge=0.0,
         le=1.0,
-        description="每日签到随机获得非抽卡卡的概率（0～1）",
+        description="每日签到随机获得一张奖励卡的概率（0～1）",
     )
     savings_threshold_1: int = Field(default=1000, ge=0, description="囤点奖励第 1 档门槛")
     savings_bonus_1: int = Field(default=100, ge=0, description="囤点奖励第 1 档点数")
@@ -427,9 +427,9 @@ class PreviewConfig(PluginConfigBase):
     enabled: bool = Field(default=True, description="启用曲库限定的QQ语音试听")
     automatic_ultimate: bool = Field(default=True, description="终极任务接取后自动试听，失败静默")
     providers: list[str] = Field(default_factory=lambda: ["netease_api", "netease", "meting_tencent", "meting_kugou", "meting_kuwo", "meting_netease", "deezer"], description="按顺序尝试音源；Meting与网易云登录接口需配置地址，Deezer仅提供短试听")
-    netease_api_url: str = Field(default="", description="自建NeteaseCloudMusicApiEnhanced地址，如http://127.0.0.1:3000；留空跳过登录接口")
+    netease_api_url: str = Field(default="", description="自建NeteaseCloudMusicApiEnhanced地址，如https://music-api.example.com；留空跳过登录接口")
     netease_cookie: str = Field(default="", repr=False, description="网易云登录Cookie，仅POST到netease_api_url；留空使用接口服务端登录态")
-    meting_api_url: str = Field(default="", description="自建metowolf/Meting-API完整端点，如http://127.0.0.1:3001/api；各平台Cookie在该服务端配置")
+    meting_api_url: str = Field(default="", description="自建metowolf/Meting-API完整端点，如https://meting-api.example.com/api；各平台Cookie在该服务端配置")
     allow_preview_fallback: bool = Field(default=False, description="全部完整音源失败后是否发送明确标注的短试听片段")
     compress_media: str = Field(
         default="full",

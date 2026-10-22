@@ -4,8 +4,6 @@
     {
       "key": "character_1000",
       "path": "images/character_1000.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001000",
-      "extracted_source": "assets/ui_friendship_bt_001000/UI_Friendship_BT_001000_-8778801116046270025.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -21,8 +19,6 @@
     {
       "key": "character_1001",
       "path": "images/character_1001.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001001",
-      "extracted_source": "assets/ui_friendship_bt_001001/UI_Friendship_BT_001001_-2256928389554078364.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -38,8 +34,6 @@
     {
       "key": "character_1002",
       "path": "images/character_1002.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001002",
-      "extracted_source": "assets/ui_friendship_bt_001002/UI_Friendship_BT_001002_9174852318721100708.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -55,8 +49,6 @@
     {
       "key": "character_1003",
       "path": "images/character_1003.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001003",
-      "extracted_source": "assets/ui_friendship_bt_001003/UI_Friendship_BT_001003_-726910229690834491.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -72,8 +64,6 @@
     {
       "key": "character_1004",
       "path": "images/character_1004.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001004",
-      "extracted_source": "assets/ui_friendship_bt_001004/UI_Friendship_BT_001004_6208122781260953130.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -89,8 +79,6 @@
     {
       "key": "character_1005",
       "path": "images/character_1005.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001005",
-      "extracted_source": "assets/ui_friendship_bt_001005/UI_Friendship_BT_001005_7103983563622022546.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -106,8 +94,6 @@
     {
       "key": "character_1006",
       "path": "images/character_1006.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001006",
-      "extracted_source": "assets/ui_friendship_bt_001006/UI_Friendship_BT_001006_-2693905719318364930.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -123,8 +109,6 @@
     {
       "key": "character_1007",
       "path": "images/character_1007.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001007",
-      "extracted_source": "assets/ui_friendship_bt_001007/UI_Friendship_BT_001007_-6246219426701531056.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -140,8 +124,6 @@
     {
       "key": "character_1008",
       "path": "images/character_1008.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001008",
-      "extracted_source": "assets/ui_friendship_bt_001008/UI_Friendship_BT_001008_8388368622174427986.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -157,8 +139,6 @@
     {
       "key": "character_1009",
       "path": "images/character_1009.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001009",
-      "extracted_source": "assets/ui_friendship_bt_001009/UI_Friendship_BT_001009_4451933087124276966.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -174,8 +154,6 @@
     {
       "key": "character_1010",
       "path": "images/character_1010.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001010",
-      "extracted_source": "assets/ui_friendship_bt_001010/UI_Friendship_BT_001010_3318226025407736332.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -191,8 +169,6 @@
     {
       "key": "character_1011",
       "path": "images/character_1011.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001011",
-      "extracted_source": "assets/ui_friendship_bt_001011/UI_Friendship_BT_001011_-6402205003063393531.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -208,8 +184,6 @@
     {
       "key": "character_1012",
       "path": "images/character_1012.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001012",
-      "extracted_source": "assets/ui_friendship_bt_001012/UI_Friendship_BT_001012_-3989563150771323606.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -225,8 +199,6 @@
     {
       "key": "character_1013",
       "path": "images/character_1013.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001013",
-      "extracted_source": "assets/ui_friendship_bt_001013/UI_Friendship_BT_001013_-6113394584092419418.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -242,8 +214,6 @@
     {
       "key": "character_1014",
       "path": "images/character_1014.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001014",
-      "extracted_source": "assets/ui_friendship_bt_001014/UI_Friendship_BT_001014_-7558944009266652878.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -259,8 +229,6 @@
     {
       "key": "character_1015",
       "path": "images/character_1015.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001015",
-      "extracted_source": "assets/ui_friendship_bt_001015/UI_Friendship_BT_001015_8904517334648715503.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -276,8 +244,6 @@
     {
       "key": "character_1016",
       "path": "images/character_1016.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_friendship_bt_001016",
-      "extracted_source": "assets/ui_friendship_bt_001016/UI_Friendship_BT_001016_-4033667568829259086.png",
       "purpose": "主角色列表与伙伴头像",
       "dimensions": [
         288,
@@ -293,8 +259,6 @@
     {
       "key": "gift_small",
       "path": "images/gift_small.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_intimateup_000001",
-      "extracted_source": "assets/ui_intimateup_000001/UI_IntimateUp_000001_-8935161835606564423.png",
       "purpose": "礼物背包、赠礼回执",
       "dimensions": [
         280,
@@ -310,8 +274,6 @@
     {
       "key": "gift_medium",
       "path": "images/gift_medium.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_intimateup_000002",
-      "extracted_source": "assets/ui_intimateup_000002/UI_IntimateUp_000002_1887258373840327420.png",
       "purpose": "礼物背包、赠礼回执",
       "dimensions": [
         280,
@@ -327,8 +289,6 @@
     {
       "key": "gift_large",
       "path": "images/gift_large.png",
-      "game_source": "mu3_Data/StreamingAssets/assets/ui_intimateup_000003",
-      "extracted_source": "assets/ui_intimateup_000003/UI_IntimateUp_000003_-4158022686891950732.png",
       "purpose": "礼物背包、赠礼回执",
       "dimensions": [
         280,
@@ -769,8 +729,6 @@
     {
       "key": "ui_category",
       "path": "images/ui_category.png",
-      "extracted_source": "ui/sharedassets14/UI_SLC_Cmu_CategoryBase_00_58.png",
-      "game_source": "mu3_Data/sharedassets14.assets",
       "purpose": "原作好感界面组件：栏目、面板、量表、礼物按钮",
       "dimensions": [
         246,
@@ -783,8 +741,6 @@
     {
       "key": "bloom_ticket",
       "path": "images/bloom_ticket.png",
-      "extracted_source": "ui_extra/resources/UI_Item_OpenFlower_Ticket_00_946.png",
-      "game_source": "mu3_Data/resources.assets",
       "purpose": "解花/超解花消耗物品与物品获得图",
       "dimensions": [
         392,
@@ -797,10 +753,11 @@
     {
       "key": "intimate_GaugeBase",
       "path": "images/intimate/GaugeBase.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_942.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表低档心形底图",
-      "dimensions": [424, 410],
+      "dimensions": [
+        424,
+        410
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "c0c262d77c5d2828fb3bc05bf57a4170896a62dc62ce8f79e3419656e1a48633",
@@ -809,10 +766,11 @@
     {
       "key": "intimate_GaugeBase_10",
       "path": "images/intimate/GaugeBase_10.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_10_357.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表10档花环底图",
-      "dimensions": [424, 410],
+      "dimensions": [
+        424,
+        410
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "6681c13ca47e86c2aa685b4ed718afac894806101889c20349b8805445cbeb29",
@@ -821,10 +779,11 @@
     {
       "key": "intimate_GaugeBase_Eff",
       "path": "images/intimate/GaugeBase_Eff.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_Eff_655.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表高档光效叠层",
-      "dimensions": [424, 410],
+      "dimensions": [
+        424,
+        410
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "6e5b1bb89c7df2b14e92cb7249690ab8e9d742148633175c53f34e39d7e67625",
@@ -833,10 +792,11 @@
     {
       "key": "intimate_GaugeBase_Rebirth",
       "path": "images/intimate/GaugeBase_Rebirth.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_Rebirth_732.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表1-9档挡位标",
-      "dimensions": [68, 64],
+      "dimensions": [
+        68,
+        64
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "45b9950d82bf5d68221ffefebdfba62880fba319de851cbc6fda7ba4e673134d",
@@ -845,10 +805,11 @@
     {
       "key": "intimate_GaugeBase_Rebirth_10",
       "path": "images/intimate/GaugeBase_Rebirth_10.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_GaugeBase_Rebirth_10_992.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表1000级后（10档以上）挡位底图",
-      "dimensions": [68, 64],
+      "dimensions": [
+        68,
+        64
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "0684523e683fd9e26b8d234c2b63a8933d60c9fbe695bd1b6f7f15bd618a2df6",
@@ -857,10 +818,11 @@
     {
       "key": "intimate_Gauge_Meter_Pink",
       "path": "images/intimate/Gauge_Meter_Pink.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_Gauge_Meter_Pink_810.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表普通档粉色心形填充",
-      "dimensions": [142, 128],
+      "dimensions": [
+        142,
+        128
+      ],
       "alpha": true,
       "crop": "完整图像；按心形内腔裁切",
       "sha256": "23298f7eb15f1bfa8f5e2810ea385885e304a5300c8292cbe7ed098060f033d8",
@@ -869,10 +831,11 @@
     {
       "key": "intimate_Gauge_Meter_Yellow",
       "path": "images/intimate/Gauge_Meter_Yellow.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_Gauge_Meter_Yellow_939.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表满档黄色心形填充",
-      "dimensions": [142, 128],
+      "dimensions": [
+        142,
+        128
+      ],
       "alpha": true,
       "crop": "完整图像；按心形内腔裁切",
       "sha256": "2eac62b8a1d0f87a359ee29e33319227b94b02d766c2a14ed845e5b9569b5abc",
@@ -881,10 +844,11 @@
     {
       "key": "intimate_Gauge_Finish",
       "path": "images/intimate/Gauge_Finish.png",
-      "extracted_source": "ui_extra/sharedassets14/UI_SLC_Cmu_Friendship_Gauge_Finish_54.png",
-      "game_source": "mu3_Data/sharedassets14.assets",
       "purpose": "好感上限到达横幅",
-      "dimensions": [246, 46],
+      "dimensions": [
+        246,
+        46
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "86cf70c6329a341da36e1ca1762697ccc97a7a2ca4144ab91c34716f4f5be825",
@@ -893,10 +857,11 @@
     {
       "key": "intimate_Gauge_NameBase",
       "path": "images/intimate/Gauge_NameBase.png",
-      "extracted_source": "ui_extra/sharedassets14/UI_SLC_Cmu_Friendship_Gauge_NameBase_46.png",
-      "game_source": "mu3_Data/sharedassets14.assets",
       "purpose": "好感量表名称底板",
-      "dimensions": [240, 28],
+      "dimensions": [
+        240,
+        28
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "f79f2d0efc5ad86460997d40614403578adc29d48b33c164cf3ee336ae28e0b5",
@@ -905,10 +870,11 @@
     {
       "key": "intimate_TextLevel",
       "path": "images/intimate/TextLevel.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_SLC_Cmu_Friendship_TextLevel_912.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表等级文字",
-      "dimensions": [240, 124],
+      "dimensions": [
+        240,
+        124
+      ],
       "alpha": true,
       "crop": "完整图像",
       "sha256": "1f6be115aea87a333c68bbce0b12ad40b886cf555a652ffedfd3cd41d8de8425",
@@ -917,10 +883,11 @@
     {
       "key": "intimate_24pt_Friendship_Level",
       "path": "images/intimate/24pt_Friendship_Level.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_NUM_24pt_Friendship_Level_816.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表小号数字图集",
-      "dimensions": [110, 118],
+      "dimensions": [
+        110,
+        118
+      ],
       "alpha": true,
       "crop": "完整图集",
       "sha256": "59e2543497e817085259396f05933bc4e10f9ab5cb1385e9ef2297024ec54dc1",
@@ -929,10 +896,11 @@
     {
       "key": "intimate_57pt_Friendship_Level",
       "path": "images/intimate/57pt_Friendship_Level.png",
-      "extracted_source": "ui_extra/sharedassets11/UI_NUM_57pt_Friendship_Level_816.png",
-      "game_source": "mu3_Data/sharedassets11.assets",
       "purpose": "好感量表大号数字图集",
-      "dimensions": [256, 276],
+      "dimensions": [
+        256,
+        276
+      ],
       "alpha": true,
       "crop": "完整图集",
       "sha256": "5de6a1964eb4f5dea7112e0870f7bc064ee41deb14644e749be97161d5a40c22",
@@ -941,9 +909,11 @@
     {
       "key": "card_reveal_rare_N",
       "path": "images/card_reveal/rare_N.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_00_N.webp",
       "purpose": "卡牌揭示：N 稀有度 Logo",
-      "dimensions": [208, 118],
+      "dimensions": [
+        208,
+        118
+      ],
       "alpha": true,
       "sha256": "aa048e0aa55edcb10f7e4dac8bd420de307b6fdbee74d0650dd6b716eb61a417",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -951,9 +921,11 @@
     {
       "key": "card_reveal_rare_R",
       "path": "images/card_reveal/rare_R.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_01_R.webp",
       "purpose": "卡牌揭示：R 稀有度 Logo",
-      "dimensions": [208, 118],
+      "dimensions": [
+        208,
+        118
+      ],
       "alpha": true,
       "sha256": "5729c3549fab498cd87d66e2076480170e20ae60344b5d64024058cff3a25aeb",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -961,9 +933,11 @@
     {
       "key": "card_reveal_rare_SR",
       "path": "images/card_reveal/rare_SR.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_02_SR.webp",
       "purpose": "卡牌揭示：SR 稀有度 Logo",
-      "dimensions": [208, 118],
+      "dimensions": [
+        208,
+        118
+      ],
       "alpha": true,
       "sha256": "9cc7f7f26345803c518c814ad4fe0fb2756e0ef169df5875a6bad475cb05d5e3",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -971,9 +945,11 @@
     {
       "key": "card_reveal_rare_SSR",
       "path": "images/card_reveal/rare_SSR.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_03_SSR.webp",
       "purpose": "卡牌揭示：SSR 稀有度 Logo",
-      "dimensions": [208, 118],
+      "dimensions": [
+        208,
+        118
+      ],
       "alpha": true,
       "sha256": "29da950732f6449595b02b71d16c00ce3691a4e649b34b75d3d197472514a4a1",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -981,9 +957,11 @@
     {
       "key": "card_reveal_rare_SRPlus",
       "path": "images/card_reveal/rare_SRPlus.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Rare_05_SRPlus.webp",
       "purpose": "卡牌揭示：SR+ 稀有度 Logo",
-      "dimensions": [208, 118],
+      "dimensions": [
+        208,
+        118
+      ],
       "alpha": true,
       "sha256": "3735898233f171268e1f9d10e22c8bb60250c3047a5048e62c1763c9ff030b46",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -991,9 +969,11 @@
     {
       "key": "card_reveal_attr_Fire",
       "path": "images/card_reveal/attr_Fire.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Attribute_00_Red.webp",
       "purpose": "卡牌揭示：Fire 属性图标",
-      "dimensions": [130, 130],
+      "dimensions": [
+        130,
+        130
+      ],
       "alpha": true,
       "sha256": "3e052b43e9edbb28c16b77f0d5833052cf8d7325bf7e195adb969c866cc60726",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1001,9 +981,11 @@
     {
       "key": "card_reveal_attr_Aqua",
       "path": "images/card_reveal/attr_Aqua.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Attribute_01_Bule.webp",
       "purpose": "卡牌揭示：Aqua 属性图标",
-      "dimensions": [130, 130],
+      "dimensions": [
+        130,
+        130
+      ],
       "alpha": true,
       "sha256": "ed09a47e4151784e1680011707a9622b4a227a2abbe5c40755e70674232288a2",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1011,9 +993,11 @@
     {
       "key": "card_reveal_attr_Leaf",
       "path": "images/card_reveal/attr_Leaf.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/gameUi/UI_Card_Attribute_02_Green.webp",
       "purpose": "卡牌揭示：Leaf 属性图标",
-      "dimensions": [130, 130],
+      "dimensions": [
+        130,
+        130
+      ],
       "alpha": true,
       "sha256": "436976879bedcad537b8d7d371da8f9d61869a82ac8fc1b251c30c498a90fbce",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1021,9 +1005,11 @@
     {
       "key": "card_reveal_frame_N",
       "path": "images/card_reveal/frame_N.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_N_00.webp",
       "purpose": "卡牌揭示：N 卡框",
-      "dimensions": [768, 1052],
+      "dimensions": [
+        768,
+        1052
+      ],
       "alpha": true,
       "sha256": "549176aa3935d7b923f23e90b8b436cfbfc995c8c764e4f44d8af2011c90d0f3",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1031,9 +1017,11 @@
     {
       "key": "card_reveal_frame_R",
       "path": "images/card_reveal/frame_R.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_R_00.webp",
       "purpose": "卡牌揭示：R 卡框",
-      "dimensions": [768, 1052],
+      "dimensions": [
+        768,
+        1052
+      ],
       "alpha": true,
       "sha256": "cc0cd9d1a710cd2cdbcc785778de3c5f588398ace03894613af94b4a1a54738a",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1041,9 +1029,11 @@
     {
       "key": "card_reveal_frame_SR",
       "path": "images/card_reveal/frame_SR.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_SR_00.webp",
       "purpose": "卡牌揭示：SR 卡框",
-      "dimensions": [768, 1052],
+      "dimensions": [
+        768,
+        1052
+      ],
       "alpha": true,
       "sha256": "7f5ec7caa69d6df74c792621a9c4544d817d1952e7bbf2eb8ab73a6f14dd5c0d",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1051,9 +1041,11 @@
     {
       "key": "card_reveal_frame_SRPlus",
       "path": "images/card_reveal/frame_SRPlus.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_SRPlus_00.webp",
       "purpose": "卡牌揭示：SR+ 卡框",
-      "dimensions": [768, 1052],
+      "dimensions": [
+        768,
+        1052
+      ],
       "alpha": true,
       "sha256": "c7f38f2179693fc536efabe77b3cccced9b8d190e4cf2d27befda411bd2b21f6",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1061,9 +1053,11 @@
     {
       "key": "card_reveal_frame_SSR",
       "path": "images/card_reveal/frame_SSR.webp",
-      "extracted_source": "../upstream_ongeki_generic/assets/ongeki/card-frame/UI_Card_frame_SSR_00.webp",
       "purpose": "卡牌揭示：SSR 卡框",
-      "dimensions": [768, 1052],
+      "dimensions": [
+        768,
+        1052
+      ],
       "alpha": true,
       "sha256": "21e61187bb21b9fdb8ea4da020a6654eb99cb0e6a4490a1a1c3f16eb6847c1ef",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1071,9 +1065,11 @@
     {
       "key": "card_get_title_bg",
       "path": "images/card_reveal/title_bg.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_Title_BG.png",
       "purpose": "原作卡牌揭示：顶部标题底栏",
-      "dimensions": [1080, 109],
+      "dimensions": [
+        1080,
+        109
+      ],
       "alpha": true,
       "sha256": "f049115f534c8a7939f30ec5b080f92a4a6d906dcb17936dcb33af71d3d1324a",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1081,9 +1077,11 @@
     {
       "key": "card_get_title_text",
       "path": "images/card_reveal/title_text.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_Title.png",
       "purpose": "原作卡牌揭示：CARD 标题字",
-      "dimensions": [224, 104],
+      "dimensions": [
+        224,
+        104
+      ],
       "alpha": true,
       "sha256": "03fcc74ef8d0b9f00bd33b2f073cb713d904e0839464e51d3598a67f391e6b28",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1091,9 +1089,11 @@
     {
       "key": "card_get_class_N",
       "path": "images/card_reveal/class_N.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_N.png",
       "purpose": "原作卡牌揭示：N class",
-      "dimensions": [104, 149],
+      "dimensions": [
+        104,
+        149
+      ],
       "alpha": true,
       "sha256": "e034ae1ca27d9c6cc0b324642648cd58abdac2e20d6c2563d5dead353faf4d44",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1101,9 +1101,11 @@
     {
       "key": "card_get_class_R",
       "path": "images/card_reveal/class_R.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_R.png",
       "purpose": "原作卡牌揭示：R class",
-      "dimensions": [105, 141],
+      "dimensions": [
+        105,
+        141
+      ],
       "alpha": true,
       "sha256": "9800a3e13e2f030d8c4168666a768c23679ae4bb45e6af45f2c80650845a903c",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1111,9 +1113,11 @@
     {
       "key": "card_get_class_SR",
       "path": "images/card_reveal/class_SR.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_SR.png",
       "purpose": "原作卡牌揭示：SR class",
-      "dimensions": [188, 147],
+      "dimensions": [
+        188,
+        147
+      ],
       "alpha": true,
       "sha256": "946eccc1283e30d06dbd3cefaef72969082475195c33ec9d29aaac48103e8db8",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1121,9 +1125,11 @@
     {
       "key": "card_get_class_SRPlus",
       "path": "images/card_reveal/class_SRPlus.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_SRP_00.png",
       "purpose": "原作卡牌揭示：SR+ class",
-      "dimensions": [213, 160],
+      "dimensions": [
+        213,
+        160
+      ],
       "alpha": true,
       "sha256": "50040708d5f43f88dfbf5cebf77ad1b737da2ee8383ec3aece2c17e5da3c300c",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1131,9 +1137,11 @@
     {
       "key": "card_get_class_SSR",
       "path": "images/card_reveal/class_SSR.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_class_SSR.png",
       "purpose": "原作卡牌揭示：SSR class",
-      "dimensions": [247, 136],
+      "dimensions": [
+        247,
+        136
+      ],
       "alpha": true,
       "sha256": "dc6e195429e1164f88bc1e675a26b82638fbefa6e5984ae5b9d2fba9b06e3f62",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1141,9 +1149,11 @@
     {
       "key": "card_get_new_banner",
       "path": "images/card_reveal/new_banner.png",
-      "extracted_source": "../output/character_affection/card_get_ui/UI_CMN_CardGet_NEW.png",
       "purpose": "原作卡牌揭示：NEW 横幅底",
-      "dimensions": [1080, 260],
+      "dimensions": [
+        1080,
+        260
+      ],
       "alpha": true,
       "sha256": "f76917d237ad5c18752a158b63fce65f66a62314590f641cd54797053e1293f9",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1151,9 +1161,11 @@
     {
       "key": "card_get_limit_bar",
       "path": "images/card_reveal/limit_bar.png",
-      "extracted_source": "../output/character_affection/card_get_ui/UI_CMN_CardGet_LimitBreak_Right.png",
       "purpose": "原作卡牌揭示：限界突破横幅底",
-      "dimensions": [533, 71],
+      "dimensions": [
+        533,
+        71
+      ],
       "alpha": true,
       "sha256": "8825ca147c57216a86496caeed24cff0e3e5e2f1261b5b25cc77aa83e393c527",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1161,9 +1173,11 @@
     {
       "key": "card_get_limit_ribbon",
       "path": "images/card_reveal/limit_ribbon.png",
-      "extracted_source": "../output/character_affection/card_get_ui/UI_CMN_CardGet_LimitBreak_Ribbon.png",
       "purpose": "原作卡牌揭示：限界突破缎带",
-      "dimensions": [410, 82],
+      "dimensions": [
+        410,
+        82
+      ],
       "alpha": true,
       "sha256": "20d6cc52dafeb13e386836b455d7f986a2768e644cfc07c235d09062c1b5703a",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1171,9 +1185,11 @@
     {
       "key": "card_get_bg_card",
       "path": "images/card_reveal/bg_card.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_Corridir.png",
       "purpose": "原作卡牌揭示：卡面背景",
-      "dimensions": [515, 796],
+      "dimensions": [
+        515,
+        796
+      ],
       "alpha": true,
       "sha256": "84e23a41afbcb105758460392c1ff51e3ed392f83ee707db791a84e0fdfebfc9",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1181,9 +1197,11 @@
     {
       "key": "card_get_line_N",
       "path": "images/card_reveal/line_N.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_N_Line_00.png",
       "purpose": "原作卡牌揭示：N 背景线",
-      "dimensions": [138, 1633],
+      "dimensions": [
+        138,
+        1633
+      ],
       "alpha": true,
       "sha256": "0330b74e3d4d42f46e17232c350ab05aff568b64c2214e55d735f86a8061aef5",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1191,9 +1209,11 @@
     {
       "key": "card_get_line_R",
       "path": "images/card_reveal/line_R.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_R_Line_00.png",
       "purpose": "原作卡牌揭示：R 背景线",
-      "dimensions": [138, 1633],
+      "dimensions": [
+        138,
+        1633
+      ],
       "alpha": true,
       "sha256": "260b86c3af86888be069742727c567a3987602b0bf4f589303d7dd35a32358e1",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1201,9 +1221,11 @@
     {
       "key": "card_get_line_SR",
       "path": "images/card_reveal/line_SR.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_SR_Line_00.png",
       "purpose": "原作卡牌揭示：SR 背景线",
-      "dimensions": [138, 1633],
+      "dimensions": [
+        138,
+        1633
+      ],
       "alpha": true,
       "sha256": "e6fb72b4eedfdc203a3131ecfb858d3e55d83a0307b4a7e937930127d3ff1c7c",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1211,9 +1233,11 @@
     {
       "key": "card_get_line_SSR",
       "path": "images/card_reveal/line_SSR.png",
-      "extracted_source": "../output/character_affection/card_get_ui/SB_CMN_CardGet_BG_SSR_Line_00.png",
       "purpose": "原作卡牌揭示：SSR 背景线",
-      "dimensions": [138, 1633],
+      "dimensions": [
+        138,
+        1633
+      ],
       "alpha": true,
       "sha256": "f0ca07ec2ef07482e3de5c404b7a42ff66c4fb93a43a55bc6716eb59fcaf2772",
       "rights": "SEGA 或对应权利人；不属于插件代码开源许可"
@@ -1221,8 +1245,6 @@
     {
       "key": "ui_background",
       "path": "images/ui_background.png",
-      "extracted_source": "../all_ui_assets/adventuremap_bg/ui_adventuremap_bg_60001.png",
-      "game_source": "ui_adventuremap_bg_60001",
       "purpose": "非抽卡页面原作背景",
       "dimensions": [
         1080,
@@ -1235,7 +1257,6 @@
     {
       "key": "ui_character_background",
       "path": "images/ui_character_background.png",
-      "extracted_source": "upstream_ongeki_generic\\assets\\ongeki\\back_character.webp",
       "purpose": "用户指定的游戏角色背景：仅好感和档案的立绘展示区域",
       "dimensions": [
         480,
@@ -1248,7 +1269,6 @@
     {
       "key": "reward_plate_10001",
       "path": "images/reward_plate_10001.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010001\\UI_UserPlate_010001_-5369211249917434348.png",
       "purpose": "名牌奖励图",
       "character_id": 1000,
       "dimensions": [
@@ -1263,7 +1283,6 @@
     {
       "key": "reward_plate_icon_10001",
       "path": "images/reward_plate_icon_10001.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010001\\UI_UserPlate_Icon_010001_-7922498118063821387.png",
       "purpose": "名牌奖励图标",
       "character_id": 1000,
       "dimensions": [
@@ -1278,7 +1297,6 @@
     {
       "key": "reward_plate_10002",
       "path": "images/reward_plate_10002.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010002\\UI_UserPlate_010002_5860157973671840705.png",
       "purpose": "名牌奖励图",
       "character_id": 1000,
       "dimensions": [
@@ -1293,7 +1311,6 @@
     {
       "key": "reward_plate_icon_10002",
       "path": "images/reward_plate_icon_10002.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010002\\UI_UserPlate_Icon_010002_-7702671681013383054.png",
       "purpose": "名牌奖励图标",
       "character_id": 1000,
       "dimensions": [
@@ -1308,7 +1325,6 @@
     {
       "key": "reward_plate_10101",
       "path": "images/reward_plate_10101.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010101\\UI_UserPlate_010101_-6196100754443929348.png",
       "purpose": "名牌奖励图",
       "character_id": 1001,
       "dimensions": [
@@ -1323,7 +1339,6 @@
     {
       "key": "reward_plate_icon_10101",
       "path": "images/reward_plate_icon_10101.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010101\\UI_UserPlate_Icon_010101_2652298653029664259.png",
       "purpose": "名牌奖励图标",
       "character_id": 1001,
       "dimensions": [
@@ -1338,7 +1353,6 @@
     {
       "key": "reward_plate_10102",
       "path": "images/reward_plate_10102.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010102\\UI_UserPlate_010102_5215762563948590328.png",
       "purpose": "名牌奖励图",
       "character_id": 1001,
       "dimensions": [
@@ -1353,7 +1367,6 @@
     {
       "key": "reward_plate_icon_10102",
       "path": "images/reward_plate_icon_10102.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010102\\UI_UserPlate_Icon_010102_-2356536734849072503.png",
       "purpose": "名牌奖励图标",
       "character_id": 1001,
       "dimensions": [
@@ -1368,7 +1381,6 @@
     {
       "key": "reward_plate_10201",
       "path": "images/reward_plate_10201.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010201\\UI_UserPlate_010201_8693158627354316491.png",
       "purpose": "名牌奖励图",
       "character_id": 1002,
       "dimensions": [
@@ -1383,7 +1395,6 @@
     {
       "key": "reward_plate_icon_10201",
       "path": "images/reward_plate_icon_10201.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010201\\UI_UserPlate_Icon_010201_2419449553555986190.png",
       "purpose": "名牌奖励图标",
       "character_id": 1002,
       "dimensions": [
@@ -1398,7 +1409,6 @@
     {
       "key": "reward_plate_10202",
       "path": "images/reward_plate_10202.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010202\\UI_UserPlate_010202_4870016573082204067.png",
       "purpose": "名牌奖励图",
       "character_id": 1002,
       "dimensions": [
@@ -1413,7 +1423,6 @@
     {
       "key": "reward_plate_icon_10202",
       "path": "images/reward_plate_icon_10202.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010202\\UI_UserPlate_Icon_010202_9134574657980792717.png",
       "purpose": "名牌奖励图标",
       "character_id": 1002,
       "dimensions": [
@@ -1428,7 +1437,6 @@
     {
       "key": "reward_plate_10301",
       "path": "images/reward_plate_10301.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010301\\UI_UserPlate_010301_-5109077201040578780.png",
       "purpose": "名牌奖励图",
       "character_id": 1003,
       "dimensions": [
@@ -1443,7 +1451,6 @@
     {
       "key": "reward_plate_icon_10301",
       "path": "images/reward_plate_icon_10301.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010301\\UI_UserPlate_Icon_010301_-6379428488935729309.png",
       "purpose": "名牌奖励图标",
       "character_id": 1003,
       "dimensions": [
@@ -1458,7 +1465,6 @@
     {
       "key": "reward_plate_10302",
       "path": "images/reward_plate_10302.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010302\\UI_UserPlate_010302_4851936375547701840.png",
       "purpose": "名牌奖励图",
       "character_id": 1003,
       "dimensions": [
@@ -1473,7 +1479,6 @@
     {
       "key": "reward_plate_icon_10302",
       "path": "images/reward_plate_icon_10302.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010302\\UI_UserPlate_Icon_010302_5699583392082407252.png",
       "purpose": "名牌奖励图标",
       "character_id": 1003,
       "dimensions": [
@@ -1488,7 +1493,6 @@
     {
       "key": "reward_plate_10401",
       "path": "images/reward_plate_10401.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010401\\UI_UserPlate_010401_6660707487487686472.png",
       "purpose": "名牌奖励图",
       "character_id": 1004,
       "dimensions": [
@@ -1503,7 +1507,6 @@
     {
       "key": "reward_plate_icon_10401",
       "path": "images/reward_plate_icon_10401.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010401\\UI_UserPlate_Icon_010401_-3664799574343367256.png",
       "purpose": "名牌奖励图标",
       "character_id": 1004,
       "dimensions": [
@@ -1518,7 +1521,6 @@
     {
       "key": "reward_plate_10402",
       "path": "images/reward_plate_10402.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010402\\UI_UserPlate_010402_6273761030649634126.png",
       "purpose": "名牌奖励图",
       "character_id": 1004,
       "dimensions": [
@@ -1533,7 +1535,6 @@
     {
       "key": "reward_plate_icon_10402",
       "path": "images/reward_plate_icon_10402.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010402\\UI_UserPlate_Icon_010402_-3124452634217891864.png",
       "purpose": "名牌奖励图标",
       "character_id": 1004,
       "dimensions": [
@@ -1548,7 +1549,6 @@
     {
       "key": "reward_plate_10501",
       "path": "images/reward_plate_10501.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010501\\UI_UserPlate_010501_-4293906567052882592.png",
       "purpose": "名牌奖励图",
       "character_id": 1005,
       "dimensions": [
@@ -1563,7 +1563,6 @@
     {
       "key": "reward_plate_icon_10501",
       "path": "images/reward_plate_icon_10501.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010501\\UI_UserPlate_Icon_010501_-2260004095439541723.png",
       "purpose": "名牌奖励图标",
       "character_id": 1005,
       "dimensions": [
@@ -1578,7 +1577,6 @@
     {
       "key": "reward_plate_10502",
       "path": "images/reward_plate_10502.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010502\\UI_UserPlate_010502_-6536774829224982303.png",
       "purpose": "名牌奖励图",
       "character_id": 1005,
       "dimensions": [
@@ -1593,7 +1591,6 @@
     {
       "key": "reward_plate_icon_10502",
       "path": "images/reward_plate_icon_10502.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010502\\UI_UserPlate_Icon_010502_8662849648595231623.png",
       "purpose": "名牌奖励图标",
       "character_id": 1005,
       "dimensions": [
@@ -1608,7 +1605,6 @@
     {
       "key": "reward_plate_10601",
       "path": "images/reward_plate_10601.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010601\\UI_UserPlate_010601_1279237447828550137.png",
       "purpose": "名牌奖励图",
       "character_id": 1006,
       "dimensions": [
@@ -1623,7 +1619,6 @@
     {
       "key": "reward_plate_icon_10601",
       "path": "images/reward_plate_icon_10601.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010601\\UI_UserPlate_Icon_010601_7618299837280275008.png",
       "purpose": "名牌奖励图标",
       "character_id": 1006,
       "dimensions": [
@@ -1638,7 +1633,6 @@
     {
       "key": "reward_plate_10602",
       "path": "images/reward_plate_10602.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010602\\UI_UserPlate_010602_1539561464240797078.png",
       "purpose": "名牌奖励图",
       "character_id": 1006,
       "dimensions": [
@@ -1653,7 +1647,6 @@
     {
       "key": "reward_plate_icon_10602",
       "path": "images/reward_plate_icon_10602.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010602\\UI_UserPlate_Icon_010602_-7073691688842749786.png",
       "purpose": "名牌奖励图标",
       "character_id": 1006,
       "dimensions": [
@@ -1668,7 +1661,6 @@
     {
       "key": "reward_plate_10701",
       "path": "images/reward_plate_10701.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010701\\UI_UserPlate_010701_5787894823424907535.png",
       "purpose": "名牌奖励图",
       "character_id": 1007,
       "dimensions": [
@@ -1683,7 +1675,6 @@
     {
       "key": "reward_plate_icon_10701",
       "path": "images/reward_plate_icon_10701.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010701\\UI_UserPlate_Icon_010701_-7032126329122715599.png",
       "purpose": "名牌奖励图标",
       "character_id": 1007,
       "dimensions": [
@@ -1698,7 +1689,6 @@
     {
       "key": "reward_plate_10702",
       "path": "images/reward_plate_10702.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010702\\UI_UserPlate_010702_4072064845279896331.png",
       "purpose": "名牌奖励图",
       "character_id": 1007,
       "dimensions": [
@@ -1713,7 +1703,6 @@
     {
       "key": "reward_plate_icon_10702",
       "path": "images/reward_plate_icon_10702.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010702\\UI_UserPlate_Icon_010702_-8486339207494848145.png",
       "purpose": "名牌奖励图标",
       "character_id": 1007,
       "dimensions": [
@@ -1728,7 +1717,6 @@
     {
       "key": "reward_plate_10801",
       "path": "images/reward_plate_10801.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010801\\UI_UserPlate_010801_9156975406422315448.png",
       "purpose": "名牌奖励图",
       "character_id": 1008,
       "dimensions": [
@@ -1743,7 +1731,6 @@
     {
       "key": "reward_plate_icon_10801",
       "path": "images/reward_plate_icon_10801.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010801\\UI_UserPlate_Icon_010801_-7433275007407864067.png",
       "purpose": "名牌奖励图标",
       "character_id": 1008,
       "dimensions": [
@@ -1758,7 +1745,6 @@
     {
       "key": "reward_plate_10802",
       "path": "images/reward_plate_10802.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010802\\UI_UserPlate_010802_-8098338248746472136.png",
       "purpose": "名牌奖励图",
       "character_id": 1008,
       "dimensions": [
@@ -1773,7 +1759,6 @@
     {
       "key": "reward_plate_icon_10802",
       "path": "images/reward_plate_icon_10802.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010802\\UI_UserPlate_Icon_010802_5303157357054831440.png",
       "purpose": "名牌奖励图标",
       "character_id": 1008,
       "dimensions": [
@@ -1788,7 +1773,6 @@
     {
       "key": "reward_plate_10901",
       "path": "images/reward_plate_10901.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010901\\UI_UserPlate_010901_-487155032437134541.png",
       "purpose": "名牌奖励图",
       "character_id": 1009,
       "dimensions": [
@@ -1803,7 +1787,6 @@
     {
       "key": "reward_plate_icon_10901",
       "path": "images/reward_plate_icon_10901.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010901\\UI_UserPlate_Icon_010901_5083195166008623673.png",
       "purpose": "名牌奖励图标",
       "character_id": 1009,
       "dimensions": [
@@ -1818,7 +1801,6 @@
     {
       "key": "reward_plate_10902",
       "path": "images/reward_plate_10902.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_010902\\UI_UserPlate_010902_3446905757614515366.png",
       "purpose": "名牌奖励图",
       "character_id": 1009,
       "dimensions": [
@@ -1833,7 +1815,6 @@
     {
       "key": "reward_plate_icon_10902",
       "path": "images/reward_plate_icon_10902.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_010902\\UI_UserPlate_Icon_010902_4507275072257902074.png",
       "purpose": "名牌奖励图标",
       "character_id": 1009,
       "dimensions": [
@@ -1848,7 +1829,6 @@
     {
       "key": "reward_plate_11001",
       "path": "images/reward_plate_11001.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011001\\UI_UserPlate_011001_8739143493184873353.png",
       "purpose": "名牌奖励图",
       "character_id": 1010,
       "dimensions": [
@@ -1863,7 +1843,6 @@
     {
       "key": "reward_plate_icon_11001",
       "path": "images/reward_plate_icon_11001.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011001\\UI_UserPlate_Icon_011001_-4486629006770544197.png",
       "purpose": "名牌奖励图标",
       "character_id": 1010,
       "dimensions": [
@@ -1878,7 +1857,6 @@
     {
       "key": "reward_plate_11002",
       "path": "images/reward_plate_11002.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011002\\UI_UserPlate_011002_-3854719985212970678.png",
       "purpose": "名牌奖励图",
       "character_id": 1010,
       "dimensions": [
@@ -1893,7 +1871,6 @@
     {
       "key": "reward_plate_icon_11002",
       "path": "images/reward_plate_icon_11002.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011002\\UI_UserPlate_Icon_011002_-3994423958673828117.png",
       "purpose": "名牌奖励图标",
       "character_id": 1010,
       "dimensions": [
@@ -1908,7 +1885,6 @@
     {
       "key": "reward_plate_11101",
       "path": "images/reward_plate_11101.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011101\\UI_UserPlate_011101_7281591631083997308.png",
       "purpose": "名牌奖励图",
       "character_id": 1011,
       "dimensions": [
@@ -1923,7 +1899,6 @@
     {
       "key": "reward_plate_icon_11101",
       "path": "images/reward_plate_icon_11101.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011101\\UI_UserPlate_Icon_011101_-300895012433447362.png",
       "purpose": "名牌奖励图标",
       "character_id": 1011,
       "dimensions": [
@@ -1938,7 +1913,6 @@
     {
       "key": "reward_plate_11102",
       "path": "images/reward_plate_11102.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011102\\UI_UserPlate_011102_-4399805889993528771.png",
       "purpose": "名牌奖励图",
       "character_id": 1011,
       "dimensions": [
@@ -1953,7 +1927,6 @@
     {
       "key": "reward_plate_icon_11102",
       "path": "images/reward_plate_icon_11102.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011102\\UI_UserPlate_Icon_011102_6004217508371533502.png",
       "purpose": "名牌奖励图标",
       "character_id": 1011,
       "dimensions": [
@@ -1968,7 +1941,6 @@
     {
       "key": "reward_plate_11201",
       "path": "images/reward_plate_11201.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011201\\UI_UserPlate_011201_-6276231722927427804.png",
       "purpose": "名牌奖励图",
       "character_id": 1012,
       "dimensions": [
@@ -1983,7 +1955,6 @@
     {
       "key": "reward_plate_icon_11201",
       "path": "images/reward_plate_icon_11201.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011201\\UI_UserPlate_Icon_011201_6785562042916901576.png",
       "purpose": "名牌奖励图标",
       "character_id": 1012,
       "dimensions": [
@@ -1998,7 +1969,6 @@
     {
       "key": "reward_plate_11202",
       "path": "images/reward_plate_11202.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011202\\UI_UserPlate_011202_-5913846717127049679.png",
       "purpose": "名牌奖励图",
       "character_id": 1012,
       "dimensions": [
@@ -2013,7 +1983,6 @@
     {
       "key": "reward_plate_icon_11202",
       "path": "images/reward_plate_icon_11202.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011202\\UI_UserPlate_Icon_011202_-5286241901266722404.png",
       "purpose": "名牌奖励图标",
       "character_id": 1012,
       "dimensions": [
@@ -2028,7 +1997,6 @@
     {
       "key": "reward_plate_11301",
       "path": "images/reward_plate_11301.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011301\\UI_UserPlate_011301_-2523831318242905371.png",
       "purpose": "名牌奖励图",
       "character_id": 1013,
       "dimensions": [
@@ -2043,7 +2011,6 @@
     {
       "key": "reward_plate_icon_11301",
       "path": "images/reward_plate_icon_11301.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011301\\UI_UserPlate_Icon_011301_-3728363192915567991.png",
       "purpose": "名牌奖励图标",
       "character_id": 1013,
       "dimensions": [
@@ -2058,7 +2025,6 @@
     {
       "key": "reward_plate_11302",
       "path": "images/reward_plate_11302.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011302\\UI_UserPlate_011302_-1909682882778507509.png",
       "purpose": "名牌奖励图",
       "character_id": 1013,
       "dimensions": [
@@ -2073,7 +2039,6 @@
     {
       "key": "reward_plate_icon_11302",
       "path": "images/reward_plate_icon_11302.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011302\\UI_UserPlate_Icon_011302_4245952355586884408.png",
       "purpose": "名牌奖励图标",
       "character_id": 1013,
       "dimensions": [
@@ -2088,7 +2053,6 @@
     {
       "key": "reward_plate_11401",
       "path": "images/reward_plate_11401.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011401\\UI_UserPlate_011401_6026979148093435235.png",
       "purpose": "名牌奖励图",
       "character_id": 1014,
       "dimensions": [
@@ -2103,7 +2067,6 @@
     {
       "key": "reward_plate_icon_11401",
       "path": "images/reward_plate_icon_11401.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011401\\UI_UserPlate_Icon_011401_-8398706925488407682.png",
       "purpose": "名牌奖励图标",
       "character_id": 1014,
       "dimensions": [
@@ -2118,7 +2081,6 @@
     {
       "key": "reward_plate_11402",
       "path": "images/reward_plate_11402.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011402\\UI_UserPlate_011402_154510553449237790.png",
       "purpose": "名牌奖励图",
       "character_id": 1014,
       "dimensions": [
@@ -2133,7 +2095,6 @@
     {
       "key": "reward_plate_icon_11402",
       "path": "images/reward_plate_icon_11402.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011402\\UI_UserPlate_Icon_011402_5413403323684594250.png",
       "purpose": "名牌奖励图标",
       "character_id": 1014,
       "dimensions": [
@@ -2148,7 +2109,6 @@
     {
       "key": "reward_plate_11501",
       "path": "images/reward_plate_11501.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011501\\UI_UserPlate_011501_-8136840459114984160.png",
       "purpose": "名牌奖励图",
       "character_id": 1015,
       "dimensions": [
@@ -2163,7 +2123,6 @@
     {
       "key": "reward_plate_icon_11501",
       "path": "images/reward_plate_icon_11501.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011501\\UI_UserPlate_Icon_011501_5762323461533869332.png",
       "purpose": "名牌奖励图标",
       "character_id": 1015,
       "dimensions": [
@@ -2178,7 +2137,6 @@
     {
       "key": "reward_plate_11502",
       "path": "images/reward_plate_11502.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011502\\UI_UserPlate_011502_8629036751203297752.png",
       "purpose": "名牌奖励图",
       "character_id": 1015,
       "dimensions": [
@@ -2193,7 +2151,6 @@
     {
       "key": "reward_plate_icon_11502",
       "path": "images/reward_plate_icon_11502.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011502\\UI_UserPlate_Icon_011502_-4762295382582960232.png",
       "purpose": "名牌奖励图标",
       "character_id": 1015,
       "dimensions": [
@@ -2208,7 +2165,6 @@
     {
       "key": "reward_plate_11601",
       "path": "images/reward_plate_11601.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011601\\UI_UserPlate_011601_-5776511024483137817.png",
       "purpose": "名牌奖励图",
       "character_id": 1016,
       "dimensions": [
@@ -2223,7 +2179,6 @@
     {
       "key": "reward_plate_icon_11601",
       "path": "images/reward_plate_icon_11601.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011601\\UI_UserPlate_Icon_011601_-3300975141184275348.png",
       "purpose": "名牌奖励图标",
       "character_id": 1016,
       "dimensions": [
@@ -2238,7 +2193,6 @@
     {
       "key": "reward_plate_11602",
       "path": "images/reward_plate_11602.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_011602\\UI_UserPlate_011602_5073652384638487353.png",
       "purpose": "名牌奖励图",
       "character_id": 1016,
       "dimensions": [
@@ -2253,7 +2207,6 @@
     {
       "key": "reward_plate_icon_11602",
       "path": "images/reward_plate_icon_11602.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_userplate_icon_011602\\UI_UserPlate_Icon_011602_5034860508551531203.png",
       "purpose": "名牌奖励图标",
       "character_id": 1016,
       "dimensions": [
@@ -2268,7 +2221,6 @@
     {
       "key": "reward_attachment_2000",
       "path": "images/reward_attachment_2000.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002000\\UI_Attachment_002000_-580343095748069030.png",
       "purpose": "装饰奖励图",
       "character_id": 1000,
       "dimensions": [
@@ -2283,7 +2235,6 @@
     {
       "key": "reward_attachment_2001",
       "path": "images/reward_attachment_2001.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002001\\UI_Attachment_002001_3305574316180772470.png",
       "purpose": "装饰奖励图",
       "character_id": 1001,
       "dimensions": [
@@ -2298,7 +2249,6 @@
     {
       "key": "reward_attachment_2002",
       "path": "images/reward_attachment_2002.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002002\\UI_Attachment_002002_-3971283207932170589.png",
       "purpose": "装饰奖励图",
       "character_id": 1002,
       "dimensions": [
@@ -2313,7 +2263,6 @@
     {
       "key": "reward_attachment_2003",
       "path": "images/reward_attachment_2003.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002003\\UI_Attachment_002003_8283042326255476459.png",
       "purpose": "装饰奖励图",
       "character_id": 1003,
       "dimensions": [
@@ -2328,7 +2277,6 @@
     {
       "key": "reward_attachment_2004",
       "path": "images/reward_attachment_2004.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002004\\UI_Attachment_002004_1337710106493308101.png",
       "purpose": "装饰奖励图",
       "character_id": 1004,
       "dimensions": [
@@ -2343,7 +2291,6 @@
     {
       "key": "reward_attachment_2005",
       "path": "images/reward_attachment_2005.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002005\\UI_Attachment_002005_-8042956307591002887.png",
       "purpose": "装饰奖励图",
       "character_id": 1005,
       "dimensions": [
@@ -2358,7 +2305,6 @@
     {
       "key": "reward_attachment_2006",
       "path": "images/reward_attachment_2006.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002006\\UI_Attachment_002006_4080234372761521321.png",
       "purpose": "装饰奖励图",
       "character_id": 1006,
       "dimensions": [
@@ -2373,7 +2319,6 @@
     {
       "key": "reward_attachment_2007",
       "path": "images/reward_attachment_2007.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002007\\UI_Attachment_002007_3078032009470955704.png",
       "purpose": "装饰奖励图",
       "character_id": 1007,
       "dimensions": [
@@ -2388,7 +2333,6 @@
     {
       "key": "reward_attachment_2008",
       "path": "images/reward_attachment_2008.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002008\\UI_Attachment_002008_-4890253299940055343.png",
       "purpose": "装饰奖励图",
       "character_id": 1008,
       "dimensions": [
@@ -2403,7 +2347,6 @@
     {
       "key": "reward_attachment_2009",
       "path": "images/reward_attachment_2009.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002009\\UI_Attachment_002009_-5372527877019975395.png",
       "purpose": "装饰奖励图",
       "character_id": 1009,
       "dimensions": [
@@ -2418,7 +2361,6 @@
     {
       "key": "reward_attachment_2010",
       "path": "images/reward_attachment_2010.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002010\\UI_Attachment_002010_5689916204378853210.png",
       "purpose": "装饰奖励图",
       "character_id": 1010,
       "dimensions": [
@@ -2433,7 +2375,6 @@
     {
       "key": "reward_attachment_2011",
       "path": "images/reward_attachment_2011.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002011\\UI_Attachment_002011_1640358756282585928.png",
       "purpose": "装饰奖励图",
       "character_id": 1011,
       "dimensions": [
@@ -2448,7 +2389,6 @@
     {
       "key": "reward_attachment_2012",
       "path": "images/reward_attachment_2012.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002012\\UI_Attachment_002012_-6110615840029403352.png",
       "purpose": "装饰奖励图",
       "character_id": 1012,
       "dimensions": [
@@ -2463,7 +2403,6 @@
     {
       "key": "reward_attachment_2013",
       "path": "images/reward_attachment_2013.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002013\\UI_Attachment_002013_-1925180675826916685.png",
       "purpose": "装饰奖励图",
       "character_id": 1013,
       "dimensions": [
@@ -2478,7 +2417,6 @@
     {
       "key": "reward_attachment_2014",
       "path": "images/reward_attachment_2014.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002014\\UI_Attachment_002014_-6202117580382077774.png",
       "purpose": "装饰奖励图",
       "character_id": 1014,
       "dimensions": [
@@ -2493,7 +2431,6 @@
     {
       "key": "reward_attachment_2015",
       "path": "images/reward_attachment_2015.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002015\\UI_Attachment_002015_5988077768716868469.png",
       "purpose": "装饰奖励图",
       "character_id": 1015,
       "dimensions": [
@@ -2508,7 +2445,6 @@
     {
       "key": "reward_attachment_2016",
       "path": "images/reward_attachment_2016.png",
-      "extracted_source": "output\\character_affection\\assets\\ui_attachment_002016\\UI_Attachment_002016_-3348953908015428893.png",
       "purpose": "装饰奖励图",
       "character_id": 1016,
       "dimensions": [
@@ -2523,8 +2459,6 @@
     {
       "key": "ui_title_0",
       "path": "images/ui_title_0.png",
-      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_00_983.png",
-      "game_source": "resources.assets",
       "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
       "dimensions": [
         392,
@@ -2538,8 +2472,6 @@
     {
       "key": "ui_title_1",
       "path": "images/ui_title_1.png",
-      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_01_935.png",
-      "game_source": "resources.assets",
       "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
       "dimensions": [
         392,
@@ -2553,8 +2485,6 @@
     {
       "key": "ui_title_2",
       "path": "images/ui_title_2.png",
-      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_02_867.png",
-      "game_source": "resources.assets",
       "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
       "dimensions": [
         392,
@@ -2568,8 +2498,6 @@
     {
       "key": "ui_title_3",
       "path": "images/ui_title_3.png",
-      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_03_1047.png",
-      "game_source": "resources.assets",
       "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
       "dimensions": [
         392,
@@ -2583,8 +2511,6 @@
     {
       "key": "ui_title_4",
       "path": "images/ui_title_4.png",
-      "extracted_source": "output\\character_affection\\profile_rewards\\ui\\resources\\UI_CMN_Signage_UserTitle_04_1055.png",
-      "game_source": "resources.assets",
       "purpose": "游戏UI套件：面板、名牌条、等级、按键、量表",
       "dimensions": [
         392,

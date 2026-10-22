@@ -110,7 +110,7 @@ def build(source: Path, destination: Path, official: Path | None = None):
         if cid in seen:raise ValueError('官网角色立绘重复归属')
         seen.add(cid)
         if 'asset_id' not in entry:
-            raise ValueError('官网清单缺少 asset_id，请用修复后的抓取脚本重建')
+            raise ValueError('角色立绘清单缺少 asset_id，请重新生成清单')
         asset_id=int(entry['asset_id'])
         asset=next(a for a in entry['assets'] if a['asset']=='image_normal.png')
         original=official/str(asset_id)/'image_normal.png'
@@ -256,7 +256,7 @@ def build(source: Path, destination: Path, official: Path | None = None):
     for key, source_name in CARD_GET_KIT.items():
         original = source / 'card_get_ui' / f'{source_name}.png'
         if not original.is_file():
-            raise ValueError(f'CardGet 素材缺失: {source_name}，请先运行 archive/scripts/extract_card_get_ui.py')
+            raise ValueError(f'卡牌揭示素材缺失: {source_name}，请检查本地素材目录')
         relative = f'images/card_reveal/{key}.png'
         target = destination / relative
         shutil.copyfile(original, target)
@@ -270,6 +270,9 @@ def build(source: Path, destination: Path, official: Path | None = None):
                          'sha256': hashlib.sha256(target.read_bytes()).hexdigest(),
                          'rights': 'SEGA 或对应权利人；不属于插件代码开源许可'})
 
+    for row in manifest:
+        row.pop('game_source', None)
+        row.pop('extracted_source', None)
     (destination/'visual_asset_manifest.json').write_text(json.dumps({'version':'growth-assets-v2','assets':manifest},ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     print(f'Packaged {len(manifest)} referenced original assets')
 

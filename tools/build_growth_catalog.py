@@ -94,7 +94,7 @@ def build(source: Path, card_root: Path, destination: Path) -> dict:
     destination.mkdir(parents=True, exist_ok=True)
     for name, data in {"character_catalog": {"version": CURVE_VERSION, "characters": characters},
                        "card_character_map": {"version": CURVE_VERSION, "cards": mapping},
-                       "affection_curve": {"version": CURVE_VERSION, "thresholds": thresholds, "source_sha256": hashes},
+                       "affection_curve": {"version": CURVE_VERSION, "thresholds": thresholds},
                        "build_report": report}.items():
         (destination / f"{name}.json").write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return report

@@ -78,6 +78,17 @@ class IdentityTests(unittest.TestCase):
         self.assertFalse(sp.catalog_matches([game_credit], 'Test', artist='X'))
         self.assertFalse(sp.catalog_matches([song(artist='Singer')], 'Test', artist='Sing'))
 
+    def test_unit_only_credit_is_treated_as_unverifiable(self):
+        # 「歌：オンゲキシューターズ」只有组合名，音源只会列出成员 CV：按弱匹配放行。
+        credit = '曲：Q-MHz／歌：オンゲキシューターズ'
+        self.assertEqual(sp.artist_rank(credit, ('赤尾ひかる', '久保ユリカ')), 1)
+        self.assertTrue(sp.artists_compatible(credit, ('赤尾ひかる',))[0])
+        self.assertTrue(sp.PreviewTrack('p', 'Splash Dance!!', ('赤尾ひかる',), '', '').matches(
+            song(title='Splash Dance!!', artist=credit)))
+        # 带 CV 的署名仍逐人核对，写错歌手保持拒绝。
+        self.assertEqual(sp.artist_rank('曲：Q-MHz／歌：星咲 あかり(CV：赤尾 ひかる)', ('久保ユリカ',)), 0)
+        self.assertEqual(sp.artist_rank('曲：Q-MHz／歌：星咲 あかり(CV：赤尾 ひかる)', ('赤尾ひかる',)), 3)
+
     def test_failure_summary_is_short(self):
         summary = sp._summarize_errors(
             [f'{name}：原因{index}' for index, name in enumerate('ABCDEF')])
@@ -283,6 +294,26 @@ class ServiceTests(unittest.TestCase):
 
         with self.assertRaisesRegex(sp.PreviewError, '未提供'):
             self.service.cover(replace(song(), cover_url=''))
+        self.download.return_value = b'not image'
+        with self.assertRaisesRegex(sp.PreviewError, '曲绘解码'):
+            self.service.cover(song())
+
+    def test_cover_falls_back_to_png_when_webp_answer_is_not_an_image(self):
+        buffer = BytesIO()
+        Image.effect_noise((600, 600), 100).convert('RGB').save(buffer, 'PNG')
+        image = buffer.getvalue()
+        lxns = replace(song(), cover_url='https://assets.lxns.net/maimai/jacket/8.png!webp')
+        # 第一次拿到无效的 HTML 内容，备用地址返回真正的 PNG。
+        self.download.side_effect = [b'<script>challenge</script>', image]
+        data = self.service.cover(lxns)
+        self.assertEqual(self.download.call_args_list[0].args[0],
+                         'https://assets.lxns.net/maimai/jacket/8.png!webp')
+        self.assertEqual(self.download.call_args_list[1].args[0],
+                         'https://assets2.lxns.net/maimai/jacket/8.png')
+        with Image.open(BytesIO(data)) as opened:
+            self.assertEqual(opened.format, 'JPEG')
+        # 其它域名没有回退，仍按解码失败报错。
+        self.download.side_effect = None
         self.download.return_value = b'not image'
         with self.assertRaisesRegex(sp.PreviewError, '曲绘解码'):
             self.service.cover(song())

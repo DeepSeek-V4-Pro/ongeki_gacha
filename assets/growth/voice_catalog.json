@@ -1,15 +1,5 @@
 {
-  "version": "voice-v1",
-  "decoder_version": "r2117",
-  "source_sha256": {
-    "MU3.acb": "4d89ef3a73dc768675279835da56ea7e362ce0c353c50bb48f72932469d74c54",
-    "MU3.awb": "5f3c0938732bcab832784b09c9a0a2bd2c656ffc55f124171c1742420e55c5a7",
-    "chara.json": "018fa7838c8730d8c6c16020e684a99ee42040ac651bae899944f4a993372fc0",
-    "SoundID.MU3.decompiled.cs": "290c3145e947300ff88bc85a2303aeef49afd09b8c11316ed18552f981343b66",
-    "MU3.Sound.SoundManager.decompiled.cs": "939f8ea8dd2b00adf13ee30978432df4a92ac11ac3837acfb9107aa3bc25ca2b",
-    "MU3.Scene_40_SettingRoom.decompiled.cs": "98a1ed853051e1f288ac484c854ba0b0cdf909b57f58789d727a342d44b4985a",
-    "vgmstream-cli.exe": "29df08c557ada8269c92a6abfe3886ad2f65849b0b26ba78a0819b363bbc5b85"
-  },
+  "version": "voice-index-v1",
   "voices": [
     {
       "character_id": 1000,
@@ -17,16 +7,6 @@
       "sequence": 1,
       "reward_key": "1000:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 426,
-      "synth_id": 382,
-      "waveform_index": 325,
-      "awb_id": 272,
-      "subsong": 273,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10001.wav",
       "format": "wav",
       "duration": 6.222979166666667,
@@ -34,8 +14,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -43,16 +22,6 @@
       "sequence": 2,
       "reward_key": "1000:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 443,
-      "synth_id": 399,
-      "waveform_index": 342,
-      "awb_id": 273,
-      "subsong": 274,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10002.wav",
       "format": "wav",
       "duration": 2.4865208333333335,
@@ -60,8 +29,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -69,16 +37,6 @@
       "sequence": 3,
       "reward_key": "1000:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 460,
-      "synth_id": 416,
-      "waveform_index": 359,
-      "awb_id": 274,
-      "subsong": 275,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10003.wav",
       "format": "wav",
       "duration": 5.144520833333333,
@@ -86,8 +44,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -95,16 +52,6 @@
       "sequence": 4,
       "reward_key": "1000:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 477,
-      "synth_id": 433,
-      "waveform_index": 376,
-      "awb_id": 275,
-      "subsong": 276,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10004.wav",
       "format": "wav",
       "duration": 4.737104166666667,
@@ -112,8 +59,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -121,16 +67,6 @@
       "sequence": 5,
       "reward_key": "1000:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 494,
-      "synth_id": 450,
-      "waveform_index": 393,
-      "awb_id": 276,
-      "subsong": 277,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10005.wav",
       "format": "wav",
       "duration": 6.244354166666667,
@@ -138,8 +74,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -147,16 +82,6 @@
       "sequence": 6,
       "reward_key": "1000:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 511,
-      "synth_id": 467,
-      "waveform_index": 410,
-      "awb_id": 277,
-      "subsong": 278,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10006.wav",
       "format": "wav",
       "duration": 7.002354166666667,
@@ -164,8 +89,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -173,16 +97,6 @@
       "sequence": 7,
       "reward_key": "1000:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 528,
-      "synth_id": 484,
-      "waveform_index": 427,
-      "awb_id": 278,
-      "subsong": 279,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10007.wav",
       "format": "wav",
       "duration": 7.8806875,
@@ -190,8 +104,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -199,16 +112,6 @@
       "sequence": 8,
       "reward_key": "1000:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 545,
-      "synth_id": 501,
-      "waveform_index": 444,
-      "awb_id": 279,
-      "subsong": 280,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10008.wav",
       "format": "wav",
       "duration": 9.46625,
@@ -216,8 +119,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -225,16 +127,6 @@
       "sequence": 9,
       "reward_key": "1000:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 562,
-      "synth_id": 518,
-      "waveform_index": 461,
-      "awb_id": 280,
-      "subsong": 281,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10009.wav",
       "format": "wav",
       "duration": 8.6465625,
@@ -242,8 +134,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1000,
@@ -251,16 +142,6 @@
       "sequence": 10,
       "reward_key": "1000:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001000",
-      "track_id": 579,
-      "synth_id": 535,
-      "waveform_index": 478,
-      "awb_id": 281,
-      "subsong": 282,
-      "track_modifiers_not_applied": [],
       "path": "voices/1000/10010.wav",
       "format": "wav",
       "duration": 11.150354166666666,
@@ -268,8 +149,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -277,16 +157,6 @@
       "sequence": 1,
       "reward_key": "1001:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 427,
-      "synth_id": 383,
-      "waveform_index": 326,
-      "awb_id": 2569,
-      "subsong": 2570,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10101.wav",
       "format": "wav",
       "duration": 6.683395833333333,
@@ -294,8 +164,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -303,16 +172,6 @@
       "sequence": 2,
       "reward_key": "1001:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 444,
-      "synth_id": 400,
-      "waveform_index": 343,
-      "awb_id": 2570,
-      "subsong": 2571,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10102.wav",
       "format": "wav",
       "duration": 7.888729166666667,
@@ -320,8 +179,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -329,16 +187,6 @@
       "sequence": 3,
       "reward_key": "1001:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 461,
-      "synth_id": 417,
-      "waveform_index": 360,
-      "awb_id": 2571,
-      "subsong": 2572,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10103.wav",
       "format": "wav",
       "duration": 5.5900625,
@@ -346,8 +194,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -355,16 +202,6 @@
       "sequence": 4,
       "reward_key": "1001:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 478,
-      "synth_id": 434,
-      "waveform_index": 377,
-      "awb_id": 2572,
-      "subsong": 2573,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10104.wav",
       "format": "wav",
       "duration": 7.547395833333334,
@@ -372,8 +209,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -381,16 +217,6 @@
       "sequence": 5,
       "reward_key": "1001:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 495,
-      "synth_id": 451,
-      "waveform_index": 394,
-      "awb_id": 2573,
-      "subsong": 2574,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10105.wav",
       "format": "wav",
       "duration": 8.0700625,
@@ -398,8 +224,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -407,16 +232,6 @@
       "sequence": 6,
       "reward_key": "1001:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 512,
-      "synth_id": 468,
-      "waveform_index": 411,
-      "awb_id": 2574,
-      "subsong": 2575,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10106.wav",
       "format": "wav",
       "duration": 6.459395833333334,
@@ -424,8 +239,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -433,16 +247,6 @@
       "sequence": 7,
       "reward_key": "1001:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 529,
-      "synth_id": 485,
-      "waveform_index": 428,
-      "awb_id": 2575,
-      "subsong": 2576,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10107.wav",
       "format": "wav",
       "duration": 9.419395833333333,
@@ -450,8 +254,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -459,16 +262,6 @@
       "sequence": 8,
       "reward_key": "1001:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 546,
-      "synth_id": 502,
-      "waveform_index": 445,
-      "awb_id": 2576,
-      "subsong": 2577,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10108.wav",
       "format": "wav",
       "duration": 7.856729166666667,
@@ -476,8 +269,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -485,16 +277,6 @@
       "sequence": 9,
       "reward_key": "1001:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 563,
-      "synth_id": 519,
-      "waveform_index": 462,
-      "awb_id": 2577,
-      "subsong": 2578,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10109.wav",
       "format": "wav",
       "duration": 6.107395833333333,
@@ -502,8 +284,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1001,
@@ -511,16 +292,6 @@
       "sequence": 10,
       "reward_key": "1001:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001001",
-      "track_id": 580,
-      "synth_id": 536,
-      "waveform_index": 479,
-      "awb_id": 2578,
-      "subsong": 2579,
-      "track_modifiers_not_applied": [],
       "path": "voices/1001/10110.wav",
       "format": "wav",
       "duration": 9.451395833333333,
@@ -528,8 +299,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -537,16 +307,6 @@
       "sequence": 1,
       "reward_key": "1002:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 428,
-      "synth_id": 384,
-      "waveform_index": 327,
-      "awb_id": 420,
-      "subsong": 421,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10201.wav",
       "format": "wav",
       "duration": 8.323041666666667,
@@ -554,8 +314,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -563,16 +322,6 @@
       "sequence": 2,
       "reward_key": "1002:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 445,
-      "synth_id": 401,
-      "waveform_index": 344,
-      "awb_id": 421,
-      "subsong": 422,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10202.wav",
       "format": "wav",
       "duration": 8.002875,
@@ -580,8 +329,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -589,16 +337,6 @@
       "sequence": 3,
       "reward_key": "1002:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 462,
-      "synth_id": 418,
-      "waveform_index": 361,
-      "awb_id": 422,
-      "subsong": 423,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10203.wav",
       "format": "wav",
       "duration": 6.7694375,
@@ -606,8 +344,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -615,16 +352,6 @@
       "sequence": 4,
       "reward_key": "1002:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 479,
-      "synth_id": 435,
-      "waveform_index": 378,
-      "awb_id": 423,
-      "subsong": 424,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10204.wav",
       "format": "wav",
       "duration": 7.743333333333333,
@@ -632,8 +359,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -641,16 +367,6 @@
       "sequence": 5,
       "reward_key": "1002:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 496,
-      "synth_id": 452,
-      "waveform_index": 395,
-      "awb_id": 424,
-      "subsong": 425,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10205.wav",
       "format": "wav",
       "duration": 12.657166666666667,
@@ -658,8 +374,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -667,16 +382,6 @@
       "sequence": 6,
       "reward_key": "1002:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 513,
-      "synth_id": 469,
-      "waveform_index": 412,
-      "awb_id": 425,
-      "subsong": 426,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10206.wav",
       "format": "wav",
       "duration": 7.18725,
@@ -684,8 +389,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -693,16 +397,6 @@
       "sequence": 7,
       "reward_key": "1002:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 530,
-      "synth_id": 486,
-      "waveform_index": 429,
-      "awb_id": 426,
-      "subsong": 427,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10207.wav",
       "format": "wav",
       "duration": 8.462833333333334,
@@ -710,8 +404,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -719,16 +412,6 @@
       "sequence": 8,
       "reward_key": "1002:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 547,
-      "synth_id": 503,
-      "waveform_index": 446,
-      "awb_id": 427,
-      "subsong": 428,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10208.wav",
       "format": "wav",
       "duration": 10.6775625,
@@ -736,8 +419,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -745,16 +427,6 @@
       "sequence": 9,
       "reward_key": "1002:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 564,
-      "synth_id": 520,
-      "waveform_index": 463,
-      "awb_id": 428,
-      "subsong": 429,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10209.wav",
       "format": "wav",
       "duration": 6.476166666666667,
@@ -762,8 +434,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1002,
@@ -771,16 +442,6 @@
       "sequence": 10,
       "reward_key": "1002:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001002",
-      "track_id": 581,
-      "synth_id": 537,
-      "waveform_index": 480,
-      "awb_id": 429,
-      "subsong": 430,
-      "track_modifiers_not_applied": [],
       "path": "voices/1002/10210.wav",
       "format": "wav",
       "duration": 9.5765625,
@@ -788,8 +449,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -797,16 +457,6 @@
       "sequence": 1,
       "reward_key": "1003:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 429,
-      "synth_id": 385,
-      "waveform_index": 328,
-      "awb_id": 1819,
-      "subsong": 1820,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10301.wav",
       "format": "wav",
       "duration": 1.8803333333333334,
@@ -814,8 +464,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -823,16 +472,6 @@
       "sequence": 2,
       "reward_key": "1003:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 446,
-      "synth_id": 402,
-      "waveform_index": 345,
-      "awb_id": 1820,
-      "subsong": 1821,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10302.wav",
       "format": "wav",
       "duration": 6.147666666666667,
@@ -840,8 +479,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -849,16 +487,6 @@
       "sequence": 3,
       "reward_key": "1003:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 463,
-      "synth_id": 419,
-      "waveform_index": 362,
-      "awb_id": 1821,
-      "subsong": 1822,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10303.wav",
       "format": "wav",
       "duration": 6.2295,
@@ -866,8 +494,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -875,16 +502,6 @@
       "sequence": 4,
       "reward_key": "1003:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 480,
-      "synth_id": 436,
-      "waveform_index": 379,
-      "awb_id": 1822,
-      "subsong": 1823,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10304.wav",
       "format": "wav",
       "duration": 6.829833333333333,
@@ -892,8 +509,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -901,16 +517,6 @@
       "sequence": 5,
       "reward_key": "1003:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 497,
-      "synth_id": 453,
-      "waveform_index": 396,
-      "awb_id": 1823,
-      "subsong": 1824,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10305.wav",
       "format": "wav",
       "duration": 12.896666666666667,
@@ -918,8 +524,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -927,16 +532,6 @@
       "sequence": 6,
       "reward_key": "1003:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 514,
-      "synth_id": 470,
-      "waveform_index": 413,
-      "awb_id": 1824,
-      "subsong": 1825,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10306.wav",
       "format": "wav",
       "duration": 8.322833333333334,
@@ -944,8 +539,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -953,16 +547,6 @@
       "sequence": 7,
       "reward_key": "1003:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 531,
-      "synth_id": 487,
-      "waveform_index": 430,
-      "awb_id": 1825,
-      "subsong": 1826,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10307.wav",
       "format": "wav",
       "duration": 11.42575,
@@ -970,8 +554,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -979,16 +562,6 @@
       "sequence": 8,
       "reward_key": "1003:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 548,
-      "synth_id": 504,
-      "waveform_index": 447,
-      "awb_id": 1826,
-      "subsong": 1827,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10308.wav",
       "format": "wav",
       "duration": 7.688,
@@ -996,8 +569,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -1005,16 +577,6 @@
       "sequence": 9,
       "reward_key": "1003:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 565,
-      "synth_id": 521,
-      "waveform_index": 464,
-      "awb_id": 1827,
-      "subsong": 1828,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10309.wav",
       "format": "wav",
       "duration": 13.390708333333333,
@@ -1022,8 +584,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1003,
@@ -1031,16 +592,6 @@
       "sequence": 10,
       "reward_key": "1003:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001003",
-      "track_id": 582,
-      "synth_id": 538,
-      "waveform_index": 481,
-      "awb_id": 1828,
-      "subsong": 1829,
-      "track_modifiers_not_applied": [],
       "path": "voices/1003/10310.wav",
       "format": "wav",
       "duration": 9.288666666666666,
@@ -1048,8 +599,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1057,16 +607,6 @@
       "sequence": 1,
       "reward_key": "1004:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 430,
-      "synth_id": 386,
-      "waveform_index": 329,
-      "awb_id": 1672,
-      "subsong": 1673,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10401.wav",
       "format": "wav",
       "duration": 1.5871666666666666,
@@ -1074,8 +614,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1083,16 +622,6 @@
       "sequence": 2,
       "reward_key": "1004:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 447,
-      "synth_id": 403,
-      "waveform_index": 346,
-      "awb_id": 1673,
-      "subsong": 1674,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10402.wav",
       "format": "wav",
       "duration": 3.6262708333333333,
@@ -1100,8 +629,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1109,16 +637,6 @@
       "sequence": 3,
       "reward_key": "1004:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 464,
-      "synth_id": 420,
-      "waveform_index": 363,
-      "awb_id": 1674,
-      "subsong": 1675,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10403.wav",
       "format": "wav",
       "duration": 6.460625,
@@ -1126,8 +644,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1135,16 +652,6 @@
       "sequence": 4,
       "reward_key": "1004:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 481,
-      "synth_id": 437,
-      "waveform_index": 380,
-      "awb_id": 1675,
-      "subsong": 1676,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10404.wav",
       "format": "wav",
       "duration": 9.182020833333333,
@@ -1152,8 +659,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1161,16 +667,6 @@
       "sequence": 5,
       "reward_key": "1004:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 498,
-      "synth_id": 454,
-      "waveform_index": 397,
-      "awb_id": 1676,
-      "subsong": 1677,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10405.wav",
       "format": "wav",
       "duration": 8.5001875,
@@ -1178,8 +674,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1187,16 +682,6 @@
       "sequence": 6,
       "reward_key": "1004:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 515,
-      "synth_id": 471,
-      "waveform_index": 414,
-      "awb_id": 1677,
-      "subsong": 1678,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10406.wav",
       "format": "wav",
       "duration": 6.5556875,
@@ -1204,8 +689,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1213,16 +697,6 @@
       "sequence": 7,
       "reward_key": "1004:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 532,
-      "synth_id": 488,
-      "waveform_index": 431,
-      "awb_id": 1678,
-      "subsong": 1679,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10407.wav",
       "format": "wav",
       "duration": 8.265479166666667,
@@ -1230,8 +704,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1239,16 +712,6 @@
       "sequence": 8,
       "reward_key": "1004:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 549,
-      "synth_id": 505,
-      "waveform_index": 448,
-      "awb_id": 1679,
-      "subsong": 1680,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10408.wav",
       "format": "wav",
       "duration": 7.259375,
@@ -1256,8 +719,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1265,16 +727,6 @@
       "sequence": 9,
       "reward_key": "1004:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 566,
-      "synth_id": 522,
-      "waveform_index": 465,
-      "awb_id": 1680,
-      "subsong": 1681,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10409.wav",
       "format": "wav",
       "duration": 7.143375,
@@ -1282,8 +734,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1004,
@@ -1291,16 +742,6 @@
       "sequence": 10,
       "reward_key": "1004:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001004",
-      "track_id": 583,
-      "synth_id": 539,
-      "waveform_index": 482,
-      "awb_id": 1681,
-      "subsong": 1682,
-      "track_modifiers_not_applied": [],
       "path": "voices/1004/10410.wav",
       "format": "wav",
       "duration": 6.004854166666667,
@@ -1308,8 +749,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1317,21 +757,6 @@
       "sequence": 1,
       "reward_key": "1005:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 431,
-      "synth_id": 387,
-      "waveform_index": 330,
-      "awb_id": 2254,
-      "subsong": 2255,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10501.wav",
       "format": "wav",
       "duration": 7.855333333333333,
@@ -1339,8 +764,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1348,21 +772,6 @@
       "sequence": 2,
       "reward_key": "1005:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 448,
-      "synth_id": 404,
-      "waveform_index": 347,
-      "awb_id": 2255,
-      "subsong": 2256,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10502.wav",
       "format": "wav",
       "duration": 13.192166666666667,
@@ -1370,8 +779,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1379,21 +787,6 @@
       "sequence": 3,
       "reward_key": "1005:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 465,
-      "synth_id": 421,
-      "waveform_index": 364,
-      "awb_id": 2256,
-      "subsong": 2257,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10503.wav",
       "format": "wav",
       "duration": 8.6125625,
@@ -1401,8 +794,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1410,21 +802,6 @@
       "sequence": 4,
       "reward_key": "1005:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 482,
-      "synth_id": 438,
-      "waveform_index": 381,
-      "awb_id": 2257,
-      "subsong": 2258,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10504.wav",
       "format": "wav",
       "duration": 9.214666666666666,
@@ -1432,8 +809,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1441,21 +817,6 @@
       "sequence": 5,
       "reward_key": "1005:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 499,
-      "synth_id": 455,
-      "waveform_index": 398,
-      "awb_id": 2258,
-      "subsong": 2259,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10505.wav",
       "format": "wav",
       "duration": 7.129229166666667,
@@ -1463,8 +824,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1472,21 +832,6 @@
       "sequence": 6,
       "reward_key": "1005:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 516,
-      "synth_id": 472,
-      "waveform_index": 415,
-      "awb_id": 2259,
-      "subsong": 2260,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10506.wav",
       "format": "wav",
       "duration": 7.829666666666666,
@@ -1494,8 +839,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1503,21 +847,6 @@
       "sequence": 7,
       "reward_key": "1005:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 533,
-      "synth_id": 489,
-      "waveform_index": 432,
-      "awb_id": 2260,
-      "subsong": 2261,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10507.wav",
       "format": "wav",
       "duration": 11.883666666666667,
@@ -1525,8 +854,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1534,21 +862,6 @@
       "sequence": 8,
       "reward_key": "1005:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 550,
-      "synth_id": 506,
-      "waveform_index": 449,
-      "awb_id": 2261,
-      "subsong": 2262,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10508.wav",
       "format": "wav",
       "duration": 10.293375,
@@ -1556,8 +869,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1565,21 +877,6 @@
       "sequence": 9,
       "reward_key": "1005:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 567,
-      "synth_id": 523,
-      "waveform_index": 466,
-      "awb_id": 2262,
-      "subsong": 2263,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10509.wav",
       "format": "wav",
       "duration": 8.054833333333333,
@@ -1587,8 +884,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1005,
@@ -1596,21 +892,6 @@
       "sequence": 10,
       "reward_key": "1005:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001005",
-      "track_id": 584,
-      "synth_id": 540,
-      "waveform_index": 483,
-      "awb_id": 2263,
-      "subsong": 2264,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        }
-      ],
       "path": "voices/1005/10510.wav",
       "format": "wav",
       "duration": 13.084416666666666,
@@ -1618,8 +899,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1627,16 +907,6 @@
       "sequence": 1,
       "reward_key": "1006:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 432,
-      "synth_id": 388,
-      "waveform_index": 331,
-      "awb_id": 712,
-      "subsong": 713,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10601.wav",
       "format": "wav",
       "duration": 5.653520833333333,
@@ -1644,8 +914,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1653,16 +922,6 @@
       "sequence": 2,
       "reward_key": "1006:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 449,
-      "synth_id": 405,
-      "waveform_index": 348,
-      "awb_id": 713,
-      "subsong": 714,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10602.wav",
       "format": "wav",
       "duration": 5.894854166666667,
@@ -1670,8 +929,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1679,16 +937,6 @@
       "sequence": 3,
       "reward_key": "1006:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 466,
-      "synth_id": 422,
-      "waveform_index": 365,
-      "awb_id": 714,
-      "subsong": 715,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10603.wav",
       "format": "wav",
       "duration": 7.146604166666667,
@@ -1696,8 +944,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1705,16 +952,6 @@
       "sequence": 4,
       "reward_key": "1006:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 483,
-      "synth_id": 439,
-      "waveform_index": 382,
-      "awb_id": 715,
-      "subsong": 716,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10604.wav",
       "format": "wav",
       "duration": 8.068270833333333,
@@ -1722,8 +959,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1731,16 +967,6 @@
       "sequence": 5,
       "reward_key": "1006:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 500,
-      "synth_id": 456,
-      "waveform_index": 399,
-      "awb_id": 716,
-      "subsong": 717,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10605.wav",
       "format": "wav",
       "duration": 7.150979166666667,
@@ -1748,8 +974,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1757,16 +982,6 @@
       "sequence": 6,
       "reward_key": "1006:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 517,
-      "synth_id": 473,
-      "waveform_index": 416,
-      "awb_id": 717,
-      "subsong": 718,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10606.wav",
       "format": "wav",
       "duration": 6.2670208333333335,
@@ -1774,8 +989,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1783,16 +997,6 @@
       "sequence": 7,
       "reward_key": "1006:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 534,
-      "synth_id": 490,
-      "waveform_index": 433,
-      "awb_id": 718,
-      "subsong": 719,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10607.wav",
       "format": "wav",
       "duration": 8.8691875,
@@ -1800,8 +1004,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1809,16 +1012,6 @@
       "sequence": 8,
       "reward_key": "1006:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 551,
-      "synth_id": 507,
-      "waveform_index": 450,
-      "awb_id": 719,
-      "subsong": 720,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10608.wav",
       "format": "wav",
       "duration": 10.057520833333333,
@@ -1826,8 +1019,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1835,16 +1027,6 @@
       "sequence": 9,
       "reward_key": "1006:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 568,
-      "synth_id": 524,
-      "waveform_index": 467,
-      "awb_id": 720,
-      "subsong": 721,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10609.wav",
       "format": "wav",
       "duration": 5.508229166666666,
@@ -1852,8 +1034,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1006,
@@ -1861,16 +1042,6 @@
       "sequence": 10,
       "reward_key": "1006:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001006",
-      "track_id": 585,
-      "synth_id": 541,
-      "waveform_index": 484,
-      "awb_id": 721,
-      "subsong": 722,
-      "track_modifiers_not_applied": [],
       "path": "voices/1006/10610.wav",
       "format": "wav",
       "duration": 6.8741875,
@@ -1878,8 +1049,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -1887,16 +1057,6 @@
       "sequence": 1,
       "reward_key": "1007:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 433,
-      "synth_id": 389,
-      "waveform_index": 332,
-      "awb_id": 1002,
-      "subsong": 1003,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10701.wav",
       "format": "wav",
       "duration": 6.547291666666666,
@@ -1904,8 +1064,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -1913,16 +1072,6 @@
       "sequence": 2,
       "reward_key": "1007:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 450,
-      "synth_id": 406,
-      "waveform_index": 349,
-      "awb_id": 1003,
-      "subsong": 1004,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10702.wav",
       "format": "wav",
       "duration": 5.674645833333333,
@@ -1930,8 +1079,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -1939,16 +1087,6 @@
       "sequence": 3,
       "reward_key": "1007:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 467,
-      "synth_id": 423,
-      "waveform_index": 366,
-      "awb_id": 1004,
-      "subsong": 1005,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10703.wav",
       "format": "wav",
       "duration": 9.416791666666667,
@@ -1956,8 +1094,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -1965,16 +1102,6 @@
       "sequence": 4,
       "reward_key": "1007:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 484,
-      "synth_id": 440,
-      "waveform_index": 383,
-      "awb_id": 1005,
-      "subsong": 1006,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10704.wav",
       "format": "wav",
       "duration": 11.280479166666666,
@@ -1982,8 +1109,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -1991,16 +1117,6 @@
       "sequence": 5,
       "reward_key": "1007:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 501,
-      "synth_id": 457,
-      "waveform_index": 400,
-      "awb_id": 1006,
-      "subsong": 1007,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10705.wav",
       "format": "wav",
       "duration": 7.572666666666667,
@@ -2008,8 +1124,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -2017,16 +1132,6 @@
       "sequence": 6,
       "reward_key": "1007:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 518,
-      "synth_id": 474,
-      "waveform_index": 417,
-      "awb_id": 1007,
-      "subsong": 1008,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10706.wav",
       "format": "wav",
       "duration": 10.93575,
@@ -2034,8 +1139,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -2043,16 +1147,6 @@
       "sequence": 7,
       "reward_key": "1007:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 535,
-      "synth_id": 491,
-      "waveform_index": 434,
-      "awb_id": 1008,
-      "subsong": 1009,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10707.wav",
       "format": "wav",
       "duration": 9.7465,
@@ -2060,8 +1154,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -2069,16 +1162,6 @@
       "sequence": 8,
       "reward_key": "1007:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 552,
-      "synth_id": 508,
-      "waveform_index": 451,
-      "awb_id": 1009,
-      "subsong": 1010,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10708.wav",
       "format": "wav",
       "duration": 11.539833333333334,
@@ -2086,8 +1169,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -2095,16 +1177,6 @@
       "sequence": 9,
       "reward_key": "1007:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 569,
-      "synth_id": 525,
-      "waveform_index": 468,
-      "awb_id": 1010,
-      "subsong": 1011,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10709.wav",
       "format": "wav",
       "duration": 7.737333333333333,
@@ -2112,8 +1184,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1007,
@@ -2121,16 +1192,6 @@
       "sequence": 10,
       "reward_key": "1007:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001007",
-      "track_id": 586,
-      "synth_id": 542,
-      "waveform_index": 485,
-      "awb_id": 1011,
-      "subsong": 1012,
-      "track_modifiers_not_applied": [],
       "path": "voices/1007/10710.wav",
       "format": "wav",
       "duration": 12.2079375,
@@ -2138,8 +1199,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2147,25 +1207,6 @@
       "sequence": 1,
       "reward_key": "1008:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 434,
-      "synth_id": 390,
-      "waveform_index": 333,
-      "awb_id": 1148,
-      "subsong": 1149,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10801.wav",
       "format": "wav",
       "duration": 4.069375,
@@ -2173,8 +1214,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2182,25 +1222,6 @@
       "sequence": 2,
       "reward_key": "1008:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 451,
-      "synth_id": 407,
-      "waveform_index": 350,
-      "awb_id": 1149,
-      "subsong": 1150,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10802.wav",
       "format": "wav",
       "duration": 5.2778125,
@@ -2208,8 +1229,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2217,25 +1237,6 @@
       "sequence": 3,
       "reward_key": "1008:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 468,
-      "synth_id": 424,
-      "waveform_index": 367,
-      "awb_id": 1150,
-      "subsong": 1151,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10803.wav",
       "format": "wav",
       "duration": 10.020520833333334,
@@ -2243,8 +1244,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2252,25 +1252,6 @@
       "sequence": 4,
       "reward_key": "1008:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 485,
-      "synth_id": 441,
-      "waveform_index": 384,
-      "awb_id": 1151,
-      "subsong": 1152,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10804.wav",
       "format": "wav",
       "duration": 8.446145833333333,
@@ -2278,8 +1259,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2287,25 +1267,6 @@
       "sequence": 5,
       "reward_key": "1008:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 502,
-      "synth_id": 458,
-      "waveform_index": 401,
-      "awb_id": 1152,
-      "subsong": 1153,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10805.wav",
       "format": "wav",
       "duration": 8.079854166666667,
@@ -2313,8 +1274,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2322,25 +1282,6 @@
       "sequence": 6,
       "reward_key": "1008:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 519,
-      "synth_id": 475,
-      "waveform_index": 418,
-      "awb_id": 1153,
-      "subsong": 1154,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10806.wav",
       "format": "wav",
       "duration": 8.929895833333333,
@@ -2348,8 +1289,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2357,25 +1297,6 @@
       "sequence": 7,
       "reward_key": "1008:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 536,
-      "synth_id": 492,
-      "waveform_index": 435,
-      "awb_id": 1154,
-      "subsong": 1155,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10807.wav",
       "format": "wav",
       "duration": 8.2941875,
@@ -2383,8 +1304,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2392,25 +1312,6 @@
       "sequence": 8,
       "reward_key": "1008:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 553,
-      "synth_id": 509,
-      "waveform_index": 452,
-      "awb_id": 1155,
-      "subsong": 1156,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10808.wav",
       "format": "wav",
       "duration": 7.8125625,
@@ -2418,8 +1319,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2427,25 +1327,6 @@
       "sequence": 9,
       "reward_key": "1008:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 570,
-      "synth_id": 526,
-      "waveform_index": 469,
-      "awb_id": 1156,
-      "subsong": 1157,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10809.wav",
       "format": "wav",
       "duration": 8.525354166666666,
@@ -2453,8 +1334,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1008,
@@ -2462,25 +1342,6 @@
       "sequence": 10,
       "reward_key": "1008:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001008",
-      "track_id": 587,
-      "synth_id": 543,
-      "waveform_index": 486,
-      "awb_id": 1157,
-      "subsong": 1158,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "006e"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1008/10810.wav",
       "format": "wav",
       "duration": 11.580479166666667,
@@ -2488,8 +1349,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2497,16 +1357,6 @@
       "sequence": 1,
       "reward_key": "1009:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 435,
-      "synth_id": 391,
-      "waveform_index": 334,
-      "awb_id": 1965,
-      "subsong": 1966,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10901.wav",
       "format": "wav",
       "duration": 6.319895833333334,
@@ -2514,8 +1364,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2523,16 +1372,6 @@
       "sequence": 2,
       "reward_key": "1009:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 452,
-      "synth_id": 408,
-      "waveform_index": 351,
-      "awb_id": 1966,
-      "subsong": 1967,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10902.wav",
       "format": "wav",
       "duration": 6.8090625,
@@ -2540,8 +1379,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2549,16 +1387,6 @@
       "sequence": 3,
       "reward_key": "1009:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 469,
-      "synth_id": 425,
-      "waveform_index": 368,
-      "awb_id": 1967,
-      "subsong": 1968,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10903.wav",
       "format": "wav",
       "duration": 5.820083333333334,
@@ -2566,8 +1394,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2575,16 +1402,6 @@
       "sequence": 4,
       "reward_key": "1009:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 486,
-      "synth_id": 442,
-      "waveform_index": 385,
-      "awb_id": 1968,
-      "subsong": 1969,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10904.wav",
       "format": "wav",
       "duration": 8.366395833333334,
@@ -2592,8 +1409,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2601,16 +1417,6 @@
       "sequence": 5,
       "reward_key": "1009:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 503,
-      "synth_id": 459,
-      "waveform_index": 402,
-      "awb_id": 1969,
-      "subsong": 1970,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10905.wav",
       "format": "wav",
       "duration": 8.291729166666666,
@@ -2618,8 +1424,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2627,16 +1432,6 @@
       "sequence": 6,
       "reward_key": "1009:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 520,
-      "synth_id": 476,
-      "waveform_index": 419,
-      "awb_id": 1970,
-      "subsong": 1971,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10906.wav",
       "format": "wav",
       "duration": 6.7930625,
@@ -2644,8 +1439,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2653,16 +1447,6 @@
       "sequence": 7,
       "reward_key": "1009:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 537,
-      "synth_id": 493,
-      "waveform_index": 436,
-      "awb_id": 1971,
-      "subsong": 1972,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10907.wav",
       "format": "wav",
       "duration": 6.856145833333334,
@@ -2670,8 +1454,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2679,16 +1462,6 @@
       "sequence": 8,
       "reward_key": "1009:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 554,
-      "synth_id": 510,
-      "waveform_index": 453,
-      "awb_id": 1972,
-      "subsong": 1973,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10908.wav",
       "format": "wav",
       "duration": 8.766395833333334,
@@ -2696,8 +1469,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2705,16 +1477,6 @@
       "sequence": 9,
       "reward_key": "1009:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 571,
-      "synth_id": 527,
-      "waveform_index": 470,
-      "awb_id": 1973,
-      "subsong": 1974,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10909.wav",
       "format": "wav",
       "duration": 6.0890625,
@@ -2722,8 +1484,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1009,
@@ -2731,16 +1492,6 @@
       "sequence": 10,
       "reward_key": "1009:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001009",
-      "track_id": 588,
-      "synth_id": 544,
-      "waveform_index": 487,
-      "awb_id": 1974,
-      "subsong": 1975,
-      "track_modifiers_not_applied": [],
       "path": "voices/1009/10910.wav",
       "format": "wav",
       "duration": 12.851729166666667,
@@ -2748,8 +1499,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2757,16 +1507,6 @@
       "sequence": 1,
       "reward_key": "1010:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 436,
-      "synth_id": 392,
-      "waveform_index": 335,
-      "awb_id": 1295,
-      "subsong": 1296,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11001.wav",
       "format": "wav",
       "duration": 7.0517916666666665,
@@ -2774,8 +1514,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2783,16 +1522,6 @@
       "sequence": 2,
       "reward_key": "1010:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 453,
-      "synth_id": 409,
-      "waveform_index": 352,
-      "awb_id": 1296,
-      "subsong": 1297,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11002.wav",
       "format": "wav",
       "duration": 9.291604166666668,
@@ -2800,8 +1529,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2809,16 +1537,6 @@
       "sequence": 3,
       "reward_key": "1010:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 470,
-      "synth_id": 426,
-      "waveform_index": 369,
-      "awb_id": 1297,
-      "subsong": 1298,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11003.wav",
       "format": "wav",
       "duration": 8.6734375,
@@ -2826,8 +1544,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2835,16 +1552,6 @@
       "sequence": 4,
       "reward_key": "1010:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 487,
-      "synth_id": 443,
-      "waveform_index": 386,
-      "awb_id": 1298,
-      "subsong": 1299,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11004.wav",
       "format": "wav",
       "duration": 10.168,
@@ -2852,8 +1559,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2861,16 +1567,6 @@
       "sequence": 5,
       "reward_key": "1010:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 504,
-      "synth_id": 460,
-      "waveform_index": 403,
-      "awb_id": 1299,
-      "subsong": 1300,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11005.wav",
       "format": "wav",
       "duration": 7.847041666666667,
@@ -2878,8 +1574,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2887,16 +1582,6 @@
       "sequence": 6,
       "reward_key": "1010:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 521,
-      "synth_id": 477,
-      "waveform_index": 420,
-      "awb_id": 1300,
-      "subsong": 1301,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11006.wav",
       "format": "wav",
       "duration": 7.4602916666666665,
@@ -2904,8 +1589,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2913,16 +1597,6 @@
       "sequence": 7,
       "reward_key": "1010:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 538,
-      "synth_id": 494,
-      "waveform_index": 437,
-      "awb_id": 1301,
-      "subsong": 1302,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11007.wav",
       "format": "wav",
       "duration": 8.590958333333333,
@@ -2930,8 +1604,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2939,16 +1612,6 @@
       "sequence": 8,
       "reward_key": "1010:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 555,
-      "synth_id": 511,
-      "waveform_index": 454,
-      "awb_id": 1302,
-      "subsong": 1303,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11008.wav",
       "format": "wav",
       "duration": 8.516229166666667,
@@ -2956,8 +1619,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2965,16 +1627,6 @@
       "sequence": 9,
       "reward_key": "1010:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 572,
-      "synth_id": 528,
-      "waveform_index": 471,
-      "awb_id": 1303,
-      "subsong": 1304,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11009.wav",
       "format": "wav",
       "duration": 9.721625,
@@ -2982,8 +1634,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1010,
@@ -2991,16 +1642,6 @@
       "sequence": 10,
       "reward_key": "1010:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001010",
-      "track_id": 589,
-      "synth_id": 545,
-      "waveform_index": 488,
-      "awb_id": 1304,
-      "subsong": 1305,
-      "track_modifiers_not_applied": [],
       "path": "voices/1010/11010.wav",
       "format": "wav",
       "duration": 9.27625,
@@ -3008,8 +1649,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3017,16 +1657,6 @@
       "sequence": 1,
       "reward_key": "1011:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 437,
-      "synth_id": 393,
-      "waveform_index": 336,
-      "awb_id": 126,
-      "subsong": 127,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11101.wav",
       "format": "wav",
       "duration": 8.554395833333333,
@@ -3034,8 +1664,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3043,16 +1672,6 @@
       "sequence": 2,
       "reward_key": "1011:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 454,
-      "synth_id": 410,
-      "waveform_index": 353,
-      "awb_id": 127,
-      "subsong": 128,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11102.wav",
       "format": "wav",
       "duration": 8.924916666666666,
@@ -3060,8 +1679,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3069,16 +1687,6 @@
       "sequence": 3,
       "reward_key": "1011:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 471,
-      "synth_id": 427,
-      "waveform_index": 370,
-      "awb_id": 128,
-      "subsong": 129,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11103.wav",
       "format": "wav",
       "duration": 10.2963125,
@@ -3086,8 +1694,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3095,16 +1702,6 @@
       "sequence": 4,
       "reward_key": "1011:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 488,
-      "synth_id": 444,
-      "waveform_index": 387,
-      "awb_id": 129,
-      "subsong": 130,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11104.wav",
       "format": "wav",
       "duration": 11.244041666666666,
@@ -3112,8 +1709,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3121,16 +1717,6 @@
       "sequence": 5,
       "reward_key": "1011:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 505,
-      "synth_id": 461,
-      "waveform_index": 404,
-      "awb_id": 130,
-      "subsong": 131,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11105.wav",
       "format": "wav",
       "duration": 10.08075,
@@ -3138,8 +1724,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3147,16 +1732,6 @@
       "sequence": 6,
       "reward_key": "1011:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 522,
-      "synth_id": 478,
-      "waveform_index": 421,
-      "awb_id": 131,
-      "subsong": 132,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11106.wav",
       "format": "wav",
       "duration": 12.21325,
@@ -3164,8 +1739,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3173,16 +1747,6 @@
       "sequence": 7,
       "reward_key": "1011:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 539,
-      "synth_id": 495,
-      "waveform_index": 438,
-      "awb_id": 132,
-      "subsong": 133,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11107.wav",
       "format": "wav",
       "duration": 8.5946875,
@@ -3190,8 +1754,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3199,16 +1762,6 @@
       "sequence": 8,
       "reward_key": "1011:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 556,
-      "synth_id": 512,
-      "waveform_index": 455,
-      "awb_id": 133,
-      "subsong": 134,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11108.wav",
       "format": "wav",
       "duration": 10.597145833333334,
@@ -3216,8 +1769,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3225,16 +1777,6 @@
       "sequence": 9,
       "reward_key": "1011:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 573,
-      "synth_id": 529,
-      "waveform_index": 472,
-      "awb_id": 134,
-      "subsong": 135,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11109.wav",
       "format": "wav",
       "duration": 9.837770833333334,
@@ -3242,8 +1784,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1011,
@@ -3251,16 +1792,6 @@
       "sequence": 10,
       "reward_key": "1011:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001011",
-      "track_id": 590,
-      "synth_id": 546,
-      "waveform_index": 489,
-      "awb_id": 135,
-      "subsong": 136,
-      "track_modifiers_not_applied": [],
       "path": "voices/1011/11110.wav",
       "format": "wav",
       "duration": 9.976125,
@@ -3268,8 +1799,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3277,25 +1807,6 @@
       "sequence": 1,
       "reward_key": "1012:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 438,
-      "synth_id": 394,
-      "waveform_index": 337,
-      "awb_id": 566,
-      "subsong": 567,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11201.wav",
       "format": "wav",
       "duration": 2.27475,
@@ -3303,8 +1814,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3312,25 +1822,6 @@
       "sequence": 2,
       "reward_key": "1012:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 455,
-      "synth_id": 411,
-      "waveform_index": 354,
-      "awb_id": 567,
-      "subsong": 568,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11202.wav",
       "format": "wav",
       "duration": 5.859895833333334,
@@ -3338,8 +1829,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3347,25 +1837,6 @@
       "sequence": 3,
       "reward_key": "1012:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 472,
-      "synth_id": 428,
-      "waveform_index": 371,
-      "awb_id": 568,
-      "subsong": 569,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11203.wav",
       "format": "wav",
       "duration": 7.753020833333333,
@@ -3373,8 +1844,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3382,25 +1852,6 @@
       "sequence": 4,
       "reward_key": "1012:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 489,
-      "synth_id": 445,
-      "waveform_index": 388,
-      "awb_id": 569,
-      "subsong": 570,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11204.wav",
       "format": "wav",
       "duration": 9.340833333333334,
@@ -3408,8 +1859,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3417,25 +1867,6 @@
       "sequence": 5,
       "reward_key": "1012:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 506,
-      "synth_id": 462,
-      "waveform_index": 405,
-      "awb_id": 570,
-      "subsong": 571,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11205.wav",
       "format": "wav",
       "duration": 12.993583333333333,
@@ -3443,8 +1874,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3452,25 +1882,6 @@
       "sequence": 6,
       "reward_key": "1012:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 523,
-      "synth_id": 479,
-      "waveform_index": 422,
-      "awb_id": 571,
-      "subsong": 572,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11206.wav",
       "format": "wav",
       "duration": 6.725520833333333,
@@ -3478,8 +1889,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3487,25 +1897,6 @@
       "sequence": 7,
       "reward_key": "1012:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 540,
-      "synth_id": 496,
-      "waveform_index": 439,
-      "awb_id": 572,
-      "subsong": 573,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11207.wav",
       "format": "wav",
       "duration": 9.321333333333333,
@@ -3513,8 +1904,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3522,25 +1912,6 @@
       "sequence": 8,
       "reward_key": "1012:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 557,
-      "synth_id": 513,
-      "waveform_index": 456,
-      "awb_id": 573,
-      "subsong": 574,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11208.wav",
       "format": "wav",
       "duration": 8.701458333333333,
@@ -3548,8 +1919,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3557,25 +1927,6 @@
       "sequence": 9,
       "reward_key": "1012:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 574,
-      "synth_id": 530,
-      "waveform_index": 473,
-      "awb_id": 574,
-      "subsong": 575,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11209.wav",
       "format": "wav",
       "duration": 11.337270833333333,
@@ -3583,8 +1934,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1012,
@@ -3592,25 +1942,6 @@
       "sequence": 10,
       "reward_key": "1012:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001012",
-      "track_id": 591,
-      "synth_id": 547,
-      "waveform_index": 490,
-      "awb_id": 575,
-      "subsong": 576,
-      "track_modifiers_not_applied": [
-        {
-          "code": 87,
-          "data_hex": "0078"
-        },
-        {
-          "code": 32,
-          "data_hex": "0ce42710"
-        }
-      ],
       "path": "voices/1012/11210.wav",
       "format": "wav",
       "duration": 10.374666666666666,
@@ -3618,8 +1949,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3627,16 +1957,6 @@
       "sequence": 1,
       "reward_key": "1013:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 439,
-      "synth_id": 395,
-      "waveform_index": 338,
-      "awb_id": 1440,
-      "subsong": 1441,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11301.wav",
       "format": "wav",
       "duration": 7.930020833333334,
@@ -3644,8 +1964,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3653,16 +1972,6 @@
       "sequence": 2,
       "reward_key": "1013:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 456,
-      "synth_id": 412,
-      "waveform_index": 355,
-      "awb_id": 1441,
-      "subsong": 1442,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11302.wav",
       "format": "wav",
       "duration": 11.313604166666666,
@@ -3670,8 +1979,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3679,16 +1987,6 @@
       "sequence": 3,
       "reward_key": "1013:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 473,
-      "synth_id": 429,
-      "waveform_index": 372,
-      "awb_id": 1442,
-      "subsong": 1443,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11303.wav",
       "format": "wav",
       "duration": 10.1380625,
@@ -3696,8 +1994,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3705,16 +2002,6 @@
       "sequence": 4,
       "reward_key": "1013:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 490,
-      "synth_id": 446,
-      "waveform_index": 389,
-      "awb_id": 1443,
-      "subsong": 1444,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11304.wav",
       "format": "wav",
       "duration": 9.497645833333333,
@@ -3722,8 +2009,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3731,16 +2017,6 @@
       "sequence": 5,
       "reward_key": "1013:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 507,
-      "synth_id": 463,
-      "waveform_index": 406,
-      "awb_id": 1444,
-      "subsong": 1445,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11305.wav",
       "format": "wav",
       "duration": 10.551291666666666,
@@ -3748,8 +2024,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3757,16 +2032,6 @@
       "sequence": 6,
       "reward_key": "1013:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 524,
-      "synth_id": 480,
-      "waveform_index": 423,
-      "awb_id": 1445,
-      "subsong": 1446,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11306.wav",
       "format": "wav",
       "duration": 7.358,
@@ -3774,8 +2039,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3783,16 +2047,6 @@
       "sequence": 7,
       "reward_key": "1013:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 541,
-      "synth_id": 497,
-      "waveform_index": 440,
-      "awb_id": 1446,
-      "subsong": 1447,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11307.wav",
       "format": "wav",
       "duration": 14.5364375,
@@ -3800,8 +2054,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3809,16 +2062,6 @@
       "sequence": 8,
       "reward_key": "1013:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 558,
-      "synth_id": 514,
-      "waveform_index": 457,
-      "awb_id": 1447,
-      "subsong": 1448,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11308.wav",
       "format": "wav",
       "duration": 11.238520833333334,
@@ -3826,8 +2069,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3835,16 +2077,6 @@
       "sequence": 9,
       "reward_key": "1013:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 575,
-      "synth_id": 531,
-      "waveform_index": 474,
-      "awb_id": 1448,
-      "subsong": 1449,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11309.wav",
       "format": "wav",
       "duration": 11.137729166666666,
@@ -3852,8 +2084,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1013,
@@ -3861,16 +2092,6 @@
       "sequence": 10,
       "reward_key": "1013:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001013",
-      "track_id": 592,
-      "synth_id": 548,
-      "waveform_index": 491,
-      "awb_id": 1449,
-      "subsong": 1450,
-      "track_modifiers_not_applied": [],
       "path": "voices/1013/11310.wav",
       "format": "wav",
       "duration": 14.857875,
@@ -3878,8 +2099,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -3887,16 +2107,6 @@
       "sequence": 1,
       "reward_key": "1014:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 440,
-      "synth_id": 396,
-      "waveform_index": 339,
-      "awb_id": 856,
-      "subsong": 857,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11401.wav",
       "format": "wav",
       "duration": 5.15975,
@@ -3904,8 +2114,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -3913,16 +2122,6 @@
       "sequence": 2,
       "reward_key": "1014:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 457,
-      "synth_id": 413,
-      "waveform_index": 356,
-      "awb_id": 857,
-      "subsong": 858,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11402.wav",
       "format": "wav",
       "duration": 4.4249583333333335,
@@ -3930,8 +2129,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -3939,16 +2137,6 @@
       "sequence": 3,
       "reward_key": "1014:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 474,
-      "synth_id": 430,
-      "waveform_index": 373,
-      "awb_id": 858,
-      "subsong": 859,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11403.wav",
       "format": "wav",
       "duration": 6.845104166666666,
@@ -3956,8 +2144,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -3965,16 +2152,6 @@
       "sequence": 4,
       "reward_key": "1014:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 491,
-      "synth_id": 447,
-      "waveform_index": 390,
-      "awb_id": 859,
-      "subsong": 860,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11404.wav",
       "format": "wav",
       "duration": 9.3674375,
@@ -3982,8 +2159,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -3991,16 +2167,6 @@
       "sequence": 5,
       "reward_key": "1014:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 508,
-      "synth_id": 464,
-      "waveform_index": 407,
-      "awb_id": 860,
-      "subsong": 861,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11405.wav",
       "format": "wav",
       "duration": 5.192020833333333,
@@ -4008,8 +2174,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -4017,16 +2182,6 @@
       "sequence": 6,
       "reward_key": "1014:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 525,
-      "synth_id": 481,
-      "waveform_index": 424,
-      "awb_id": 861,
-      "subsong": 862,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11406.wav",
       "format": "wav",
       "duration": 8.646375,
@@ -4034,8 +2189,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -4043,16 +2197,6 @@
       "sequence": 7,
       "reward_key": "1014:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 542,
-      "synth_id": 498,
-      "waveform_index": 441,
-      "awb_id": 862,
-      "subsong": 863,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11407.wav",
       "format": "wav",
       "duration": 7.344,
@@ -4060,8 +2204,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -4069,16 +2212,6 @@
       "sequence": 8,
       "reward_key": "1014:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 559,
-      "synth_id": 515,
-      "waveform_index": 458,
-      "awb_id": 863,
-      "subsong": 864,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11408.wav",
       "format": "wav",
       "duration": 8.1235,
@@ -4086,8 +2219,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -4095,16 +2227,6 @@
       "sequence": 9,
       "reward_key": "1014:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 576,
-      "synth_id": 532,
-      "waveform_index": 475,
-      "awb_id": 864,
-      "subsong": 865,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11409.wav",
       "format": "wav",
       "duration": 7.6346875,
@@ -4112,8 +2234,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1014,
@@ -4121,16 +2242,6 @@
       "sequence": 10,
       "reward_key": "1014:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001014",
-      "track_id": 593,
-      "synth_id": 549,
-      "waveform_index": 492,
-      "awb_id": 865,
-      "subsong": 866,
-      "track_modifiers_not_applied": [],
       "path": "voices/1014/11410.wav",
       "format": "wav",
       "duration": 5.464395833333334,
@@ -4138,8 +2249,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4147,16 +2257,6 @@
       "sequence": 1,
       "reward_key": "1015:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 441,
-      "synth_id": 397,
-      "waveform_index": 340,
-      "awb_id": 2398,
-      "subsong": 2399,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11501.wav",
       "format": "wav",
       "duration": 7.689354166666667,
@@ -4164,8 +2264,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4173,16 +2272,6 @@
       "sequence": 2,
       "reward_key": "1015:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 458,
-      "synth_id": 414,
-      "waveform_index": 357,
-      "awb_id": 2399,
-      "subsong": 2400,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11502.wav",
       "format": "wav",
       "duration": 6.5985625,
@@ -4190,8 +2279,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4199,16 +2287,6 @@
       "sequence": 3,
       "reward_key": "1015:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 475,
-      "synth_id": 431,
-      "waveform_index": 374,
-      "awb_id": 2400,
-      "subsong": 2401,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11503.wav",
       "format": "wav",
       "duration": 7.6910625,
@@ -4216,8 +2294,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4225,16 +2302,6 @@
       "sequence": 4,
       "reward_key": "1015:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 492,
-      "synth_id": 448,
-      "waveform_index": 391,
-      "awb_id": 2401,
-      "subsong": 2402,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11504.wav",
       "format": "wav",
       "duration": 7.83375,
@@ -4242,8 +2309,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4251,16 +2317,6 @@
       "sequence": 5,
       "reward_key": "1015:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 509,
-      "synth_id": 465,
-      "waveform_index": 408,
-      "awb_id": 2402,
-      "subsong": 2403,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11505.wav",
       "format": "wav",
       "duration": 6.632833333333333,
@@ -4268,8 +2324,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4277,16 +2332,6 @@
       "sequence": 6,
       "reward_key": "1015:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 526,
-      "synth_id": 482,
-      "waveform_index": 425,
-      "awb_id": 2403,
-      "subsong": 2404,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11506.wav",
       "format": "wav",
       "duration": 8.7924375,
@@ -4294,8 +2339,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4303,16 +2347,6 @@
       "sequence": 7,
       "reward_key": "1015:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 543,
-      "synth_id": 499,
-      "waveform_index": 442,
-      "awb_id": 2404,
-      "subsong": 2405,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11507.wav",
       "format": "wav",
       "duration": 10.624,
@@ -4320,8 +2354,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4329,16 +2362,6 @@
       "sequence": 8,
       "reward_key": "1015:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 560,
-      "synth_id": 516,
-      "waveform_index": 459,
-      "awb_id": 2405,
-      "subsong": 2406,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11508.wav",
       "format": "wav",
       "duration": 8.8474375,
@@ -4346,8 +2369,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4355,16 +2377,6 @@
       "sequence": 9,
       "reward_key": "1015:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 577,
-      "synth_id": 533,
-      "waveform_index": 476,
-      "awb_id": 2406,
-      "subsong": 2407,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11509.wav",
       "format": "wav",
       "duration": 11.768333333333333,
@@ -4372,8 +2384,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1015,
@@ -4381,16 +2392,6 @@
       "sequence": 10,
       "reward_key": "1015:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001015",
-      "track_id": 594,
-      "synth_id": 550,
-      "waveform_index": 493,
-      "awb_id": 2407,
-      "subsong": 2408,
-      "track_modifiers_not_applied": [],
       "path": "voices/1015/11510.wav",
       "format": "wav",
       "duration": 5.8030625,
@@ -4398,8 +2399,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4407,16 +2407,6 @@
       "sequence": 1,
       "reward_key": "1016:10:0",
       "unlock_level": 10,
-      "cue_id": 111,
-      "cue_name": "vo_setting_flavor_01",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 442,
-      "synth_id": 398,
-      "waveform_index": 341,
-      "awb_id": 2107,
-      "subsong": 2108,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11601.wav",
       "format": "wav",
       "duration": 9.015020833333333,
@@ -4424,8 +2414,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4433,16 +2422,6 @@
       "sequence": 2,
       "reward_key": "1016:70:0",
       "unlock_level": 70,
-      "cue_id": 112,
-      "cue_name": "vo_setting_flavor_02",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 459,
-      "synth_id": 415,
-      "waveform_index": 358,
-      "awb_id": 2108,
-      "subsong": 2109,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11602.wav",
       "format": "wav",
       "duration": 8.614854166666667,
@@ -4450,8 +2429,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4459,16 +2437,6 @@
       "sequence": 3,
       "reward_key": "1016:90:0",
       "unlock_level": 90,
-      "cue_id": 113,
-      "cue_name": "vo_setting_flavor_03",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 476,
-      "synth_id": 432,
-      "waveform_index": 375,
-      "awb_id": 2109,
-      "subsong": 2110,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11603.wav",
       "format": "wav",
       "duration": 8.520979166666667,
@@ -4476,8 +2444,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4485,16 +2452,6 @@
       "sequence": 4,
       "reward_key": "1016:120:0",
       "unlock_level": 120,
-      "cue_id": 114,
-      "cue_name": "vo_setting_flavor_04",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 493,
-      "synth_id": 449,
-      "waveform_index": 392,
-      "awb_id": 2110,
-      "subsong": 2111,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11604.wav",
       "format": "wav",
       "duration": 12.245354166666667,
@@ -4502,8 +2459,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4511,16 +2467,6 @@
       "sequence": 5,
       "reward_key": "1016:140:0",
       "unlock_level": 140,
-      "cue_id": 115,
-      "cue_name": "vo_setting_flavor_05",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 510,
-      "synth_id": 466,
-      "waveform_index": 409,
-      "awb_id": 2111,
-      "subsong": 2112,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11605.wav",
       "format": "wav",
       "duration": 10.771375,
@@ -4528,8 +2474,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4537,16 +2482,6 @@
       "sequence": 6,
       "reward_key": "1016:180:0",
       "unlock_level": 180,
-      "cue_id": 116,
-      "cue_name": "vo_setting_flavor_06",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 527,
-      "synth_id": 483,
-      "waveform_index": 426,
-      "awb_id": 2112,
-      "subsong": 2113,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11606.wav",
       "format": "wav",
       "duration": 12.680833333333334,
@@ -4554,8 +2489,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4563,16 +2497,6 @@
       "sequence": 7,
       "reward_key": "1016:230:0",
       "unlock_level": 230,
-      "cue_id": 117,
-      "cue_name": "vo_setting_flavor_07",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 544,
-      "synth_id": 500,
-      "waveform_index": 443,
-      "awb_id": 2113,
-      "subsong": 2114,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11607.wav",
       "format": "wav",
       "duration": 11.393333333333333,
@@ -4580,8 +2504,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4589,16 +2512,6 @@
       "sequence": 8,
       "reward_key": "1016:270:0",
       "unlock_level": 270,
-      "cue_id": 118,
-      "cue_name": "vo_setting_flavor_08",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 561,
-      "synth_id": 517,
-      "waveform_index": 460,
-      "awb_id": 2114,
-      "subsong": 2115,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11608.wav",
       "format": "wav",
       "duration": 12.486229166666666,
@@ -4606,8 +2519,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4615,16 +2527,6 @@
       "sequence": 9,
       "reward_key": "1016:330:0",
       "unlock_level": 330,
-      "cue_id": 119,
-      "cue_name": "vo_setting_flavor_09",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 578,
-      "synth_id": 534,
-      "waveform_index": 477,
-      "awb_id": 2115,
-      "subsong": 2116,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11609.wav",
       "format": "wav",
       "duration": 11.998333333333333,
@@ -4632,8 +2534,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     },
     {
       "character_id": 1016,
@@ -4641,16 +2542,6 @@
       "sequence": 10,
       "reward_key": "1016:370:0",
       "unlock_level": 370,
-      "cue_id": 120,
-      "cue_name": "vo_setting_flavor_10",
-      "selector": "Voice_Character",
-      "selector_label": "001016",
-      "track_id": 595,
-      "synth_id": 551,
-      "waveform_index": 494,
-      "awb_id": 2116,
-      "subsong": 2117,
-      "track_modifiers_not_applied": [],
       "path": "voices/1016/11610.wav",
       "format": "wav",
       "duration": 8.741604166666667,
@@ -4658,14 +2549,7 @@
       "validation": "decoded",
       "listening_review": "verified",
       "qq_validation": "pending",
-      "review_method": "automated",
-      "verified_at": "2026-09-12T18:52:58+00:00"
+      "verified_at": "2026-09-13T02:52:58+08:00"
     }
-  ],
-  "pending": [
-    "逐条试听角色/内容核对",
-    "目标QQ群聊与私聊实际发送验证",
-    "导出保留原始wave；未应用cue/track音量等混音参数"
-  ],
-  "format_reference": "https://github.com/vgmstream/vgmstream/blob/master/src/meta/acb.c"
+  ]
 }

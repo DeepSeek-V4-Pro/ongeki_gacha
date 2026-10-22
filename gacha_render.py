@@ -218,7 +218,7 @@ class GachaRenderer:
         card_h: int,
         card: CardInfo,
     ) -> None:
-        """Draw the RinNET-style ID/card-number footer on one result card."""
+        """Draw the card ID/number footer on one result card."""
         label = str(card.id)
         card_number = str(card.card_number or "").strip()
         if card_number:
